@@ -7,9 +7,19 @@ package frc.robot.subsystems;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-public class ExampleSubsystem extends SubsystemBase {
+public class Superstructure extends SubsystemBase {
+  private static Superstructure superstructure;
+  private static Elevator elevator;
+
+  public enum SuperstructureState{
+    STOW, GROUND_INTAKE, HP_INTAKE, L1, L2, L3, L4, PROCESSOR, NET, CLIMB
+  }
   /** Creates a new ExampleSubsystem. */
-  public ExampleSubsystem() {}
+  public Superstructure() {
+    elevator = Elevator.getInstance();
+  }
+
+
 
   /**
    * Example command factory method.

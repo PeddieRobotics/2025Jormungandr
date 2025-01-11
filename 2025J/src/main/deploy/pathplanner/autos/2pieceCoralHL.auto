@@ -1,0 +1,31 @@
+{
+  "version": "2025.0",
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "startToH"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "HtoHP"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "HPtoL"
+          }
+        }
+      ]
+    }
+  },
+  "resetOdom": true,
+  "folder": null,
+  "choreoAuto": false
+}
