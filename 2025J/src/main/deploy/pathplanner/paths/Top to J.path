@@ -1,0 +1,54 @@
+{
+  "version": "2025.0",
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 7.812828947368421,
+        "y": 5.766529605263157
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 6.732361131083082,
+        "y": 5.689504686166296
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 4.887828947368421,
+        "y": 5.381661184210526
+      },
+      "prevControl": {
+        "x": 6.320614383380864,
+        "y": 5.704814737158269
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": "JReef"
+    }
+  ],
+  "rotationTargets": [],
+  "constraintZones": [],
+  "pointTowardsZones": [],
+  "eventMarkers": [],
+  "globalConstraints": {
+    "maxVelocity": 3.0,
+    "maxAcceleration": 3.0,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0,
+    "nominalVoltage": 12.0,
+    "unlimited": false
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": 60.39554925399499
+  },
+  "reversed": false,
+  "folder": null,
+  "idealStartingState": {
+    "velocity": 0,
+    "rotation": 0.0
+  },
+  "useDefaultConstraints": true
+}
