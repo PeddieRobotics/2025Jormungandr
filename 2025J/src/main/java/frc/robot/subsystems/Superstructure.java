@@ -9,45 +9,155 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Superstructure extends SubsystemBase {
   private static Superstructure superstructure;
-  private static Elevator elevator;
 
-  public enum SuperstructureState{
-    STOW, GROUND_INTAKE, HP_INTAKE, L1, L2, L3, L4, PROCESSOR, NET, CLIMB
+  private SuperstructureState systemState;
+  private SuperstructureState nextSystemState;
+  private SuperstructureState requestedSystemState;
+
+  private boolean algaeIndex, coralIndex; // get from intakes :) - not yet set up... :/
+
+  public enum SuperstructureState {
+    STOW,
+    HP_INTAKE,
+    CORAL_GROUND_INTAKE,
+    ALGAE_GROUND_INTAKE,
+    L1_PREP,
+    L2_PREP,
+    L3_PREP,
+    L4_PREP,
+    L1_SCORE,
+    L2_SCORE,
+    L3_SCORE,
+    L4_SCORE,
+    CLIMB_PREP,
+    CLIMB,
+    BARGE_PREP,
+    BARGE_SCORE,
+    PROCESSOR_PREP,
+    PROCESSOR_SCORE,
+    REEF1_INTAKE,
+    REEF2_INTAKE,
+    EJECT_ALGAE,
+    EJECT_CORAL
   }
-  /** Creates a new ExampleSubsystem. */
+
   public Superstructure() {
-    elevator = Elevator.getInstance();
+    systemState = SuperstructureState.STOW;
+    nextSystemState = SuperstructureState.STOW;
+    requestedSystemState = SuperstructureState.STOW;
   }
 
-
-
-  /**
-   * Example command factory method.
-   *
-   * @return a command
-   */
-  public Command exampleMethodCommand() {
-    // Inline construction of command goes here.
-    // Subsystem::RunOnce implicitly requires `this` subsystem.
-    return runOnce(
-        () -> {
-          /* one-time action goes here */
-        });
+  public static Superstructure getInstance() {
+    if (superstructure == null) {
+      superstructure = new Superstructure();
+    }
+    return superstructure;
   }
 
-  /**
-   * An example method querying a boolean state of the subsystem (for example, a digital sensor).
-   *
-   * @return value of some boolean subsystem state, such as a digital sensor.
-   */
-  public boolean exampleCondition() {
-    // Query some boolean state, such as a digital sensor.
-    return false;
+  public void requestState(SuperstructureState request) {
+    requestedSystemState = request;
   }
 
   @Override
   public void periodic() {
-    // This method will be called once per scheduler run
+    switch (systemState) {
+      case STOW:
+
+        if (requestedSystemState == SuperstructureState.HP_INTAKE) {
+          nextSystemState = requestedSystemState;
+        } else if (requestedSystemState == SuperstructureState.CORAL_GROUND_INTAKE) {
+          nextSystemState = requestedSystemState;
+        } else if (requestedSystemState == SuperstructureState.ALGAE_GROUND_INTAKE) {
+          nextSystemState = requestedSystemState;
+        } else if (requestedSystemState == SuperstructureState.L1_PREP) {
+          nextSystemState = requestedSystemState;
+        } else if (requestedSystemState == SuperstructureState.L2_PREP) {
+          nextSystemState = requestedSystemState;
+        } else if (requestedSystemState == SuperstructureState.L3_PREP) {
+          nextSystemState = requestedSystemState;
+        } else if (requestedSystemState == SuperstructureState.L4_PREP) {
+          nextSystemState = requestedSystemState;
+        } else if (requestedSystemState == SuperstructureState.CLIMB_PREP) {
+          nextSystemState = requestedSystemState;
+        } else if (requestedSystemState == SuperstructureState.BARGE_PREP) {
+          nextSystemState = requestedSystemState;
+        } else if (requestedSystemState == SuperstructureState.PROCESSOR_PREP) {
+          nextSystemState = requestedSystemState;
+        } else if (requestedSystemState == SuperstructureState.REEF1_INTAKE) {
+          nextSystemState = requestedSystemState;
+        } else if (requestedSystemState == SuperstructureState.REEF2_INTAKE) {
+          nextSystemState = requestedSystemState;
+        } else if (requestedSystemState == SuperstructureState.EJECT_ALGAE) {
+          nextSystemState = requestedSystemState;
+        } else if (requestedSystemState == SuperstructureState.EJECT_CORAL) {
+          nextSystemState = requestedSystemState;
+        }
+
+        break;
+
+      case HP_INTAKE:
+        break;
+
+      case CORAL_GROUND_INTAKE:
+        break;
+
+      case ALGAE_GROUND_INTAKE:
+        break;
+
+      case L1_PREP:
+        break;
+
+      case L2_PREP:
+        break;
+
+      case L3_PREP:
+        break;
+
+      case L4_PREP:
+        break;
+
+      case L1_SCORE:
+        break;
+
+      case L2_SCORE:
+        break;
+
+      case L3_SCORE:
+        break;
+
+      case L4_SCORE:
+        break;
+
+      case CLIMB_PREP:
+        break;
+
+      case CLIMB:
+        break;
+
+      case BARGE_PREP:
+        break;
+
+      case BARGE_SCORE:
+        break;
+
+      case PROCESSOR_PREP:
+        break;
+
+      case PROCESSOR_SCORE:
+        break;
+
+      case REEF1_INTAKE:
+        break;
+
+      case REEF2_INTAKE:
+        break;
+
+      case EJECT_ALGAE:
+        break;
+
+      case EJECT_CORAL:
+        break;
+    }
   }
 
   @Override
