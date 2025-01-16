@@ -45,14 +45,21 @@ public class Elevator extends SubsystemBase {
         return elevator;
     }
 
-    public void setElevatorPercentOutput(double speed){
+    /**
+     * Sets elevatorMainMotor speed to a designated percent output
+     * 
+     * @param speed Percent of elevatorMainMotor's speed
+     */
+    public void setElevatorPercentOutput(double speed) {
         elevatorMainMotor.setMotor(speed);
     }
 
-    public void stopElevator(){
+    /**
+     * Stops elevatorMainMotor by setting the speed to 0
+     */
+    public void stopElevator() {
         elevatorMainMotor.setMotor(0);
     }
-
     @Override
     public void periodic() {
     }
