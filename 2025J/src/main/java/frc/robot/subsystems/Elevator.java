@@ -1,12 +1,11 @@
 package frc.robot.subsystems;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.utils.Kraken;
 import frc.robot.utils.RobotMap;
 
 public class Elevator extends SubsystemBase {
-    private Kraken elevatorMainMotor, elevatorFollowerMotor;
+    private final Kraken elevatorMainMotor, elevatorFollowerMotor;
 
     public Elevator() {
         elevatorMainMotor = new Kraken(RobotMap.ELEVATOR_MAIN_ID, RobotMap.CANIVORE_NAME);

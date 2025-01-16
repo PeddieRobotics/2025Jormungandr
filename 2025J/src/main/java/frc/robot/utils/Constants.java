@@ -84,4 +84,10 @@ public final class Constants {
     public static final double kBackRightCancoderOffset = 0.0;
 
   }
+
+  public static class IntakeConstants {
+    // TODO: Update real values
+    public static final double kHPIntakeMotorCurrentLimit = 0.0;
+    public static final double kHPIntakeSpeed = 0.0;
+  }
 }
