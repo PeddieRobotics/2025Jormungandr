@@ -27,20 +27,34 @@ public class HPIntake extends SubsystemBase{
         return hpIntake;
     }
     
+    /**
+     * Sets rollerMotor speed to a designated percent output
+     * 
+     * @param speed Percent of rollerMotor's speed
+     */
     public void setIntake(double speed){
         rollerMotor.setMotor(speed);
     }
 
+    /**
+     * Stops rollerMotor by setting the speed to 0
+     */
     public void stopIntake(){
-        setIntake(0.0);
+        setIntake(0);
     }
 
+    /**
+     * Sets rollerMotor speed to the designated percent output listed in the IntakeConstants class
+     */
     public void runIntake(){
         setIntake(IntakeConstants.kHPIntakeSpeed);
     }
 
+    /**
+     * Sets rollerMotor speed to the opposite of the designated percent output listed in the IntakeConstants class
+     */
     public void reverseIntake(){
-        setIntake(-IntakeConstants.kHPIntakeSpeed);
+        setIntake(-1*IntakeConstants.kHPIntakeSpeed);
     }
     
 }
