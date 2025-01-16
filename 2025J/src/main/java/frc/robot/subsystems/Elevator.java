@@ -13,6 +13,9 @@ public class Elevator extends SubsystemBase {
 
         elevatorMainMotor.setInverted(false); // TODO: confirm direction
         elevatorFollowerMotor.setFollower(RobotMap.ELEVATOR_MAIN_ID, true);
+
+
+        HPIntake.getInstance().setIntake(0);
     }
 
     @Override
