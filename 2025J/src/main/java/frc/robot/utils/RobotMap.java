@@ -20,5 +20,8 @@ public class RobotMap {
     public static final int BACK_LEFT_MODULE_CANCODER_ID = 0;
     public static final int BACK_RIGHT_MODULE_CANCODER_ID = 0;
 
+    public static final int ELEVATOR_MAIN_ID = 0;
+    public static final int ELEVATOR_SECONDARY_ID = 0;
+
  
 }
