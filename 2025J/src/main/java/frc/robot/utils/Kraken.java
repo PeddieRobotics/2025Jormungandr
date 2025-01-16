@@ -16,6 +16,7 @@ import com.ctre.phoenix6.signals.FeedbackSensorSourceValue;
 import com.ctre.phoenix6.signals.GravityTypeValue;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
+import com.ctre.phoenix6.signals.StaticFeedforwardSignValue;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -257,6 +258,20 @@ public class Kraken {
         config.Slot0.kI = kI;
         config.Slot0.kD = kD;
         config.Slot0.kG = kG;
+        talon.getConfigurator().apply(config);
+    }
+
+    public void setVelocityPIDValues(double kS, double kV, double kA, double kP, double kI, double kD, double kF, StaticFeedforwardSignValue feedforwardSign) {
+        // TODO: update kraken methods to include kG, cosine mode
+        config.Slot0.StaticFeedforwardSign = feedforwardSign;
+
+        feedForward = kF;
+        config.Slot0.kS = kS;
+        config.Slot0.kV = kV;
+        config.Slot0.kA = kA;
+        config.Slot0.kP = kP;
+        config.Slot0.kI = kI;
+        config.Slot0.kD = kD;
         talon.getConfigurator().apply(config);
     }
 
