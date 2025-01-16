@@ -90,4 +90,9 @@ public final class Constants {
     public static final double kHPIntakeMotorCurrentLimit = 0.0;
     public static final double kHPIntakeSpeed = 0.0;
   }
+
+  public static class ElevatorConstants {
+    // TODO: Update real values
+    public static final double kElevatorMotorCurrentLimit = 0.0;
+  }
 }

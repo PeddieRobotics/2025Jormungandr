@@ -3,6 +3,7 @@ package frc.robot.subsystems;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.utils.Kraken;
 import frc.robot.utils.RobotMap;
+import frc.robot.utils.Constants.ElevatorConstants;
 
 public class Elevator extends SubsystemBase {
     private final Kraken elevatorMainMotor, elevatorFollowerMotor;
@@ -14,8 +15,12 @@ public class Elevator extends SubsystemBase {
         elevatorMainMotor.setInverted(false); // TODO: confirm direction
         elevatorFollowerMotor.setFollower(RobotMap.ELEVATOR_MAIN_ID, true);
 
+        elevatorMainMotor.setSupplyCurrentLimit(ElevatorConstants.kElevatorMotorCurrentLimit);
+        elevatorFollowerMotor.setSupplyCurrentLimit(ElevatorConstants.kElevatorMotorCurrentLimit);
 
-        HPIntake.getInstance().setIntake(0);
+        elevatorMainMotor.setBrake();
+        elevatorFollowerMotor.setBrake();
+
     }
 
     @Override
