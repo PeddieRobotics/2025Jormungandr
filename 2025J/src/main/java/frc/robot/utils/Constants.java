@@ -94,5 +94,17 @@ public final class Constants {
   public static class ElevatorConstants {
     // TODO: Update real values
     public static final double kElevatorMotorCurrentLimit = 0.0;
+
+    public static final double kElevatorForwardSoftLimit = 0.0;
+    public static final double kElevatorReverseSoftLimit = 0.0;
+
+
+    public static final double kS = 0.0; 
+    public static final double kV = 0.0; 
+    public static final double kA = 0.0; 
+    public static final double kP = 0.0; 
+    public static final double kI = 0.0; 
+    public static final double kD = 0.0; 
+    public static final double kFF = 0.0; 
   }
 }
