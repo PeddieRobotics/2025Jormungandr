@@ -29,8 +29,8 @@ public final class Constants {
     public static final double kDriveMotorCurrentLimit = 40;
     public static final double kSteerMotorCurrentLimit = 40;
     public static final double kWheelDiameterInches = 4.0;
-
-    public static final double kDriveMotorReduction = 6.12;
+    // TODO: update values for drive!!!
+    public static final double kDriveMotorReduction = 0.0;
     public static final double kDriveEncoderPositionFactor = (Math.PI * Units.inchesToMeters(kWheelDiameterInches))
         / kDriveMotorReduction;
     public static final double kDriveEncoderVelocityFactor = (Math.PI * Units.inchesToMeters(kWheelDiameterInches))
