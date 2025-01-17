@@ -24,7 +24,6 @@ public class Autonomous extends SubsystemBase {
         configureAutoBuilder();
         autoChooser = AutoBuilder.buildAutoChooser();
 
-        // TODO: Setup config
         try {
             config = RobotConfig.fromGUISettings();
         } catch (Exception e) {
