@@ -38,7 +38,7 @@ public class Elevator extends SubsystemBase {
 
     }
 
-    public Elevator getInstance(){
+    public static Elevator getInstance(){
         if(elevator == null){
             elevator = new Elevator();
         }

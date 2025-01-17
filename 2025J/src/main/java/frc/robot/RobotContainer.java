@@ -5,9 +5,15 @@
 package frc.robot;
 
 import frc.robot.commands.SwerveDriveCommand;
+import frc.robot.subsystems.Autonomous;
 import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.Elevator;
+import frc.robot.subsystems.HPIntake;
+
+import org.w3c.dom.css.ElementCSSInlineStyle;
+
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -16,16 +22,22 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
  * subsystems, commands, and trigger mappings) should be declared here.
  */
 public class RobotContainer {
+  private Autonomous autonomous;
   private Drivetrain drivetrain;
+  private Elevator elevator;
+  private HPIntake hpIntake;
 
   public RobotContainer() {
+    autonomous = Autonomous.getInstance();
     drivetrain = Drivetrain.getInstance();
+    elevator = Elevator.getInstance();
+    hpIntake = HPIntake.getInstance();
 
+    SmartDashboard.putData("Auto Routines", autonomous.getAutoChooser());
     drivetrain.setDefaultCommand(new SwerveDriveCommand());
   }
 
   public Command getAutonomousCommand() {
-    // TODO: Implement autonomous routines
-    return new InstantCommand();
+    return Autonomous.getAutonomousCommand();
   }
 }
