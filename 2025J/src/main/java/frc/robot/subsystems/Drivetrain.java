@@ -6,6 +6,8 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix6.hardware.Pigeon2;
 
+import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
@@ -23,6 +25,7 @@ public class Drivetrain extends SubsystemBase {
 
   private SwerveModuleState[] swerveModuleStates;
   private SwerveModulePosition[] swerveModulePositions;
+  private SwerveDrivePoseEstimator odometry;
 
   private final Pigeon2 gyro;
   private double heading;
@@ -35,11 +38,39 @@ public class Drivetrain extends SubsystemBase {
 
     swerveModules = new SwerveModule[] { frontLeftModule, frontRightModule, backLeftModule, backRightModule };
     swerveModulePositions = new SwerveModulePosition[] { frontLeftModule.getPosition(), frontRightModule.getPosition(), backLeftModule.getPosition(), backRightModule.getPosition() };
-    
     swerveModuleStates = DriveConstants.kinematics.toSwerveModuleStates(new ChassisSpeeds(0, 0, 0));
 
     gyro = new Pigeon2(RobotMap.GYRO_ID, RobotMap.CANIVORE_NAME);
     gyro.setYaw(0);
+
+    odometry = new SwerveDrivePoseEstimator(DriveConstants.kinematics, getHeadingAsRotation2d(), swerveModulePositions, new Pose2d());
+  }
+
+  public void drive(Translation2d translation, double rotation, boolean fieldOriented, Translation2d centerOfRotation) {
+    ChassisSpeeds fieldRelativeSpeeds = new ChassisSpeeds(translation.getX(), translation.getY(), rotation);
+
+    ChassisSpeeds robotRelativeSpeeds;
+    if (fieldOriented) {
+      robotRelativeSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(fieldRelativeSpeeds, getHeadingAsRotation2d());
+    } else {
+      robotRelativeSpeeds = fieldRelativeSpeeds;
+    }
+
+    swerveModuleStates = DriveConstants.kinematics.toSwerveModuleStates(robotRelativeSpeeds);
+    // TODO: desaturate later!
+    optimizeModuleStates();
+    setSwerveModuleStates(swerveModuleStates);
+  }
+
+  public void driveRobotRelative(ChassisSpeeds robotRelativeSpeeds){
+    swerveModuleStates = DriveConstants.kinematics.toSwerveModuleStates(robotRelativeSpeeds);
+    setSwerveModuleStates(swerveModuleStates);
+  }
+
+  public void optimizeModuleStates() {
+    for (int i = 0; i < swerveModuleStates.length; i++) {
+      swerveModuleStates[i].optimize(new Rotation2d(swerveModules[i].getCANCoderReading()));
+    }
   }
 
   public static Drivetrain getInstance() {
@@ -53,6 +84,10 @@ public class Drivetrain extends SubsystemBase {
     for (int i = 0; i < swerveModulePositions.length; i++) {
       swerveModulePositions[i] = swerveModules[i].getPosition();
     }
+  }
+
+  public void updateOdometry(){
+    odometry.update(getHeadingAsRotation2d(), swerveModulePositions);
   }
 
   public void setSwerveModuleStates(SwerveModuleState[] desiredModuleStates) {
@@ -74,32 +109,31 @@ public class Drivetrain extends SubsystemBase {
     return gyro.getRotation2d();
   }
 
-  public void drive(Translation2d translation, double rotation, boolean fieldOriented, Translation2d centerOfRotation) {
-    ChassisSpeeds fieldRelativeSpeeds = new ChassisSpeeds(translation.getX(), translation.getY(), rotation);
-
-    ChassisSpeeds robotRelativeSpeeds;
-    if (fieldOriented) {
-      robotRelativeSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(fieldRelativeSpeeds, getHeadingAsRotation2d());
-    } else {
-      robotRelativeSpeeds = fieldRelativeSpeeds;
-    }
-
-    swerveModuleStates = DriveConstants.kinematics.toSwerveModuleStates(robotRelativeSpeeds);
-    // TODO: desaturate later!
-    optimizeModuleStates();
-    setSwerveModuleStates(swerveModuleStates);
+  public Pose2d getPose(){
+    return odometry.getEstimatedPosition();
   }
 
-  public void optimizeModuleStates() {
-    for (int i = 0; i < swerveModuleStates.length; i++) {
-      swerveModuleStates[i].optimize(new Rotation2d(swerveModules[i].getCANCoderReading()));
-    }
+  public void resetPose(Pose2d pose){
+    gyro.reset();
+    odometry.resetPosition(getHeadingAsRotation2d(), swerveModulePositions, pose);
   }
+
+  public ChassisSpeeds getRobotRelativeSpeeds(){
+    return DriveConstants.kinematics.toChassisSpeeds(
+                                                      frontLeftModule.getState(), 
+                                                      frontRightModule.getState(), 
+                                                      backLeftModule.getState(), 
+                                                      backRightModule.getState()
+                                                    );
+  }
+
+
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
     updateModulePositions();
+    updateOdometry();
   }
 
   @Override
