@@ -122,4 +122,44 @@ public final class Constants {
     public static final double kD = 0.0; 
     public static final double kFF = 0.0; 
   }
+
+  public static final class ArmConstants {
+    // TODO: Update real values
+    public static final double kArmCurrentLimit = 40;
+    public static final double kArmForwardTorqueCurrentLimit = 40;
+    public static final double kArmReverseTorqueCurrentLimit = -40;
+
+    public static final double kArmMagnetOffset = 0.0;
+
+    public static final double kArmReduction = 0.0;
+    public static final double kArmRotorToSensorRatio = 0.0;
+    public static final double kArmSensortoMechanismRatio = 0.0;
+
+    public static final double kS = 0.0;
+    public static final double kV = 0.0;
+    public static final double kA = 0.0;
+    public static final double kP = 0.0;
+    public static final double kI = 0.0;
+    public static final double kD = 0.0;
+    public static final double kFF = 0.0;
+    public static final double kIZone = 0.0;
+    public static final double kG = 0.0;
+
+    public static final double kArmForwardSoftLimit = 0.0;
+    public static final double kArmReverseSoftLimit = 0.0;
+
+    // Motion Magic Parameters
+    public static final double kArmMaxCruiseVelocity = 0.0;
+    public static final double kArmMaxCruiseAcceleration = 0.0;
+    public static final double kArmMaxCruiseJerk = 0.0;
+
+  }
+
+  public static final class ClawConstants {
+    // TODO: update real values
+    public static final double kClawCurrentLimit = 30.0;
+
+    public static final double kClawIntakeSpeed = 0.0;
+    public static final double kClawOuttakeSpeed = 0.0;
+  }
 }

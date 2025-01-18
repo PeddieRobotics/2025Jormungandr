@@ -34,6 +34,13 @@ public class Autonomous extends SubsystemBase {
         }
     }
 
+    public static Autonomous getInstance() {
+        if (autonomous == null) {
+            autonomous = new Autonomous();
+        }
+        return autonomous;
+    }
+
     public void configureAutoBuilder() {
         AutoBuilder.configure(
                 drivetrain::getPose, // Robot pose supplier
@@ -60,13 +67,6 @@ public class Autonomous extends SubsystemBase {
                 },
                 drivetrain // Reference to this subsystem to set requirements
         );
-    }
-
-    public static Autonomous getInstance() {
-        if (autonomous == null) {
-            autonomous = new Autonomous();
-        }
-        return autonomous;
     }
 
     public static Command getAutonomousCommand() {
