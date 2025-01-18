@@ -87,7 +87,6 @@ public class Autonomous extends SubsystemBase {
 
     @Override
     public void periodic(){
-        SmartDashboard.putBoolean("VALID VONFIG", config.hasValidConfig());
     }
 
 }
