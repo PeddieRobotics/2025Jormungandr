@@ -1,0 +1,55 @@
+{
+  "version": "2025.0",
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Red Wall to E"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "E to HP"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "HP to C"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "C to HP"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "HP to C"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "C to HP"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "HP to C"
+          }
+        }
+      ]
+    }
+  },
+  "resetOdom": true,
+  "folder": null,
+  "choreoAuto": false
+}
