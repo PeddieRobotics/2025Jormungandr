@@ -1,5 +1,7 @@
 package frc.robot.subsystems;
 
+import java.nio.file.FileSystem;
+
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.config.PIDConstants;
@@ -8,6 +10,7 @@ import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.commands.AutoCommands.*;
@@ -23,15 +26,16 @@ public class Autonomous extends SubsystemBase {
     public Autonomous() {
         drivetrain = Drivetrain.getInstance();
 
-        configureAutoBuilder();
-        autoChooser = AutoBuilder.buildAutoChooser();
-
         try {
             config = RobotConfig.fromGUISettings();
         } catch (Exception e) {
             // Handle exception as needed
             e.printStackTrace();
         }
+
+        registerNamedCommands();
+        configureAutoBuilder();
+        autoChooser = AutoBuilder.buildAutoChooser();
     }
 
     public static Autonomous getInstance() {
@@ -79,6 +83,10 @@ public class Autonomous extends SubsystemBase {
 
     public void registerNamedCommands(){
         NamedCommands.registerCommand("ALIGN_TO_REEF", new AlignToReefInAuto());
+    }
+
+    @Override
+    public void periodic(){
     }
 
 }
