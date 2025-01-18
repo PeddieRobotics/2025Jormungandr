@@ -3,29 +3,29 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 3.418529422377388,
-        "y": 5.315220042254363
+        "x": 7.75,
+        "y": 4.75
       },
       "prevControl": null,
       "nextControl": {
-        "x": 4.418529422377386,
-        "y": 5.315220042254363
+        "x": 6.395553341104897,
+        "y": 4.934909030488427
       },
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "BlueTape"
     },
     {
       "anchor": {
-        "x": 4.0,
-        "y": 6.0
+        "x": 5.0115,
+        "y": 5.3315
       },
       "prevControl": {
-        "x": 3.0,
-        "y": 6.0
+        "x": 5.554700314805615,
+        "y": 5.216944865487933
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "JReef"
     }
   ],
   "rotationTargets": [],
@@ -42,13 +42,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 0.0
+    "rotation": 60.39554925399499
   },
   "reversed": false,
-  "folder": null,
+  "folder": "Starts",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": -54.403798340719305
+    "rotation": 90.0
   },
   "useDefaultConstraints": true
 }

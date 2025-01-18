@@ -7,49 +7,49 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Middle to G"
+            "pathName": "Red Tape to E"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "G to HP"
+            "pathName": "E to HP"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "HP to K"
+            "pathName": "HP to C"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "K to HP"
+            "pathName": "C to HP"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "HP to L"
+            "pathName": "HP to C"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "L to HP"
+            "pathName": "C to HP"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "HP to L"
+            "pathName": "HP to C"
           }
         }
       ]
     }
   },
   "resetOdom": true,
-  "folder": "Mid Start",
+  "folder": null,
   "choreoAuto": false
 }

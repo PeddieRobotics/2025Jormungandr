@@ -3,16 +3,16 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 7.136999999999245,
-        "y": 2.465000000000002
+        "x": 7.75,
+        "y": 3.3
       },
       "prevControl": null,
       "nextControl": {
-        "x": 5.570949710639612,
-        "y": 2.5768312753017253
+        "x": 6.570469572685663,
+        "y": 3.081690577685957
       },
       "isLocked": false,
-      "linkedName": "BottomStart"
+      "linkedName": "RedTape"
     },
     {
       "anchor": {
@@ -20,8 +20,8 @@
         "y": 2.6779605263157897
       },
       "prevControl": {
-        "x": 5.525100269743486,
-        "y": 2.6539952360449703
+        "x": 6.059179819405884,
+        "y": 2.950102471195283
       },
       "nextControl": null,
       "isLocked": false,
@@ -45,10 +45,10 @@
     "rotation": -59.42077312751098
   },
   "reversed": false,
-  "folder": null,
+  "folder": "Starts",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": -90.81845546168873
+    "rotation": -90.15383516463184
   },
   "useDefaultConstraints": true
 }
