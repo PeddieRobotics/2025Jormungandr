@@ -118,4 +118,18 @@ public final class Constants {
     public static final double kD = 0.0; 
     public static final double kFF = 0.0; 
   }
+
+
+  public static class ScoreConstants {
+    //TODO: NOT DEFINED YET!!!!
+    public static final double L1ScoreTimeout = 10.0; 
+    public static final double L2ScoreTimeout = 10.0; //NOT DEFINED YET!!!!
+    public static final double L3ScoreTimeout = 10.0; //NOT DEFINED YET!!!!
+    public static final double L4ScoreTimeout = 10.0; //NOT DEFINED YET!!!!
+    public static final double ProcessorTimeout = 10.0; //NOT DEFINED YET!!!!
+    public static final double BargeTimeout = 10.0; //NOT DEFINED YET!!!!
+
+
+
+  }
 }

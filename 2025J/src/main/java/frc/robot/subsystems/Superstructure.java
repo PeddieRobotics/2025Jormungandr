@@ -4,8 +4,10 @@
 
 package frc.robot.subsystems;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.utils.Constants.ScoreConstants;
 
 public class Superstructure extends SubsystemBase {
   private static Superstructure superstructure;
@@ -15,6 +17,8 @@ public class Superstructure extends SubsystemBase {
   private SuperstructureState requestedSystemState;
 
   private boolean algaeIndex, coralIndex; // get from intakes :) - not yet set up... :/
+
+  private Timer timer;
 
   public enum SuperstructureState {
     STOW,
@@ -45,6 +49,9 @@ public class Superstructure extends SubsystemBase {
     systemState = SuperstructureState.STOW;
     nextSystemState = SuperstructureState.STOW;
     requestedSystemState = SuperstructureState.STOW;
+
+    timer = new Timer();
+    timer.start();
   }
 
   public static Superstructure getInstance() {
@@ -61,9 +68,10 @@ public class Superstructure extends SubsystemBase {
   @Override
   public void periodic() {
     switch (systemState) {
-      case STOW:
-
-        if (requestedSystemState == SuperstructureState.HP_INTAKE) {
+      case STOW: 
+        //stop intake
+        //bring elevator down
+        if (requestedSystemState == SuperstructureState.HP_INTAKE) { 
           nextSystemState = requestedSystemState;
         } else if (requestedSystemState == SuperstructureState.CORAL_GROUND_INTAKE) {
           nextSystemState = requestedSystemState;
@@ -92,6 +100,9 @@ public class Superstructure extends SubsystemBase {
         break;
 
       case HP_INTAKE:
+        //set angle
+        //set elevator
+        //run intake motor
         if (requestedSystemState == SuperstructureState.ALGAE_GROUND_INTAKE) {
           nextSystemState = requestedSystemState;
         } else if (requestedSystemState == SuperstructureState.L1_PREP) {
@@ -121,12 +132,21 @@ public class Superstructure extends SubsystemBase {
         break;
 
       case CORAL_GROUND_INTAKE:
+        //run intake
+        if (coralIndex) {
+          //stop intaking
+        }
         break;
 
       case ALGAE_GROUND_INTAKE:
+        //run intake
+        if (algaeIndex) {
+          //stop intaking
+        }
         break;
 
       case L1_PREP:
+        //set prep angle 
         if (requestedSystemState == SuperstructureState.HP_INTAKE) {
           nextSystemState = requestedSystemState;
         } else if (requestedSystemState == SuperstructureState.CORAL_GROUND_INTAKE) {
@@ -152,6 +172,7 @@ public class Superstructure extends SubsystemBase {
         break;
 
       case L2_PREP:
+        //set prep angle 
         if (requestedSystemState == SuperstructureState.HP_INTAKE) {
           nextSystemState = requestedSystemState;
         } else if (requestedSystemState == SuperstructureState.CORAL_GROUND_INTAKE) {
@@ -176,6 +197,7 @@ public class Superstructure extends SubsystemBase {
         break;
 
       case L3_PREP:  
+        //set  prep angle 
           if (requestedSystemState == SuperstructureState.HP_INTAKE) {
             nextSystemState = requestedSystemState;
           } else if (requestedSystemState == SuperstructureState.CORAL_GROUND_INTAKE) {
@@ -202,6 +224,7 @@ public class Superstructure extends SubsystemBase {
         break;
 
       case L4_PREP:
+        //set prep angle 
         if (requestedSystemState == SuperstructureState.HP_INTAKE) {
           nextSystemState = requestedSystemState;
         } else if (requestedSystemState == SuperstructureState.CORAL_GROUND_INTAKE) {
@@ -228,10 +251,18 @@ public class Superstructure extends SubsystemBase {
         break;
 
       case L1_SCORE: 
-        requestState(SuperstructureState.STOW);
+
+        if (!timer.hasElapsed(ScoreConstants.L1ScoreTimeout)) {
+          //KEEP RUNNING
+          timer.start();
+
+        } else if (timer.hasElapsed(ScoreConstants.L1ScoreTimeout) && coralIndex){
+          requestState(SuperstructureState.STOW);
+        }
+
         if (requestedSystemState == SuperstructureState.STOW) {
           nextSystemState = requestedSystemState;
-        
+
         } else if (requestedSystemState == SuperstructureState.HP_INTAKE) {
           nextSystemState = requestedSystemState;
         } else if (requestedSystemState == SuperstructureState.CORAL_GROUND_INTAKE) {
@@ -250,7 +281,15 @@ public class Superstructure extends SubsystemBase {
         break;
 
       case L2_SCORE:
-        requestState(SuperstructureState.STOW);
+
+        if (!timer.hasElapsed(ScoreConstants.L2ScoreTimeout)) {
+          //KEEP RUNNING
+          timer.start();
+
+        } else if (timer.hasElapsed(ScoreConstants.L2ScoreTimeout) && coralIndex){
+          requestState(SuperstructureState.STOW);
+        }
+
         if (requestedSystemState == SuperstructureState.STOW) {
           nextSystemState = requestedSystemState;
         
@@ -272,7 +311,14 @@ public class Superstructure extends SubsystemBase {
         break;
 
       case L3_SCORE:
-        requestState(SuperstructureState.STOW);
+        if (!timer.hasElapsed(ScoreConstants.L3ScoreTimeout)) {
+          //KEEP RUNNING
+          timer.start();
+
+        } else if (timer.hasElapsed(ScoreConstants.L3ScoreTimeout) && coralIndex){
+          requestState(SuperstructureState.STOW);
+        }
+
         if (requestedSystemState == SuperstructureState.STOW) {
           nextSystemState = requestedSystemState;
         
@@ -294,7 +340,15 @@ public class Superstructure extends SubsystemBase {
         break;
 
       case L4_SCORE:
-        requestState(SuperstructureState.STOW);
+
+        if (!timer.hasElapsed(ScoreConstants.L4ScoreTimeout)) {
+          //KEEP RUNNING
+          timer.start();
+
+        } else if (timer.hasElapsed(ScoreConstants.L4ScoreTimeout) && coralIndex){
+          requestState(SuperstructureState.STOW);
+        }
+
         if (requestedSystemState == SuperstructureState.STOW) {
           nextSystemState = requestedSystemState;
         
@@ -411,7 +465,15 @@ public class Superstructure extends SubsystemBase {
         break;
 
       case BARGE_SCORE:
-        requestState(SuperstructureState.STOW);
+
+        if (!timer.hasElapsed(ScoreConstants.BargeTimeout)) {
+          //KEEP RUNNING
+          timer.start();
+
+        } else if (timer.hasElapsed(ScoreConstants.BargeTimeout) && algaeIndex){
+          requestState(SuperstructureState.STOW);
+        } 
+
         if (requestedSystemState == SuperstructureState.STOW) {
           nextSystemState = requestedSystemState;
         
@@ -463,25 +525,25 @@ public class Superstructure extends SubsystemBase {
         break;
 
       case PROCESSOR_SCORE:
-      requestState(SuperstructureState.STOW);
-      if (requestedSystemState == SuperstructureState.STOW) {
-        nextSystemState = requestedSystemState;
+        requestState(SuperstructureState.STOW);
+        if (requestedSystemState == SuperstructureState.STOW) {
+          nextSystemState = requestedSystemState;
       
-      } else if (requestedSystemState == SuperstructureState.HP_INTAKE) {
-        nextSystemState = requestedSystemState;
-      } else if (requestedSystemState == SuperstructureState.CORAL_GROUND_INTAKE) {
-        nextSystemState = requestedSystemState;
-      } else if (requestedSystemState == SuperstructureState.ALGAE_GROUND_INTAKE) {
-        nextSystemState = requestedSystemState;
-      } else if (requestedSystemState == SuperstructureState.REEF1_INTAKE) {
-        nextSystemState = requestedSystemState;
-      } else if (requestedSystemState == SuperstructureState.REEF2_INTAKE) {
-        nextSystemState = requestedSystemState;
-      } else if (requestedSystemState == SuperstructureState.EJECT_ALGAE) {
-        nextSystemState = requestedSystemState;
-      } else if (requestedSystemState == SuperstructureState.EJECT_CORAL) {
-        nextSystemState = requestedSystemState;
-      }
+        } else if (requestedSystemState == SuperstructureState.HP_INTAKE) {
+          nextSystemState = requestedSystemState;
+        } else if (requestedSystemState == SuperstructureState.CORAL_GROUND_INTAKE) {
+          nextSystemState = requestedSystemState;
+        } else if (requestedSystemState == SuperstructureState.ALGAE_GROUND_INTAKE) {
+          nextSystemState = requestedSystemState;
+        } else if (requestedSystemState == SuperstructureState.REEF1_INTAKE) {
+          nextSystemState = requestedSystemState;
+        } else if (requestedSystemState == SuperstructureState.REEF2_INTAKE) {
+          nextSystemState = requestedSystemState;
+        } else if (requestedSystemState == SuperstructureState.EJECT_ALGAE) {
+          nextSystemState = requestedSystemState;
+        } else if (requestedSystemState == SuperstructureState.EJECT_CORAL) {
+          nextSystemState = requestedSystemState;
+        }
 
         break;
 
@@ -580,6 +642,35 @@ public class Superstructure extends SubsystemBase {
         } else if (requestedSystemState == SuperstructureState.EJECT_ALGAE) {
           nextSystemState = requestedSystemState;
         }
+        break;
+    }
+    systemState = nextSystemState;
+  }
+
+  public void sendToScore(){
+    switch (systemState) {
+      case L1_PREP:
+        requestState(SuperstructureState.L1_SCORE);
+        break;
+  
+      case L2_PREP:
+        requestState(SuperstructureState.L2_SCORE);
+        break;
+
+      case L3_PREP:
+        requestState(SuperstructureState.L3_SCORE);
+        break;
+    
+      case L4_PREP:
+        requestState(SuperstructureState.L4_SCORE);   
+        break;
+
+      case PROCESSOR_PREP:
+        requestState(SuperstructureState.PROCESSOR_SCORE);    
+        break;
+
+      case BARGE_PREP:
+        requestState(SuperstructureState.BARGE_SCORE);  
         break;
     }
   }
