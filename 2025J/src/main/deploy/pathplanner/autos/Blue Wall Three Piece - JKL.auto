@@ -7,13 +7,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Middle to G"
+            "pathName": "Blue Wall to J"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "G to HP"
+            "pathName": "J to HP"
           }
         },
         {
@@ -33,23 +33,11 @@
           "data": {
             "pathName": "HP to L"
           }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "L to HP"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "HP to L"
-          }
         }
       ]
     }
   },
   "resetOdom": true,
-  "folder": "Mid Start",
+  "folder": null,
   "choreoAuto": false
 }

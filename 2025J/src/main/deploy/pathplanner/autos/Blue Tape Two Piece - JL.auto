@@ -7,25 +7,25 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Bottom Mid Cage to E"
+            "pathName": "Blue Tape to J"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "E to HP"
+            "pathName": "J to HP"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "HP to C"
+            "pathName": "HP to L"
           }
         }
       ]
     }
   },
   "resetOdom": true,
-  "folder": "Cage Starts",
+  "folder": null,
   "choreoAuto": false
 }

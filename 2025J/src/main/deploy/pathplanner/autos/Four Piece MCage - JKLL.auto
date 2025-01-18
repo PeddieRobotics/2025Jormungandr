@@ -7,13 +7,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Middle to G"
+            "pathName": "Top Mid Cage to J"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "G to HP"
+            "pathName": "J to HP"
           }
         },
         {
@@ -50,6 +50,6 @@
     }
   },
   "resetOdom": true,
-  "folder": "Mid Start",
+  "folder": "Cage Starts",
   "choreoAuto": false
 }

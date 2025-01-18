@@ -7,7 +7,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Top to J"
+            "pathName": "Blue Wall to J"
           }
         },
         {
@@ -19,13 +19,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": "HP to K"
+            "pathName": "HP to L"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "K to HP"
+            "pathName": "L to HP"
           }
         },
         {

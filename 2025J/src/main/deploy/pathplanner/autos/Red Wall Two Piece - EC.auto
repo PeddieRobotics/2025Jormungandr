@@ -7,7 +7,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Bottom Mid Cage to E"
+            "pathName": "Red Wall to E"
           }
         },
         {
@@ -26,6 +26,6 @@
     }
   },
   "resetOdom": true,
-  "folder": "Cage Starts",
+  "folder": null,
   "choreoAuto": false
 }
