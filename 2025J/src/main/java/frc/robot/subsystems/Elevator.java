@@ -1,5 +1,6 @@
 package frc.robot.subsystems;
 
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.utils.Constants.ElevatorConstants;
 import frc.robot.utils.Kraken;
@@ -7,7 +8,8 @@ import frc.robot.utils.RobotMap;
 
 public class Elevator extends SubsystemBase {
     private static Elevator elevator;
-    private final Kraken elevatorMainMotor, elevatorFollowerMotor;
+    private Kraken elevatorMainMotor, elevatorFollowerMotor;
+    private DigitalInput bottomLimitSwitch;
 
     public Elevator() {
         elevatorMainMotor = new Kraken(RobotMap.ELEVATOR_MAIN_ID, RobotMap.CANIVORE_NAME);
@@ -31,11 +33,13 @@ public class Elevator extends SubsystemBase {
                 ElevatorConstants.kP, ElevatorConstants.kI, ElevatorConstants.kD,
                 ElevatorConstants.kFF);
 
+        elevatorMainMotor.setMotionMagicParameters(ElevatorConstants.kElevatorMaxCruiseVelocity, ElevatorConstants.kElevatorMaxCruiseAcceleration, ElevatorConstants.kElevatorMaxCruiseJerk);
+        elevatorFollowerMotor.setMotionMagicParameters(ElevatorConstants.kElevatorMaxCruiseVelocity, ElevatorConstants.kElevatorMaxCruiseAcceleration, ElevatorConstants.kElevatorMaxCruiseJerk);
+
         elevatorMainMotor.setSoftLimits(true, ElevatorConstants.kElevatorForwardSoftLimit, ElevatorConstants.kElevatorReverseSoftLimit);
         elevatorFollowerMotor.setSoftLimits(true, ElevatorConstants.kElevatorForwardSoftLimit, ElevatorConstants.kElevatorReverseSoftLimit);
 
-        // TODO: setup cancoder
-
+        bottomLimitSwitch = new DigitalInput(RobotMap.ELEVATOR_LIMIT_SWITCH_ID);
     }
 
     public static Elevator getInstance(){
@@ -60,6 +64,19 @@ public class Elevator extends SubsystemBase {
     public void stopElevator() {
         elevatorMainMotor.setMotor(0);
     }
+
+    public void setElevatorPositionVoltage(double position){
+        elevatorMainMotor.setPosition(position);
+    }
+
+    public void setElevatorPositionMotionMagic(double position){
+        elevatorMainMotor.setPositionMotionMagic(position);
+    }
+
+    public boolean getBottomLimitSwitch(){
+        return bottomLimitSwitch.get();
+    }
+
     @Override
     public void periodic() {
     }
