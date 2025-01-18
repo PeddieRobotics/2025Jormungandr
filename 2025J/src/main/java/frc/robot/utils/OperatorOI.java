@@ -93,11 +93,11 @@ public class OperatorOI {
 
         // Set to CLIMB_PREP
         Trigger L1Bumper = new JoystickButton(controller, PS4Controller.Button.kL1.value);
-        L1Bumper.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.CLIMB_PREP)));
+        //L1Bumper.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.CLIMB_PREP)));
 
         //Set to CLIMB
         Trigger R1Bumper = new JoystickButton(controller, PS4Controller.Button.kR1.value);
-        R1Bumper.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.CLIMB)));
+        //R1Bumper.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.CLIMB)));
         
         Trigger L2Trigger = new JoystickButton(controller, PS4Controller.Button.kL2.value);
 

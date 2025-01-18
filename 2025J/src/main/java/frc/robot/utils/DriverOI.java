@@ -10,10 +10,6 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.subsystems.Superstructure;
 import frc.robot.subsystems.Superstructure.SuperstructureState;
 import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.wpilibj.PS4Controller;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.utils.Constants.DriveConstants;
 
@@ -90,7 +86,7 @@ public class DriverOI {
 
         // Set to CLIMB
         Trigger R3Trigger = new JoystickButton(controller, PS4Controller.Button.kR3.value);
-        R3Trigger.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.CLIMB)));
+        //R3Trigger.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.CLIMB)));
 
         Trigger PSButton = new JoystickButton(controller, PS4Controller.Button.kPS.value);
         PSButton.onTrue(new InstantCommand(() -> Drivetrain.getInstance().resetGyro()));
