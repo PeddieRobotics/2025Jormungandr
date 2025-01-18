@@ -7,7 +7,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Bottom to C"
+            "pathName": "Bottom Mid Cage to C"
           }
         },
         {
@@ -38,6 +38,6 @@
     }
   },
   "resetOdom": true,
-  "folder": null,
+  "folder": "Mid Start",
   "choreoAuto": false
 }

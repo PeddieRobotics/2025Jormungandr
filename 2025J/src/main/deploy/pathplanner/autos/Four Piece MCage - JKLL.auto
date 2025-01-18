@@ -7,7 +7,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Top to J"
+            "pathName": "Top Mid Cage to J"
           }
         },
         {
@@ -50,6 +50,6 @@
     }
   },
   "resetOdom": true,
-  "folder": null,
+  "folder": "Cage Starts",
   "choreoAuto": false
 }
