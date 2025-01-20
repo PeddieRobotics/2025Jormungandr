@@ -123,19 +123,26 @@ public class Kraken {
 
     /** 
      * Set motor forward torque current limit (maximum current draw from MOTOR in TorqueCurrentFOC control modes)
-     * @param currentLimit - motor stator current limit (amps)
+     * @param currentLimit - motor forward TorqueCurrent limit (amps)
      */ 
     public void setForwardTorqueCurrentLimit(double currentLimit) {
         config.TorqueCurrent.PeakForwardTorqueCurrent = currentLimit;
         talon.getConfigurator().apply(config);
     }
 
+    /** 
+     * Set motor reverse torque current limit (maximum current draw from MOTOR in TorqueCurrentFOC control modes)
+     * @param currentLimit - motor reverse TorqueCurrent limit (amps)
+     */
     public void setReverseTorqueCurrentLimit(double currentLimit) {
         config.TorqueCurrent.PeakReverseTorqueCurrent = currentLimit;
         talon.getConfigurator().apply(config);
     }
-
-    // invert motor
+ 
+    /** 
+     * Set whether the motor is inverted
+     * @param inverted - true (inverted), false (not inverted)
+     */
     public void setInverted(boolean inverted) {
         // if(inverted) config.MotorOutput.Inverted =
         // InvertedValue.CounterClockwise_Positive;
@@ -149,7 +156,11 @@ public class Kraken {
         talon.getConfigurator().apply(config);
     }
 
-    // set a ramp rate for closed loop PID control
+    /** 
+     * Set a ramp rate for closed loop motor control (time to go from 0 output to max output) 
+     * (applies to DutyCycle, TorqueCurrent, and Voltage control modes)
+     * @param rampRate - ramp rate (seconds)
+     */
     public void setClosedLoopRampRate(double rampRate) {
         config.ClosedLoopRamps.DutyCycleClosedLoopRampPeriod = rampRate;
         config.ClosedLoopRamps.TorqueClosedLoopRampPeriod = rampRate;
@@ -298,6 +309,7 @@ public class Kraken {
         config.Slot0.kD = kD;
         talon.getConfigurator().apply(config);
     }
+    
     //DO NOT AUTOFORMAT
     /**
      *                Motor and CANcoder to Mechanism overview
