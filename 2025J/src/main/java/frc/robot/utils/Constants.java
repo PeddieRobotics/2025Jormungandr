@@ -121,6 +121,12 @@ public final class Constants {
     public static final double kI = 0.0; 
     public static final double kD = 0.0; 
     public static final double kFF = 0.0; 
+
+    public static final double kElevatorHeightEpsilon = 0.0;
+    public static final double kElevatorL1Height = 0.0;
+    public static final double kElevatorL2Height = 0.0;
+    public static final double kElevatorL3Height = 0.0;
+    public static final double kElevatorL4Height = 0.0;
   }
 
 
@@ -165,6 +171,16 @@ public final class Constants {
     public static final double kArmMaxCruiseVelocity = 0.0;
     public static final double kArmMaxCruiseAcceleration = 0.0;
     public static final double kArmMaxCruiseJerk = 0.0;
+
+    public static final double kArmPositionEpsilon = 0.0; //TODO: define
+
+    public static final double kArmHPIntakeAngle = 0.0; //TODO: define
+    public static final double kArmL1ScoreAngle = 0.0;
+    public static final double kArmL2ScoreAngle = 0.0;
+    public static final double kArmL3ScoreAngle = 0.0;
+    public static final double kArmL4ScoreAngle = 0.0;
+
+    public static final double kArmL4PrepAngle = 0.0; //only l4
 
   }
 

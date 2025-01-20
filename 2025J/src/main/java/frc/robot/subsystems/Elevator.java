@@ -2,6 +2,7 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.utils.Constants.ArmConstants;
 import frc.robot.utils.Constants.ElevatorConstants;
 import frc.robot.utils.Kraken;
 import frc.robot.utils.RobotMap;
@@ -77,6 +78,14 @@ public class Elevator extends SubsystemBase {
         return bottomLimitSwitch.get();
     }
 
+    public double getElevatorHeight() {
+        //TODO: implement this code
+        return 0;
+    }
+
+    public boolean isAtHeight(double targetHeight) {
+        return Math.abs(getElevatorHeight() - targetHeight) < ElevatorConstants.kElevatorHeightEpsilon;
+    }
     @Override
     public void periodic() {
     }

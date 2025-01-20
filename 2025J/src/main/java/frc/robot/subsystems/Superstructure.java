@@ -7,10 +7,18 @@ package frc.robot.subsystems;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.utils.Constants.ArmConstants;
+import frc.robot.utils.Constants.ElevatorConstants;
 import frc.robot.utils.Constants.ScoreConstants;
 
 public class Superstructure extends SubsystemBase {
   private static Superstructure superstructure;
+
+  private final Arm arm;
+  private final Claw claw;
+  private final Drivetrain drivetrain;
+  private final Elevator elevator;
+  private final HPIntake hpIntake;
 
   private SuperstructureState systemState;
   private SuperstructureState nextSystemState;
@@ -50,8 +58,14 @@ public class Superstructure extends SubsystemBase {
     nextSystemState = SuperstructureState.STOW;
     requestedSystemState = SuperstructureState.STOW;
 
+    arm = Arm.getInstance();
+    claw = Claw.getInstance();
+    drivetrain = Drivetrain.getInstance();
+    elevator = Elevator.getInstance();
+    hpIntake = HPIntake.getInstance();
+
     timer = new Timer();
-    timer.start();
+    // timer.start();
   }
 
   public static Superstructure getInstance() {
@@ -147,7 +161,12 @@ public class Superstructure extends SubsystemBase {
 
       case L1_PREP:
         //set prep angle 
-        if (requestedSystemState == SuperstructureState.HP_INTAKE) {
+        if (requestedSystemState == SuperstructureState.STOW) {
+          nextSystemState = requestedSystemState;
+        } else if (requestedSystemState == SuperstructureState.L1_SCORE) { //may add another logic gate (?)
+          timer.reset();
+          nextSystemState = SuperstructureState.L1_SCORE; 
+        } else if (requestedSystemState == SuperstructureState.HP_INTAKE) {
           nextSystemState = requestedSystemState;
         } else if (requestedSystemState == SuperstructureState.CORAL_GROUND_INTAKE) {
           nextSystemState = requestedSystemState;
@@ -173,8 +192,17 @@ public class Superstructure extends SubsystemBase {
 
       case L2_PREP:
         //set prep angle 
-        if (requestedSystemState == SuperstructureState.HP_INTAKE) {
+        /*
+         * two different cases:
+         * - dunk case
+         *     move to angle close to scoring angle
+         * - shoot case
+         *     move to scoring angle
+         */
+        if (requestedSystemState == SuperstructureState.STOW) {
           nextSystemState = requestedSystemState;
+        } else if (requestedSystemState == SuperstructureState.L2_SCORE) { //may add another logic gate (?)
+          timer.reset();
         } else if (requestedSystemState == SuperstructureState.CORAL_GROUND_INTAKE) {
           nextSystemState = requestedSystemState;
         } else if (requestedSystemState == SuperstructureState.ALGAE_GROUND_INTAKE) {
@@ -193,13 +221,25 @@ public class Superstructure extends SubsystemBase {
           nextSystemState = requestedSystemState;
         } else if (requestedSystemState == SuperstructureState.L2_SCORE) {
           nextSystemState = requestedSystemState;
+        } else if (requestedSystemState == SuperstructureState.HP_INTAKE) {
+          nextSystemState = requestedSystemState;
         }
+
         break;
 
       case L3_PREP:  
         //set  prep angle 
+        /*
+         * two different cases:
+         * - dunk case
+         *     move to angle close to scoring angle
+         * - shoot case
+         *     move to scoring angle
+         */
           if (requestedSystemState == SuperstructureState.HP_INTAKE) {
             nextSystemState = requestedSystemState;
+          } else if (requestedSystemState == SuperstructureState.L3_SCORE) { //may add another logic gate (?)
+            timer.reset();
           } else if (requestedSystemState == SuperstructureState.CORAL_GROUND_INTAKE) {
             nextSystemState = requestedSystemState;
           } else if (requestedSystemState == SuperstructureState.ALGAE_GROUND_INTAKE) {
@@ -220,13 +260,24 @@ public class Superstructure extends SubsystemBase {
             nextSystemState = requestedSystemState;
           } else if (requestedSystemState == SuperstructureState.EJECT_CORAL) {
             nextSystemState = requestedSystemState;
+          } else if (requestedSystemState == SuperstructureState.STOW) {
+            nextSystemState = requestedSystemState;
           }
         break;
 
       case L4_PREP:
         //set prep angle 
+        /*
+         * move elevator to scoring height
+         * one case:
+         * - dunk/score case
+         *     move to angle close to scoring angle (vertical)
+         */
+
         if (requestedSystemState == SuperstructureState.HP_INTAKE) {
           nextSystemState = requestedSystemState;
+        } else if (requestedSystemState == SuperstructureState.L3_SCORE) { //may add another logic gate (?)
+            timer.reset();
         } else if (requestedSystemState == SuperstructureState.CORAL_GROUND_INTAKE) {
           nextSystemState = requestedSystemState;
         } else if (requestedSystemState == SuperstructureState.ALGAE_GROUND_INTAKE) {
@@ -247,6 +298,8 @@ public class Superstructure extends SubsystemBase {
           nextSystemState = requestedSystemState;
         } else if (requestedSystemState == SuperstructureState.EJECT_CORAL) {
           nextSystemState = requestedSystemState;
+        } else if (requestedSystemState == SuperstructureState.STOW) {
+          nextSystemState = requestedSystemState;
         }
         break;
 
@@ -256,13 +309,15 @@ public class Superstructure extends SubsystemBase {
           //KEEP RUNNING
           timer.start();
 
-        } else if (timer.hasElapsed(ScoreConstants.L1ScoreTimeout) && coralIndex){
+        } else if (timer.hasElapsed(ScoreConstants.L1ScoreTimeout) && !coralIndex){
+          timer.reset(); 
+
+          //stop everything
           requestState(SuperstructureState.STOW);
+          break;
         }
-
-        if (requestedSystemState == SuperstructureState.STOW) {
+        if (requestedSystemState == SuperstructureState.STOW) { 
           nextSystemState = requestedSystemState;
-
         } else if (requestedSystemState == SuperstructureState.HP_INTAKE) {
           nextSystemState = requestedSystemState;
         } else if (requestedSystemState == SuperstructureState.CORAL_GROUND_INTAKE) {
@@ -285,9 +340,20 @@ public class Superstructure extends SubsystemBase {
         if (!timer.hasElapsed(ScoreConstants.L2ScoreTimeout)) {
           //KEEP RUNNING
           timer.start();
+        /*
+         * two different cases:
+         * - dunk case
+         *     move to angle and drop
+         * - shoot case
+         *     eject piece
+         */
 
-        } else if (timer.hasElapsed(ScoreConstants.L2ScoreTimeout) && coralIndex){
+        } else if (timer.hasElapsed(ScoreConstants.L2ScoreTimeout) && !coralIndex){
+          timer.reset(); 
+
+          //stop everything
           requestState(SuperstructureState.STOW);
+          break;
         }
 
         if (requestedSystemState == SuperstructureState.STOW) {
@@ -314,9 +380,20 @@ public class Superstructure extends SubsystemBase {
         if (!timer.hasElapsed(ScoreConstants.L3ScoreTimeout)) {
           //KEEP RUNNING
           timer.start();
+        /*
+         * two different cases:
+         * - dunk case
+         *     move to angle and drop
+         * - shoot case
+         *     eject piece
+         */
 
-        } else if (timer.hasElapsed(ScoreConstants.L3ScoreTimeout) && coralIndex){
+        } else if (timer.hasElapsed(ScoreConstants.L3ScoreTimeout) && !coralIndex){
+          timer.reset(); 
+
+          //stop everything
           requestState(SuperstructureState.STOW);
+          break;
         }
 
         if (requestedSystemState == SuperstructureState.STOW) {
@@ -341,12 +418,24 @@ public class Superstructure extends SubsystemBase {
 
       case L4_SCORE:
 
+        /*
+         * two different cases:
+         * - dunk case
+         *     move to angle and drop
+         * - shoot case
+         *     move to angle and eject piece
+         */
+
         if (!timer.hasElapsed(ScoreConstants.L4ScoreTimeout)) {
           //KEEP RUNNING
           timer.start();
 
-        } else if (timer.hasElapsed(ScoreConstants.L4ScoreTimeout) && coralIndex){
+        } else if (timer.hasElapsed(ScoreConstants.L4ScoreTimeout) && !coralIndex){
+          timer.reset(); 
+
+          //stop everything
           requestState(SuperstructureState.STOW);
+          break;
         }
 
         if (requestedSystemState == SuperstructureState.STOW) {
@@ -374,6 +463,8 @@ public class Superstructure extends SubsystemBase {
         break;
 
       case L3L4_PRESTAGE:
+        elevator.setElevatorPositionMotionMagic(ElevatorConstants.kElevatorL3Height);
+
         if (requestedSystemState == SuperstructureState.HP_INTAKE) {
           nextSystemState = requestedSystemState;
         } else if (requestedSystemState == SuperstructureState.CORAL_GROUND_INTAKE) {
@@ -384,9 +475,9 @@ public class Superstructure extends SubsystemBase {
           nextSystemState = requestedSystemState;
         } else if (requestedSystemState == SuperstructureState.L2_PREP) {
           nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.L3_PREP) {
+        } else if (requestedSystemState == SuperstructureState.L3_PREP) { //check for any other logic
           nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.L4_PREP) {
+        } else if (requestedSystemState == SuperstructureState.L4_PREP) { //check for any other logic
           nextSystemState = requestedSystemState;
         } else if (requestedSystemState == SuperstructureState.BARGE_PRESTAGE) {
           nextSystemState = requestedSystemState;
@@ -470,8 +561,12 @@ public class Superstructure extends SubsystemBase {
           //KEEP RUNNING
           timer.start();
 
-        } else if (timer.hasElapsed(ScoreConstants.BargeTimeout) && algaeIndex){
+        } else if (timer.hasElapsed(ScoreConstants.BargeTimeout) && !algaeIndex){
+          timer.reset(); 
+
+          //stop everything
           requestState(SuperstructureState.STOW);
+          break;
         } 
 
         if (requestedSystemState == SuperstructureState.STOW) {

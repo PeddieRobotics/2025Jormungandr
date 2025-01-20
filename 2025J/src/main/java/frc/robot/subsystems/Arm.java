@@ -74,6 +74,15 @@ public class Arm extends SubsystemBase{
         armMotor.setMotionMagicTorqueCurrentFOC(position);
     }
 
+    public double getArmAngleDegrees() {
+        //TODO: implement this code
+        return 0;
+    }
+
+    public boolean isAtAngle(double targetAngle) {
+        return Math.abs(getArmAngleDegrees() - targetAngle) < ArmConstants.kArmPositionEpsilon;
+    }
+
     @Override
     public void periodic() {
     }

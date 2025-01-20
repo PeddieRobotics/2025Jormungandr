@@ -25,7 +25,7 @@ public class Claw extends SubsystemBase{
         return claw;
     }
 
-    public double getDistanceSensor(){
+    public double getDistanceSensor(){ //returns less than __ is coral, more than ___ is algae
         // TODO: implement sensor logic
         return 0.0;
     }
