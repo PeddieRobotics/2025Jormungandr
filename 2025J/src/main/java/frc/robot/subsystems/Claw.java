@@ -14,10 +14,13 @@ public class Claw extends SubsystemBase{
         clawMotor = new Kraken(RobotMap.CLAW_MOTOR_ID, RobotMap.CANIVORE_NAME);
 
         clawMotor.setInverted(false);
-        clawMotor.setSupplyCurrentLimit(ClawConstants.kClawCurrentLimit);
+        clawMotor.setStatorCurrentLimit(ClawConstants.kClawStatorCurrentLimit);
         clawMotor.setBrake();
     }
 
+    /**
+     * @return the existing claw instance or creates it if it doesn't exist
+     */
     public static Claw getInstance(){
         if (claw == null){
             claw = new Claw();
@@ -25,22 +28,59 @@ public class Claw extends SubsystemBase{
         return claw;
     }
 
+    /**
+     * Sets clawMotor speed to a designated percent output (open loop control)
+     * 
+     * @param speed - Percent of clawMotor's speed (-1.0 to 1.0)
+     */
+    public void setClaw(double speed){
+        clawMotor.setPercentOutput(speed);
+    }
+
+    /**
+     * Sets clawMotor speed to the designated percent output listed in the ClawConstants class
+     */
+    public void intakePiece(){
+        setClaw(ClawConstants.kClawIntakeSpeed);
+    }
+
+    /**
+     * Sets clawMotor speed to the designated percent output listed in the ClawConstants class
+     */
+    public void outtakePiece(){
+        setClaw(ClawConstants.kClawOuttakeSpeed);
+    }
+
+    //Accessor methods
+
+    /**
+     * @return claw distance sensor reading (distance sensor units)
+     */
     public double getDistanceSensor(){
         // TODO: implement sensor logic
         return 0.0;
     }
 
-    public void setClaw(double speed){
-        clawMotor.setMotor(speed);
+    /**
+     * @return claw motor stator current draw (amps)
+     */
+    public double getMotorStatorCurrent(){
+        return clawMotor.getStatorCurrent();
+    }
+    
+    /**
+     * @return claw motor supply current draw (amps)
+     */
+    public double getMotorSupplyCurrent(){
+        return clawMotor.getSupplyCurrent();
     }
 
-    public void intakePiece(){
-        setClaw(ClawConstants.kClawIntakeSpeed);
+    @Override
+    public void periodic() {
     }
 
-    public void outtakePiece(){
-        setClaw(ClawConstants.kClawOuttakeSpeed);
+    @Override
+    public void simulationPeriodic() {
     }
-
 
 }

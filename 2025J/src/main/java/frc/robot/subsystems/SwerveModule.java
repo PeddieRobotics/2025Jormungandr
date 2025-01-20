@@ -44,8 +44,12 @@ public class SwerveModule extends SubsystemBase {
     driveMotor.setInverted(true);
     steerMotor.setInverted(true);
 
-    driveMotor.setSupplyCurrentLimit(ModuleConstants.kDriveMotorCurrentLimit);
-    steerMotor.setSupplyCurrentLimit(ModuleConstants.kSteerMotorCurrentLimit);
+    driveMotor.setSupplyCurrentLimit(ModuleConstants.kDriveMotorSupplyCurrentLimit);
+    steerMotor.setSupplyCurrentLimit(ModuleConstants.kSteerMotorSupplyCurrentLimit);
+
+    //TODO: find these values
+    //driveMotor.setStatorCurrentLimit(ModuleConstants.kDriveMotorStatorCurrentLimit);
+    //steerMotor.setStatorCurrentLimit(ModuleConstants.kSteerMotorStatorCurrentLimit);
 
     driveMotor.setBrake();
     steerMotor.setBrake();
@@ -87,7 +91,7 @@ public class SwerveModule extends SubsystemBase {
   }
 
   public SwerveModuleState getState(){
-    return new SwerveModuleState(driveMotor.getMPS(), new Rotation2d(getCANCoderReading()));
+    return new SwerveModuleState(driveMotor.getRPS(), new Rotation2d(getCANCoderReading()));
   }
 
   public SwerveModulePosition getPosition(){
@@ -105,8 +109,8 @@ public class SwerveModule extends SubsystemBase {
     SmartDashboard.putNumber(steerCANId + " optimized desired angle", desiredAngle);
     SmartDashboard.putNumber(CANCoderId + " cancoder position", getCANCoderReading());
 
-    driveMotor.setVelocityWithFeedForward(desiredVelocity);
-    steerMotor.setPositionWithFeedForward(desiredAngle);
+    driveMotor.setVelocityVoltageWithFeedForward(desiredVelocity);
+    steerMotor.setPositionVoltageWithFeedForward(desiredAngle);
   }
 
 

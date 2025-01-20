@@ -1,6 +1,5 @@
 package frc.robot.utils;
 
-import com.ctre.phoenix6.Orchestra;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.DutyCycleOut;
 import com.ctre.phoenix6.controls.Follower;
@@ -26,7 +25,6 @@ public class Kraken {
     private TalonFXConfiguration config;
     private int deviceID;
     private String canbusName;
-    private Orchestra orchestra;
 
     // Open Loop Control
     private double feedForward = 0.0;
@@ -39,68 +37,94 @@ public class Kraken {
         this.canbusName = canbusName;
         config = new TalonFXConfiguration();
         talon.getConfigurator().setPosition(0);
-        
-        orchestra = new Orchestra();
-        orchestra.addInstrument(talon);
-        orchestra.loadMusic("output.chrp");
     }
 
-    // completely reset motor configuration to default
+    /**
+     * completely reset motor configuration to default (do on deploy to make sure no random settings are unchecked)
+     */
     public void factoryReset() {
         talon.getConfigurator().apply(new TalonFXConfiguration());
     }
 
-    // set kraken encoder to a given position
+    /** 
+     * set kraken encoder to a given position
+     * 
+     * @param position - position in motor encoder units (may vary)
+     */ 
     public void setEncoder(double position) {
         talon.getConfigurator().setPosition(position);
     }
 
-    // set brake mode
+    /** 
+     * set motor to brake mode
+     */ 
     public void setBrake() {
         config.MotorOutput.NeutralMode = NeutralModeValue.Brake;
         talon.getConfigurator().apply(config);
     }
 
-    // set coast mode
+    /** 
+     * set motor to coast mode
+     */ 
     public void setCoast() {
         config.MotorOutput.NeutralMode = NeutralModeValue.Coast;
         talon.getConfigurator().apply(config);
     }
 
-    // get internal motor encoder position reading
+    /** 
+     * @return motor encoder position reading (units may vary)(after conversion factor?? TODO: verify)
+     */ 
     public double getPosition() {
-        // should apply position conversion factor after
         return talon.getPosition().getValueAsDouble();
     }
 
-    // get motor velocity setpoint (-1 to 1)
+    /** 
+     * @return motor percent output setpoint (-1.0 to 1.0)
+     */
     public double getVelocity() {
         return talon.get();
     }
 
-    // get the motor rotor velocity from TalonFX in meters/second (must apply
-    // conversion factor)
-    public double getMPS() {
+    /** 
+     * @return motor rotor velocity (motor rotations/second)(with conversion factor)
+     */
+    public double getRPS() {
         return talon.getRotorVelocity().getValueAsDouble() * velocityConversionFactor;
     }
 
-    // get the motor rotor velocity in RPMs (must apply conversion factor?)
+    /** 
+     * @return motor rotor velocity RPMs (motor rotations/minute)(with conversion factor)
+     */ 
     public double getRPM() {
         return talon.getRotorVelocity().getValueAsDouble() * 60.0;
-        // return talon.getRotorVelocity().getValueAsDouble() *
-        // Constants.FlywheelConstants.kFlywheelGearReduction * 60.0;
     }
 
-    // set the current limit of motor
+    /** 
+     * Set motor supply current limit (maximum current draw from BATTERY, helps to reduce brownouts)
+     * @param currentLimit - motor supply current limit (amps)
+     */ 
     public void setSupplyCurrentLimit(double currentLimit) {
         config.CurrentLimits.SupplyCurrentLimitEnable = true;
         config.CurrentLimits.SupplyCurrentLimit = currentLimit;
-        // config.CurrentLimits.StatorCurrentLimitEnable = true;
-        // config.CurrentLimits.StatorCurrentLimit = currentLimit;
 
         talon.getConfigurator().apply(config);
     }
 
+    /** 
+     * Set motor stator current limit (maximum current draw from MOTOR, helps to find stall current to prevent slipping)
+     * @param currentLimit - motor stator current limit (amps)
+     */ 
+    public void setStatorCurrentLimit(double currentLimit){
+        config.CurrentLimits.StatorCurrentLimitEnable = true;
+        config.CurrentLimits.StatorCurrentLimit = currentLimit;
+
+        talon.getConfigurator().apply(config);
+    }
+
+    /** 
+     * Set motor forward torque current limit (maximum current draw from MOTOR in TorqueCurrentFOC control modes)
+     * @param currentLimit - motor stator current limit (amps)
+     */ 
     public void setForwardTorqueCurrentLimit(double currentLimit) {
         config.TorqueCurrent.PeakForwardTorqueCurrent = currentLimit;
         talon.getConfigurator().apply(config);
@@ -208,7 +232,7 @@ public class Kraken {
     }
 
     // set the motor in open loop control using percent output
-    public void setMotor(double percentOutput) {
+    public void setPercentOutput(double percentOutput) {
         final DutyCycleOut request = new DutyCycleOut(0);
         // Ensure the percentOutput is within the acceptable range [-1.0, 1.0]
         percentOutput = Math.max(-1.0, Math.min(1.0, percentOutput));
@@ -274,6 +298,35 @@ public class Kraken {
         config.Slot0.kD = kD;
         talon.getConfigurator().apply(config);
     }
+    //DO NOT AUTOFORMAT
+    /**
+     *                Motor and CANcoder to Mechanism overview
+     * 
+     *            +------------------+         +-------------------+
+     *            |                  |         |                   |
+     *            |      Motor       |         |     Mechanism     |
+     *            |   (Rotor Shaft)  |         |   (CANcoder, if   |
+     *            |                  |         |     applicable)   |
+     *            |                  |         |                   |
+     *            +--------+---------+         +---------+---------+
+     *                     |                             |
+     *                     v                             v
+     *             Rotor to Mechanism          CANcoder to Mechanism
+     *                   (x:1)                         (y:1)
+     * 
+     *   -----------------------------------------------------------------
+     *   │   When Using    | RotorToSensorRatio | SensorToMechanismRatio |
+     *   │-----------------|--------------------|------------------------|
+     *   │ Fused CANcoder  |         x          |           y            |
+     *   |                 | Rotor -> CANcoder  | CANcoder -> mechanism  |
+     *   |-----------------|--------------------|------------------------|
+     *   | Internal Sensor |        n/a         |           x            |
+     *   |                 |  rotor is sensor   |   rotor -> mechanism   |
+     *   |-----------------|--------------------|------------------------|
+     *   | Remote CANcoder |        n/a         |           y            |
+     *   |                 |  rotor is unused   | CANcoder -> mechanism  |
+     *   -----------------------------------------------------------------
+     */
 
     // set the SensorToMechanismRatio - used for converting sensor (encoder)
     // rotations to mechanism rotations
@@ -302,49 +355,49 @@ public class Kraken {
     }
 
     // Set the motor target position using PID control
-    public void setPosition(double position) {
+    public void setPositionVoltage(double position) {
         final PositionVoltage request = new PositionVoltage(0).withSlot(0);
         talon.setControl(request.withPosition(position).withEnableFOC(true));
     }
 
     // set motor target velocity using velocity PID control
-    public void setVelocity(double velocity) {
+    public void setVelocityVoltage(double velocity) {
         final VelocityVoltage request = new VelocityVoltage(0).withSlot(0);
         talon.setControl(request.withVelocity(velocity / velocityConversionFactor).withEnableFOC(true));
     }
 
     // set the motor target position using PID control and feedforward (often to
     // counter gravity)
-    public void setPositionWithFeedForward(double position) {
+    public void setPositionVoltageWithFeedForward(double position) {
         final PositionVoltage request = new PositionVoltage(0).withSlot(0);
         talon.setControl(request.withPosition(position).withFeedForward(feedForward).withEnableFOC(true));
     }
 
     // set the motor target velocity using velocity PID control and feedforward
-    public void setVelocityWithFeedForward(double velocity) {
+    public void setVelocityVoltageWithFeedForward(double velocity) {
         final VelocityVoltage request = new VelocityVoltage(0).withSlot(0);
         talon.setControl(request.withVelocity(velocity / velocityConversionFactor).withFeedForward(feedForward)
                 .withEnableFOC(true));
     }
 
-    public void setVelocityTorqueFOC(double velocity) {
+    public void setVelocityTorqueCurrentFOC(double velocity) {
         final VelocityTorqueCurrentFOC request = new VelocityTorqueCurrentFOC(0);
         talon.setControl(request.withVelocity(velocity / velocityConversionFactor));
     }
 
     // position torque foc
-    public void setPositionTorqueFOC(double setpoint) {
+    public void setPositionTorqueCurrentFOC(double setpoint) {
         final PositionTorqueCurrentFOC request = new PositionTorqueCurrentFOC(0).withSlot(0);
         talon.setControl(request.withPosition(setpoint).withFeedForward(feedForward));
     }
 
     // set the motor target position using Motion Magic
-    public void setPositionMotionMagic(double position) {
+    public void setPositionMotionMagicVoltage(double position) {
         final MotionMagicVoltage request = new MotionMagicVoltage(0).withSlot(0);
         talon.setControl(request.withPosition(position).withFeedForward(feedForward).withEnableFOC(true));
     }
 
-    public void setMotionMagicTorqueCurrentFOC(double position){
+    public void setPositionMotionMagicTorqueCurrentFOC(double position){
         final MotionMagicTorqueCurrentFOC request = new MotionMagicTorqueCurrentFOC(0).withSlot(0);
         talon.setControl(request.withPosition(position).withFeedForward(feedForward));
     }
@@ -380,15 +433,6 @@ public class Kraken {
     // is really supposed to do
     public void updateSmartdashBoard() {
         SmartDashboard.putNumber(canbusName + " " + deviceID + " motor", 1);
-    }
-
-    // Krakens can supposedly play music - don't
-    public void playMusic(boolean on) {
-        if (on) {
-            orchestra.play();
-        } else {
-            orchestra.pause();
-        }
     }
 
 }

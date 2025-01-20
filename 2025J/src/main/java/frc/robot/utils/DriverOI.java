@@ -17,6 +17,7 @@ public class DriverOI {
 
         Trigger PSButton = new JoystickButton(controller, PS4Controller.Button.kPS.value);
         PSButton.onTrue(new InstantCommand(() -> Drivetrain.getInstance().resetGyro()));
+
     }
 
     public static DriverOI getInstance() {

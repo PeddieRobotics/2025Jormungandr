@@ -37,8 +37,12 @@ public final class Constants {
   }
 
   public static class ModuleConstants {
-    public static final double kDriveMotorCurrentLimit = 40;
-    public static final double kSteerMotorCurrentLimit = 40;
+    public static final double kDriveMotorSupplyCurrentLimit = 40;
+    public static final double kSteerMotorSupplyCurrentLimit = 40;
+    // TODO: find and update these values!
+    public static final double kDriveMotorStatorCurrentLimit = 0.0;
+    public static final double kSteerMotorStatorCurrentLimit = 0.0;
+
     public static final double kWheelDiameterInches = 4.0;
     // TODO: update values for drive!!!
     public static final double kDriveMotorReduction = 0.0;
@@ -98,13 +102,17 @@ public final class Constants {
 
   public static class IntakeConstants {
     // TODO: Update real values
-    public static final double kHPIntakeMotorCurrentLimit = 0.0;
+    public static final double kHPIntakeMotorStatorCurrentLimit = 0.0;
     public static final double kHPIntakeSpeed = 0.0;
   }
 
   public static class ElevatorConstants {
     // TODO: Update real values
-    public static final double kElevatorMotorCurrentLimit = 0.0;
+    public static final double kElevatorMotorSupplyCurrentLimit = 0.0;
+    public static final double kElevatorMotorStatorCurrentLimit = 0.0;
+
+    public static final double kElevatorForwardTorqueCurrentLimit = 40;
+    public static final double kElevatorReverseTorqueCurrentLimit = -40;
 
     public static final double kElevatorForwardSoftLimit = 0.0;
     public static final double kElevatorReverseSoftLimit = 0.0;
@@ -125,7 +133,8 @@ public final class Constants {
 
   public static final class ArmConstants {
     // TODO: Update real values
-    public static final double kArmCurrentLimit = 40;
+    public static final double kArmSupplyCurrentLimit = 40;
+    public static final double kArmStatorCurrentLimit = 40;
     public static final double kArmForwardTorqueCurrentLimit = 40;
     public static final double kArmReverseTorqueCurrentLimit = -40;
 
@@ -157,7 +166,7 @@ public final class Constants {
 
   public static final class ClawConstants {
     // TODO: update real values
-    public static final double kClawCurrentLimit = 30.0;
+    public static final double kClawStatorCurrentLimit = 20.0;
 
     public static final double kClawIntakeSpeed = 0.0;
     public static final double kClawOuttakeSpeed = 0.0;
