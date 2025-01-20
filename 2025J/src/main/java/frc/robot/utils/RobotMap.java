@@ -22,8 +22,15 @@ public class RobotMap {
 
     public static final int ELEVATOR_MAIN_ID = 0;
     public static final int ELEVATOR_SECONDARY_ID = 0;
+    public static final int ELEVATOR_LIMIT_SWITCH_ID = 0;
 
     public static final int HP_INTAKE_ID = 0;
+
+    public static final int ARM_MOTOR_ID = 0;
+    public static final int ARM_CANCODER_ID = 0;
+
+    public static final int CLAW_MOTOR_ID = 0;
+    public static final int CLAW_SENSOR_ID = 0;
 
  
 }

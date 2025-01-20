@@ -1,0 +1,43 @@
+{
+  "version": "2025.0",
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Middle to G"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "G to HP"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "HP to K"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "K to HP"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "HP to L"
+          }
+        }
+      ]
+    }
+  },
+  "resetOdom": true,
+  "folder": "Mid Start",
+  "choreoAuto": false
+}

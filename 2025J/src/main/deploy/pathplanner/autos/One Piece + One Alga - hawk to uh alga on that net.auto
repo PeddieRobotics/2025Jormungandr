@@ -1,0 +1,31 @@
+{
+  "version": "2025.0",
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Middle to G"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "G to Net"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Hawk to uh"
+          }
+        }
+      ]
+    }
+  },
+  "resetOdom": true,
+  "folder": "Mid Start",
+  "choreoAuto": false
+}

@@ -46,6 +46,13 @@ public class Drivetrain extends SubsystemBase {
     odometry = new SwerveDrivePoseEstimator(DriveConstants.kinematics, getHeadingAsRotation2d(), swerveModulePositions, new Pose2d());
   }
 
+  public static Drivetrain getInstance() {
+    if (instance == null) {
+      instance = new Drivetrain();
+    }
+    return instance;
+  }
+
   public void drive(Translation2d translation, double rotation, boolean fieldOriented, Translation2d centerOfRotation) {
     ChassisSpeeds fieldRelativeSpeeds = new ChassisSpeeds(translation.getX(), translation.getY(), rotation);
 
@@ -71,13 +78,6 @@ public class Drivetrain extends SubsystemBase {
     for (int i = 0; i < swerveModuleStates.length; i++) {
       swerveModuleStates[i].optimize(new Rotation2d(swerveModules[i].getCANCoderReading()));
     }
-  }
-
-  public static Drivetrain getInstance() {
-    if (instance == null) {
-      instance = new Drivetrain();
-    }
-    return instance;
   }
 
   public void updateModulePositions() {

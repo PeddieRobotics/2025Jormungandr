@@ -1,0 +1,43 @@
+{
+  "version": "2025.0",
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Red Tape to E"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "E to HP"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "HP to C"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "C to HP"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "HP to D"
+          }
+        }
+      ]
+    }
+  },
+  "resetOdom": true,
+  "folder": null,
+  "choreoAuto": false
+}

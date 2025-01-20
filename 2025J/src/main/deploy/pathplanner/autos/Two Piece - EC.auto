@@ -1,0 +1,31 @@
+{
+  "version": "2025.0",
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Bottom Mid Cage to E"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "E to HP"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "HP to C"
+          }
+        }
+      ]
+    }
+  },
+  "resetOdom": true,
+  "folder": "Cage Starts",
+  "choreoAuto": false
+}
