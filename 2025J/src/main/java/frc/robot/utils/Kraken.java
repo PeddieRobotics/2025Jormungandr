@@ -171,9 +171,9 @@ public class Kraken {
 
     /** 
      * Set motion magic parameters for motion magic closed loop control
-     * @param cruiseVelocity - target/max motion magic motor velocity (CANcoder/mechanism rot/s (depends on feedback device))
-     * @param maxAcceleration - target/max motion magic motor acceleration (CANcoder/mechanism rot/s^2 (depends on feedback device))
-     * @param maxJerk - target/max motion magic motor jerk (derivative of velocity)(CANcoder/mechanism rot/s^3 (depends on feedback device))
+     * @param cruiseVelocity - target/max motion magic motor velocity (CANcoder/mechanism rot/s (depends on feedback device and conversion factors))
+     * @param maxAcceleration - target/max motion magic motor acceleration (CANcoder/mechanism rot/s^2 (depends on feedback device and conversion factors))
+     * @param maxJerk - target/max motion magic motor jerk (derivative of velocity)(CANcoder/mechanism rot/s^3 (depends on feedback device and conversion factors))
      */
     public void setMotionMagicParameters(double cruiseVelocity, double maxAcceleration, double maxJerk) {
         config.MotionMagic.MotionMagicJerk = maxJerk;
@@ -226,16 +226,22 @@ public class Kraken {
     }
 
     /** 
-     * @return maximum motion magic acceleration (CANcoder/mechanism rot/s^2 (depends on feedback device))
+     * @return target/maximum motion magic acceleration (CANcoder/mechanism rot/s^2 (depends on feedback device and conversion factors))
      */
     public double getMotionMagicMaxAccel() {
         return config.MotionMagic.MotionMagicAcceleration;
     }
 
+    /** 
+     * @return target/maximum motion magic jerk (CANcoder/mechanism rot/s^3 (depends on feedback device and conversion factors))
+     */
     public double getMotionMagicMaxJerk() {
         return config.MotionMagic.MotionMagicJerk;
     }
 
+    /** 
+     * @return target/maximum motion magic velocity (CANcoder/mechanism rot/s (depends on feedback device and conversion factors))
+     */
     public double getKMaxCruiseVelocity() {
         return config.MotionMagic.MotionMagicCruiseVelocity;
     }
