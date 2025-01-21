@@ -4,16 +4,14 @@
 
 package frc.robot;
 
-import frc.robot.commands.SwerveDriveCommand;
+import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Arm;
-import frc.robot.subsystems.Autonomous;
 import frc.robot.subsystems.Claw;
-import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.HPIntake;
+import frc.robot.subsystems.Superstructure;
 import frc.robot.utils.DriverOI;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.utils.OperatorOI;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -23,27 +21,32 @@ import edu.wpi.first.wpilibj2.command.Command;
  */
 public class RobotContainer {
   private Arm arm;
-  private Autonomous autonomous;
+  //private Autonomous autonomous;
   private Claw claw;
-  private Drivetrain drivetrain;
+  //private Drivetrain drivetrain;
+  private Superstructure superstructure;
   private DriverOI driverOI;
+  private OperatorOI operatorOI;
   private Elevator elevator;
   private HPIntake hpIntake;
 
   public RobotContainer() {
     arm = Arm.getInstance();
     claw = Claw.getInstance();
-    autonomous = Autonomous.getInstance();
-    drivetrain = Drivetrain.getInstance();
-    driverOI = DriverOI.getInstance();
+    //autonomous = Autonomous.getInstance();
+    //drivetrain = Drivetrain.getInstance();
     elevator = Elevator.getInstance();
     hpIntake = HPIntake.getInstance();
+    superstructure = Superstructure.getInstance();
+    driverOI = DriverOI.getInstance();
+    operatorOI = OperatorOI.getInstance();
 
-    SmartDashboard.putData("Auto Routines", autonomous.getAutoChooser());
-    drivetrain.setDefaultCommand(new SwerveDriveCommand());
+    //SmartDashboard.putData("Auto Routines", autonomous.getAutoChooser());
+    //drivetrain.setDefaultCommand(new SwerveDriveCommand());
   }
 
   public Command getAutonomousCommand() {
-    return Autonomous.getAutonomousCommand();
+    //return Autonomous.getAutonomousCommand();
+    return null;
   }
 }

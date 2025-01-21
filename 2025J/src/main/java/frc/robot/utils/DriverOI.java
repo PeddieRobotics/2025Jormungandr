@@ -17,15 +17,12 @@ public class DriverOI {
 
     private static DriverOI instance;
     private Superstructure superstructure;
-    private OperatorOI operatorOI;
     private PS4Controller controller;
-    private BooleanSupplier algaeMode; // fix this while flushing operator oi pleaseeeee :) :) :) :) :)
     
     public DriverOI() {
         controller = new PS4Controller(0);
 
         superstructure = Superstructure.getInstance();
-        operatorOI = OperatorOI.getInstance();
         configureController();
     }
 
@@ -58,7 +55,7 @@ public class DriverOI {
 
         Trigger muteButton = new JoystickButton(controller, 15);
         muteButton.onTrue(new InstantCommand(() -> {
-            if (operatorOI.L3Held()) {
+            if (OperatorOI.getInstance().L3Held()) {
                 superstructure.requestState(SuperstructureState.EJECT_ALGAE);
             } else {
                 superstructure.requestState(SuperstructureState.EJECT_CORAL);
@@ -68,13 +65,16 @@ public class DriverOI {
         // Set to GROUND_INTAKE (Coral or Algae)
         Trigger L1Bumper = new JoystickButton(controller, PS4Controller.Button.kL1.value);
         // L1Bumper.whileTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.CORAL_GROUND_INTAKE)));
-        L1Bumper.onTrue(new ConditionalCommand(new InstantCommand(() -> superstructure.requestState(SuperstructureState.ALGAE_GROUND_INTAKE)),
-                            new InstantCommand(() -> superstructure.requestState(SuperstructureState.CORAL_GROUND_INTAKE)),
-                            algaeMode)); 
-
+        L1Bumper.onTrue(new InstantCommand(() -> {
+            if (OperatorOI.getInstance().R3Held()) {
+                superstructure.requestState(SuperstructureState.ALGAE_GROUND_INTAKE);
+            } else {
+                superstructure.requestState(SuperstructureState.CORAL_GROUND_INTAKE);
+            }
+        }));
         // Send to score
         Trigger R1Bumper = new JoystickButton(controller, PS4Controller.Button.kR1.value);
-        //R1Bumper.onTrue(new InstantCommand(() -> superstructure.sendToScore()));
+        R1Bumper.onTrue(new InstantCommand(() -> superstructure.sendToScore()));
         
         Trigger L2Trigger = new JoystickButton(controller, PS4Controller.Button.kL2.value);
 

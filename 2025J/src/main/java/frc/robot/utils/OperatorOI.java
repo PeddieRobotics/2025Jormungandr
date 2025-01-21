@@ -3,6 +3,7 @@ package frc.robot.utils;
 import java.util.function.BooleanSupplier;
 
 import edu.wpi.first.wpilibj.PS4Controller;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -14,7 +15,6 @@ public class OperatorOI {
 
     private static OperatorOI instance;
     private Superstructure superstructure;
-    private DriverOI driverOI;
     private PS4Controller controller;
 
     public static OperatorOI getInstance() {
@@ -26,8 +26,8 @@ public class OperatorOI {
 
     public OperatorOI() {
         superstructure = Superstructure.getInstance();
-        driverOI = DriverOI.getInstance();
         configureController();
+        SmartDashboard.putBoolean("L3 Held?", false);
     }
 
     public void configureController() {
@@ -63,6 +63,8 @@ public class OperatorOI {
         triangleButton.onTrue(new InstantCommand(() -> {
             if (L3Held()) {
                 superstructure.requestState(SuperstructureState.BARGE_PREP);
+            } else if (superstructure.getCurrentState() != SuperstructureState.L3L4_PRESTAGE && superstructure.getCurrentState() != SuperstructureState.L4_PREP){
+                superstructure.requestState(SuperstructureState.L3L4_PRESTAGE);
             } else {
                 superstructure.requestState(SuperstructureState.L4_PREP);
             }
@@ -73,6 +75,8 @@ public class OperatorOI {
         squareButton.onTrue(new InstantCommand(() -> {
             if (L3Held()) {
                 superstructure.requestState(SuperstructureState.REEF2_INTAKE);
+            } else if (superstructure.getCurrentState() != SuperstructureState.L3L4_PRESTAGE && superstructure.getCurrentState() != SuperstructureState.L3_PREP){
+                superstructure.requestState(SuperstructureState.L3L4_PRESTAGE);
             } else {
                 superstructure.requestState(SuperstructureState.L3_PREP);
             }
@@ -151,6 +155,7 @@ public class OperatorOI {
     }
 
     public boolean L3Held() {
+        SmartDashboard.putBoolean("L3 Held?", controller.getL3Button());
         return controller.getL3Button();
     }
 
