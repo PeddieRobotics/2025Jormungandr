@@ -418,16 +418,17 @@ public class Superstructure extends SubsystemBase {
 
       case L4_SCORE:
 
-        /*
+
+
+        if (!timer.hasElapsed(ScoreConstants.L4ScoreTimeout)) {
+          //KEEP RUNNING
+          /*
          * two different cases:
          * - dunk case
          *     move to angle and drop
          * - shoot case
          *     move to angle and eject piece
          */
-
-        if (!timer.hasElapsed(ScoreConstants.L4ScoreTimeout)) {
-          //KEEP RUNNING
           timer.start();
 
         } else if (timer.hasElapsed(ScoreConstants.L4ScoreTimeout) && !coralIndex){
