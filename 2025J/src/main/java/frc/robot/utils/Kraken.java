@@ -141,7 +141,7 @@ public class Kraken {
  
     /** 
      * Set whether the motor is inverted
-     * @param inverted - true (inverted), false (not inverted)
+     * @param inverted - true (inverted, clockwise positive), false (not inverted, counterclockwise positive)
      */
     public void setInverted(boolean inverted) {
         // if(inverted) config.MotorOutput.Inverted =
@@ -169,7 +169,12 @@ public class Kraken {
         talon.getConfigurator().apply(config);
     }
 
-    // set parameters for motion magic - jerk, vel, accel
+    /** 
+     * Set motion magic parameters for motion magic closed loop control
+     * @param cruiseVelocity - target/max motion magic motor velocity (CANcoder/mechanism rot/s (depends on feedback device))
+     * @param maxAcceleration - target/max motion magic motor acceleration (CANcoder/mechanism rot/s^2 (depends on feedback device))
+     * @param maxJerk - target/max motion magic motor jerk (derivative of velocity)(CANcoder/mechanism rot/s^3 (depends on feedback device))
+     */
     public void setMotionMagicParameters(double cruiseVelocity, double maxAcceleration, double maxJerk) {
         config.MotionMagic.MotionMagicJerk = maxJerk;
         config.MotionMagic.MotionMagicAcceleration = maxAcceleration;
@@ -178,35 +183,56 @@ public class Kraken {
         talon.getConfigurator().apply(config);
     }
 
+    /** 
+     * @return PID slot 0 kS
+     */
     public double getKS() {
         return config.Slot0.kS;
     }
 
+    /** 
+     * @return PID slot 0 kV
+     */
     public double getKV() {
         return config.Slot0.kV;
     }
 
+    /** 
+     * @return PID slot 0 kA
+     */
     public double getKA() {
         return config.Slot0.kA;
     }
 
+    /** 
+     * @return PID slot 0 kP
+     */
     public double getKP() {
         return config.Slot0.kP;
     }
 
+    /** 
+     * @return PID slot 0 kI
+     */
     public double getKI() {
         return config.Slot0.kI;
     }
 
+    /** 
+     * @return PID slot 0 kD
+     */
     public double getKD() {
         return config.Slot0.kD;
     }
 
-    public double getKMaxCruiseAccel() {
+    /** 
+     * @return maximum motion magic acceleration (CANcoder/mechanism rot/s^2 (depends on feedback device))
+     */
+    public double getMotionMagicMaxAccel() {
         return config.MotionMagic.MotionMagicAcceleration;
     }
 
-    public double getKMaxCruiseJerk() {
+    public double getMotionMagicMaxJerk() {
         return config.MotionMagic.MotionMagicJerk;
     }
 
