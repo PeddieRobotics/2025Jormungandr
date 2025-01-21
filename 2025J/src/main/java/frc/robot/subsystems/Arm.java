@@ -20,7 +20,7 @@ public class Arm extends SubsystemBase{
     private CANcoder armCANcoder;
     private TunableConstant kP, kS, kV, kI, kD, kFF, kA, 
         kArmMaxCruiseVelocity, kArmMaxCruiseAcceleration, kArmMaxCruiseJerk, kArmReverseTorqueCurrentLimit, kArmForwardTorqueCurrentLimit,
-        L1Setpoint, L2Setpoint, L3Setpoint, L4Setpoint, HPIntakeSetpoint, stowSetpoint, bargeSetpoint, algaeL1Setpoint, algaeL2Setpoint, proccesserSetpoint;
+        L1Setpoint, L2Setpoint, L3Setpoint, L4Setpoint, HPIntakeSetpoint, stowSetpoint, bargeSetpoint, algaeL1Setpoint, algaeL2Setpoint, processorSetpoint;
 
     private LiveData armAngle, armSetpoint, motorTemp, motorCurrent;
 
@@ -74,12 +74,12 @@ public class Arm extends SubsystemBase{
         bargeSetpoint = new TunableConstant(ArmConstants.bargeSetpoint, "Arm bargeSetpoint");
         algaeL1Setpoint = new TunableConstant(ArmConstants.algaeL1Setpoint, "Arm algaeL1Setpoint");
         algaeL2Setpoint = new TunableConstant(ArmConstants.algaeL2Setpoint, "Arm algaeL2Setpoint");
-        proccesserSetpoint = new TunableConstant(ArmConstants.proccesserSetpoint, "Arm L4Setpoint");
+        processorSetpoint = new TunableConstant(ArmConstants.processorSetpoint, "Arm processorSetpoint");
 
         armSetpoint = new LiveData(stowSetpoint.get(), "Arm Current Setpoint"); 
-        armAngle = new LiveData(getAbsoluteCANcoderPosition(), "Arm Current Anlge"); 
+        armAngle = new LiveData(getAbsoluteCANcoderPosition(), "Arm Current Angle"); 
 
-        motorTemp = new LiveData(armMotor.getMotorTemperature(), "Arm Motor Temperature"); 
+        motorTemp = new LiveData(armMotor.getMotorTemperature(), "Arm Motor Temp"); 
         motorCurrent = new LiveData(armMotor.getSupplyCurrent(), "Arm Motor Current");
 
         

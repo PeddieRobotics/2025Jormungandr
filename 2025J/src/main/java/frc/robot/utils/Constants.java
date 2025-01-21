@@ -133,7 +133,7 @@ public final class Constants {
     public static final double bargeSetpoint = 0.0;
     public static final double algaeL1Setpoint = 0.0;
     public static final double algaeL2Setpoint = 0.0;
-    public static final double proccesserSetpoint = 0.0;
+    public static final double processorSetpoint = 0.0;
   }
 
   public static final class ArmConstants {
@@ -177,7 +177,7 @@ public final class Constants {
     public static final double bargeSetpoint = 0.0;
     public static final double algaeL1Setpoint = 0.0;
     public static final double algaeL2Setpoint = 0.0;
-    public static final double proccesserSetpoint = 0.0;
+    public static final double processorSetpoint = 0.0;
 
 
   }

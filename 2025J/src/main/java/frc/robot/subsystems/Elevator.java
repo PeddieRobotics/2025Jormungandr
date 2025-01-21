@@ -16,7 +16,7 @@ public class Elevator extends SubsystemBase {
     private DigitalInput bottomLimitSwitch;
     private TunableConstant kP, kS, kV, kI, kD, kFF, kA,
         kElevatorMaxCruiseVelocity, kElevatorMaxCruiseAcceleration, kElevatorMaxCruiseJerk, kElevatorForwardSoftLimit, kElevatorReverseSoftLimit,
-        L1Setpoint, L2Setpoint, L3Setpoint, L4Setpoint, HPIntakeSetpoint, stowSetpoint, bargeSetpoint, algaeL1Setpoint, algaeL2Setpoint, proccesserSetpoint;
+        L1Setpoint, L2Setpoint, L3Setpoint, L4Setpoint, HPIntakeSetpoint, stowSetpoint, bargeSetpoint, algaeL1Setpoint, algaeL2Setpoint, processorSetpoint;
     
     private LiveData elevatorPosition, elevatorSetpoint, mainMotorTemp, followerMotorTemp, mainMotorCurrent, followerMotorCurrent;
 
@@ -73,13 +73,13 @@ public class Elevator extends SubsystemBase {
         bargeSetpoint = new TunableConstant(ElevatorConstants.bargeSetpoint, "Elevator bargeSetpoint");
         algaeL1Setpoint = new TunableConstant(ElevatorConstants.algaeL1Setpoint, "Elevator algaeL1Setpoint");
         algaeL2Setpoint = new TunableConstant(ElevatorConstants.algaeL2Setpoint, "Elevator algaeL2Setpoint");
-        proccesserSetpoint = new TunableConstant(ElevatorConstants.proccesserSetpoint, "Elevator proccesserSetpoint");
+        processorSetpoint = new TunableConstant(ElevatorConstants.processorSetpoint, "Elevator processorSetpoint");
 
         elevatorSetpoint = new LiveData(ElevatorConstants.stowSetpoint, "Elevator Current Setpoint");
         elevatorPosition = new LiveData(elevatorMainMotor.getPosition(), "Elevator Current Position"); 
 
-        mainMotorTemp = new LiveData(elevatorMainMotor.getMotorTemperature(), "Elevator Main Motor Temperature"); 
-        followerMotorTemp = new LiveData(elevatorFollowerMotor.getMotorTemperature(), "Elevator Follower Motor Temperature"); 
+        mainMotorTemp = new LiveData(elevatorMainMotor.getMotorTemperature(), "Elevator Main Motor Temp"); 
+        followerMotorTemp = new LiveData(elevatorFollowerMotor.getMotorTemperature(), "Elevator Follower Motor Temp"); 
         
         mainMotorCurrent = new LiveData(elevatorMainMotor.getSupplyCurrent(), "Elevator Main Motor Current"); 
         followerMotorCurrent = new LiveData(elevatorFollowerMotor.getSupplyCurrent(), "Elevator Follower Motor Current"); 
