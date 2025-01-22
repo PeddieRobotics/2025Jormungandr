@@ -483,67 +483,139 @@ public class Kraken {
         talon.setControl(request);
     }
 
-    // Set the motor target position using PID control
+    /**
+     * Request PID to target position with PositionVoltage control mode
+     * @param position - motor/mechanism target position setpoint (post conversion factors)
+     */
     public void setPositionVoltage(double position) {
         final PositionVoltage request = new PositionVoltage(0).withSlot(0);
         talon.setControl(request.withPosition(position).withEnableFOC(true));
     }
 
-    // set motor target velocity using velocity PID control
+    /**
+     * Request PID to target velocity with VelocityVoltage control mode
+     * @param velocity - motor target velocity setpoint (rot/s)(post velocity conversion factor)
+     */
     public void setVelocityVoltage(double velocity) {
         final VelocityVoltage request = new VelocityVoltage(0).withSlot(0);
         talon.setControl(request.withVelocity(velocity / velocityConversionFactor).withEnableFOC(true));
     }
 
-    // set the motor target position using PID control and feedforward (often to
-    // counter gravity)
+    /**
+     * Request PID to target position with PositionVoltage control mode and constant voltage feedforward
+     * @param position - motor/mechanism target position setpoint (post conversion factors)
+     */
     public void setPositionVoltageWithFeedForward(double position) {
         final PositionVoltage request = new PositionVoltage(0).withSlot(0);
         talon.setControl(request.withPosition(position).withFeedForward(feedForward).withEnableFOC(true));
     }
 
-    // set the motor target velocity using velocity PID control and feedforward
+    /**
+     * Request PID to target velocity with VelocityVoltage control mode and constant voltage feedforward
+     * @param velocity - motor target velocity setpoint (rot/s)(post velocity conversion factor)
+     */
     public void setVelocityVoltageWithFeedForward(double velocity) {
         final VelocityVoltage request = new VelocityVoltage(0).withSlot(0);
         talon.setControl(request.withVelocity(velocity / velocityConversionFactor).withFeedForward(feedForward)
                 .withEnableFOC(true));
     }
 
+    /**
+     * Request PID to target motor velocity with VelocityTorqueCurrentFOC control mode
+     * @param velocity - motor target velocity setpoint (rot/s)(post velocity conversion factor)
+     */
     public void setVelocityTorqueCurrentFOC(double velocity) {
         final VelocityTorqueCurrentFOC request = new VelocityTorqueCurrentFOC(0);
         talon.setControl(request.withVelocity(velocity / velocityConversionFactor));
     }
-
-    // position torque foc
+    /**
+     * Request PID to target position with PositionTorqueCurrentFOC control mode
+     * @param position - motor/mechanism target position setpoint (post conversion factors)
+     */
     public void setPositionTorqueCurrentFOC(double setpoint) {
         final PositionTorqueCurrentFOC request = new PositionTorqueCurrentFOC(0).withSlot(0);
         talon.setControl(request.withPosition(setpoint).withFeedForward(feedForward));
     }
 
-    // set the motor target position using Motion Magic
+    /**
+     * Request MotionMagic motion profile to target position with MotionMagicVoltage control mode
+     * @param position - motor/mechanism target position setpoint (post conversion factors)
+     */
     public void setPositionMotionMagicVoltage(double position) {
         final MotionMagicVoltage request = new MotionMagicVoltage(0).withSlot(0);
         talon.setControl(request.withPosition(position).withFeedForward(feedForward).withEnableFOC(true));
     }
 
+    /**
+     * Request MotionMagic motion profile to target position with MotionMagicTorqueCurrentFOC control mode
+     * @param position - motor/mechanism target position setpoint (post conversion factors)
+     */
     public void setPositionMotionMagicTorqueCurrentFOC(double position){
         final MotionMagicTorqueCurrentFOC request = new MotionMagicTorqueCurrentFOC(0).withSlot(0);
         talon.setControl(request.withPosition(position).withFeedForward(feedForward));
     }
 
     // set the feedback device of motor - often for using external CANcoders
+    /**
+     * set the feedback device of motor - often for using external encoder (ie: CANcoders)
+     * @param deviceID - device ID of remote device to use. This is not used if the Sensor Source is the internal rotor sensor.
+     * @param feedbackType - Choose what sensor source is reported via API and used by
+     * closed-loop and limit features.  The default is RotorSensor, which
+     * uses the internal rotor sensor in the Talon.
+     * <p>
+     * Choose Remote* to use another sensor on the same CAN bus (this also
+     * requires setting FeedbackRemoteSensorID).  Talon will update its
+     * position and velocity whenever the remote sensor publishes its
+     * information on CAN bus, and the Talon internal rotor will not be
+     * used.
+     * <p>
+     * Choose Fused* and Talon will fuse another
+     * sensor's information with the internal rotor, which provides the
+     * best possible position and velocity for accuracy and bandwidth
+     * (this also requires setting FeedbackRemoteSensorID).  This was
+     * developed for applications such as swerve-azimuth.
+     * <p>
+     * Choose Sync* and Talon will synchronize its
+     * internal rotor position against another sensor, then continue to
+     * use the rotor sensor for closed loop control (this also requires
+     * setting FeedbackRemoteSensorID).  The Talon will report if its
+     * internal position differs significantly from the reported remote
+     * sensor position.  This was developed for mechanisms where there is
+     * a risk of the sensor failing in such a way that it reports a
+     * position that does not match the mechanism, such as the sensor
+     * mounting assembly breaking off.
+     * <p>
+     * Choose RemotePigeon2_Yaw, RemotePigeon2_Pitch, and
+     * RemotePigeon2_Roll to use another Pigeon2 on the same CAN bus (this
+     * also requires setting FeedbackRemoteSensorID).  Talon will update
+     * its position to match the selected value whenever Pigeon2 publishes
+     * its information on CAN bus. Note that the Talon position will be in
+     * rotations and not degrees.
+     * <p>
+     * Note: When the feedback source is changed to Fused* or Sync*, the
+     * Talon needs a period of time to fuse before sensor-based
+     * (soft-limit, closed loop, etc.) features are used. This period of
+     * time is determined by the update frequency of the remote sensor's
+     * Position signal.
+     * 
+     */
     public void setFeedbackDevice(int deviceID, FeedbackSensorSourceValue feedbackType) {
         config.Feedback.FeedbackRemoteSensorID = deviceID;
         config.Feedback.FeedbackSensorSource = feedbackType;
         talon.getConfigurator().apply(config);
     }
 
-    // get the current supplied by battery to motor
+    /**
+     * @return current supplied by battery to motor (amps)
+     */
     public double getSupplyCurrent() {
         return talon.getSupplyCurrent().getValueAsDouble();
     }
 
-    //get stator current used by motor (for voltage control modes)
+    /**
+     * @return current used by stator windows of motor (motor current draw). 
+     * Stator current where Positive current indicates motoring regardless of direction. Negative current indicates regenerative braking regardless of direction.
+     */
     public double getStatorCurrent() {
         return talon.getStatorCurrent().getValueAsDouble();
     }
