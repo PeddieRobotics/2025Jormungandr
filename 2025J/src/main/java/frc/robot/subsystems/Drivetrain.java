@@ -13,6 +13,9 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.util.sendable.Sendable;
+import edu.wpi.first.util.sendable.SendableBuilder;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.utils.Constants.DriveConstants;
 import frc.robot.utils.RobotMap;
@@ -52,8 +55,28 @@ public class Drivetrain extends SubsystemBase {
     gyro = new Pigeon2(RobotMap.GYRO_ID, RobotMap.CANIVORE_NAME);
     gyro.setYaw(0);
 
-    odometry = new SwerveDrivePoseEstimator(DriveConstants.kinematics, getHeadingAsRotation2d(), swerveModulePositions,
-        new Pose2d());
+    odometry = new SwerveDrivePoseEstimator(DriveConstants.kinematics, getHeadingAsRotation2d(), swerveModulePositions, new Pose2d());
+
+    SmartDashboard.putData("Swerve Drive", new Sendable() {
+      @Override
+      public void initSendable(SendableBuilder builder) {
+        builder.setSmartDashboardType("SwerveDrive");
+
+        builder.addDoubleProperty("Front Left Angle", () -> frontLeftModule.getAngle(), null);
+        builder.addDoubleProperty("Front Left Velocity", () -> frontLeftModule.getVelocity(), null);
+
+        builder.addDoubleProperty("Front Right Angle", () -> frontRightModule.getAngle(), null);
+        builder.addDoubleProperty("Front Right Velocity", () -> frontRightModule.getVelocity(), null);
+
+        builder.addDoubleProperty("Back Left Angle", () -> backLeftModule.getAngle(), null);
+        builder.addDoubleProperty("Back Left Velocity", () -> backLeftModule.getVelocity(), null);
+
+        builder.addDoubleProperty("Back Right Angle", () -> backRightModule.getAngle(), null);
+        builder.addDoubleProperty("Back Right Velocity", () -> backRightModule.getVelocity(), null);
+
+        builder.addDoubleProperty("Robot Angle", () -> getPose().getRotation().getRadians(), null);
+      }
+    });
   }
 
   /**

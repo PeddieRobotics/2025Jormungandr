@@ -94,6 +94,14 @@ public class SwerveModule extends SubsystemBase {
     return new SwerveModuleState(driveMotor.getRPS(), new Rotation2d(getCANCoderReading()));
   }
 
+  public double getAngle() {
+    return getCANCoderReading();
+  }
+
+  public double getVelocity() {
+    return driveMotor.getMPS();
+  }
+
   public SwerveModulePosition getPosition(){
     return new SwerveModulePosition(driveMotor.getPosition() * ModuleConstants.kDriveEncoderPositionFactor, new Rotation2d(getCANCoderReading()));
   }

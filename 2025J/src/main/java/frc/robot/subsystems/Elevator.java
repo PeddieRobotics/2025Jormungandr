@@ -1,16 +1,24 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.utils.Constants.ArmConstants;
 import frc.robot.utils.Constants.ElevatorConstants;
 import frc.robot.utils.Kraken;
 import frc.robot.utils.RobotMap;
+import frc.robot.utils.TunableConstant;
+import frc.robot.utils.LiveData; 
 
 public class Elevator extends SubsystemBase {
     private static Elevator elevator;
     private Kraken elevatorMainMotor, elevatorFollowerMotor;
     private DigitalInput bottomLimitSwitch;
+    private TunableConstant kP, kS, kV, kI, kD, kFF, kA,
+        kElevatorMaxCruiseVelocity, kElevatorMaxCruiseAcceleration, kElevatorMaxCruiseJerk, kElevatorForwardSoftLimit, kElevatorReverseSoftLimit,
+        L1Setpoint, L2Setpoint, L3Setpoint, L4Setpoint, HPIntakeSetpoint, stowSetpoint, bargeSetpoint, algaeL1Setpoint, algaeL2Setpoint, processorSetpoint;
+    
+    private LiveData elevatorPosition, elevatorSetpoint, mainMotorTemp, followerMotorTemp, mainMotorCurrent, followerMotorCurrent;
 
     public Elevator() {
         elevatorMainMotor = new Kraken(RobotMap.ELEVATOR_MAIN_ID, RobotMap.CANIVORE_NAME);
@@ -49,7 +57,41 @@ public class Elevator extends SubsystemBase {
         elevatorFollowerMotor.setSoftLimits(true, ElevatorConstants.kElevatorForwardSoftLimit, ElevatorConstants.kElevatorReverseSoftLimit);
 
         bottomLimitSwitch = new DigitalInput(RobotMap.ELEVATOR_LIMIT_SWITCH_ID);
-    }
+
+        kP = new TunableConstant(ElevatorConstants.kP, "Elevator kP");
+        kI = new TunableConstant(ElevatorConstants.kI, "Elevator kI");
+        kD = new TunableConstant(ElevatorConstants.kD, "Elevator kD");
+        kA = new TunableConstant(ElevatorConstants.kA, "Elevator A"); 
+        kS = new TunableConstant(ElevatorConstants.kS, "Elevator kS");
+        kV = new TunableConstant(ElevatorConstants.kV, "Elevator kV");
+        kFF = new TunableConstant(ElevatorConstants.kFF, "Elevator kFF");
+        kElevatorMaxCruiseVelocity = new TunableConstant(ElevatorConstants.kElevatorMaxCruiseVelocity, "Elevator kElevatorMaxCruiseVelocity");
+        kElevatorReverseSoftLimit = new TunableConstant(ElevatorConstants.kElevatorReverseSoftLimit, "Elevator kElevatorReverseSoftLimit");
+        kElevatorForwardSoftLimit = new TunableConstant(ElevatorConstants.kElevatorForwardSoftLimit, "Elevator kElevatorForwardSoftLimit");
+        kElevatorMaxCruiseJerk = new TunableConstant(ElevatorConstants.kElevatorMaxCruiseJerk, "Elevator kElevatorMaxCruiseJerk");
+        kElevatorMaxCruiseAcceleration = new TunableConstant(ElevatorConstants.kElevatorMaxCruiseAcceleration, "Elevator kElevatorMaxCruiseAcceleration"); 
+        L1Setpoint = new TunableConstant(ElevatorConstants.L1Setpoint, "Elevator L1Setpoint"); 
+        L2Setpoint = new TunableConstant(ElevatorConstants.L2Setpoint, "Elevator L2Setpoint"); 
+        L3Setpoint = new TunableConstant(ElevatorConstants.L3Setpoint, "Elevator L3Setpoint"); 
+        L4Setpoint = new TunableConstant(ElevatorConstants.L4Setpoint, "Elevator L4Setpoint"); 
+        HPIntakeSetpoint = new TunableConstant(ElevatorConstants.HPIntakeSetpoint, "Elevator HPIntakeSetpoint");
+        stowSetpoint = new TunableConstant(ElevatorConstants.stowSetpoint, "Elevator stowSetpoint");
+
+        
+        bargeSetpoint = new TunableConstant(ElevatorConstants.bargeSetpoint, "Elevator bargeSetpoint");
+        algaeL1Setpoint = new TunableConstant(ElevatorConstants.algaeL1Setpoint, "Elevator algaeL1Setpoint");
+        algaeL2Setpoint = new TunableConstant(ElevatorConstants.algaeL2Setpoint, "Elevator algaeL2Setpoint");
+        processorSetpoint = new TunableConstant(ElevatorConstants.processorSetpoint, "Elevator processorSetpoint");
+
+        elevatorSetpoint = new LiveData(ElevatorConstants.stowSetpoint, "Elevator Current Setpoint");
+        elevatorPosition = new LiveData(elevatorMainMotor.getPosition(), "Elevator Current Position"); 
+
+        mainMotorTemp = new LiveData(elevatorMainMotor.getMotorTemperature(), "Elevator Main Motor Temp"); 
+        followerMotorTemp = new LiveData(elevatorFollowerMotor.getMotorTemperature(), "Elevator Follower Motor Temp"); 
+        
+        mainMotorCurrent = new LiveData(elevatorMainMotor.getSupplyCurrent(), "Elevator Main Motor Current"); 
+        followerMotorCurrent = new LiveData(elevatorFollowerMotor.getSupplyCurrent(), "Elevator Follower Motor Current"); 
+        }
 
     /**
      * @return the existing elevator instance or creates it if it doesn't exist
@@ -143,6 +185,27 @@ public class Elevator extends SubsystemBase {
 
     @Override
     public void periodic() {
+        elevatorMainMotor.setVelocityPIDValues(kS.get(), kV.get(),
+            kA.get(),
+            kP.get(), kI.get(), kD.get(),
+            kFF.get());
+        elevatorFollowerMotor.setVelocityPIDValues(kS.get(), kV.get(),
+            kA.get(),
+            kP.get(), kI.get(), kD.get(),
+            kFF.get());
+
+        elevatorMainMotor.setMotionMagicParameters(kElevatorMaxCruiseVelocity.get(), kElevatorMaxCruiseAcceleration.get(), kElevatorMaxCruiseJerk.get());
+        elevatorFollowerMotor.setMotionMagicParameters(kElevatorMaxCruiseVelocity.get(), kElevatorMaxCruiseAcceleration.get(), kElevatorMaxCruiseJerk.get());
+
+        elevatorMainMotor.setSoftLimits(true, kElevatorForwardSoftLimit.get(), kElevatorReverseSoftLimit.get());    
+        elevatorFollowerMotor.setSoftLimits(true, kElevatorForwardSoftLimit.get(), kElevatorReverseSoftLimit.get());
+
+        elevatorPosition.set(elevatorMainMotor.getPosition()); 
+        mainMotorTemp.set(elevatorMainMotor.getMotorTemperature());
+        followerMotorTemp.set(elevatorFollowerMotor.getMotorTemperature()); 
+
+        mainMotorCurrent.set(elevatorMainMotor.getSupplyCurrent()); 
+        followerMotorCurrent.set(elevatorFollowerMotor.getSupplyCurrent()); 
     }
 
     @Override

@@ -128,7 +128,20 @@ public final class Constants {
     public static final double kP = 0.0; 
     public static final double kI = 0.0; 
     public static final double kD = 0.0; 
-    public static final double kFF = 0.0; 
+    public static final double kFF = 0.0;
+    
+    public static final double L1Setpoint = 0.0;
+    public static final double L2Setpoint = 0.0;
+    public static final double L3Setpoint = 0.0;
+    public static final double L4Setpoint = 0.0;
+
+    public static final double HPIntakeSetpoint = 0.0;
+    public static final double stowSetpoint = 0.0;
+
+    public static final double bargeSetpoint = 0.0;
+    public static final double algaeL1Setpoint = 0.0;
+    public static final double algaeL2Setpoint = 0.0;
+    public static final double processorSetpoint = 0.0;
   }
 
   public static final class ArmConstants {
@@ -161,6 +174,20 @@ public final class Constants {
     public static final double kArmMaxCruiseVelocity = 0.0;
     public static final double kArmMaxCruiseAcceleration = 0.0;
     public static final double kArmMaxCruiseJerk = 0.0;
+
+    public static final double L1Setpoint = 0.0;
+    public static final double L2Setpoint = 0.0;
+    public static final double L3Setpoint = 0.0;
+    public static final double L4Setpoint = 0.0;
+
+    public static final double HPIntakeSetpoint = 0.0;
+    public static final double stowSetpoint = 0.0;
+
+    public static final double bargeSetpoint = 0.0;
+    public static final double algaeL1Setpoint = 0.0;
+    public static final double algaeL2Setpoint = 0.0;
+    public static final double processorSetpoint = 0.0;
+
 
   }
 
