@@ -50,7 +50,7 @@ public class Arm extends SubsystemBase{
         armMotor.setRotorToSensorRatio(ArmConstants.kArmRotorToSensorRatio);
         armMotor.setSensorToMechanismRatio(ArmConstants.kArmSensortoMechanismRatio);
 
-        armMotor.setVelocityPIDValues(ArmConstants.kS, ArmConstants.kV,
+        armMotor.setPIDValues(ArmConstants.kS, ArmConstants.kV,
                 ArmConstants.kA,
                 ArmConstants.kP, ArmConstants.kI, ArmConstants.kD,
                 ArmConstants.kFF);
@@ -174,7 +174,7 @@ public class Arm extends SubsystemBase{
 
     @Override
     public void periodic() {
-        armMotor.setVelocityPIDValues(kS.get(), kV.get(),
+        armMotor.setPIDValues(kS.get(), kV.get(),
             kA.get(),
             kP.get(), kI.get(), kD.get(),
             kFF.get());

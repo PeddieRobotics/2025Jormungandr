@@ -70,9 +70,9 @@ public class SwerveModule extends SubsystemBase {
     steerMotor.setRotorToSensorRatio(ModuleConstants.kSteerMotorReduction);
     steerMotor.setSensorToMechanismRatio(1.0);
 
-    driveMotor.setVelocityPIDValues(ModuleConstants.kDriveS, ModuleConstants.kDriveV, ModuleConstants.kDriveA, 
+    driveMotor.setPIDValues(ModuleConstants.kDriveS, ModuleConstants.kDriveV, ModuleConstants.kDriveA, 
                                     ModuleConstants.kDriveP, ModuleConstants.kDriveI, ModuleConstants.kDriveD, ModuleConstants.kDriveFF);
-    steerMotor.setVelocityPIDValues(ModuleConstants.kSteerS, ModuleConstants.kSteerV, ModuleConstants.kSteerA, 
+    steerMotor.setPIDValues(ModuleConstants.kSteerS, ModuleConstants.kSteerV, ModuleConstants.kSteerA, 
                                     ModuleConstants.kSteerP, ModuleConstants.kSteerI, ModuleConstants.kSteerD, ModuleConstants.kSteerFF, StaticFeedforwardSignValue.UseClosedLoopSign);
   }
 
@@ -91,7 +91,7 @@ public class SwerveModule extends SubsystemBase {
   }
 
   public SwerveModuleState getState(){
-    return new SwerveModuleState(driveMotor.getRPS(), new Rotation2d(getCANCoderReading()));
+    return new SwerveModuleState(driveMotor.getMPS(), new Rotation2d(getCANCoderReading()));
   }
 
   public double getAngle() {

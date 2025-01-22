@@ -72,28 +72,35 @@ public class Kraken {
     }
 
     /** 
-     * @return motor encoder position reading (units may vary)(after conversion factor?? TODO: verify)
+     * @return Position of the device in mechanism rotations. This can be the position of a remote sensor and is affected by the RotorToSensorRatio and SensorToMechanismRatio configs, as well as calls to setPosition.
      */ 
     public double getPosition() {
         return talon.getPosition().getValueAsDouble();
     }
 
     /** 
-     * @return motor percent output setpoint (-1.0 to 1.0)
+     * @return motor percent output setpoint [-1.0, 1.0]
      */
     public double getVelocity() {
         return talon.get();
     }
 
     /** 
-     * @return motor rotor velocity (motor rotations/second)(with conversion factor)
+     * @return motor velocity in meter/s (used for swerve module to determine floor speed post velocity conversion factor)
      */
-    public double getRPS() {
+    public double getMPS() {
         return talon.getRotorVelocity().getValueAsDouble() * velocityConversionFactor;
     }
 
     /** 
-     * @return motor rotor velocity RPMs (motor rotations/minute)(with conversion factor)
+     * @return motor rotor velocity (motor rotations/second)(without conversion factor/feedback configs)
+     */
+    public double getRPS() {
+        return talon.getRotorVelocity().getValueAsDouble();
+    }
+
+    /** 
+     * @return motor rotor velocity RPMs (motor rotations/minute)(without conversion factor/feedback configs)
      */ 
     public double getRPM() {
         return talon.getRotorVelocity().getValueAsDouble() * 60.0;
@@ -144,9 +151,6 @@ public class Kraken {
      * @param inverted - true (inverted, clockwise positive), false (not inverted, counterclockwise positive)
      */
     public void setInverted(boolean inverted) {
-        // if(inverted) config.MotorOutput.Inverted =
-        // InvertedValue.CounterClockwise_Positive;
-        // else config.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
         if (inverted) {
             config.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
         } else {
@@ -295,7 +299,6 @@ public class Kraken {
 
         // Set the control request to the motor controller
         talon.setControl(request.withOutput(percentOutput));
-
     }
 
     /**
@@ -307,7 +310,13 @@ public class Kraken {
         talon.setControl(new Follower(masterCANId, inverted));
     }
 
-    // set PID values for position setpoint control
+    /**
+     * set PID values for closed loop setpoint control
+     * @param kP - proportional gain (units vary)
+     * @param kI - integral gain (units vary)
+     * @param kD - derivative gain (units vary)
+     * @param kF - constant feedforward to apply (volts)
+     */
     public void setPIDValues(double kP, double kI, double kD, double kF) {
 
         feedForward = kF;
@@ -317,8 +326,17 @@ public class Kraken {
         talon.getConfigurator().apply(config);
     }
 
-    // set PID values for velocity setpoint control
-    public void setVelocityPIDValues(double kS, double kV, double kA, double kP, double kI, double kD, double kF) {
+    /**
+     * set PID values for closed loop setpoint control
+     * @param kS - static feedforward gain to overcome static friction (units vary)
+     * @param kV - velocity feedforward gain (units vary)
+     * @param kA - acceleration feedforward gain (units vary)
+     * @param kP - proportional gain (units vary)
+     * @param kI - integral gain (units vary)
+     * @param kD - derivative gain (units vary)
+     * @param kF - constant feedforward to apply (volts)
+     */
+    public void setPIDValues(double kS, double kV, double kA, double kP, double kI, double kD, double kF) {
         feedForward = kF;
         config.Slot0.kS = kS;
         config.Slot0.kV = kV;
@@ -329,7 +347,21 @@ public class Kraken {
         talon.getConfigurator().apply(config);
     }
 
-    public void setVelocityPIDValues(double kS, double kV, double kA, double kP, double kI, double kD, double kF, double kG, GravityTypeValue gravityType) {
+    /**
+     * set PID values for closed loop setpoint control (with kG gravity feedforward)
+     * @param kS - static feedforward gain to overcome static friction (units vary)
+     * @param kV - velocity feedforward gain (units vary)
+     * @param kA - acceleration feedforward gain (units vary)
+     * @param kP - proportional gain (units vary)
+     * @param kI - integral gain (units vary)
+     * @param kD - derivative gain (units vary)
+     * @param kF - constant feedforward to apply (volts)
+     * @param kG - gravity feedforward/feedback gain (units vary). This is added to the closed loop output. The sign is determined by GravityType. The unit for this constant is dependent on the control mode, typically fractional duty cycle, voltage, or torque current.
+     * @param gravityType - This determines the type of the gravity feedforward/feedback. 
+     *                      <p> Choose Elevator_Static for systems where the gravity feedforward is constant, such as an elevator. The gravity feedforward output will always have the same sign.
+     *                      <p> Choose Arm_Cosine for systems where the gravity feedback is dependent on the angular position of the mechanism, such as an arm. The gravity feedback output will vary depending on the mechanism angular position. Note that the sensor offset and ratios must be configured so that the sensor reports a position of 0 when the mechanism is horizonal (parallel to the ground), and the reported sensor position is 1:1 with the mechanism.
+     */
+    public void setPIDValues(double kS, double kV, double kA, double kP, double kI, double kD, double kF, double kG, GravityTypeValue gravityType) {
         // TODO: update kraken methods to include kG, cosine mode
         config.Slot0.GravityType = gravityType;
 
@@ -344,7 +376,31 @@ public class Kraken {
         talon.getConfigurator().apply(config);
     }
 
-    public void setVelocityPIDValues(double kS, double kV, double kA, double kP, double kI, double kD, double kF, StaticFeedforwardSignValue feedforwardSign) {
+    /**
+     * set PID values for closed loop setpoint control (with kS feedforward sign)
+     * @param kS - static feedforward gain to overcome static friction (units vary)
+     * @param kV - velocity feedforward gain (units vary)
+     * @param kA - acceleration feedforward gain (units vary)
+     * @param kP - proportional gain (units vary)
+     * @param kI - integral gain (units vary)
+     * @param kD - derivative gain (units vary)
+     * @param kF - constant feedforward to apply (volts)
+     * @param feedforwardSign - Static Feedforward Sign during position closed loop.
+     *                          <p>
+     *                          This determines the sign of the applied kS during position
+     *                          closed-loop modes. The default behavior uses the velocity reference
+     *                          sign. This works well with velocity closed loop, Motion Magic®
+     *                          controls, and position closed loop when velocity reference is
+     *                          specified (motion profiling).
+     *                          <p>
+     *                          However, when using position closed loop with zero velocity
+     *                          reference (no motion profiling), the application may want to apply
+     *                          static feedforward based on the sign of closed loop error instead.
+     *                          When doing so, we recommend using the minimal amount of kS,
+     *                          otherwise the motor output may dither when closed loop error is
+     *                          near zero.
+     */
+    public void setPIDValues(double kS, double kV, double kA, double kP, double kI, double kD, double kF, StaticFeedforwardSignValue feedforwardSign) {
         // TODO: update kraken methods to include kG, cosine mode
         config.Slot0.StaticFeedforwardSign = feedforwardSign;
 
@@ -388,20 +444,30 @@ public class Kraken {
      *   -----------------------------------------------------------------
      */
 
-    // set the SensorToMechanismRatio - used for converting sensor (encoder)
-    // rotations to mechanism rotations
+    /**
+     * Set the SensorToMechanismRatio - used for converting sensor (encoder) rotations to mechanism rotations
+     * @param conversionFactor - sensor (encoder) rotation to mechanism rotation ratio
+     */
     public void setSensorToMechanismRatio(double conversionFactor) {
         config.Feedback.SensorToMechanismRatio = conversionFactor;
         talon.getConfigurator().apply(config);
     }
 
     // set velocity conversion factor based on gear ratio
+    /**
+     * set velocity conversion factor based on gear ratio 
+     * @param conversionFactor - velocity to gear ratio factor (UNITS VARY, ie: may be from rotor to meters/s for swerve control)
+     */
     public void setVelocityConversionFactor(double conversionFactor) {
         velocityConversionFactor = conversionFactor;
     }
 
     // Used for FusedCANcoder, set the ratio of motor rotor rotations to rotations
     // of sensor (CANcoder)
+    /**
+     * Set the ratio of motor rotor rotations to sensor rotations (used for FusedCANcoder mode - motor rotor to CANcoder rotations)
+     * @param conversionFactor - motor rotor rotation to sensor rotation ratio
+     */
     public void setRotorToSensorRatio(double conversionRatio) {
         config.Feedback.RotorToSensorRatio = conversionRatio;
         talon.getConfigurator().apply(config);
@@ -409,6 +475,9 @@ public class Kraken {
 
     
     // Sets the motor to its neutral mode, doesn't pull any current
+    /**
+     * Set the motor to its neutral mode, with neutral output and no current draw 
+     */
     public void setNeutralControl(){
         final NeutralOut request = new NeutralOut();
         talon.setControl(request);

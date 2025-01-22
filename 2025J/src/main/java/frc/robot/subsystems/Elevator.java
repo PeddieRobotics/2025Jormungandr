@@ -41,11 +41,11 @@ public class Elevator extends SubsystemBase {
         elevatorMainMotor.setBrake();
         elevatorFollowerMotor.setBrake();
 
-        elevatorMainMotor.setVelocityPIDValues(ElevatorConstants.kS, ElevatorConstants.kV,
+        elevatorMainMotor.setPIDValues(ElevatorConstants.kS, ElevatorConstants.kV,
                 ElevatorConstants.kA,
                 ElevatorConstants.kP, ElevatorConstants.kI, ElevatorConstants.kD,
                 ElevatorConstants.kFF);
-        elevatorFollowerMotor.setVelocityPIDValues(ElevatorConstants.kS, ElevatorConstants.kV,
+        elevatorFollowerMotor.setPIDValues(ElevatorConstants.kS, ElevatorConstants.kV,
                 ElevatorConstants.kA,
                 ElevatorConstants.kP, ElevatorConstants.kI, ElevatorConstants.kD,
                 ElevatorConstants.kFF);
@@ -185,11 +185,11 @@ public class Elevator extends SubsystemBase {
 
     @Override
     public void periodic() {
-        elevatorMainMotor.setVelocityPIDValues(kS.get(), kV.get(),
+        elevatorMainMotor.setPIDValues(kS.get(), kV.get(),
             kA.get(),
             kP.get(), kI.get(), kD.get(),
             kFF.get());
-        elevatorFollowerMotor.setVelocityPIDValues(kS.get(), kV.get(),
+        elevatorFollowerMotor.setPIDValues(kS.get(), kV.get(),
             kA.get(),
             kP.get(), kI.get(), kD.get(),
             kFF.get());
