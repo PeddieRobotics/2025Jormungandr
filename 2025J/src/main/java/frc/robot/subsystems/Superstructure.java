@@ -756,6 +756,10 @@ public class Superstructure extends SubsystemBase {
         break;
 
       case REEF1_INTAKE:
+        if (algaeIndex) {
+          requestState(SuperstructureState.STOW);
+        } 
+        
         if (requestedSystemState == SuperstructureState.STOW){
           nextSystemState = requestedSystemState;
         } else if (requestedSystemState == SuperstructureState.HP_INTAKE) {
@@ -787,9 +791,13 @@ public class Superstructure extends SubsystemBase {
         break;
 
       case REEF2_INTAKE:
+        if (algaeIndex) {
+          requestState(SuperstructureState.STOW);
+        } 
+        
         if (requestedSystemState == SuperstructureState.STOW){
           nextSystemState = requestedSystemState;
-        }else if (requestedSystemState == SuperstructureState.HP_INTAKE) {
+        } else if (requestedSystemState == SuperstructureState.HP_INTAKE) {
           nextSystemState = requestedSystemState;
         } else if (requestedSystemState == SuperstructureState.CORAL_GROUND_INTAKE) {
           nextSystemState = requestedSystemState;
