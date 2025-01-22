@@ -246,7 +246,12 @@ public class Kraken {
         return config.MotionMagic.MotionMagicCruiseVelocity;
     }
 
-    // set forward and backward soft limits
+    /** 
+     * Set forward and reverse soft limits on motor
+     * @param enableSoftLimit - enable (true) or disable (false) soft limits
+     * @param forwardLimitValue - forward motor rotation limit (post conversion factors))
+     * @param reverseLimitValue - reverse motor rotation limit (post conversion factors))
+     */
     public void setSoftLimits(boolean enableSoftLimit, double forwardLimitValue, double reverseLimitValue) {
 
         if (enableSoftLimit) {
@@ -262,19 +267,27 @@ public class Kraken {
         talon.getConfigurator().apply(config);
     }
 
-    // allows for continuous wrap of encoder - finds the shortest path to target
-    // position
+    /** 
+     * Set motor encoder to wrap position error within [-0.5,+0.5) mechanism rotations. 
+     * Typically used for continuous position closed-loops like swerve azimuth. (depends on feedback device)
+     */
     public void setContinuousOutput() {
         config.ClosedLoopGeneral.ContinuousWrap = true;
         talon.getConfigurator().apply(config);
     }
 
-    // reset encoder value to 0
+    /**
+     * set mechanism position of motor encoder to 0
+     */
     public void resetEncoder() {
         talon.getConfigurator().setPosition(0);
     }
 
-    // set the motor in open loop control using percent output
+    // should we rename this to proportion output???
+    /**
+     * Set motor in open loop control to percent output. This control mode will output a given proportion of supply voltage.
+     * @param percentOutput - Proportion of supply voltage to apply to motor [-1.0,1.0]
+     */
     public void setPercentOutput(double percentOutput) {
         final DutyCycleOut request = new DutyCycleOut(0);
         // Ensure the percentOutput is within the acceptable range [-1.0, 1.0]
@@ -285,8 +298,11 @@ public class Kraken {
 
     }
 
-    // set motor to follow a different motor
-    // set if motor needs to be inverted when following master motor
+    /**
+     * Set a motor to follow a different (master) motor
+     * @param masterCANId - CAN ID of master motor to follow
+     * @param inverted - Set to false for motor invert to match the master's configured Invert - which is typical when master and follower are mechanically linked and spin in the same direction. Set to true for motor invert to oppose the master's configured Invert - this is typical where the the master and follower mechanically spin in opposite directions.
+     */
     public void setFollower(int masterCANId, boolean inverted) {
         talon.setControl(new Follower(masterCANId, inverted));
     }
