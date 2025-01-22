@@ -32,9 +32,8 @@ public class OperatorOI {
 
     public void configureController() {
 
-
-        // READ: Press FN + X on the PS5 edge controller to activate the 2025 binding profile
-
+        // READ: Press FN + X on the PS5 edge controller to activate the 2025 binding
+        // profile
 
         controller = new PS4Controller(1);
 
@@ -58,12 +57,17 @@ public class OperatorOI {
             }
         }));
 
-        // If L3 held, sets to BARGE_PREP--- If L3 is NOT held, sets to L4_PREP
+        // If L3 held, sets to BARGE_PRESTAGE--- If L3 is NOT held, sets to L4_PREP
         Trigger triangleButton = new JoystickButton(controller, PS4Controller.Button.kTriangle.value);
         triangleButton.onTrue(new InstantCommand(() -> {
             if (L3Held()) {
-                superstructure.requestState(SuperstructureState.BARGE_PREP);
-            } else if (superstructure.getCurrentState() != SuperstructureState.L3L4_PRESTAGE && superstructure.getCurrentState() != SuperstructureState.L4_PREP){
+                if (superstructure.getCurrentState() != SuperstructureState.BARGE_PRESTAGE && superstructure.getCurrentState() != SuperstructureState.BARGE_PREP) {
+                    superstructure.requestState(SuperstructureState.BARGE_PRESTAGE);
+                } else {
+                    superstructure.requestState(SuperstructureState.BARGE_PREP);
+                }
+            } else if (superstructure.getCurrentState() != SuperstructureState.L3L4_PRESTAGE
+                    && superstructure.getCurrentState() != SuperstructureState.L4_PREP) {
                 superstructure.requestState(SuperstructureState.L3L4_PRESTAGE);
             } else {
                 superstructure.requestState(SuperstructureState.L4_PREP);
@@ -75,7 +79,8 @@ public class OperatorOI {
         squareButton.onTrue(new InstantCommand(() -> {
             if (L3Held()) {
                 superstructure.requestState(SuperstructureState.REEF2_INTAKE);
-            } else if (superstructure.getCurrentState() != SuperstructureState.L3L4_PRESTAGE && superstructure.getCurrentState() != SuperstructureState.L3_PREP){
+            } else if (superstructure.getCurrentState() != SuperstructureState.L3L4_PRESTAGE
+                    && superstructure.getCurrentState() != SuperstructureState.L3_PREP) {
                 superstructure.requestState(SuperstructureState.L3L4_PRESTAGE);
             } else {
                 superstructure.requestState(SuperstructureState.L3_PREP);
@@ -97,12 +102,14 @@ public class OperatorOI {
 
         // Set to CLIMB_PREP
         Trigger L1Bumper = new JoystickButton(controller, PS4Controller.Button.kL1.value);
-        //L1Bumper.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.CLIMB_PREP)));
+        // L1Bumper.onTrue(new InstantCommand(() ->
+        // superstructure.requestState(SuperstructureState.CLIMB_PREP)));
 
-        //Set to CLIMB
+        // Set to CLIMB
         Trigger R1Bumper = new JoystickButton(controller, PS4Controller.Button.kR1.value);
-        //R1Bumper.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.CLIMB)));
-        
+        // R1Bumper.onTrue(new InstantCommand(() ->
+        // superstructure.requestState(SuperstructureState.CLIMB)));
+
         Trigger L2Trigger = new JoystickButton(controller, PS4Controller.Button.kL2.value);
 
         Trigger R2Trigger = new JoystickButton(controller, PS4Controller.Button.kR2.value);
@@ -168,23 +175,23 @@ public class OperatorOI {
     }
 
     // public double getLeftForward() {
-    //     double input = -controller.getRawAxis(PS4Controller.Axis.kLeftY.value);
-    //     if (Math.abs(input) < OIConstants.kDrivingDeadband) {
-    //         input = 0;
-    //     } else {
-    //         input *= 0.7777;
-    //     }
-    //     return input;
+    // double input = -controller.getRawAxis(PS4Controller.Axis.kLeftY.value);
+    // if (Math.abs(input) < OIConstants.kDrivingDeadband) {
+    // input = 0;
+    // } else {
+    // input *= 0.7777;
+    // }
+    // return input;
     // }
 
     // public double getRightForward() {
-    //     double input = -controller.getRawAxis(PS4Controller.Axis.kRightY.value);
-    //     if (Math.abs(input) < OIConstants.kDrivingDeadband) {
-    //         input = 0;
-    //     } else {
-    //         input *= 0.7777;
-    //     }
-    //     return input;
+    // double input = -controller.getRawAxis(PS4Controller.Axis.kRightY.value);
+    // if (Math.abs(input) < OIConstants.kDrivingDeadband) {
+    // input = 0;
+    // } else {
+    // input *= 0.7777;
+    // }
+    // return input;
     // }
 
 }
