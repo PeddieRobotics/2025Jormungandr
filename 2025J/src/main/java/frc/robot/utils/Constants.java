@@ -127,6 +127,19 @@ public final class Constants {
     public static final double kElevatorL2Height = 0.0;
     public static final double kElevatorL3Height = 0.0;
     public static final double kElevatorL4Height = 0.0;
+    
+    public static final double L1Setpoint = 0.0;
+    public static final double L2Setpoint = 0.0;
+    public static final double L3Setpoint = 0.0;
+    public static final double L4Setpoint = 0.0;
+
+    public static final double HPIntakeSetpoint = 0.0;
+    public static final double stowSetpoint = 0.0;
+
+    public static final double bargeSetpoint = 0.0;
+    public static final double algaeL1Setpoint = 0.0;
+    public static final double algaeL2Setpoint = 0.0;
+    public static final double processorSetpoint = 0.0;
   }
 
 
@@ -181,6 +194,19 @@ public final class Constants {
     public static final double kArmL4ScoreAngle = 0.0;
 
     public static final double kArmL4PrepAngle = 0.0; //only l4
+    public static final double L1Setpoint = 0.0;
+    public static final double L2Setpoint = 0.0;
+    public static final double L3Setpoint = 0.0;
+    public static final double L4Setpoint = 0.0;
+
+    public static final double HPIntakeSetpoint = 0.0;
+    public static final double stowSetpoint = 0.0;
+
+    public static final double bargeSetpoint = 0.0;
+    public static final double algaeL1Setpoint = 0.0;
+    public static final double algaeL2Setpoint = 0.0;
+    public static final double processorSetpoint = 0.0;
+
 
   }
 

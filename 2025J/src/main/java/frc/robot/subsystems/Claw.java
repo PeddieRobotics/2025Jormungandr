@@ -1,5 +1,6 @@
 package frc.robot.subsystems;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.utils.Constants.ClawConstants;
 import frc.robot.utils.Kraken;
@@ -16,6 +17,8 @@ public class Claw extends SubsystemBase{
         clawMotor.setInverted(false);
         clawMotor.setSupplyCurrentLimit(ClawConstants.kClawCurrentLimit);
         clawMotor.setBrake();
+
+        SmartDashboard.putBoolean("hasGamePiece", false);
     }
 
     public static Claw getInstance(){
