@@ -7,6 +7,7 @@ package frc.robot;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.utils.TunableConstant;
 
 /**
  * The methods in this class are called automatically corresponding to each mode, as described in
@@ -42,6 +43,7 @@ public class Robot extends TimedRobot {
     // and running subsystem periodic() methods.  This must be called from the robot's periodic
     // block in order for anything in the Command-based framework to work.
     CommandScheduler.getInstance().run();
+    TunableConstant.updateTunableConstants();
   }
 
   /** This function is called once each time the robot enters Disabled mode. */
