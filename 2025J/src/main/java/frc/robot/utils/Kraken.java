@@ -287,7 +287,7 @@ public class Kraken {
         talon.getConfigurator().setPosition(0);
     }
 
-    // should we rename this to proportion output???
+    // TODO: should we rename this to proportion output???
     /**
      * Set motor in open loop control to percent output. This control mode will output a given proportion of supply voltage.
      * @param percentOutput - Proportion of supply voltage to apply to motor [-1.0,1.0]
@@ -362,7 +362,6 @@ public class Kraken {
      *                      <p> Choose Arm_Cosine for systems where the gravity feedback is dependent on the angular position of the mechanism, such as an arm. The gravity feedback output will vary depending on the mechanism angular position. Note that the sensor offset and ratios must be configured so that the sensor reports a position of 0 when the mechanism is horizonal (parallel to the ground), and the reported sensor position is 1:1 with the mechanism.
      */
     public void setPIDValues(double kS, double kV, double kA, double kP, double kI, double kD, double kF, double kG, GravityTypeValue gravityType) {
-        // TODO: update kraken methods to include kG, cosine mode
         config.Slot0.GravityType = gravityType;
 
         feedForward = kF;
@@ -401,7 +400,6 @@ public class Kraken {
      *                          near zero.
      */
     public void setPIDValues(double kS, double kV, double kA, double kP, double kI, double kD, double kF, StaticFeedforwardSignValue feedforwardSign) {
-        // TODO: update kraken methods to include kG, cosine mode
         config.Slot0.StaticFeedforwardSign = feedforwardSign;
 
         feedForward = kF;
@@ -453,7 +451,6 @@ public class Kraken {
         talon.getConfigurator().apply(config);
     }
 
-    // set velocity conversion factor based on gear ratio
     /**
      * set velocity conversion factor based on gear ratio 
      * @param conversionFactor - velocity to gear ratio factor (UNITS VARY, ie: may be from rotor to meters/s for swerve control)
@@ -462,8 +459,6 @@ public class Kraken {
         velocityConversionFactor = conversionFactor;
     }
 
-    // Used for FusedCANcoder, set the ratio of motor rotor rotations to rotations
-    // of sensor (CANcoder)
     /**
      * Set the ratio of motor rotor rotations to sensor rotations (used for FusedCANcoder mode - motor rotor to CANcoder rotations)
      * @param conversionFactor - motor rotor rotation to sensor rotation ratio
@@ -473,8 +468,6 @@ public class Kraken {
         talon.getConfigurator().apply(config);
     }
 
-    
-    // Sets the motor to its neutral mode, doesn't pull any current
     /**
      * Set the motor to its neutral mode, with neutral output and no current draw 
      */
@@ -555,7 +548,6 @@ public class Kraken {
         talon.setControl(request.withPosition(position).withFeedForward(feedForward));
     }
 
-    // set the feedback device of motor - often for using external CANcoders
     /**
      * set the feedback device of motor - often for using external encoder (ie: CANcoders)
      * @param deviceID - device ID of remote device to use. This is not used if the Sensor Source is the internal rotor sensor.
@@ -620,15 +612,13 @@ public class Kraken {
         return talon.getStatorCurrent().getValueAsDouble();
     }
 
-    //get torque current (for torqueCurrent control modes)
     /**
-     * @return current corresponding to the torque output of the motor (sort of similar to stator) (amps)
+     * @return current corresponding to the torque output of the motor (sort of similar to stator)(for torqueCurrenFOC control modes)(amps)
      */
     public double getTorqueCurrent(){
         return talon.getTorqueCurrent().getValueAsDouble();
     }
 
-    // get the temperature of the motor
     /**
      * @return temperature of motor (celcius)
      */
@@ -636,10 +626,8 @@ public class Kraken {
         return talon.getDeviceTemp().getValueAsDouble();
     }
 
-    // put motor canID and CANbus name to Smart Dashboard?? Not quite sure what this
-    // is really supposed to do
     /**
-     * put info about motor onto smart dashboard, including CANbus name and device CANId
+     * put info about motor onto smart dashboard, including CANbus name and device CANId (diagnostics)
      */
     public void updateSmartdashBoard() {
         SmartDashboard.putNumber(canbusName + " " + deviceID + " motor", 1);
