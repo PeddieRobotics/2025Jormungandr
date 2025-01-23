@@ -613,7 +613,7 @@ public class Kraken {
     }
 
     /**
-     * @return current used by stator windows of motor (motor current draw). 
+     * @return current used by stator windings of motor (motor/torque current draw). 
      * Stator current where Positive current indicates motoring regardless of direction. Negative current indicates regenerative braking regardless of direction.
      */
     public double getStatorCurrent() {
@@ -621,17 +621,26 @@ public class Kraken {
     }
 
     //get torque current (for torqueCurrent control modes)
+    /**
+     * @return current corresponding to the torque output of the motor (sort of similar to stator) (amps)
+     */
     public double getTorqueCurrent(){
         return talon.getTorqueCurrent().getValueAsDouble();
     }
 
     // get the temperature of the motor
+    /**
+     * @return temperature of motor (celcius)
+     */
     public double getMotorTemperature() {
         return talon.getDeviceTemp().getValueAsDouble();
     }
 
     // put motor canID and CANbus name to Smart Dashboard?? Not quite sure what this
     // is really supposed to do
+    /**
+     * put info about motor onto smart dashboard, including CANbus name and device CANId
+     */
     public void updateSmartdashBoard() {
         SmartDashboard.putNumber(canbusName + " " + deviceID + " motor", 1);
     }
