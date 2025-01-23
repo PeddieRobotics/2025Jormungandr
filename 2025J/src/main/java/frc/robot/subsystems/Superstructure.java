@@ -174,11 +174,11 @@ public class Superstructure extends SubsystemBase {
           nextSystemState = requestedSystemState;
         } else if (requestedSystemState == SuperstructureState.L1_PREP) {
           nextSystemState = requestedSystemState;
+        } else if (requestedSystemState == SuperstructureState.L2_PREP) {
+          nextSystemState = requestedSystemState;
         } else if (requestedSystemState == SuperstructureState.HP_INTAKE) {
           nextSystemState = requestedSystemState;
         } else if (requestedSystemState == SuperstructureState.ALGAE_GROUND_INTAKE) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.L2_PREP) {
           nextSystemState = requestedSystemState;
         } else if (requestedSystemState == SuperstructureState.L3L4_PRESTAGE) {
           nextSystemState = requestedSystemState;
