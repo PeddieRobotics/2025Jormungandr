@@ -3,7 +3,7 @@ package frc.robot.subsystems;
 import frc.robot.utils.Constants;
 
 public class LimelightFrontLeft extends Limelight {
-    private static LimelightBack limelightFrontLeft;
+    private static LimelightFrontLeft limelightFrontLeft;
 
     public LimelightFrontLeft() {
         super("limelight-front-left",
@@ -14,9 +14,9 @@ public class LimelightFrontLeft extends Limelight {
         
     }
 
-    public static LimelightBack getInstance() {
+    public static LimelightFrontLeft getInstance() {
         if (limelightFrontLeft == null)
-            limelightFrontLeft = new LimelightBack();
+            limelightFrontLeft = new LimelightFrontLeft();
         return limelightFrontLeft;
     }
 

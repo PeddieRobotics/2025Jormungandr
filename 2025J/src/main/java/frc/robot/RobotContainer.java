@@ -16,6 +16,9 @@ import frc.robot.subsystems.HPIntake;
 import frc.robot.subsystems.Superstructure;
 import frc.robot.utils.DriverOI;
 import frc.robot.utils.OperatorOI;
+import frc.robot.subsystems.LimelightBack;
+import frc.robot.subsystems.LimelightFrontLeft;
+import frc.robot.subsystems.LimelightFrontRight;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
