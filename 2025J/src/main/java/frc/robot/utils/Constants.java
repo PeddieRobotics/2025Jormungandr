@@ -4,6 +4,9 @@
 
 package frc.robot.utils;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.util.Units;
@@ -215,8 +218,6 @@ public final class Constants {
     public static final double algaeL1Setpoint = 0.0;
     public static final double algaeL2Setpoint = 0.0;
     public static final double processorSetpoint = 0.0;
-
-
   }
 
   public static final class ClawConstants {
@@ -225,5 +226,47 @@ public final class Constants {
 
     public static final double kClawIntakeSpeed = 0.0;
     public static final double kClawOuttakeSpeed = 0.0;
+  }
+
+  public static final class LimelightConstants {
+    public static final double kLimelightBackHeight = 0;
+    public static final double kLimelightBackPanningAngle = 0;
+    
+    public static final double kLimelightFrontLeftHeight = 0;
+    public static final double kLimelightFrontLeftPanningAngle = 0;
+    
+    public static final double kLimelightFrontRightHeight = 0;
+    public static final double kLimelightFrontRightPanningAngle = 0;
+  }
+  
+  public static final class FieldConstants {
+    public static final Map<Integer, Double> kAprilTagHeights = new HashMap<>() {{
+      put(1, 58.5);
+      put(2, 58.5);
+      put(12, 58.5);
+      put(13, 58.5);
+
+      put(3, 51.125);
+      put(16, 51.125);
+
+      put(4, 74.25);
+      put(5, 74.25);
+      put(14, 74.25);
+      put(15, 74.25);
+
+      put(6, 12.125);
+      put(7, 12.125);
+      put(8, 12.125);
+      put(9, 12.125);
+      put(10, 12.125);
+      put(11, 12.125);
+
+      put(17, 12.125);
+      put(18, 12.125);
+      put(19, 12.125);
+      put(20, 12.125);
+      put(21, 12.125);
+      put(22, 12.125);
+    }};
   }
 }

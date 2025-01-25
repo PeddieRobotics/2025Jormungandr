@@ -36,6 +36,9 @@ public class RobotContainer {
   private OperatorOI operatorOI;
   private Elevator elevator;
   private HPIntake hpIntake;
+  private LimelightBack limelightBack;
+  private LimelightFrontLeft limelightFrontLeft;
+  private LimelightFrontRight limelightFrontRight;
 
   public RobotContainer() {
     arm = Arm.getInstance();
@@ -47,6 +50,9 @@ public class RobotContainer {
     superstructure = Superstructure.getInstance();
     driverOI = DriverOI.getInstance();
     operatorOI = OperatorOI.getInstance();
+    limelightBack = LimelightBack.getInstance();
+    limelightFrontLeft = LimelightFrontLeft.getInstance();
+    limelightFrontRight = LimelightFrontRight.getInstance();
 
     SmartDashboard.putData("Auto Routines", autonomous.getAutoChooser());
     drivetrain.setDefaultCommand(new SwerveDriveCommand());
