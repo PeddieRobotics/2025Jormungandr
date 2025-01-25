@@ -34,13 +34,22 @@ public class Drivetrain extends SubsystemBase {
   private double heading;
 
   public Drivetrain() {
-    frontLeftModule = new SwerveModule(RobotMap.CANIVORE_NAME, RobotMap.FRONT_LEFT_MODULE_DRIVE_ID, RobotMap.FRONT_LEFT_MODULE_TURN_ID, RobotMap.FRONT_LEFT_MODULE_CANCODER_ID, DriveConstants.kFrontLeftCancoderOffset);
-    frontRightModule = new SwerveModule(RobotMap.CANIVORE_NAME, RobotMap.FRONT_RIGHT_MODULE_DRIVE_ID, RobotMap.FRONT_RIGHT_MODULE_TURN_ID, RobotMap.FRONT_RIGHT_MODULE_CANCODER_ID, DriveConstants.kFrontRightCancoderOffset);
-    backLeftModule = new SwerveModule(RobotMap.CANIVORE_NAME, RobotMap.BACK_LEFT_MODULE_DRIVE_ID, RobotMap.BACK_LEFT_MODULE_TURN_ID, RobotMap.BACK_LEFT_MODULE_CANCODER_ID, DriveConstants.kBackLeftCancoderOffset);
-    backRightModule = new SwerveModule(RobotMap.CANIVORE_NAME, RobotMap.BACK_RIGHT_MODULE_DRIVE_ID, RobotMap.BACK_RIGHT_MODULE_TURN_ID, RobotMap.BACK_RIGHT_MODULE_CANCODER_ID, DriveConstants.kBackRightCancoderOffset);
+    frontLeftModule = new SwerveModule(RobotMap.CANIVORE_NAME, RobotMap.FRONT_LEFT_MODULE_DRIVE_ID,
+        RobotMap.FRONT_LEFT_MODULE_TURN_ID, RobotMap.FRONT_LEFT_MODULE_CANCODER_ID,
+        DriveConstants.kFrontLeftCancoderOffset);
+    frontRightModule = new SwerveModule(RobotMap.CANIVORE_NAME, RobotMap.FRONT_RIGHT_MODULE_DRIVE_ID,
+        RobotMap.FRONT_RIGHT_MODULE_TURN_ID, RobotMap.FRONT_RIGHT_MODULE_CANCODER_ID,
+        DriveConstants.kFrontRightCancoderOffset);
+    backLeftModule = new SwerveModule(RobotMap.CANIVORE_NAME, RobotMap.BACK_LEFT_MODULE_DRIVE_ID,
+        RobotMap.BACK_LEFT_MODULE_TURN_ID, RobotMap.BACK_LEFT_MODULE_CANCODER_ID,
+        DriveConstants.kBackLeftCancoderOffset);
+    backRightModule = new SwerveModule(RobotMap.CANIVORE_NAME, RobotMap.BACK_RIGHT_MODULE_DRIVE_ID,
+        RobotMap.BACK_RIGHT_MODULE_TURN_ID, RobotMap.BACK_RIGHT_MODULE_CANCODER_ID,
+        DriveConstants.kBackRightCancoderOffset);
 
     swerveModules = new SwerveModule[] { frontLeftModule, frontRightModule, backLeftModule, backRightModule };
-    swerveModulePositions = new SwerveModulePosition[] { frontLeftModule.getPosition(), frontRightModule.getPosition(), backLeftModule.getPosition(), backRightModule.getPosition() };
+    swerveModulePositions = new SwerveModulePosition[] { frontLeftModule.getPosition(), frontRightModule.getPosition(),
+        backLeftModule.getPosition(), backRightModule.getPosition() };
     swerveModuleStates = DriveConstants.kinematics.toSwerveModuleStates(new ChassisSpeeds(0, 0, 0));
 
     gyro = new Pigeon2(RobotMap.GYRO_ID, RobotMap.CANIVORE_NAME);
@@ -70,6 +79,9 @@ public class Drivetrain extends SubsystemBase {
     });
   }
 
+  /**
+   * returns the existing drivetrain instance or creates it if it doesn't exist
+   */
   public static Drivetrain getInstance() {
     if (instance == null) {
       instance = new Drivetrain();
@@ -77,6 +89,14 @@ public class Drivetrain extends SubsystemBase {
     return instance;
   }
 
+  /**
+   * commands the robot to drive
+   * 
+   * @param translation - translation input (x,y meters/sec in field space)
+   * @param rotation - rotation input (degrees/sec)
+   * @param fieldOriented - whether the robot is field oriented (true) or robot oriented (false)
+   * @param centerOfRotation - robot's center of rotation
+   */
   public void drive(Translation2d translation, double rotation, boolean fieldOriented, Translation2d centerOfRotation) {
     ChassisSpeeds fieldRelativeSpeeds = new ChassisSpeeds(translation.getX(), translation.getY(), rotation);
 
@@ -93,7 +113,7 @@ public class Drivetrain extends SubsystemBase {
     setSwerveModuleStates(swerveModuleStates);
   }
 
-  public void driveRobotRelative(ChassisSpeeds robotRelativeSpeeds){
+  public void driveRobotRelative(ChassisSpeeds robotRelativeSpeeds) {
     swerveModuleStates = DriveConstants.kinematics.toSwerveModuleStates(robotRelativeSpeeds);
     setSwerveModuleStates(swerveModuleStates);
   }
@@ -110,7 +130,7 @@ public class Drivetrain extends SubsystemBase {
     }
   }
 
-  public void updateOdometry(){
+  public void updateOdometry() {
     odometry.update(getHeadingAsRotation2d(), swerveModulePositions);
   }
 
@@ -125,7 +145,7 @@ public class Drivetrain extends SubsystemBase {
     return Math.IEEEremainder(heading, 360);
   }
 
-  public void resetGyro(){
+  public void resetGyro() {
     gyro.reset();
   }
 
@@ -133,25 +153,22 @@ public class Drivetrain extends SubsystemBase {
     return gyro.getRotation2d();
   }
 
-  public Pose2d getPose(){
+  public Pose2d getPose() {
     return odometry.getEstimatedPosition();
   }
 
-  public void resetPose(Pose2d pose){
+  public void resetPose(Pose2d pose) {
     gyro.reset();
     odometry.resetPosition(getHeadingAsRotation2d(), swerveModulePositions, pose);
   }
 
-  public ChassisSpeeds getRobotRelativeSpeeds(){
+  public ChassisSpeeds getRobotRelativeSpeeds() {
     return DriveConstants.kinematics.toChassisSpeeds(
-                                                      frontLeftModule.getState(), 
-                                                      frontRightModule.getState(), 
-                                                      backLeftModule.getState(), 
-                                                      backRightModule.getState()
-                                                    );
+        frontLeftModule.getState(),
+        frontRightModule.getState(),
+        backLeftModule.getState(),
+        backRightModule.getState());
   }
-
-
 
   @Override
   public void periodic() {

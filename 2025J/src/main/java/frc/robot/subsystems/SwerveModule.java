@@ -44,8 +44,12 @@ public class SwerveModule extends SubsystemBase {
     driveMotor.setInverted(true);
     steerMotor.setInverted(true);
 
-    driveMotor.setSupplyCurrentLimit(ModuleConstants.kDriveMotorCurrentLimit);
-    steerMotor.setSupplyCurrentLimit(ModuleConstants.kSteerMotorCurrentLimit);
+    driveMotor.setSupplyCurrentLimit(ModuleConstants.kDriveMotorSupplyCurrentLimit);
+    steerMotor.setSupplyCurrentLimit(ModuleConstants.kSteerMotorSupplyCurrentLimit);
+
+    //TODO: find these values
+    //driveMotor.setStatorCurrentLimit(ModuleConstants.kDriveMotorStatorCurrentLimit);
+    //steerMotor.setStatorCurrentLimit(ModuleConstants.kSteerMotorStatorCurrentLimit);
 
     driveMotor.setBrake();
     steerMotor.setBrake();
@@ -66,9 +70,9 @@ public class SwerveModule extends SubsystemBase {
     steerMotor.setRotorToSensorRatio(ModuleConstants.kSteerMotorReduction);
     steerMotor.setSensorToMechanismRatio(1.0);
 
-    driveMotor.setVelocityPIDValues(ModuleConstants.kDriveS, ModuleConstants.kDriveV, ModuleConstants.kDriveA, 
+    driveMotor.setPIDValues(ModuleConstants.kDriveS, ModuleConstants.kDriveV, ModuleConstants.kDriveA, 
                                     ModuleConstants.kDriveP, ModuleConstants.kDriveI, ModuleConstants.kDriveD, ModuleConstants.kDriveFF);
-    steerMotor.setVelocityPIDValues(ModuleConstants.kSteerS, ModuleConstants.kSteerV, ModuleConstants.kSteerA, 
+    steerMotor.setPIDValues(ModuleConstants.kSteerS, ModuleConstants.kSteerV, ModuleConstants.kSteerA, 
                                     ModuleConstants.kSteerP, ModuleConstants.kSteerI, ModuleConstants.kSteerD, ModuleConstants.kSteerFF, StaticFeedforwardSignValue.UseClosedLoopSign);
   }
 
@@ -113,8 +117,8 @@ public class SwerveModule extends SubsystemBase {
     SmartDashboard.putNumber(steerCANId + " optimized desired angle", desiredAngle);
     SmartDashboard.putNumber(CANCoderId + " cancoder position", getCANCoderReading());
 
-    driveMotor.setVelocityWithFeedForward(desiredVelocity);
-    steerMotor.setPositionWithFeedForward(desiredAngle);
+    driveMotor.setVelocityVoltageWithFeedForward(desiredVelocity);
+    steerMotor.setPositionVoltageWithFeedForward(desiredAngle);
   }
 
 

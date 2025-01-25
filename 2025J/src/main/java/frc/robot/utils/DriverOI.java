@@ -18,12 +18,13 @@ public class DriverOI {
     private static DriverOI instance;
     private Superstructure superstructure;
     private PS4Controller controller;
-    
+
     public DriverOI() {
         controller = new PS4Controller(0);
 
         superstructure = Superstructure.getInstance();
         configureController();
+
     }
 
     public static DriverOI getInstance() {
@@ -35,9 +36,8 @@ public class DriverOI {
 
     public void configureController() {
 
-
-        // READ: Press FN + X on the PS5 edge controller to activate the 2025 binding profile
-
+        // READ: Press FN + X on the PS5 edge controller to activate the 2025 binding
+        // profile
 
         controller = new PS4Controller(0);
 
@@ -64,7 +64,8 @@ public class DriverOI {
 
         // Set to GROUND_INTAKE (Coral or Algae)
         Trigger L1Bumper = new JoystickButton(controller, PS4Controller.Button.kL1.value);
-        // L1Bumper.whileTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.CORAL_GROUND_INTAKE)));
+        // L1Bumper.whileTrue(new InstantCommand(() ->
+        // superstructure.requestState(SuperstructureState.CORAL_GROUND_INTAKE)));
         L1Bumper.onTrue(new InstantCommand(() -> {
             if (OperatorOI.getInstance().R3Held()) {
                 superstructure.requestState(SuperstructureState.ALGAE_GROUND_INTAKE);
@@ -75,7 +76,7 @@ public class DriverOI {
         // Send to score
         Trigger R1Bumper = new JoystickButton(controller, PS4Controller.Button.kR1.value);
         R1Bumper.onTrue(new InstantCommand(() -> superstructure.sendToScore()));
-        
+
         Trigger L2Trigger = new JoystickButton(controller, PS4Controller.Button.kL2.value);
 
         Trigger R2Trigger = new JoystickButton(controller, PS4Controller.Button.kR2.value);
@@ -86,7 +87,8 @@ public class DriverOI {
 
         // Set to CLIMB
         Trigger R3Trigger = new JoystickButton(controller, PS4Controller.Button.kR3.value);
-        //R3Trigger.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.CLIMB)));
+        // R3Trigger.onTrue(new InstantCommand(() ->
+        // superstructure.requestState(SuperstructureState.CLIMB)));
 
         Trigger PSButton = new JoystickButton(controller, PS4Controller.Button.kPS.value);
         PSButton.onTrue(new InstantCommand(() -> Drivetrain.getInstance().resetGyro()));
@@ -145,28 +147,29 @@ public class DriverOI {
     }
 
     // public double getLeftForward() {
-    //     double input = -controller.getRawAxis(PS4Controller.Axis.kLeftY.value);
-    //     if (Math.abs(input) < OIConstants.kDrivingDeadband) {
-    //         input = 0;
-    //     } else {
-    //         input *= 0.7777;
-    //     }
-    //     return input;
+    // double input = -controller.getRawAxis(PS4Controller.Axis.kLeftY.value);
+    // if (Math.abs(input) < OIConstants.kDrivingDeadband) {
+    // input = 0;
+    // } else {
+    // input *= 0.7777;
+    // }
+    // return input;
     // }
 
     // public double getRightForward() {
-    //     double input = -controller.getRawAxis(PS4Controller.Axis.kRightY.value);
-    //     if (Math.abs(input) < OIConstants.kDrivingDeadband) {
-    //         input = 0;
-    //     } else {
-    //         input *= 0.7777;
-    //     }
-    //     return input;
+    // double input = -controller.getRawAxis(PS4Controller.Axis.kRightY.value);
+    // if (Math.abs(input) < OIConstants.kDrivingDeadband) {
+    // input = 0;
+    // } else {
+    // input *= 0.7777;
+    // }
+    // return input;
     // }
     public double getForward() {
         double val = -controller.getRawAxis(PS4Controller.Axis.kLeftY.value);
         return Math.abs(val) < 0.1 ? 0 : val;
     }
+
     public double getStrafe() {
         double val = -controller.getRawAxis(PS4Controller.Axis.kLeftX.value);
         return Math.abs(val) < 0.1 ? 0 : val;
