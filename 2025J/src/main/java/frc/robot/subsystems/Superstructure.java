@@ -562,7 +562,7 @@ public class Superstructure extends SubsystemBase {
         break;
 
       case L3L4_PRESTAGE:
-        elevator.setElevatorPositionMotionMagic(ElevatorConstants.kElevatorL3Height);
+        elevator.setElevatorPositionMotionMagicTorqueCurrentFOC(ElevatorConstants.kElevatorL3Height);
         if (requestedSystemState == SuperstructureState.STOW) {
           nextSystemState = requestedSystemState;
         } else if (requestedSystemState == SuperstructureState.HP_INTAKE) {
