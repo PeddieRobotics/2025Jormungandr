@@ -1,10 +1,7 @@
 package frc.robot.utils;
 
-import java.util.function.BooleanSupplier;
-
 import edu.wpi.first.wpilibj.PS4Controller;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -61,7 +58,8 @@ public class OperatorOI {
         Trigger triangleButton = new JoystickButton(controller, PS4Controller.Button.kTriangle.value);
         triangleButton.onTrue(new InstantCommand(() -> {
             if (L3Held()) {
-                if (superstructure.getCurrentState() != SuperstructureState.BARGE_PRESTAGE && superstructure.getCurrentState() != SuperstructureState.BARGE_PREP) {
+                if (superstructure.getCurrentState() != SuperstructureState.BARGE_PRESTAGE
+                        && superstructure.getCurrentState() != SuperstructureState.BARGE_PREP) {
                     superstructure.requestState(SuperstructureState.BARGE_PRESTAGE);
                 } else {
                     superstructure.requestState(SuperstructureState.BARGE_PREP);

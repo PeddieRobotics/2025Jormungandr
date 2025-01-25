@@ -1,9 +1,6 @@
 package frc.robot.utils;
 
-import java.util.function.BooleanSupplier;
-
 import edu.wpi.first.wpilibj.PS4Controller;
-import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
