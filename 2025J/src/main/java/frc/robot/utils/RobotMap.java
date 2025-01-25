@@ -32,5 +32,6 @@ public class RobotMap {
     public static final int CLAW_MOTOR_ID = 0;
     public static final int CLAW_SENSOR_ID = 0;
 
- 
+    public static final int RIGHT_CLIMBER_MOTOR_ID = 0;
+    public static final int LEFT_CLIMBER_MOTOR_ID = 0;
 }

@@ -226,4 +226,11 @@ public final class Constants {
     public static final double kClawIntakeSpeed = 0.0;
     public static final double kClawOuttakeSpeed = 0.0;
   }
+
+  public static final class ClimberConstants {
+
+    public static final double kClimberStatorCurrentLimit = 0;
+    public static final double kClimberSupplyCurrentLimit = 0;
+
+  }
 }
