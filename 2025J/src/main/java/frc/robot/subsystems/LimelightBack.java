@@ -1,6 +1,6 @@
 package frc.robot.subsystems;
 
-import frc.robot.utils.Constants;
+import frc.robot.utils.Constants.LimelightConstants;
 
 public class LimelightBack extends Limelight {
     private static LimelightBack limelightBack;
@@ -8,9 +8,9 @@ public class LimelightBack extends Limelight {
     public LimelightBack() {
         super(
             "limelight-back",
-            Constants.LimelightConstants.kLimelightBackHeight,
-            Constants.LimelightConstants.kLimelightBackPanningAngle,
-            0
+            LimelightConstants.kLimelightBackHeight,
+            LimelightConstants.kLimelightBackPanningAngle,
+            LimelightConstants.kLimelightBackPipeline
         );
         
     }

@@ -1,15 +1,15 @@
 package frc.robot.subsystems;
 
-import frc.robot.utils.Constants;
+import frc.robot.utils.Constants.LimelightConstants;
 
 public class LimelightFrontRight extends Limelight {
     private static LimelightFrontRight limelightFrontRight;
 
     public LimelightFrontRight() {
         super("limelight-front-right",
-            Constants.LimelightConstants.kLimelightFrontRightHeight,
-            Constants.LimelightConstants.kLimelightFrontRightPanningAngle,
-            0
+            LimelightConstants.kLimelightFrontRightHeight,
+            LimelightConstants.kLimelightFrontRightPanningAngle,
+            LimelightConstants.kLimelightFrontRightPipeline
         );
         
     }

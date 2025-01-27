@@ -229,14 +229,18 @@ public final class Constants {
   }
 
   public static final class LimelightConstants {
+    // TODO: update real values
     public static final double kLimelightBackHeight = 0;
     public static final double kLimelightBackPanningAngle = 0;
+    public static final int kLimelightBackPipeline = 0;
     
     public static final double kLimelightFrontLeftHeight = 0;
     public static final double kLimelightFrontLeftPanningAngle = 0;
+    public static final int kLimelightFrontLeftPipeline = 0;
     
     public static final double kLimelightFrontRightHeight = 0;
     public static final double kLimelightFrontRightPanningAngle = 0;
+    public static final int kLimelightFrontRightPipeline = 0;
   }
   
   public static final class FieldConstants {
