@@ -10,6 +10,7 @@ import java.util.Map;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.units.Unit;
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide
@@ -47,15 +48,14 @@ public final class Constants {
     public static final double kSteerMotorStatorCurrentLimit = 0.0;
 
     public static final double kWheelDiameterInches = 4.0;
-    // TODO: update values for drive!!!
-    public static final double kDriveMotorReduction = 0.0;
+    public static final double kDriveMotorReduction = 7.13;
     public static final double kDriveEncoderPositionFactor = (Math.PI * Units.inchesToMeters(kWheelDiameterInches))
         / kDriveMotorReduction;
     public static final double kDriveEncoderVelocityFactor = (Math.PI * Units.inchesToMeters(kWheelDiameterInches))
         / kDriveMotorReduction;
 
     // TODO: Update Real Values
-    public static final double kSteerMotorReduction = 0.0;
+    public static final double kSteerMotorReduction = 18.75;
 
     public static final double kDriveS = 0.0;
     public static final double kDriveV = 0.0;
@@ -76,11 +76,12 @@ public final class Constants {
   }
 
   public static class DriveConstants {
-    // TODO: Update Real Values
-    public static final double kTrackWidth = 0.0;
-    public static final double kWheelBase = 0.0;
+    public static final double kTrackWidth = Units.inchesToMeters(22.75);
+    public static final double kWheelBase = Units.inchesToMeters(22.75);
 
-    public static final double kMaxFloorSpeed = 0.0;
+    public static final double kDriveRadius = Math.sqrt(Math.pow(kTrackWidth, 2) + Math.pow(kWheelBase, 2));
+
+    public static final double kMaxFloorSpeed = 4.0;
 
     public static final Translation2d[] swerveModuleLocations = {
         new Translation2d(kWheelBase / 2.0, kTrackWidth / 2.0),
