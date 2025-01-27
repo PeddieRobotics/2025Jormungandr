@@ -16,6 +16,9 @@ import frc.robot.subsystems.HPIntake;
 import frc.robot.subsystems.Superstructure;
 import frc.robot.utils.DriverOI;
 import frc.robot.utils.OperatorOI;
+import frc.robot.subsystems.LimelightBack;
+import frc.robot.subsystems.LimelightFrontLeft;
+import frc.robot.subsystems.LimelightFrontRight;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -36,6 +39,9 @@ public class RobotContainer {
   private OperatorOI operatorOI;
   private Elevator elevator;
   private HPIntake hpIntake;
+  private LimelightBack limelightBack;
+  private LimelightFrontLeft limelightFrontLeft;
+  private LimelightFrontRight limelightFrontRight;
 
   public RobotContainer() {
     arm = Arm.getInstance();
@@ -47,6 +53,9 @@ public class RobotContainer {
     superstructure = Superstructure.getInstance();
     driverOI = DriverOI.getInstance();
     operatorOI = OperatorOI.getInstance();
+    limelightBack = LimelightBack.getInstance();
+    limelightFrontLeft = LimelightFrontLeft.getInstance();
+    limelightFrontRight = LimelightFrontRight.getInstance();
 
     SmartDashboard.putData("Auto Routines", autonomous.getAutoChooser());
     drivetrain.setDefaultCommand(new SwerveDriveCommand());
