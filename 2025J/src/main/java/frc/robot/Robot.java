@@ -4,6 +4,12 @@
 
 package frc.robot;
 
+import frc.robot.utils.Logger;
+
+import javax.xml.crypto.Data;
+
+import edu.wpi.first.wpilibj.DataLogManager;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
@@ -19,6 +25,8 @@ public class Robot extends TimedRobot {
 
   private final RobotContainer m_robotContainer;
 
+  private Logger logger;
+
   /**
    * This function is run when the robot is first started up and should be used for any
    * initialization code.
@@ -27,6 +35,10 @@ public class Robot extends TimedRobot {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
+    DataLogManager.logNetworkTables(false);
+    DataLogManager.start("/media/sda1");
+    logger = Logger.getInstance();
+    DriverStation.startDataLog(DataLogManager.getLog());
   }
 
   /**
@@ -81,7 +93,9 @@ public class Robot extends TimedRobot {
 
   /** This function is called periodically during operator control. */
   @Override
-  public void teleopPeriodic() {}
+  public void teleopPeriodic() {
+    logger.updateLogs();
+  }
 
   @Override
   public void testInit() {

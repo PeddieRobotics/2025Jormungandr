@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.DataLogManager;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Autonomous;
 import frc.robot.subsystems.Claw;
+import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.HPIntake;
@@ -22,12 +23,15 @@ public class Logger {
     private Elevator elevator;
     private HPIntake hpIntake;
     private Superstructure superstructure;
+    private Climber climber;
     private DataLog log = DataLogManager.getLog();
     private DoubleLogEntry gyroAngleEntry, driveTrainSpeed, driveTrainAngle, driveTrainX, driveTrainY, driveTrainXVel,
             driveTrainYVel, driveTrainXAcc, driveTrainYAcc, driveTrainAngleVel, driveTrainAngleAcc, armAngle, armSpeed,
             armAcc, armPosition, armVelocity, clawAngle, clawAcc, clawPosition, clawVelocity, elevatorPosition,
             elevatorVelocity, elevatorAcc, elevatorSpeed, hpIntakePosition, hpIntakeVelocity, hpIntakeAcc,
-            superstructurePosition, superstructureVelocity, superstructureAcc, climberCurrent, climberTemperature, climberPosition;
+            superstructurePosition, superstructureVelocity, superstructureAcc, leftClimberSupplyCurrent,
+            leftClimberStatorCurrent, leftClimberTemperature, leftClimberPosition, rightClimberSupplyCurrent,
+            rightClimberStatorCurrent, rightClimberTemperature, rightClimberPosition;
 
     public static Logger getInstance() {
         if (instance == null) {
@@ -44,5 +48,12 @@ public class Logger {
         elevator = Elevator.getInstance();
         hpIntake = HPIntake.getInstance();
         superstructure = Superstructure.getInstance();
+
+        climber = Climber.getInstance();
+        leftClimberPosition = new DoubleLogEntry(log, "Left Climber Position");
+    }
+
+    public void updateLogs(){
+        leftClimberPosition.append(climber.getLeftClimberPosition());
     }
 }

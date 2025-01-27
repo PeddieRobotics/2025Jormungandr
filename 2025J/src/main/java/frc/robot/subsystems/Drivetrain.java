@@ -15,6 +15,7 @@ import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.util.sendable.Sendable;
 import edu.wpi.first.util.sendable.SendableBuilder;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.utils.Constants.DriveConstants;
@@ -32,6 +33,8 @@ public class Drivetrain extends SubsystemBase {
 
   private final Pigeon2 gyro;
   private double heading;
+
+  private final Field2d field;
 
   public Drivetrain() {
     frontLeftModule = new SwerveModule(RobotMap.CANIVORE_NAME, RobotMap.FRONT_LEFT_MODULE_DRIVE_ID,
@@ -77,6 +80,8 @@ public class Drivetrain extends SubsystemBase {
         builder.addDoubleProperty("Robot Angle", () -> getPose().getRotation().getRadians(), null);
       }
     });
+
+    field = new Field2d();
   }
 
   /**
@@ -172,9 +177,10 @@ public class Drivetrain extends SubsystemBase {
 
   @Override
   public void periodic() {
-    // This method will be called once per scheduler run
     updateModulePositions();
     updateOdometry();
+    field.setRobotPose(odometry.getEstimatedPosition());
+    SmartDashboard.putData("Field", field);
   }
 
   @Override
