@@ -29,7 +29,6 @@ public class Superstructure extends SubsystemBase {
   private final HPIntake hpIntake;
 
   private SuperstructureState systemState;
-  private SuperstructureState nextSystemState;
   private SuperstructureState requestedSystemState;
 
   private boolean algaeIndex, coralIndex; // get from intakes :) - not yet set up... :/
@@ -39,13 +38,12 @@ public class Superstructure extends SubsystemBase {
   public enum SuperstructureState {
     STOW,
     HP_INTAKE,
-    CORAL_GROUND_INTAKE, // likely not used
     ALGAE_GROUND_INTAKE,
     L1_PREP,
     L2_PREP,
     L3_PREP,
+    L4_PRESTAGE,
     L4_PREP,
-    L3L4_PRESTAGE,
     L1_SCORE,
     L2_SCORE,
     L3_SCORE,
@@ -64,13 +62,12 @@ public class Superstructure extends SubsystemBase {
   private Map<SuperstructureState, Set<SuperstructureState>> transitions = new HashMap<>() {{
     put(SuperstructureState.STOW, Set.of(
         SuperstructureState.HP_INTAKE,
-        SuperstructureState.CORAL_GROUND_INTAKE,
         SuperstructureState.ALGAE_GROUND_INTAKE,
         SuperstructureState.L1_PREP,
         SuperstructureState.L2_PREP,
-        SuperstructureState.L3L4_PRESTAGE,
+        SuperstructureState.L3_PREP,
+        SuperstructureState.L4_PRESTAGE,
         SuperstructureState.BARGE_PRESTAGE,
-        SuperstructureState.BARGE_PREP,
         SuperstructureState.PROCESSOR_PREP,
         SuperstructureState.REEF1_INTAKE,
         SuperstructureState.REEF2_INTAKE,
@@ -80,113 +77,69 @@ public class Superstructure extends SubsystemBase {
     put(SuperstructureState.HP_INTAKE, Set.of(
         SuperstructureState.STOW,
         SuperstructureState.ALGAE_GROUND_INTAKE,
-        SuperstructureState.CORAL_GROUND_INTAKE,
         SuperstructureState.L1_PREP,
         SuperstructureState.L2_PREP,
-        SuperstructureState.L3L4_PRESTAGE,
-        SuperstructureState.BARGE_PREP,
+        SuperstructureState.L3_PREP,
+        SuperstructureState.L4_PRESTAGE,
         SuperstructureState.BARGE_PRESTAGE,
         SuperstructureState.PROCESSOR_PREP,
         SuperstructureState.REEF1_INTAKE,
         SuperstructureState.REEF2_INTAKE,
-        SuperstructureState.EJECT_ALGAE,
-        SuperstructureState.EJECT_CORAL));
-
-    put(SuperstructureState.CORAL_GROUND_INTAKE, Set.of(
-        SuperstructureState.STOW,
-        SuperstructureState.L1_PREP,
-        SuperstructureState.L2_PREP,
-        SuperstructureState.HP_INTAKE,
-        SuperstructureState.ALGAE_GROUND_INTAKE,
-        SuperstructureState.L3L4_PRESTAGE,
-        SuperstructureState.REEF1_INTAKE,
-        SuperstructureState.REEF2_INTAKE,
-        SuperstructureState.BARGE_PRESTAGE,
-        SuperstructureState.PROCESSOR_PREP,
         SuperstructureState.EJECT_ALGAE,
         SuperstructureState.EJECT_CORAL));
 
     put(SuperstructureState.ALGAE_GROUND_INTAKE, Set.of(
         SuperstructureState.STOW,
         SuperstructureState.HP_INTAKE,
-        SuperstructureState.CORAL_GROUND_INTAKE,
         SuperstructureState.L1_PREP,
         SuperstructureState.L2_PREP,
-        SuperstructureState.L3L4_PRESTAGE,
-        SuperstructureState.REEF1_INTAKE,
-        SuperstructureState.REEF2_INTAKE,
+        SuperstructureState.L3_PREP,
+        SuperstructureState.L4_PRESTAGE,
         SuperstructureState.BARGE_PRESTAGE,
         SuperstructureState.PROCESSOR_PREP,
+        SuperstructureState.REEF1_INTAKE,
+        SuperstructureState.REEF2_INTAKE,
         SuperstructureState.EJECT_ALGAE,
         SuperstructureState.EJECT_CORAL));
 
     put(SuperstructureState.L1_PREP, Set.of(
         SuperstructureState.STOW,
-        SuperstructureState.L1_SCORE,
         SuperstructureState.HP_INTAKE,
-        SuperstructureState.CORAL_GROUND_INTAKE,
         SuperstructureState.ALGAE_GROUND_INTAKE,
+        SuperstructureState.L1_SCORE,
         SuperstructureState.L2_PREP,
-        SuperstructureState.L3L4_PRESTAGE,
-        SuperstructureState.REEF1_INTAKE,
+        SuperstructureState.L3_PREP,
+        SuperstructureState.L4_PRESTAGE,
         SuperstructureState.BARGE_PRESTAGE,
         SuperstructureState.PROCESSOR_PREP,
+        SuperstructureState.REEF1_INTAKE,
         SuperstructureState.REEF2_INTAKE,
         SuperstructureState.EJECT_ALGAE,
         SuperstructureState.EJECT_CORAL));
 
     put(SuperstructureState.L2_PREP, Set.of(
         SuperstructureState.STOW,
-        SuperstructureState.L2_SCORE,
-        SuperstructureState.CORAL_GROUND_INTAKE,
+        SuperstructureState.HP_INTAKE,
         SuperstructureState.ALGAE_GROUND_INTAKE,
         SuperstructureState.L1_PREP,
-        SuperstructureState.L3L4_PRESTAGE,
+        SuperstructureState.L2_SCORE,
+        SuperstructureState.L3_PREP,
+        SuperstructureState.L4_PRESTAGE,
+        SuperstructureState.BARGE_PRESTAGE,
+        SuperstructureState.PROCESSOR_PREP,
         SuperstructureState.REEF1_INTAKE,
         SuperstructureState.REEF2_INTAKE,
         SuperstructureState.EJECT_ALGAE,
-        SuperstructureState.EJECT_CORAL,
-        SuperstructureState.BARGE_PRESTAGE,
-        SuperstructureState.PROCESSOR_PREP,
-        SuperstructureState.HP_INTAKE));
+        SuperstructureState.EJECT_CORAL));
 
     put(SuperstructureState.L3_PREP, Set.of(
         SuperstructureState.STOW,
         SuperstructureState.HP_INTAKE,
+        SuperstructureState.ALGAE_GROUND_INTAKE,
+        SuperstructureState.L1_PREP,
+        SuperstructureState.L2_PREP,
         SuperstructureState.L3_SCORE,
-        SuperstructureState.CORAL_GROUND_INTAKE,
-        SuperstructureState.ALGAE_GROUND_INTAKE,
-        SuperstructureState.L1_PREP,
-        SuperstructureState.L2_PREP,
-        SuperstructureState.BARGE_PRESTAGE,
-        SuperstructureState.PROCESSOR_PREP,
-        SuperstructureState.L3L4_PRESTAGE,
-        SuperstructureState.REEF1_INTAKE,
-        SuperstructureState.REEF2_INTAKE,
-        SuperstructureState.EJECT_ALGAE,
-        SuperstructureState.EJECT_CORAL));
-
-    put(SuperstructureState.L4_PREP, Set.of(
-        SuperstructureState.HP_INTAKE,
-        SuperstructureState.L4_SCORE,
-        SuperstructureState.CORAL_GROUND_INTAKE,
-        SuperstructureState.ALGAE_GROUND_INTAKE,
-        SuperstructureState.L1_PREP,
-        SuperstructureState.L2_PREP,
-        SuperstructureState.L3L4_PRESTAGE,
-        SuperstructureState.BARGE_PRESTAGE,
-        SuperstructureState.PROCESSOR_PREP,
-        SuperstructureState.REEF1_INTAKE,
-        SuperstructureState.REEF2_INTAKE,
-        SuperstructureState.EJECT_ALGAE,
-        SuperstructureState.EJECT_CORAL,
-        SuperstructureState.STOW));
-
-    put(SuperstructureState.L1_SCORE, Set.of(
-        SuperstructureState.STOW,
-        SuperstructureState.HP_INTAKE,
-        SuperstructureState.CORAL_GROUND_INTAKE,
-        SuperstructureState.ALGAE_GROUND_INTAKE,
+        SuperstructureState.L4_PRESTAGE,
         SuperstructureState.BARGE_PRESTAGE,
         SuperstructureState.PROCESSOR_PREP,
         SuperstructureState.REEF1_INTAKE,
@@ -194,46 +147,9 @@ public class Superstructure extends SubsystemBase {
         SuperstructureState.EJECT_ALGAE,
         SuperstructureState.EJECT_CORAL));
 
-    put(SuperstructureState.L2_SCORE, Set.of(
+    put(SuperstructureState.L4_PRESTAGE, Set.of(
         SuperstructureState.STOW,
         SuperstructureState.HP_INTAKE,
-        SuperstructureState.CORAL_GROUND_INTAKE,
-        SuperstructureState.ALGAE_GROUND_INTAKE,
-        SuperstructureState.REEF1_INTAKE,
-        SuperstructureState.REEF2_INTAKE,
-        SuperstructureState.BARGE_PRESTAGE,
-        SuperstructureState.PROCESSOR_PREP,
-        SuperstructureState.EJECT_ALGAE,
-        SuperstructureState.EJECT_CORAL));
-
-    put(SuperstructureState.L3_SCORE, Set.of(
-        SuperstructureState.STOW,
-        SuperstructureState.HP_INTAKE,
-        SuperstructureState.CORAL_GROUND_INTAKE,
-        SuperstructureState.ALGAE_GROUND_INTAKE,
-        SuperstructureState.REEF1_INTAKE,
-        SuperstructureState.REEF2_INTAKE,
-        SuperstructureState.BARGE_PRESTAGE,
-        SuperstructureState.PROCESSOR_PREP,
-        SuperstructureState.EJECT_ALGAE,
-        SuperstructureState.EJECT_CORAL));
-
-    put(SuperstructureState.L4_SCORE, Set.of(
-        SuperstructureState.STOW,
-        SuperstructureState.HP_INTAKE,
-        SuperstructureState.CORAL_GROUND_INTAKE,
-        SuperstructureState.ALGAE_GROUND_INTAKE,
-        SuperstructureState.BARGE_PRESTAGE,
-        SuperstructureState.PROCESSOR_PREP,
-        SuperstructureState.REEF1_INTAKE,
-        SuperstructureState.REEF2_INTAKE,
-        SuperstructureState.EJECT_ALGAE,
-        SuperstructureState.EJECT_CORAL));
-
-    put(SuperstructureState.L3L4_PRESTAGE, Set.of(
-        SuperstructureState.STOW,
-        SuperstructureState.HP_INTAKE,
-        SuperstructureState.CORAL_GROUND_INTAKE,
         SuperstructureState.ALGAE_GROUND_INTAKE,
         SuperstructureState.L1_PREP,
         SuperstructureState.L2_PREP,
@@ -246,16 +162,60 @@ public class Superstructure extends SubsystemBase {
         SuperstructureState.EJECT_ALGAE,
         SuperstructureState.EJECT_CORAL));
 
-    put(SuperstructureState.BARGE_PRESTAGE, Set.of(
+    put(SuperstructureState.L4_PREP, Set.of(
         SuperstructureState.STOW,
         SuperstructureState.HP_INTAKE,
-        SuperstructureState.CORAL_GROUND_INTAKE,
         SuperstructureState.ALGAE_GROUND_INTAKE,
         SuperstructureState.L1_PREP,
         SuperstructureState.L2_PREP,
-        SuperstructureState.L3L4_PRESTAGE,
+        SuperstructureState.L3_PREP,
+        SuperstructureState.L4_PRESTAGE,
+        SuperstructureState.L4_SCORE,
+        SuperstructureState.BARGE_PRESTAGE,
         SuperstructureState.PROCESSOR_PREP,
+        SuperstructureState.REEF1_INTAKE,
+        SuperstructureState.REEF2_INTAKE,
+        SuperstructureState.EJECT_ALGAE,
+        SuperstructureState.EJECT_CORAL));
+
+    put(SuperstructureState.L1_SCORE, Set.of(
+        SuperstructureState.STOW,
+        SuperstructureState.HP_INTAKE,
+        SuperstructureState.ALGAE_GROUND_INTAKE,
+        SuperstructureState.REEF1_INTAKE,
+        SuperstructureState.REEF2_INTAKE));
+
+    put(SuperstructureState.L2_SCORE, Set.of(
+        SuperstructureState.STOW,
+        SuperstructureState.HP_INTAKE,
+        SuperstructureState.ALGAE_GROUND_INTAKE,
+        SuperstructureState.REEF1_INTAKE,
+        SuperstructureState.REEF2_INTAKE));
+
+    put(SuperstructureState.L3_SCORE, Set.of(
+        SuperstructureState.STOW,
+        SuperstructureState.HP_INTAKE,
+        SuperstructureState.ALGAE_GROUND_INTAKE,
+        SuperstructureState.REEF1_INTAKE,
+        SuperstructureState.REEF2_INTAKE));
+
+    put(SuperstructureState.L4_SCORE, Set.of(
+        SuperstructureState.STOW,
+        SuperstructureState.HP_INTAKE,
+        SuperstructureState.ALGAE_GROUND_INTAKE,
+        SuperstructureState.REEF1_INTAKE,
+        SuperstructureState.REEF2_INTAKE));
+
+    put(SuperstructureState.BARGE_PRESTAGE, Set.of(
+        SuperstructureState.STOW,
+        SuperstructureState.HP_INTAKE,
+        SuperstructureState.ALGAE_GROUND_INTAKE,
+        SuperstructureState.L1_PREP,
+        SuperstructureState.L2_PREP,
+        SuperstructureState.L3_PREP,
+        SuperstructureState.L4_PRESTAGE,
         SuperstructureState.BARGE_PREP,
+        SuperstructureState.PROCESSOR_PREP,
         SuperstructureState.REEF1_INTAKE,
         SuperstructureState.REEF2_INTAKE,
         SuperstructureState.EJECT_ALGAE,
@@ -264,11 +224,11 @@ public class Superstructure extends SubsystemBase {
     put(SuperstructureState.BARGE_PREP, Set.of(
         SuperstructureState.STOW,
         SuperstructureState.HP_INTAKE,
-        SuperstructureState.CORAL_GROUND_INTAKE,
         SuperstructureState.ALGAE_GROUND_INTAKE,
         SuperstructureState.L1_PREP,
         SuperstructureState.L2_PREP,
-        SuperstructureState.L3L4_PRESTAGE,
+        SuperstructureState.L3_PREP,
+        SuperstructureState.L4_PRESTAGE,
         SuperstructureState.BARGE_PRESTAGE,
         SuperstructureState.BARGE_SCORE,
         SuperstructureState.PROCESSOR_PREP,
@@ -280,24 +240,18 @@ public class Superstructure extends SubsystemBase {
     put(SuperstructureState.BARGE_SCORE, Set.of(
         SuperstructureState.STOW,
         SuperstructureState.HP_INTAKE,
-        SuperstructureState.CORAL_GROUND_INTAKE,
         SuperstructureState.ALGAE_GROUND_INTAKE,
-        SuperstructureState.L1_PREP,
-        SuperstructureState.L2_PREP,
-        SuperstructureState.L3L4_PRESTAGE,
         SuperstructureState.REEF1_INTAKE,
-        SuperstructureState.REEF2_INTAKE,
-        SuperstructureState.EJECT_ALGAE,
-        SuperstructureState.EJECT_CORAL));
+        SuperstructureState.REEF2_INTAKE));
 
     put(SuperstructureState.PROCESSOR_PREP, Set.of(
         SuperstructureState.STOW,
         SuperstructureState.HP_INTAKE,
-        SuperstructureState.CORAL_GROUND_INTAKE,
         SuperstructureState.ALGAE_GROUND_INTAKE,
         SuperstructureState.L1_PREP,
         SuperstructureState.L2_PREP,
-        SuperstructureState.L3L4_PRESTAGE,
+        SuperstructureState.L3_PREP,
+        SuperstructureState.L4_PRESTAGE,
         SuperstructureState.BARGE_PRESTAGE,
         SuperstructureState.PROCESSOR_SCORE,
         SuperstructureState.REEF1_INTAKE,
@@ -308,24 +262,18 @@ public class Superstructure extends SubsystemBase {
     put(SuperstructureState.PROCESSOR_SCORE, Set.of(
         SuperstructureState.STOW,
         SuperstructureState.HP_INTAKE,
-        SuperstructureState.CORAL_GROUND_INTAKE,
         SuperstructureState.ALGAE_GROUND_INTAKE,
-        SuperstructureState.L1_PREP,
-        SuperstructureState.L2_PREP,
-        SuperstructureState.L3L4_PRESTAGE,
         SuperstructureState.REEF1_INTAKE,
-        SuperstructureState.REEF2_INTAKE,
-        SuperstructureState.EJECT_ALGAE,
-        SuperstructureState.EJECT_CORAL));
+        SuperstructureState.REEF2_INTAKE));
 
     put(SuperstructureState.REEF1_INTAKE, Set.of(
         SuperstructureState.STOW,
         SuperstructureState.HP_INTAKE,
-        SuperstructureState.CORAL_GROUND_INTAKE,
         SuperstructureState.ALGAE_GROUND_INTAKE,
         SuperstructureState.L1_PREP,
         SuperstructureState.L2_PREP,
-        SuperstructureState.L3L4_PRESTAGE,
+        SuperstructureState.L3_PREP,
+        SuperstructureState.L4_PRESTAGE,
         SuperstructureState.BARGE_PRESTAGE,
         SuperstructureState.PROCESSOR_PREP,
         SuperstructureState.REEF2_INTAKE,
@@ -335,11 +283,11 @@ public class Superstructure extends SubsystemBase {
     put(SuperstructureState.REEF2_INTAKE, Set.of(
         SuperstructureState.STOW,
         SuperstructureState.HP_INTAKE,
-        SuperstructureState.CORAL_GROUND_INTAKE,
         SuperstructureState.ALGAE_GROUND_INTAKE,
         SuperstructureState.L1_PREP,
         SuperstructureState.L2_PREP,
-        SuperstructureState.L3L4_PRESTAGE,
+        SuperstructureState.L3_PREP,
+        SuperstructureState.L4_PRESTAGE,
         SuperstructureState.BARGE_PRESTAGE,
         SuperstructureState.PROCESSOR_PREP,
         SuperstructureState.REEF1_INTAKE,
@@ -349,11 +297,11 @@ public class Superstructure extends SubsystemBase {
     put(SuperstructureState.EJECT_ALGAE, Set.of(
         SuperstructureState.STOW,
         SuperstructureState.HP_INTAKE,
-        SuperstructureState.CORAL_GROUND_INTAKE,
         SuperstructureState.ALGAE_GROUND_INTAKE,
         SuperstructureState.L1_PREP,
         SuperstructureState.L2_PREP,
-        SuperstructureState.L3L4_PRESTAGE,
+        SuperstructureState.L3_PREP,
+        SuperstructureState.L4_PRESTAGE,
         SuperstructureState.BARGE_PRESTAGE,
         SuperstructureState.PROCESSOR_PREP,
         SuperstructureState.REEF1_INTAKE,
@@ -363,11 +311,11 @@ public class Superstructure extends SubsystemBase {
     put(SuperstructureState.EJECT_CORAL, Set.of(
         SuperstructureState.STOW,
         SuperstructureState.HP_INTAKE,
-        SuperstructureState.CORAL_GROUND_INTAKE,
         SuperstructureState.ALGAE_GROUND_INTAKE,
         SuperstructureState.L1_PREP,
         SuperstructureState.L2_PREP,
-        SuperstructureState.L3L4_PRESTAGE,
+        SuperstructureState.L3_PREP,
+        SuperstructureState.L4_PRESTAGE,
         SuperstructureState.BARGE_PRESTAGE,
         SuperstructureState.PROCESSOR_PREP,
         SuperstructureState.REEF1_INTAKE,
@@ -377,7 +325,6 @@ public class Superstructure extends SubsystemBase {
 
   public Superstructure() {
     systemState = SuperstructureState.STOW;
-    nextSystemState = SuperstructureState.STOW;
     requestedSystemState = SuperstructureState.STOW;
 
     arm = Arm.getInstance();
@@ -426,14 +373,6 @@ public class Superstructure extends SubsystemBase {
         // set angle
         // set elevator
         // run intake motor
-        break;
-
-      case CORAL_GROUND_INTAKE:
-        // run intake
-        if (coralIndex) {
-          // stop intaking
-          requestState(SuperstructureState.STOW);
-        }
         break;
 
       case ALGAE_GROUND_INTAKE:
@@ -491,9 +430,7 @@ public class Superstructure extends SubsystemBase {
           requestState(SuperstructureState.STOW);
           break;
         }
-
         // lower arm :)
-
         break;
 
       case L2_SCORE:
@@ -516,9 +453,7 @@ public class Superstructure extends SubsystemBase {
           requestState(SuperstructureState.STOW);
           break;
         }
-
         // lower arm :)
-
         break;
 
       case L3_SCORE:
@@ -540,9 +475,7 @@ public class Superstructure extends SubsystemBase {
           requestState(SuperstructureState.STOW);
           break;
         }
-
         // lower arm :)
-
         break;
 
       case L4_SCORE:
@@ -565,26 +498,20 @@ public class Superstructure extends SubsystemBase {
           requestState(SuperstructureState.STOW);
           break;
         }
-
         // lower arm :)
-
         break;
 
-      case L3L4_PRESTAGE:
+      case L4_PRESTAGE:
         elevator.setElevatorPositionMotionMagicTorqueCurrentFOC(ElevatorConstants.kElevatorL3Height);
-        
         break;
 
       case BARGE_PRESTAGE:
-        
         break;
 
       case BARGE_PREP:
-        
         break;
 
       case BARGE_SCORE:
-
         if (!timer.hasElapsed(ScoreConstants.BargeTimeout)) {
           // KEEP RUNNING
           timer.start();
@@ -596,48 +523,37 @@ public class Superstructure extends SubsystemBase {
           requestState(SuperstructureState.STOW);
           break;
         }
-
-        
         break;
 
       case PROCESSOR_PREP:
-        
         break;
 
       case PROCESSOR_SCORE:
         requestState(SuperstructureState.STOW);
-        
         break;
 
       case REEF1_INTAKE:
         if (algaeIndex) {
           requestState(SuperstructureState.STOW);
         }
-
-        
         break;
 
       case REEF2_INTAKE:
         if (algaeIndex) {
           requestState(SuperstructureState.STOW);
         }
-
         break;
 
       case EJECT_ALGAE:
-        
         break;
 
       case EJECT_CORAL:
-        
         break;
     }
 
     Set<SuperstructureState> canTransition = transitions.get(systemState);
     if (canTransition.contains(requestedSystemState))
-      nextSystemState = requestedSystemState;
-
-    systemState = nextSystemState;
+      systemState = requestedSystemState;
   }
 
   public void sendToScore() {
