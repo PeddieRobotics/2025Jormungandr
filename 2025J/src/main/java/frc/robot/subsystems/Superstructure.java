@@ -62,7 +62,18 @@ public class Superstructure extends SubsystemBase {
   private Map<SuperstructureState, Set<SuperstructureState>> transitions = new HashMap<>() {{
     put(SuperstructureState.STOW, Set.of(
       SuperstructureState.HP_INTAKE,
-      ...,
+      SuperstructureState.CORAL_GROUND_INTAKE, // likely not used
+      SuperstructureState.ALGAE_GROUND_INTAKE,
+      SuperstructureState.L1_PREP,
+      SuperstructureState.L2_PREP,
+      SuperstructureState.L3L4_PRESTAGE,
+      SuperstructureState.BARGE_PRESTAGE,
+      SuperstructureState.BARGE_PREP,
+      SuperstructureState.PROCESSOR_PREP,
+      SuperstructureState.REEF1_INTAKE,
+      SuperstructureState.REEF2_INTAKE,
+      SuperstructureState.EJECT_ALGAE,
+      SuperstructureState.EJECT_CORAL
     ));
     put(SuperstructureState. , Set.of(
 
@@ -141,7 +152,7 @@ public class Superstructure extends SubsystemBase {
         } else if (requestedSystemState == SuperstructureState.EJECT_CORAL) {
           nextSystemState = requestedSystemState;
         }
-        
+
         break;
 
       case HP_INTAKE:
@@ -888,6 +899,11 @@ public class Superstructure extends SubsystemBase {
         }
         break;
     }
+    
+    Set<SuperstructureState> canTransition = transitions.get(systemState);
+    if (canTransition.contains(requestedSystemState))
+      nextSystemState = requestedSystemState;
+
     systemState = nextSystemState;
   }
 
