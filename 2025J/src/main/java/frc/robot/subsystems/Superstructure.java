@@ -56,6 +56,10 @@ public class Superstructure extends SubsystemBase {
     EJECT_CORAL
   }
 
+  private Map<SuperstructureState, ArrayList<SuperstructureState>> transitions = {
+    
+  }
+
   public Superstructure() {
     systemState = SuperstructureState.STOW;
     nextSystemState = SuperstructureState.STOW;
