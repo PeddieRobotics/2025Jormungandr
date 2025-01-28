@@ -5,6 +5,9 @@
 package frc.robot.subsystems;
 
 import java.security.DrbgParameters.NextBytes;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -56,9 +59,15 @@ public class Superstructure extends SubsystemBase {
     EJECT_CORAL
   }
 
-  private Map<SuperstructureState, ArrayList<SuperstructureState>> transitions = {
-    
-  }
+  private Map<SuperstructureState, Set<SuperstructureState>> transitions = new HashMap<>() {{
+    put(SuperstructureState.STOW, Set.of(
+      SuperstructureState.HP_INTAKE,
+      ...,
+    ));
+    put(SuperstructureState. , Set.of(
+
+    ));
+  }};
 
   public Superstructure() {
     systemState = SuperstructureState.STOW;
@@ -132,6 +141,7 @@ public class Superstructure extends SubsystemBase {
         } else if (requestedSystemState == SuperstructureState.EJECT_CORAL) {
           nextSystemState = requestedSystemState;
         }
+        
         break;
 
       case HP_INTAKE:
