@@ -106,8 +106,18 @@ public class Superstructure extends SubsystemBase {
         // bring elevator down
 
         if(Arrays.asList(
-          STOW, HP_INTAKE, ALGAE_GROUND_INTAKE, L1_PREP, L2_PREP, L3_PREP, L4_PRESTAGE,
-          BARGE_PRESTAGE, PROCESSOR_PREP, REEF1_INTAKE, REEF2_INTAKE, EJECT_ALGAE, EJECT_CORAL)
+          STOW, HP_INTAKE, 
+          ALGAE_GROUND_INTAKE, 
+          L1_PREP, 
+          L2_PREP, 
+          L3_PREP, 
+          L4_PRESTAGE,
+          BARGE_PRESTAGE, 
+          PROCESSOR_PREP, 
+          REEF1_INTAKE, 
+          REEF2_INTAKE, 
+          EJECT_ALGAE, 
+          EJECT_CORAL)
           .contains(requestedSystemState)){
             systemState=requestedSystemState;
           }
@@ -120,17 +130,17 @@ public class Superstructure extends SubsystemBase {
 
         if(Arrays.asList(
           STOW,
-        ALGAE_GROUND_INTAKE,
-        L1_PREP,
-        L2_PREP,
-        L3_PREP,
-        L4_PRESTAGE,
-        BARGE_PRESTAGE,
-        PROCESSOR_PREP,
-        REEF1_INTAKE,
-        REEF2_INTAKE,
-        EJECT_ALGAE,
-        EJECT_CORAL)
+          ALGAE_GROUND_INTAKE,
+          L1_PREP,
+          L2_PREP,
+          L3_PREP,
+          L4_PRESTAGE,
+          BARGE_PRESTAGE,
+          PROCESSOR_PREP,
+          REEF1_INTAKE,
+          REEF2_INTAKE,
+          EJECT_ALGAE,
+          EJECT_CORAL)
           .contains(requestedSystemState)){
             systemState=requestedSystemState;
           }
@@ -144,17 +154,17 @@ public class Superstructure extends SubsystemBase {
 
         if(Arrays.asList(
           STOW,
-        HP_INTAKE,
-        L1_PREP,
-        L2_PREP,
-        L3_PREP,
-        L4_PRESTAGE,
-        BARGE_PRESTAGE,
-        PROCESSOR_PREP,
-        REEF1_INTAKE,
-        REEF2_INTAKE,
-        EJECT_ALGAE,
-        EJECT_CORAL)
+          HP_INTAKE,
+          L1_PREP,
+          L2_PREP,
+          L3_PREP,
+          L4_PRESTAGE,
+          BARGE_PRESTAGE,
+          PROCESSOR_PREP,
+          REEF1_INTAKE,
+          REEF2_INTAKE,
+          EJECT_ALGAE,
+          EJECT_CORAL)  
           .contains(requestedSystemState)){
             systemState=requestedSystemState;
           }
@@ -165,18 +175,18 @@ public class Superstructure extends SubsystemBase {
 
         if(Arrays.asList(
           STOW,
-        HP_INTAKE,
-        ALGAE_GROUND_INTAKE,
-        L1_SCORE,
-        L2_PREP,
-        L3_PREP,
-        L4_PRESTAGE,
-        BARGE_PRESTAGE,
-        PROCESSOR_PREP,
-        REEF1_INTAKE,
-        REEF2_INTAKE,
-        EJECT_ALGAE,
-        EJECT_CORAL)
+          HP_INTAKE,
+          ALGAE_GROUND_INTAKE,
+          L1_SCORE,
+          L2_PREP,
+          L3_PREP,
+          L4_PRESTAGE,
+          BARGE_PRESTAGE,
+          PROCESSOR_PREP,
+          REEF1_INTAKE,
+          REEF2_INTAKE,
+          EJECT_ALGAE,
+          EJECT_CORAL)
           .contains(requestedSystemState)){
             systemState=requestedSystemState;
           }
@@ -193,18 +203,18 @@ public class Superstructure extends SubsystemBase {
          */
         if(Arrays.asList(
           STOW,
-        HP_INTAKE,
-        ALGAE_GROUND_INTAKE,
-        L1_PREP,
-        L2_SCORE,
-        L3_PREP,
-        L4_PRESTAGE,
-        BARGE_PRESTAGE,
-        PROCESSOR_PREP,
-        REEF1_INTAKE,
-        REEF2_INTAKE,
-        EJECT_ALGAE,
-        EJECT_CORAL)
+          HP_INTAKE,
+          ALGAE_GROUND_INTAKE,
+          L1_PREP,
+          L2_SCORE,
+          L3_PREP,
+          L4_PRESTAGE,
+          BARGE_PRESTAGE,
+          PROCESSOR_PREP,
+          REEF1_INTAKE,
+          REEF2_INTAKE,
+          EJECT_ALGAE,
+          EJECT_CORAL)
           .contains(requestedSystemState)){
             systemState=requestedSystemState;
           }
@@ -221,18 +231,18 @@ public class Superstructure extends SubsystemBase {
          */
         if(Arrays.asList(
           STOW,
-        HP_INTAKE,
-        ALGAE_GROUND_INTAKE,
-        L1_PREP,
-        L2_PREP,
-        L3_SCORE,
-        L4_PRESTAGE,
-        BARGE_PRESTAGE,
-        PROCESSOR_PREP,
-        REEF1_INTAKE,
-        REEF2_INTAKE,
-        EJECT_ALGAE,
-        EJECT_CORAL)
+          HP_INTAKE,
+          ALGAE_GROUND_INTAKE,
+          L1_PREP,
+          L2_PREP,
+          L3_SCORE,
+          L4_PRESTAGE,
+          BARGE_PRESTAGE,
+          PROCESSOR_PREP,
+          REEF1_INTAKE,
+          REEF2_INTAKE,
+          EJECT_ALGAE,
+          EJECT_CORAL)
           .contains(requestedSystemState)){
             systemState=requestedSystemState;
           }
@@ -248,18 +258,18 @@ public class Superstructure extends SubsystemBase {
          */
         if(Arrays.asList(
           STOW,
-        HP_INTAKE,
-        ALGAE_GROUND_INTAKE,
-        L1_PREP,
-        L2_PREP,
-        L3_PREP,
-        L4_PREP,
-        BARGE_PRESTAGE,
-        PROCESSOR_PREP,
-        REEF1_INTAKE,
-        REEF2_INTAKE,
-        EJECT_ALGAE,
-        EJECT_CORAL)
+          HP_INTAKE,
+          ALGAE_GROUND_INTAKE,
+          L1_PREP,
+          L2_PREP,
+          L3_PREP,
+          L4_PREP,
+          BARGE_PRESTAGE,
+          PROCESSOR_PREP,
+          REEF1_INTAKE,
+          REEF2_INTAKE,
+          EJECT_ALGAE,
+          EJECT_CORAL)
           .contains(requestedSystemState)){
             systemState=requestedSystemState;
           }
@@ -281,10 +291,10 @@ public class Superstructure extends SubsystemBase {
 
         if(Arrays.asList(
           STOW,
-        HP_INTAKE,
-        ALGAE_GROUND_INTAKE,
-        REEF1_INTAKE,
-        REEF2_INTAKE)
+          HP_INTAKE,
+          ALGAE_GROUND_INTAKE,
+          REEF1_INTAKE,
+          REEF2_INTAKE)
           .contains(requestedSystemState)){
             systemState=requestedSystemState;
           }
@@ -344,10 +354,10 @@ public class Superstructure extends SubsystemBase {
 
         if(Arrays.asList(
           STOW,
-        HP_INTAKE,
-        ALGAE_GROUND_INTAKE,
-        REEF1_INTAKE,
-        REEF2_INTAKE)
+          HP_INTAKE,
+          ALGAE_GROUND_INTAKE,
+          REEF1_INTAKE,
+          REEF2_INTAKE)
           .contains(requestedSystemState)){
             systemState=requestedSystemState;
           }
@@ -376,10 +386,10 @@ public class Superstructure extends SubsystemBase {
 
         if(Arrays.asList(
           STOW,
-        HP_INTAKE,
-        ALGAE_GROUND_INTAKE,
-        REEF1_INTAKE,
-        REEF2_INTAKE)
+          HP_INTAKE,
+          ALGAE_GROUND_INTAKE,
+          REEF1_INTAKE,
+          REEF2_INTAKE)
           .contains(requestedSystemState)){
             systemState=requestedSystemState;
           }
@@ -390,18 +400,18 @@ public class Superstructure extends SubsystemBase {
 
         if(Arrays.asList(
           STOW,
-        HP_INTAKE,
-        ALGAE_GROUND_INTAKE,
-        L1_PREP,
-        L2_PREP,
-        L3_PREP,
-        L4_PREP,
-        BARGE_PRESTAGE,
-        PROCESSOR_PREP,
-        REEF1_INTAKE,
-        REEF2_INTAKE,
-        EJECT_ALGAE,
-        EJECT_CORAL)
+          HP_INTAKE,
+          ALGAE_GROUND_INTAKE,
+          L1_PREP,
+          L2_PREP,
+          L3_PREP,
+          L4_PREP,
+          BARGE_PRESTAGE,
+          PROCESSOR_PREP,
+          REEF1_INTAKE,
+          REEF2_INTAKE,
+          EJECT_ALGAE,
+          EJECT_CORAL)
           .contains(requestedSystemState)){
             systemState=requestedSystemState;
           }
@@ -411,18 +421,18 @@ public class Superstructure extends SubsystemBase {
 
         if(Arrays.asList(
           STOW,
-        HP_INTAKE,
-        ALGAE_GROUND_INTAKE,
-        L1_PREP,
-        L2_PREP,
-        L3_PREP,
-        L4_PRESTAGE,
-        BARGE_PREP,
-        PROCESSOR_PREP,
-        REEF1_INTAKE,
-        REEF2_INTAKE,
-        EJECT_ALGAE,
-        EJECT_CORAL)
+          HP_INTAKE,
+          ALGAE_GROUND_INTAKE,
+          L1_PREP,
+          L2_PREP,
+          L3_PREP,
+          L4_PRESTAGE,
+          BARGE_PREP,
+          PROCESSOR_PREP,
+          REEF1_INTAKE,
+          REEF2_INTAKE,
+          EJECT_ALGAE,
+          EJECT_CORAL)
           .contains(requestedSystemState)){
             systemState=requestedSystemState;
           }
@@ -432,19 +442,19 @@ public class Superstructure extends SubsystemBase {
 
         if(Arrays.asList(
           STOW,
-        HP_INTAKE,
-        ALGAE_GROUND_INTAKE,
-        L1_PREP,
-        L2_PREP,
-        L3_PREP,
-        L4_PRESTAGE,
-        BARGE_PRESTAGE,
-        BARGE_SCORE,
-        PROCESSOR_PREP,
-        REEF1_INTAKE,
-        REEF2_INTAKE,
-        EJECT_ALGAE,
-        EJECT_CORAL)
+          HP_INTAKE,
+          ALGAE_GROUND_INTAKE,
+          L1_PREP,
+          L2_PREP,
+          L3_PREP,
+          L4_PRESTAGE,
+          BARGE_PRESTAGE,
+          BARGE_SCORE,
+          PROCESSOR_PREP,
+          REEF1_INTAKE,
+          REEF2_INTAKE,
+          EJECT_ALGAE,
+          EJECT_CORAL)
           .contains(requestedSystemState)){
             systemState=requestedSystemState;
           }
@@ -464,10 +474,10 @@ public class Superstructure extends SubsystemBase {
 
         if(Arrays.asList(
           STOW,
-        HP_INTAKE,
-        ALGAE_GROUND_INTAKE,
-        REEF1_INTAKE,
-        REEF2_INTAKE)
+          HP_INTAKE,
+          ALGAE_GROUND_INTAKE,
+          REEF1_INTAKE,
+          REEF2_INTAKE)
           .contains(requestedSystemState)){
             systemState=requestedSystemState;
           }
@@ -477,18 +487,18 @@ public class Superstructure extends SubsystemBase {
 
         if(Arrays.asList(
           STOW,
-        HP_INTAKE,
-        ALGAE_GROUND_INTAKE,
-        L1_PREP,
-        L2_PREP,
-        L3_PREP,
-        L4_PRESTAGE,
-        BARGE_PRESTAGE,
-        PROCESSOR_SCORE,
-        REEF1_INTAKE,
-        REEF2_INTAKE,
-        EJECT_ALGAE,
-        EJECT_CORAL)
+          HP_INTAKE,
+          ALGAE_GROUND_INTAKE,
+          L1_PREP,
+          L2_PREP,
+          L3_PREP,
+          L4_PRESTAGE,
+          BARGE_PRESTAGE,
+          PROCESSOR_SCORE,
+          REEF1_INTAKE,
+          REEF2_INTAKE,
+          EJECT_ALGAE,
+          EJECT_CORAL)
           .contains(requestedSystemState)){
             systemState=requestedSystemState;
           }
@@ -498,10 +508,10 @@ public class Superstructure extends SubsystemBase {
 
         if(Arrays.asList(
           STOW,
-        HP_INTAKE,
-        ALGAE_GROUND_INTAKE,
-        REEF1_INTAKE,
-        REEF2_INTAKE)
+          HP_INTAKE,
+          ALGAE_GROUND_INTAKE,
+          REEF1_INTAKE,
+          REEF2_INTAKE)
           .contains(requestedSystemState)){
             systemState=requestedSystemState;
           }
@@ -514,17 +524,17 @@ public class Superstructure extends SubsystemBase {
 
         if(Arrays.asList(
           STOW,
-        HP_INTAKE,
-        ALGAE_GROUND_INTAKE,
-        L1_PREP,
-        L2_PREP,
-        L3_PREP,
-        L4_PRESTAGE,
-        BARGE_PRESTAGE,
-        PROCESSOR_PREP,
-        REEF2_INTAKE,
-        EJECT_ALGAE,
-        EJECT_CORAL)
+          HP_INTAKE,
+          ALGAE_GROUND_INTAKE,
+          L1_PREP,
+          L2_PREP,
+          L3_PREP,
+          L4_PRESTAGE,
+          BARGE_PRESTAGE,
+          PROCESSOR_PREP,
+          REEF2_INTAKE,
+          EJECT_ALGAE,
+          EJECT_CORAL)
           .contains(requestedSystemState)){
             systemState=requestedSystemState;
           }
@@ -537,17 +547,17 @@ public class Superstructure extends SubsystemBase {
 
         if(Arrays.asList(
           STOW,
-        HP_INTAKE,
-        ALGAE_GROUND_INTAKE,
-        L1_PREP,
-        L2_PREP,
-        L3_PREP,
-        L4_PRESTAGE,
-        BARGE_PRESTAGE,
-        PROCESSOR_PREP,
-        REEF1_INTAKE,
-        EJECT_ALGAE,
-        EJECT_CORAL)
+          HP_INTAKE,
+          ALGAE_GROUND_INTAKE,
+          L1_PREP,
+          L2_PREP,
+          L3_PREP,
+          L4_PRESTAGE,
+          BARGE_PRESTAGE,
+          PROCESSOR_PREP,
+          REEF1_INTAKE,
+          EJECT_ALGAE,
+          EJECT_CORAL)
           .contains(requestedSystemState)){
             systemState=requestedSystemState;
           }
@@ -557,17 +567,17 @@ public class Superstructure extends SubsystemBase {
 
         if(Arrays.asList(
           STOW,
-        HP_INTAKE,
-        ALGAE_GROUND_INTAKE,
-        L1_PREP,
-        L2_PREP,
-        L3_PREP,
-        L4_PRESTAGE,
-        BARGE_PRESTAGE,
-        PROCESSOR_PREP,
-        REEF1_INTAKE,
-        REEF2_INTAKE,
-        EJECT_CORAL)
+          HP_INTAKE,
+          ALGAE_GROUND_INTAKE,
+          L1_PREP,
+          L2_PREP,
+          L3_PREP,
+          L4_PRESTAGE,
+          BARGE_PRESTAGE,
+          PROCESSOR_PREP,
+          REEF1_INTAKE,
+          REEF2_INTAKE,
+          EJECT_CORAL)
           .contains(requestedSystemState)){
             systemState=requestedSystemState;
           }
@@ -577,17 +587,17 @@ public class Superstructure extends SubsystemBase {
 
         if(Arrays.asList(
           STOW,
-        HP_INTAKE,
-        ALGAE_GROUND_INTAKE,
-        L1_PREP,
-        L2_PREP,
-        L3_PREP,
-        L4_PRESTAGE,
-        BARGE_PRESTAGE,
-        PROCESSOR_PREP,
-        REEF1_INTAKE,
-        REEF2_INTAKE,
-        EJECT_ALGAE)
+          HP_INTAKE,
+          ALGAE_GROUND_INTAKE,
+          L1_PREP,
+          L2_PREP,
+          L3_PREP,
+          L4_PRESTAGE,
+          BARGE_PRESTAGE,
+          PROCESSOR_PREP,
+          REEF1_INTAKE,
+          REEF2_INTAKE,
+          EJECT_ALGAE)
           .contains(requestedSystemState)){
             systemState=requestedSystemState;
           }
