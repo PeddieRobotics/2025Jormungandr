@@ -9,15 +9,16 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.Arrays;
 
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.subsystems.Superstructure.SuperstructureState;
 import frc.robot.utils.Constants.ArmConstants;
 import frc.robot.utils.Constants.ElevatorConstants;
 import frc.robot.utils.Constants.ScoreConstants;
+import static frc.robot.subsystems.Superstructure.SuperstructureState.*;
 
 public class Superstructure extends SubsystemBase {
   private static Superstructure superstructure;
@@ -59,273 +60,9 @@ public class Superstructure extends SubsystemBase {
     EJECT_CORAL
   }
 
-  private Map<SuperstructureState, Set<SuperstructureState>> transitions = new HashMap<>() {{
-    put(SuperstructureState.STOW, Set.of(
-        SuperstructureState.HP_INTAKE,
-        SuperstructureState.ALGAE_GROUND_INTAKE,
-        SuperstructureState.L1_PREP,
-        SuperstructureState.L2_PREP,
-        SuperstructureState.L3_PREP,
-        SuperstructureState.L4_PRESTAGE,
-        SuperstructureState.BARGE_PRESTAGE,
-        SuperstructureState.PROCESSOR_PREP,
-        SuperstructureState.REEF1_INTAKE,
-        SuperstructureState.REEF2_INTAKE,
-        SuperstructureState.EJECT_ALGAE,
-        SuperstructureState.EJECT_CORAL));
-
-    put(SuperstructureState.HP_INTAKE, Set.of(
-        SuperstructureState.STOW,
-        SuperstructureState.ALGAE_GROUND_INTAKE,
-        SuperstructureState.L1_PREP,
-        SuperstructureState.L2_PREP,
-        SuperstructureState.L3_PREP,
-        SuperstructureState.L4_PRESTAGE,
-        SuperstructureState.BARGE_PRESTAGE,
-        SuperstructureState.PROCESSOR_PREP,
-        SuperstructureState.REEF1_INTAKE,
-        SuperstructureState.REEF2_INTAKE,
-        SuperstructureState.EJECT_ALGAE,
-        SuperstructureState.EJECT_CORAL));
-
-    put(SuperstructureState.ALGAE_GROUND_INTAKE, Set.of(
-        SuperstructureState.STOW,
-        SuperstructureState.HP_INTAKE,
-        SuperstructureState.L1_PREP,
-        SuperstructureState.L2_PREP,
-        SuperstructureState.L3_PREP,
-        SuperstructureState.L4_PRESTAGE,
-        SuperstructureState.BARGE_PRESTAGE,
-        SuperstructureState.PROCESSOR_PREP,
-        SuperstructureState.REEF1_INTAKE,
-        SuperstructureState.REEF2_INTAKE,
-        SuperstructureState.EJECT_ALGAE,
-        SuperstructureState.EJECT_CORAL));
-
-    put(SuperstructureState.L1_PREP, Set.of(
-        SuperstructureState.STOW,
-        SuperstructureState.HP_INTAKE,
-        SuperstructureState.ALGAE_GROUND_INTAKE,
-        SuperstructureState.L1_SCORE,
-        SuperstructureState.L2_PREP,
-        SuperstructureState.L3_PREP,
-        SuperstructureState.L4_PRESTAGE,
-        SuperstructureState.BARGE_PRESTAGE,
-        SuperstructureState.PROCESSOR_PREP,
-        SuperstructureState.REEF1_INTAKE,
-        SuperstructureState.REEF2_INTAKE,
-        SuperstructureState.EJECT_ALGAE,
-        SuperstructureState.EJECT_CORAL));
-
-    put(SuperstructureState.L2_PREP, Set.of(
-        SuperstructureState.STOW,
-        SuperstructureState.HP_INTAKE,
-        SuperstructureState.ALGAE_GROUND_INTAKE,
-        SuperstructureState.L1_PREP,
-        SuperstructureState.L2_SCORE,
-        SuperstructureState.L3_PREP,
-        SuperstructureState.L4_PRESTAGE,
-        SuperstructureState.BARGE_PRESTAGE,
-        SuperstructureState.PROCESSOR_PREP,
-        SuperstructureState.REEF1_INTAKE,
-        SuperstructureState.REEF2_INTAKE,
-        SuperstructureState.EJECT_ALGAE,
-        SuperstructureState.EJECT_CORAL));
-
-    put(SuperstructureState.L3_PREP, Set.of(
-        SuperstructureState.STOW,
-        SuperstructureState.HP_INTAKE,
-        SuperstructureState.ALGAE_GROUND_INTAKE,
-        SuperstructureState.L1_PREP,
-        SuperstructureState.L2_PREP,
-        SuperstructureState.L3_SCORE,
-        SuperstructureState.L4_PRESTAGE,
-        SuperstructureState.BARGE_PRESTAGE,
-        SuperstructureState.PROCESSOR_PREP,
-        SuperstructureState.REEF1_INTAKE,
-        SuperstructureState.REEF2_INTAKE,
-        SuperstructureState.EJECT_ALGAE,
-        SuperstructureState.EJECT_CORAL));
-
-    put(SuperstructureState.L4_PRESTAGE, Set.of(
-        SuperstructureState.STOW,
-        SuperstructureState.HP_INTAKE,
-        SuperstructureState.ALGAE_GROUND_INTAKE,
-        SuperstructureState.L1_PREP,
-        SuperstructureState.L2_PREP,
-        SuperstructureState.L3_PREP,
-        SuperstructureState.L4_PREP,
-        SuperstructureState.BARGE_PRESTAGE,
-        SuperstructureState.PROCESSOR_PREP,
-        SuperstructureState.REEF1_INTAKE,
-        SuperstructureState.REEF2_INTAKE,
-        SuperstructureState.EJECT_ALGAE,
-        SuperstructureState.EJECT_CORAL));
-
-    put(SuperstructureState.L4_PREP, Set.of(
-        SuperstructureState.STOW,
-        SuperstructureState.HP_INTAKE,
-        SuperstructureState.ALGAE_GROUND_INTAKE,
-        SuperstructureState.L1_PREP,
-        SuperstructureState.L2_PREP,
-        SuperstructureState.L3_PREP,
-        SuperstructureState.L4_PRESTAGE,
-        SuperstructureState.L4_SCORE,
-        SuperstructureState.BARGE_PRESTAGE,
-        SuperstructureState.PROCESSOR_PREP,
-        SuperstructureState.REEF1_INTAKE,
-        SuperstructureState.REEF2_INTAKE,
-        SuperstructureState.EJECT_ALGAE,
-        SuperstructureState.EJECT_CORAL));
-
-    put(SuperstructureState.L1_SCORE, Set.of(
-        SuperstructureState.STOW,
-        SuperstructureState.HP_INTAKE,
-        SuperstructureState.ALGAE_GROUND_INTAKE,
-        SuperstructureState.REEF1_INTAKE,
-        SuperstructureState.REEF2_INTAKE));
-
-    put(SuperstructureState.L2_SCORE, Set.of(
-        SuperstructureState.STOW,
-        SuperstructureState.HP_INTAKE,
-        SuperstructureState.ALGAE_GROUND_INTAKE,
-        SuperstructureState.REEF1_INTAKE,
-        SuperstructureState.REEF2_INTAKE));
-
-    put(SuperstructureState.L3_SCORE, Set.of(
-        SuperstructureState.STOW,
-        SuperstructureState.HP_INTAKE,
-        SuperstructureState.ALGAE_GROUND_INTAKE,
-        SuperstructureState.REEF1_INTAKE,
-        SuperstructureState.REEF2_INTAKE));
-
-    put(SuperstructureState.L4_SCORE, Set.of(
-        SuperstructureState.STOW,
-        SuperstructureState.HP_INTAKE,
-        SuperstructureState.ALGAE_GROUND_INTAKE,
-        SuperstructureState.REEF1_INTAKE,
-        SuperstructureState.REEF2_INTAKE));
-
-    put(SuperstructureState.BARGE_PRESTAGE, Set.of(
-        SuperstructureState.STOW,
-        SuperstructureState.HP_INTAKE,
-        SuperstructureState.ALGAE_GROUND_INTAKE,
-        SuperstructureState.L1_PREP,
-        SuperstructureState.L2_PREP,
-        SuperstructureState.L3_PREP,
-        SuperstructureState.L4_PRESTAGE,
-        SuperstructureState.BARGE_PREP,
-        SuperstructureState.PROCESSOR_PREP,
-        SuperstructureState.REEF1_INTAKE,
-        SuperstructureState.REEF2_INTAKE,
-        SuperstructureState.EJECT_ALGAE,
-        SuperstructureState.EJECT_CORAL));
-
-    put(SuperstructureState.BARGE_PREP, Set.of(
-        SuperstructureState.STOW,
-        SuperstructureState.HP_INTAKE,
-        SuperstructureState.ALGAE_GROUND_INTAKE,
-        SuperstructureState.L1_PREP,
-        SuperstructureState.L2_PREP,
-        SuperstructureState.L3_PREP,
-        SuperstructureState.L4_PRESTAGE,
-        SuperstructureState.BARGE_PRESTAGE,
-        SuperstructureState.BARGE_SCORE,
-        SuperstructureState.PROCESSOR_PREP,
-        SuperstructureState.REEF1_INTAKE,
-        SuperstructureState.REEF2_INTAKE,
-        SuperstructureState.EJECT_ALGAE,
-        SuperstructureState.EJECT_CORAL));
-
-    put(SuperstructureState.BARGE_SCORE, Set.of(
-        SuperstructureState.STOW,
-        SuperstructureState.HP_INTAKE,
-        SuperstructureState.ALGAE_GROUND_INTAKE,
-        SuperstructureState.REEF1_INTAKE,
-        SuperstructureState.REEF2_INTAKE));
-
-    put(SuperstructureState.PROCESSOR_PREP, Set.of(
-        SuperstructureState.STOW,
-        SuperstructureState.HP_INTAKE,
-        SuperstructureState.ALGAE_GROUND_INTAKE,
-        SuperstructureState.L1_PREP,
-        SuperstructureState.L2_PREP,
-        SuperstructureState.L3_PREP,
-        SuperstructureState.L4_PRESTAGE,
-        SuperstructureState.BARGE_PRESTAGE,
-        SuperstructureState.PROCESSOR_SCORE,
-        SuperstructureState.REEF1_INTAKE,
-        SuperstructureState.REEF2_INTAKE,
-        SuperstructureState.EJECT_ALGAE,
-        SuperstructureState.EJECT_CORAL));
-
-    put(SuperstructureState.PROCESSOR_SCORE, Set.of(
-        SuperstructureState.STOW,
-        SuperstructureState.HP_INTAKE,
-        SuperstructureState.ALGAE_GROUND_INTAKE,
-        SuperstructureState.REEF1_INTAKE,
-        SuperstructureState.REEF2_INTAKE));
-
-    put(SuperstructureState.REEF1_INTAKE, Set.of(
-        SuperstructureState.STOW,
-        SuperstructureState.HP_INTAKE,
-        SuperstructureState.ALGAE_GROUND_INTAKE,
-        SuperstructureState.L1_PREP,
-        SuperstructureState.L2_PREP,
-        SuperstructureState.L3_PREP,
-        SuperstructureState.L4_PRESTAGE,
-        SuperstructureState.BARGE_PRESTAGE,
-        SuperstructureState.PROCESSOR_PREP,
-        SuperstructureState.REEF2_INTAKE,
-        SuperstructureState.EJECT_ALGAE,
-        SuperstructureState.EJECT_CORAL));
-
-    put(SuperstructureState.REEF2_INTAKE, Set.of(
-        SuperstructureState.STOW,
-        SuperstructureState.HP_INTAKE,
-        SuperstructureState.ALGAE_GROUND_INTAKE,
-        SuperstructureState.L1_PREP,
-        SuperstructureState.L2_PREP,
-        SuperstructureState.L3_PREP,
-        SuperstructureState.L4_PRESTAGE,
-        SuperstructureState.BARGE_PRESTAGE,
-        SuperstructureState.PROCESSOR_PREP,
-        SuperstructureState.REEF1_INTAKE,
-        SuperstructureState.EJECT_ALGAE,
-        SuperstructureState.EJECT_CORAL));
-
-    put(SuperstructureState.EJECT_ALGAE, Set.of(
-        SuperstructureState.STOW,
-        SuperstructureState.HP_INTAKE,
-        SuperstructureState.ALGAE_GROUND_INTAKE,
-        SuperstructureState.L1_PREP,
-        SuperstructureState.L2_PREP,
-        SuperstructureState.L3_PREP,
-        SuperstructureState.L4_PRESTAGE,
-        SuperstructureState.BARGE_PRESTAGE,
-        SuperstructureState.PROCESSOR_PREP,
-        SuperstructureState.REEF1_INTAKE,
-        SuperstructureState.REEF2_INTAKE,
-        SuperstructureState.EJECT_CORAL));
-
-    put(SuperstructureState.EJECT_CORAL, Set.of(
-        SuperstructureState.STOW,
-        SuperstructureState.HP_INTAKE,
-        SuperstructureState.ALGAE_GROUND_INTAKE,
-        SuperstructureState.L1_PREP,
-        SuperstructureState.L2_PREP,
-        SuperstructureState.L3_PREP,
-        SuperstructureState.L4_PRESTAGE,
-        SuperstructureState.BARGE_PRESTAGE,
-        SuperstructureState.PROCESSOR_PREP,
-        SuperstructureState.REEF1_INTAKE,
-        SuperstructureState.REEF2_INTAKE,
-        SuperstructureState.EJECT_ALGAE));
-  }};
-
   public Superstructure() {
-    systemState = SuperstructureState.STOW;
-    requestedSystemState = SuperstructureState.STOW;
+    systemState = STOW;
+    requestedSystemState = STOW;
 
     arm = Arm.getInstance();
     claw = Claw.getInstance();
@@ -364,29 +101,88 @@ public class Superstructure extends SubsystemBase {
     coralIndex = SmartDashboard.getBoolean("coralIndex", false);
 
     switch (systemState) {
-      case STOW:
+      case STOW -> {
         // stop intake
         // bring elevator down
-        break;
 
-      case HP_INTAKE:
+        if(Arrays.asList(
+          STOW, HP_INTAKE, ALGAE_GROUND_INTAKE, L1_PREP, L2_PREP, L3_PREP, L4_PRESTAGE,
+          BARGE_PRESTAGE, PROCESSOR_PREP, REEF1_INTAKE, REEF2_INTAKE, EJECT_ALGAE, EJECT_CORAL)
+          .contains(requestedSystemState)){
+            systemState=requestedSystemState;
+          }
+      }
+
+      case HP_INTAKE -> {
         // set angle
         // set elevator
         // run intake motor
-        break;
 
-      case ALGAE_GROUND_INTAKE:
+        if(Arrays.asList(
+          STOW,
+        ALGAE_GROUND_INTAKE,
+        L1_PREP,
+        L2_PREP,
+        L3_PREP,
+        L4_PRESTAGE,
+        BARGE_PRESTAGE,
+        PROCESSOR_PREP,
+        REEF1_INTAKE,
+        REEF2_INTAKE,
+        EJECT_ALGAE,
+        EJECT_CORAL)
+          .contains(requestedSystemState)){
+            systemState=requestedSystemState;
+          }
+      }
+
+      case ALGAE_GROUND_INTAKE -> {
         // run intake
         if (algaeIndex) {
-          requestState(SuperstructureState.STOW);
+          requestState(STOW);
         }
-        break;
 
-      case L1_PREP:
+        if(Arrays.asList(
+          STOW,
+        HP_INTAKE,
+        L1_PREP,
+        L2_PREP,
+        L3_PREP,
+        L4_PRESTAGE,
+        BARGE_PRESTAGE,
+        PROCESSOR_PREP,
+        REEF1_INTAKE,
+        REEF2_INTAKE,
+        EJECT_ALGAE,
+        EJECT_CORAL)
+          .contains(requestedSystemState)){
+            systemState=requestedSystemState;
+          }
+      }
+
+      case L1_PREP -> {
         // set prep angle
-        break;
 
-      case L2_PREP:
+        if(Arrays.asList(
+          STOW,
+        HP_INTAKE,
+        ALGAE_GROUND_INTAKE,
+        L1_SCORE,
+        L2_PREP,
+        L3_PREP,
+        L4_PRESTAGE,
+        BARGE_PRESTAGE,
+        PROCESSOR_PREP,
+        REEF1_INTAKE,
+        REEF2_INTAKE,
+        EJECT_ALGAE,
+        EJECT_CORAL)
+          .contains(requestedSystemState)){
+            systemState=requestedSystemState;
+          }
+      }
+
+      case L2_PREP -> {
         // set prep angle
         /*
          * two different cases:
@@ -395,9 +191,26 @@ public class Superstructure extends SubsystemBase {
          * - shoot case
          * move to scoring angle
          */
-        break;
+        if(Arrays.asList(
+          STOW,
+        HP_INTAKE,
+        ALGAE_GROUND_INTAKE,
+        L1_PREP,
+        L2_SCORE,
+        L3_PREP,
+        L4_PRESTAGE,
+        BARGE_PRESTAGE,
+        PROCESSOR_PREP,
+        REEF1_INTAKE,
+        REEF2_INTAKE,
+        EJECT_ALGAE,
+        EJECT_CORAL)
+          .contains(requestedSystemState)){
+            systemState=requestedSystemState;
+          }
+      }
 
-      case L3_PREP:
+      case L3_PREP -> {
         // set prep angle
         /*
          * two different cases:
@@ -406,9 +219,26 @@ public class Superstructure extends SubsystemBase {
          * - shoot case
          * move to scoring angle
          */
-        break;
+        if(Arrays.asList(
+          STOW,
+        HP_INTAKE,
+        ALGAE_GROUND_INTAKE,
+        L1_PREP,
+        L2_PREP,
+        L3_SCORE,
+        L4_PRESTAGE,
+        BARGE_PRESTAGE,
+        PROCESSOR_PREP,
+        REEF1_INTAKE,
+        REEF2_INTAKE,
+        EJECT_ALGAE,
+        EJECT_CORAL)
+          .contains(requestedSystemState)){
+            systemState=requestedSystemState;
+          }
+      }
 
-      case L4_PREP:
+      case L4_PREP -> {
         // set prep angle
         /*
          * move elevator to scoring height
@@ -416,9 +246,27 @@ public class Superstructure extends SubsystemBase {
          * - dunk/score case
          * move to angle close to scoring angle (vertical)
          */
-        break;
+        if(Arrays.asList(
+          STOW,
+        HP_INTAKE,
+        ALGAE_GROUND_INTAKE,
+        L1_PREP,
+        L2_PREP,
+        L3_PREP,
+        L4_PREP,
+        BARGE_PRESTAGE,
+        PROCESSOR_PREP,
+        REEF1_INTAKE,
+        REEF2_INTAKE,
+        EJECT_ALGAE,
+        EJECT_CORAL)
+          .contains(requestedSystemState)){
+            systemState=requestedSystemState;
+          }
+      }
+      
 
-      case L1_SCORE:
+      case L1_SCORE -> {
 
         if (!timer.hasElapsed(ScoreConstants.L1ScoreTimeout)) {
           // KEEP RUNNING
@@ -427,13 +275,22 @@ public class Superstructure extends SubsystemBase {
           timer.reset();
 
           // stop everything
-          requestState(SuperstructureState.STOW);
-          break;
+          requestState(STOW);
         }
         // lower arm :)
-        break;
 
-      case L2_SCORE:
+        if(Arrays.asList(
+          STOW,
+        HP_INTAKE,
+        ALGAE_GROUND_INTAKE,
+        REEF1_INTAKE,
+        REEF2_INTAKE)
+          .contains(requestedSystemState)){
+            systemState=requestedSystemState;
+          }
+      }
+
+      case L2_SCORE -> {
 
         if (!timer.hasElapsed(ScoreConstants.L2ScoreTimeout)) {
           // KEEP RUNNING
@@ -450,13 +307,22 @@ public class Superstructure extends SubsystemBase {
           timer.reset();
 
           // stop everything
-          requestState(SuperstructureState.STOW);
-          break;
+          requestState(STOW);
         }
         // lower arm :)
-        break;
 
-      case L3_SCORE:
+        if(Arrays.asList(
+          STOW,
+          HP_INTAKE,
+          ALGAE_GROUND_INTAKE,
+          REEF1_INTAKE,
+          REEF2_INTAKE)
+          .contains(requestedSystemState)){
+            systemState=requestedSystemState;
+          }
+      }
+
+      case L3_SCORE -> {
         if (!timer.hasElapsed(ScoreConstants.L3ScoreTimeout)) {
           // KEEP RUNNING
           timer.start();
@@ -472,13 +338,22 @@ public class Superstructure extends SubsystemBase {
           timer.reset();
 
           // stop everything
-          requestState(SuperstructureState.STOW);
-          break;
+          requestState(STOW);
         }
         // lower arm :)
-        break;
 
-      case L4_SCORE:
+        if(Arrays.asList(
+          STOW,
+        HP_INTAKE,
+        ALGAE_GROUND_INTAKE,
+        REEF1_INTAKE,
+        REEF2_INTAKE)
+          .contains(requestedSystemState)){
+            systemState=requestedSystemState;
+          }
+      }
+
+      case L4_SCORE -> {
 
         if (!timer.hasElapsed(ScoreConstants.L4ScoreTimeout)) {
           // KEEP RUNNING
@@ -495,23 +370,87 @@ public class Superstructure extends SubsystemBase {
           timer.reset();
 
           // stop everything
-          requestState(SuperstructureState.STOW);
-          break;
+          requestState(STOW);
         }
         // lower arm :)
-        break;
 
-      case L4_PRESTAGE:
+        if(Arrays.asList(
+          STOW,
+        HP_INTAKE,
+        ALGAE_GROUND_INTAKE,
+        REEF1_INTAKE,
+        REEF2_INTAKE)
+          .contains(requestedSystemState)){
+            systemState=requestedSystemState;
+          }
+      }
+
+      case L4_PRESTAGE -> {
         elevator.setElevatorPositionMotionMagicTorqueCurrentFOC(ElevatorConstants.kElevatorL3Height);
-        break;
 
-      case BARGE_PRESTAGE:
-        break;
+        if(Arrays.asList(
+          STOW,
+        HP_INTAKE,
+        ALGAE_GROUND_INTAKE,
+        L1_PREP,
+        L2_PREP,
+        L3_PREP,
+        L4_PREP,
+        BARGE_PRESTAGE,
+        PROCESSOR_PREP,
+        REEF1_INTAKE,
+        REEF2_INTAKE,
+        EJECT_ALGAE,
+        EJECT_CORAL)
+          .contains(requestedSystemState)){
+            systemState=requestedSystemState;
+          }
+      }
 
-      case BARGE_PREP:
-        break;
+      case BARGE_PRESTAGE -> {
 
-      case BARGE_SCORE:
+        if(Arrays.asList(
+          STOW,
+        HP_INTAKE,
+        ALGAE_GROUND_INTAKE,
+        L1_PREP,
+        L2_PREP,
+        L3_PREP,
+        L4_PRESTAGE,
+        BARGE_PREP,
+        PROCESSOR_PREP,
+        REEF1_INTAKE,
+        REEF2_INTAKE,
+        EJECT_ALGAE,
+        EJECT_CORAL)
+          .contains(requestedSystemState)){
+            systemState=requestedSystemState;
+          }
+      }
+
+      case BARGE_PREP -> {
+
+        if(Arrays.asList(
+          STOW,
+        HP_INTAKE,
+        ALGAE_GROUND_INTAKE,
+        L1_PREP,
+        L2_PREP,
+        L3_PREP,
+        L4_PRESTAGE,
+        BARGE_PRESTAGE,
+        BARGE_SCORE,
+        PROCESSOR_PREP,
+        REEF1_INTAKE,
+        REEF2_INTAKE,
+        EJECT_ALGAE,
+        EJECT_CORAL)
+          .contains(requestedSystemState)){
+            systemState=requestedSystemState;
+          }
+      }
+
+      case BARGE_SCORE-> {
         if (!timer.hasElapsed(ScoreConstants.BargeTimeout)) {
           // KEEP RUNNING
           timer.start();
@@ -520,71 +459,172 @@ public class Superstructure extends SubsystemBase {
           timer.reset();
 
           // stop everything
-          requestState(SuperstructureState.STOW);
-          break;
+          requestState(STOW);
         }
-        break;
 
-      case PROCESSOR_PREP:
-        break;
+        if(Arrays.asList(
+          STOW,
+        HP_INTAKE,
+        ALGAE_GROUND_INTAKE,
+        REEF1_INTAKE,
+        REEF2_INTAKE)
+          .contains(requestedSystemState)){
+            systemState=requestedSystemState;
+          }
+      }
 
-      case PROCESSOR_SCORE:
-        requestState(SuperstructureState.STOW);
-        break;
+      case PROCESSOR_PREP -> {
 
-      case REEF1_INTAKE:
+        if(Arrays.asList(
+          STOW,
+        HP_INTAKE,
+        ALGAE_GROUND_INTAKE,
+        L1_PREP,
+        L2_PREP,
+        L3_PREP,
+        L4_PRESTAGE,
+        BARGE_PRESTAGE,
+        PROCESSOR_SCORE,
+        REEF1_INTAKE,
+        REEF2_INTAKE,
+        EJECT_ALGAE,
+        EJECT_CORAL)
+          .contains(requestedSystemState)){
+            systemState=requestedSystemState;
+          }
+      }
+
+      case PROCESSOR_SCORE -> {
+
+        if(Arrays.asList(
+          STOW,
+        HP_INTAKE,
+        ALGAE_GROUND_INTAKE,
+        REEF1_INTAKE,
+        REEF2_INTAKE)
+          .contains(requestedSystemState)){
+            systemState=requestedSystemState;
+          }
+      }
+
+      case REEF1_INTAKE ->{
         if (algaeIndex) {
-          requestState(SuperstructureState.STOW);
+          requestState(STOW);
         }
-        break;
 
-      case REEF2_INTAKE:
+        if(Arrays.asList(
+          STOW,
+        HP_INTAKE,
+        ALGAE_GROUND_INTAKE,
+        L1_PREP,
+        L2_PREP,
+        L3_PREP,
+        L4_PRESTAGE,
+        BARGE_PRESTAGE,
+        PROCESSOR_PREP,
+        REEF2_INTAKE,
+        EJECT_ALGAE,
+        EJECT_CORAL)
+          .contains(requestedSystemState)){
+            systemState=requestedSystemState;
+          }
+      }
+
+      case REEF2_INTAKE -> {
         if (algaeIndex) {
-          requestState(SuperstructureState.STOW);
+          requestState(STOW);
         }
-        break;
 
-      case EJECT_ALGAE:
-        break;
+        if(Arrays.asList(
+          STOW,
+        HP_INTAKE,
+        ALGAE_GROUND_INTAKE,
+        L1_PREP,
+        L2_PREP,
+        L3_PREP,
+        L4_PRESTAGE,
+        BARGE_PRESTAGE,
+        PROCESSOR_PREP,
+        REEF1_INTAKE,
+        EJECT_ALGAE,
+        EJECT_CORAL)
+          .contains(requestedSystemState)){
+            systemState=requestedSystemState;
+          }
+      }
 
-      case EJECT_CORAL:
-        break;
+      case EJECT_ALGAE -> {
+
+        if(Arrays.asList(
+          STOW,
+        HP_INTAKE,
+        ALGAE_GROUND_INTAKE,
+        L1_PREP,
+        L2_PREP,
+        L3_PREP,
+        L4_PRESTAGE,
+        BARGE_PRESTAGE,
+        PROCESSOR_PREP,
+        REEF1_INTAKE,
+        REEF2_INTAKE,
+        EJECT_CORAL)
+          .contains(requestedSystemState)){
+            systemState=requestedSystemState;
+          }
+      }
+
+      case EJECT_CORAL -> {
+
+        if(Arrays.asList(
+          STOW,
+        HP_INTAKE,
+        ALGAE_GROUND_INTAKE,
+        L1_PREP,
+        L2_PREP,
+        L3_PREP,
+        L4_PRESTAGE,
+        BARGE_PRESTAGE,
+        PROCESSOR_PREP,
+        REEF1_INTAKE,
+        REEF2_INTAKE,
+        EJECT_ALGAE)
+          .contains(requestedSystemState)){
+            systemState=requestedSystemState;
+          }
+      }
     }
 
-    Set<SuperstructureState> canTransition = transitions.get(systemState);
-    if (canTransition.contains(requestedSystemState))
-      systemState = requestedSystemState;
   }
 
   public void sendToScore() {
     switch (systemState) {
-      case L1_PREP:
-        requestState(SuperstructureState.L1_SCORE);
+      case L1_PREP ->{
+        requestState(L1_SCORE);
         timer.reset();
-        break;
+      }
 
-      case L2_PREP:
-        requestState(SuperstructureState.L2_SCORE);
+      case L2_PREP ->{
+        requestState(L2_SCORE);
         timer.reset();
-        break;
+      }
 
-      case L3_PREP:
-        requestState(SuperstructureState.L3_SCORE);
+      case L3_PREP ->{
+        requestState(L3_SCORE);
         timer.reset();
-        break;
+      }
 
-      case L4_PREP:
-        requestState(SuperstructureState.L4_SCORE);
+      case L4_PREP ->{
+        requestState(L4_SCORE);
         timer.reset();
-        break;
+      }
 
-      case PROCESSOR_PREP:
-        requestState(SuperstructureState.PROCESSOR_SCORE);
-        break;
+      case PROCESSOR_PREP -> {
+        requestState(PROCESSOR_SCORE);
+      }
 
-      case BARGE_PREP:
-        requestState(SuperstructureState.BARGE_SCORE);
-        break;
+      case BARGE_PREP ->{
+        requestState(BARGE_SCORE);
+      }
     }
   }
 
