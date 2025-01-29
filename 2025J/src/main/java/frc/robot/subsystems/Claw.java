@@ -11,14 +11,18 @@ public class Claw extends SubsystemBase {
     private static Claw claw;
     private Kraken clawMotor;
 
+    private DigitalInput coralSensor;
+    private AnalogInput algaeSensor;
+
     public Claw() {
         clawMotor = new Kraken(RobotMap.CLAW_MOTOR_ID, RobotMap.CANIVORE_NAME);
+
+        coralSensor = new DigitalInput();
+        algaeSensor = new AnalogInput();
 
         clawMotor.setInverted(false);
         clawMotor.setStatorCurrentLimit(ClawConstants.kClawStatorCurrentLimit);
         clawMotor.setBrake();
-
-        SmartDashboard.putBoolean("hasGamePiece", false);
     }
 
     /**
