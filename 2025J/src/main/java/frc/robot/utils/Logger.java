@@ -50,7 +50,7 @@ public class Logger {
         superstructure = Superstructure.getInstance();
 
         climber = Climber.getInstance();
-        leftClimberPosition = new DoubleLogEntry(log, "Left Climber Position");
+        leftClimberPosition = new DoubleLogEntry(log, "/Climber/Left Climber Position");
     }
 
     public void updateLogs(){
