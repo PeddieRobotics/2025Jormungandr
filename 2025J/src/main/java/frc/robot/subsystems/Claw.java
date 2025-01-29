@@ -1,5 +1,7 @@
 package frc.robot.subsystems;
 
+import edu.wpi.first.wpilibj.AnalogInput;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.utils.Constants.ClawConstants;
@@ -17,8 +19,8 @@ public class Claw extends SubsystemBase {
     public Claw() {
         clawMotor = new Kraken(RobotMap.CLAW_MOTOR_ID, RobotMap.CANIVORE_NAME);
 
-        coralSensor = new DigitalInput();
-        algaeSensor = new AnalogInput();
+        coralSensor = new DigitalInput(RobotMap.CLAW_CORAL_SENSOR_ID);
+        algaeSensor = new AnalogInput(RobotMap.CLAW_ALGAE_SENSOR_ID);
 
         clawMotor.setInverted(false);
         clawMotor.setStatorCurrentLimit(ClawConstants.kClawStatorCurrentLimit);
@@ -44,6 +46,10 @@ public class Claw extends SubsystemBase {
         clawMotor.setPercentOutput(speed);
     }
 
+    public void stopClaw(){
+        setClaw(0);
+    }
+
     /**
      * Sets clawMotor speed to the designated percent output listed in the
      * ClawConstants class
@@ -63,11 +69,17 @@ public class Claw extends SubsystemBase {
     // Accessor methods
 
     /**
-     * @return claw distance sensor reading (distance sensor units)
+     * @return claw coral sensor reading (digital sensor)
      */
-    public double getDistanceSensor() {
-        // TODO: implement sensor logic
-        return 0.0;
+    public boolean getCoralSensor() {
+        return coralSensor.get();
+    }
+
+    /**
+     * @return claw algae distance sensor reading (distance sensor units)
+     */
+    public double getAlgaeSensor() {
+        return algaeSensor.getVoltage();
     }
 
     /**
