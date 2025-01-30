@@ -4,6 +4,9 @@
 
 package frc.robot.subsystems;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+
 import com.ctre.phoenix6.hardware.Pigeon2;
 
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
@@ -18,6 +21,7 @@ import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.utils.Constants;
 import frc.robot.utils.Constants.DriveConstants;
 import frc.robot.utils.RobotMap;
 
@@ -158,6 +162,12 @@ public class Drivetrain extends SubsystemBase {
     return gyro.getRotation2d();
   }
 
+  public double getRotationalVelocity(){
+    return -gyro.getAngularVelocityZWorld().getValueAsDouble();
+  }
+
+
+
   public Pose2d getPose() {
     return odometry.getEstimatedPosition();
   }
@@ -173,6 +183,32 @@ public class Drivetrain extends SubsystemBase {
         frontRightModule.getState(),
         backLeftModule.getState(),
         backRightModule.getState());
+  }
+
+  public boolean isSkidding(){
+    double currentRotationalVelocity = getRotationalVelocity();
+    ChassisSpeeds rotationalVelocity = new ChassisSpeeds(0,0, currentRotationalVelocity);
+    SwerveModuleState pureRotationalStates[] = DriveConstants.kinematics.toSwerveModuleStates(rotationalVelocity);
+
+    SwerveModuleState[] fullModuleStates = swerveModuleStates;
+    Translation2d[] pureTranslationalStates = new Translation2d[4];
+
+    for (int i = 0; i<4; i++){
+      Translation2d fullModule = new Translation2d(fullModuleStates[i].speedMetersPerSecond, fullModuleStates[i].angle);
+      Translation2d pureRotation = new Translation2d(pureRotationalStates[i].speedMetersPerSecond, pureRotationalStates[i].angle);
+
+      pureTranslationalStates[i] = fullModule.minus(pureRotation);
+    }
+
+    for (int i = 0; i<4; i++){
+      for (int j = 0; j<4; j++){
+        if (pureTranslationalStates[i].getDistance(pureTranslationalStates[j])>DriveConstants.kSkidThreshold){
+          return true;
+        }
+      }
+    }
+
+    return false;
   }
 
   @Override

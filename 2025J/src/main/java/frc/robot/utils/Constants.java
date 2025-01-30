@@ -102,6 +102,8 @@ public final class Constants {
     public static final double kBackLeftCancoderOffset = 0.0;
     public static final double kBackRightCancoderOffset = 0.0;
 
+    public static final double kSkidThreshold = 0.0;
+
   }
 
   public static class IntakeConstants {
