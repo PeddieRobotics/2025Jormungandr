@@ -44,18 +44,18 @@ public class RobotContainer {
   private LimelightFrontRight limelightFrontRight;
 
   public RobotContainer() {
-    arm = Arm.getInstance();
-    claw = Claw.getInstance();
+    // arm = Arm.getInstance();
+    // claw = Claw.getInstance();
     autonomous = Autonomous.getInstance();
     drivetrain = Drivetrain.getInstance();
-    elevator = Elevator.getInstance();
-    hpIntake = HPIntake.getInstance();
-    superstructure = Superstructure.getInstance();
+    // elevator = Elevator.getInstance();
+    // hpIntake = HPIntake.getInstance();
+    // superstructure = Superstructure.getInstance();
     driverOI = DriverOI.getInstance();
     operatorOI = OperatorOI.getInstance();
-    limelightBack = LimelightBack.getInstance();
-    limelightFrontLeft = LimelightFrontLeft.getInstance();
-    limelightFrontRight = LimelightFrontRight.getInstance();
+    // limelightBack = LimelightBack.getInstance();
+    // limelightFrontLeft = LimelightFrontLeft.getInstance();
+    // limelightFrontRight = LimelightFrontRight.getInstance();
 
     SmartDashboard.putData("Auto Routines", autonomous.getAutoChooser());
     drivetrain.setDefaultCommand(new SwerveDriveCommand());

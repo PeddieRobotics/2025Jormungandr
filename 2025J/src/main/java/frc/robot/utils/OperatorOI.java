@@ -22,7 +22,7 @@ public class OperatorOI {
     }
 
     public OperatorOI() {
-        superstructure = Superstructure.getInstance();
+        //superstructure = Superstructure.getInstance();
         configureController();
         SmartDashboard.putBoolean("L3 Held?", false);
     }

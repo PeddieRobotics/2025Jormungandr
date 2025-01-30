@@ -51,9 +51,6 @@ public class SwerveModule extends SubsystemBase {
     //driveMotor.setStatorCurrentLimit(ModuleConstants.kDriveMotorStatorCurrentLimit);
     //steerMotor.setStatorCurrentLimit(ModuleConstants.kSteerMotorStatorCurrentLimit);
 
-    driveMotor.setBrake();
-    steerMotor.setBrake();
-
     driveMotor.setClosedLoopRampRate(0.1);
     steerMotor.setClosedLoopRampRate(0.1);
 
@@ -67,6 +64,7 @@ public class SwerveModule extends SubsystemBase {
     steerMotor.setFeedbackDevice(CANCoderId, FeedbackSensorSourceValue.FusedCANcoder);
     
     driveMotor.setVelocityConversionFactor(ModuleConstants.kDriveEncoderVelocityFactor);
+
     steerMotor.setRotorToSensorRatio(ModuleConstants.kSteerMotorReduction);
     steerMotor.setSensorToMechanismRatio(1.0);
 
@@ -74,6 +72,7 @@ public class SwerveModule extends SubsystemBase {
                                     ModuleConstants.kDriveP, ModuleConstants.kDriveI, ModuleConstants.kDriveD, ModuleConstants.kDriveFF);
     steerMotor.setPIDValues(ModuleConstants.kSteerS, ModuleConstants.kSteerV, ModuleConstants.kSteerA, 
                                     ModuleConstants.kSteerP, ModuleConstants.kSteerI, ModuleConstants.kSteerD, ModuleConstants.kSteerFF, StaticFeedforwardSignValue.UseClosedLoopSign);
+
   }
 
   public void configureCANCoder(){
@@ -82,7 +81,7 @@ public class SwerveModule extends SubsystemBase {
                                                                 // Setting this to 0.5 makes the absolute position signed [-0.5, 0.5)
                                                                 // Setting this to 0 makes the absolute position always negative [-1, 0)
     config.MagnetSensor.SensorDirection = SensorDirectionValue.CounterClockwise_Positive;
-    config.MagnetSensor.MagnetOffset = -moduleAngularOffset/ (2 * Math.PI);
+    config.MagnetSensor.MagnetOffset = -moduleAngularOffset;
     canCoder.getConfigurator().apply(config);
   }
 
