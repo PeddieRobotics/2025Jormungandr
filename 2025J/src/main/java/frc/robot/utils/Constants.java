@@ -106,8 +106,18 @@ public final class Constants {
 
   public static class IntakeConstants {
     // TODO: Update real values
-    public static final double kHPIntakeMotorStatorCurrentLimit = 0.0;
+    public static final double kHPIntakeRollerSupplyCurrentLimit = 0.0;
+    public static final double kHPIntakePivotSupplyCurrentLimit = 0.0;
     public static final double kHPIntakeSpeed = 0.0;
+
+    public static final double kS = 0.0;
+    public static final double kV = 0.0;
+    public static final double kA = 0.0;
+    public static final double kP = 0.0;
+    public static final double kI = 0.0;
+    public static final double kD = 0.0;
+    public static final double kFF = 0.0;
+
   }
 
   public static class ElevatorConstants {
@@ -164,7 +174,29 @@ public final class Constants {
     public static final double ProcessorTimeout = 10.0; //NOT DEFINED YET!!!!
     public static final double BargeTimeout = 10.0; //NOT DEFINED YET!!!!
 
+    public static final double kElevatorStowPosition = 0.0;
+    public static final double kElevatorHPIntakePosition = 0.0;
+    public static final double kElevatorGroundIntakePosition = 0.0;
+    public static final double kElevatorL1ScorePosition = 0.0;
+    public static final double kElevatorL2ScorePosition = 0.0;
+    public static final double kElevatorL3ScorePosition = 0.0;
+    public static final double kElevatorL4ScorePosition = 0.0;
+    public static final double kElevatorBargeScorePosition = 0.0;
+    public static final double kElevatorProcessorScorePosition = 0.0;
+    public static final double kElevatorReef1IntakePosition = 0.0;
+    public static final double kElevatorReef2IntakePosition = 0.0;
 
+    public static final double kArmStowPosition = 0.0;
+    public static final double kArmHPIntakePosition = 0.0;
+    public static final double kArmGroundIntakePosition = 0.0;
+    public static final double kArmL1ScorePosition = 0.0;
+    public static final double kArmL2ScorePosition = 0.0;
+    public static final double kArmL3ScorePosition = 0.0;
+    public static final double kArmL4ScorePosition = 0.0;
+    public static final double kArmBargeScorePosition = 0.0;
+    public static final double kArmProcessorScorePosition = 0.0;
+    public static final double kArmReef1IntakePosition = 0.0;
+    public static final double kArmReef2IntakePosition = 0.0;
 
   }
   public static final class ArmConstants {
@@ -281,4 +313,5 @@ public final class Constants {
       put(22, 12.125);
     }};
   }
+
 }
