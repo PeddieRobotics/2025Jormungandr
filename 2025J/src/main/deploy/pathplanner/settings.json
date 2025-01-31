@@ -3,6 +3,8 @@
   "robotLength": 0.88265,
   "holonomicMode": true,
   "pathFolders": [
+    "HP Intake",
+    "Score",
     "Starts"
   ],
   "autoFolders": [
