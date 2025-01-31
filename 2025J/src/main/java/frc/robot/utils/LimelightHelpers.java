@@ -1586,10 +1586,4 @@ public class LimelightHelpers {
 
         return results;
     }
-
-    // erm check if it works
-    public static int getNumberOfAprilTagsSeen(String limelightName){
-        LimelightResults results = getLatestResults(limelightName);
-        return results.targets_Fiducials.length;
-    }
 }
