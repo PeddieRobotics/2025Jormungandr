@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 7.1,
-        "y": 0.5
+        "x": 7.0005,
+        "y": 0.65
       },
       "prevControl": null,
       "nextControl": {
-        "x": 6.298917985031727,
-        "y": 1.3137190869414754
+        "x": 6.416531859902655,
+        "y": 1.2130937926444476
       },
       "isLocked": false,
-      "linkedName": "RedWall"
+      "linkedName": null
     },
     {
       "anchor": {
         "x": 5.0,
-        "y": 2.6779605263157897
+        "y": 2.68
       },
       "prevControl": {
-        "x": 5.431988647931464,
-        "y": 2.280477652712519
+        "x": 5.918420619086882,
+        "y": 1.7623673075595256
       },
       "nextControl": null,
       "isLocked": false,
@@ -48,7 +48,7 @@
   "folder": "Starts",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": -90.09303858813202
+    "rotation": -59.99999999999999
   },
   "useDefaultConstraints": true
 }

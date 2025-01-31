@@ -7,25 +7,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Blue Wall to J"
+            "pathName": "Blue Jig to J"
           }
         },
         {
           "type": "path",
           "data": {
             "pathName": "J to HP"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "HP to K"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "K to HP"
           }
         },
         {
@@ -38,6 +26,6 @@
     }
   },
   "resetOdom": true,
-  "folder": "Wall Starts",
+  "folder": "Jig Starts",
   "choreoAuto": false
 }
