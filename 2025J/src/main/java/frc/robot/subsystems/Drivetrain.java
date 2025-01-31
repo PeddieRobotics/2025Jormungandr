@@ -190,29 +190,37 @@ public class Drivetrain extends SubsystemBase {
     ChassisSpeeds rotationalVelocity = new ChassisSpeeds(0,0, currentRotationalVelocity);
     SwerveModuleState pureRotationalStates[] = DriveConstants.kinematics.toSwerveModuleStates(rotationalVelocity);
 
-    SwerveModuleState[] fullModuleStates = swerveModuleStates;
+    SwerveModuleState[] moduleStates = swerveModuleStates;
+
+    Translation2d[] fullModuleStates = new Translation2d[4];
     Translation2d[] pureTranslationalStates = new Translation2d[4];
 
     for (int i = 0; i<4; i++){
-      Translation2d fullModule = new Translation2d(fullModuleStates[i].speedMetersPerSecond, fullModuleStates[i].angle);
+      fullModuleStates[i] = new Translation2d(moduleStates[i].speedMetersPerSecond, moduleStates[i].angle);
+
       Translation2d pureRotation = new Translation2d(pureRotationalStates[i].speedMetersPerSecond, pureRotationalStates[i].angle);
 
-      pureTranslationalStates[i] = fullModule.minus(pureRotation);
+      pureTranslationalStates[i] = fullModuleStates[i].minus(pureRotation);
     }
 
     for (int i = 0; i<4; i++){
-      for (int j = 0; j<4; j++){
-        if (pureTranslationalStates[i].getDistance(pureTranslationalStates[j])>DriveConstants.kSkidThreshold){
+      for (int j = i+1; j<4; j++){
+        Translation2d difference = pureTranslationalStates[i].minus(pureTranslationalStates[j]);
+
+        double vtotal = Math.sqrt(Math.pow(difference.getX(),2) + Math.pow(difference.getY(), 2));
+
+        if(vtotal>DriveConstants.kSkidThreshold){
           return true;
         }
+
       }
     }
-
     return false;
   }
 
   @Override
   public void periodic() {
+    SmartDashboard.putBoolean("skid", isSkidding());
     updateModulePositions();
     updateOdometry();
     field.setRobotPose(odometry.getEstimatedPosition());
