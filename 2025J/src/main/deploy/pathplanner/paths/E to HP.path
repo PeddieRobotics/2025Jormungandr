@@ -45,7 +45,7 @@
     "rotation": -126.0
   },
   "reversed": false,
-  "folder": null,
+  "folder": "HP Intake",
   "idealStartingState": {
     "velocity": 0,
     "rotation": -59.99999999999999
