@@ -148,7 +148,8 @@ public abstract class Limelight extends SubsystemBase {
     }
 
     public int getNumberOfTagsSeen() {
-        return (int) LimelightHelpers.getBotPose_wpiBlue(name)[7];
+        double[] botposeArr = LimelightHelpers.getBotPose_wpiBlue(name);
+        return botposeArr.length == 0 ? 0 : (int) botposeArr[7];
     }
 
     public boolean hasTarget() {
