@@ -181,6 +181,8 @@ public class Drivetrain extends SubsystemBase {
     updateOdometry();
     field.setRobotPose(odometry.getEstimatedPosition());
     SmartDashboard.putData("Field", field);
+    SmartDashboard.putNumber("Odometry X", getPose().getX());
+    SmartDashboard.putNumber("Odometry Y", getPose().getY());
   }
 
   @Override
