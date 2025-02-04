@@ -2,7 +2,7 @@ package frc.robot.utils;
 
 public class RobotMap {
     // TODO: update with real values
-    public static final String CANIVORE_NAME = "";
+    public static final String CANIVORE_NAME = "canivore";
     public static final int GYRO_ID = 1;
 
     public static final int FRONT_LEFT_MODULE_DRIVE_ID = 10;

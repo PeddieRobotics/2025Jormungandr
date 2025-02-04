@@ -47,7 +47,7 @@ public final class Constants {
     public static final double kDriveMotorStatorCurrentLimit = 0.0;
     public static final double kSteerMotorStatorCurrentLimit = 0.0;
 
-    public static final double kWheelDiameterInches = 4.0;
+    public static final double kWheelDiameterInches = 3.8989542246;
     public static final double kDriveMotorReduction = 7.13;
     public static final double kDriveEncoderPositionFactor = (Math.PI * Units.inchesToMeters(kWheelDiameterInches))
         / kDriveMotorReduction;
@@ -57,10 +57,10 @@ public final class Constants {
     // TODO: Update Real Values
     public static final double kSteerMotorReduction = 18.75;
 
-    public static final double kDriveS = 0.0;
-    public static final double kDriveV = 0.0;
+    public static final double kDriveS = 0.2;
+    public static final double kDriveV = 0.12;
     public static final double kDriveA = 0.0;
-    public static final double kDriveP = 0.0;
+    public static final double kDriveP = 0.5;
     public static final double kDriveI = 0.0;
     public static final double kDriveD = 0.0;
     public static final double kDriveFF = 0.0;
@@ -68,7 +68,7 @@ public final class Constants {
     public static final double kSteerS = 0.0;
     public static final double kSteerV = 0.0;
     public static final double kSteerA = 0.0;
-    public static final double kSteerP = 0.0;
+    public static final double kSteerP = 25.0;
     public static final double kSteerI = 0.0;
     public static final double kSteerD = 0.0;
     public static final double kSteerFF = 0.0;
@@ -81,8 +81,10 @@ public final class Constants {
 
     public static final double kDriveRadius = Math.sqrt(Math.pow(kTrackWidth, 2) + Math.pow(kWheelBase, 2));
 
-    public static final double kMaxFloorSpeed = 4.0;
+    public static final double kMaxFloorSpeed = 4;
+    public static final double kMaxRotationSpeed = 3.14;
 
+    
     public static final Translation2d[] swerveModuleLocations = {
         new Translation2d(kWheelBase / 2.0, kTrackWidth / 2.0),
         new Translation2d(kWheelBase / 2.0, -kTrackWidth / 2.0),
@@ -97,10 +99,10 @@ public final class Constants {
         swerveModuleLocations[3]);
 
     // TODO: Update Real Values
-    public static final double kFrontLeftCancoderOffset = 0.0;
-    public static final double kFrontRightCancoderOffset = 0.0;
-    public static final double kBackLeftCancoderOffset = 0.0;
-    public static final double kBackRightCancoderOffset = 0.0;
+    public static final double kFrontLeftCancoderOffset = 0.3684;
+    public static final double kFrontRightCancoderOffset = 0.00293;
+    public static final double kBackLeftCancoderOffset = 0.10083;
+    public static final double kBackRightCancoderOffset = 0.2586;
 
     public static final double kSkidThreshold = 0.0;
 

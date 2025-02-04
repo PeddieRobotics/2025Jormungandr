@@ -19,7 +19,7 @@ public class DriverOI {
     public DriverOI() {
         controller = new PS4Controller(0);
 
-        superstructure = Superstructure.getInstance();
+        //superstructure = Superstructure.getInstance();
         configureController();
 
     }
@@ -185,6 +185,6 @@ public class DriverOI {
 
         double combinedRotation = (rightRotation - leftRotation) / 2.0;
 
-        return Math.abs(combinedRotation) < 0.1 ? 0 : combinedRotation; // TODO: convert to rad/s
+        return Math.abs(combinedRotation) < 0.1 ? 0 : combinedRotation * DriveConstants.kMaxRotationSpeed; // TODO: convert to rad/s
     }
 }
