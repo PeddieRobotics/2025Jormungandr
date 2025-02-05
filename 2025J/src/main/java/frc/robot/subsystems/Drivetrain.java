@@ -251,6 +251,8 @@ public class Drivetrain extends SubsystemBase {
       // SmartDashboard.putNumber("module " + i +"actual angle", swerveModules[i].getAngle());
 
     }
+    SmartDashboard.putNumber("Odometry X", getPose().getX());
+    SmartDashboard.putNumber("Odometry Y", getPose().getY());
   }
 
   @Override
