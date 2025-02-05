@@ -62,7 +62,6 @@ public class RobotContainer {
   }
 
   public Command getAutonomousCommand() {
-    // return Autonomous.getAutonomousCommand();
-    return null;
+    return Autonomous.getAutonomousCommand();
   }
 }
