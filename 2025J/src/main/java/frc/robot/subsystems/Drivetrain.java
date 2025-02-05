@@ -186,21 +186,23 @@ public class Drivetrain extends SubsystemBase {
         backRightModule.getState());
   }
 
+
+  /*checks if the robot is skidding. Skid is when modules' translational velocities 
+  differ greatly from each other (e.g. during acceleration, outside interference, etc)*/
   public boolean isSkidding(){
-    double currentRotationalVelocity = getRotationalVelocity()*2*Math.PI/360;
-    // double currentRotationalVelocity = 1;
+    //gets rotational velocity of the whole robot
+    double currentRotationalVelocity = -getRotationalVelocity()*2*Math.PI/360;
+
 
     if (Math.abs(currentRotationalVelocity)<0.05){
       currentRotationalVelocity = 0;
     }
+
+    //gets rotational velocity of each module
     ChassisSpeeds rotationalVelocity = new ChassisSpeeds(0,0, currentRotationalVelocity);
     SwerveModuleState pureRotationalStates[] = DriveConstants.skidKinematics.toSwerveModuleStates(rotationalVelocity);
-    SmartDashboard.putNumber("SKID: rotational velocity", currentRotationalVelocity);
-    for (int i = 0; i<4; i++){
-      SmartDashboard.putNumber("SKID: " + i + " pure rotational velocity", pureRotationalStates[i].speedMetersPerSecond);
-      SmartDashboard.putNumber("SKID: " + i + " pure rotational angle", pureRotationalStates[i].angle.getDegrees());
-    }
-
+   
+    //gets rotational and translational velocity of each module
     SwerveModuleState[] moduleStates = Arrays.copyOf(swerveModuleStates, 4);
 
     Translation2d[] fullModuleStates = new Translation2d[4];
@@ -212,21 +214,11 @@ public class Drivetrain extends SubsystemBase {
 
       Translation2d pureRotation = new Translation2d(pureRotationalStates[i].speedMetersPerSecond, pureRotationalStates[i].angle);
 
+      //subtracts rotational velocity from full states, leaving only translational velocity
       pureTranslationalStates[i] = fullModuleStates[i].minus(pureRotation);
     }
 
-    for (int i = 0; i<4; i++){
-      SmartDashboard.putNumber("SKID: " + i + " full module velocity", fullModuleStates[i].getNorm());
-      SmartDashboard.putNumber("SKID: " + i + " full module angle", fullModuleStates[i].getAngle().getDegrees());
-      SmartDashboard.putNumber("SKID: " + i + " pure translational velocity", pureTranslationalStates[i].getNorm());
-      SmartDashboard.putNumber("SKID: " + i + " pure translational angle", pureTranslationalStates[i].getAngle().getDegrees());
-
-      SmartDashboard.putNumber("SKID: " + i + " full module x", fullModuleStates[i].getX());
-      SmartDashboard.putNumber("SKID: " + i + " full module y", fullModuleStates[i].getY());
-      SmartDashboard.putNumber("SKID: " + i + " pure translational x", pureTranslationalStates[i].getX());
-      SmartDashboard.putNumber("SKID: " + i + " pure translational y", pureTranslationalStates[i].getY());
-    }
-
+    //compares the translational velocity of each module to each other, checking for large differences
     for (int i = 0; i<4; i++){
       for (int j = i+1; j<4; j++){
         Translation2d difference = pureTranslationalStates[i].minus(pureTranslationalStates[j]);
@@ -244,17 +236,17 @@ public class Drivetrain extends SubsystemBase {
 
   @Override
   public void periodic() {
-    SmartDashboard.putBoolean("skid", isSkidding());
+    // SmartDashboard.putBoolean("skid", isSkidding());
     updateModulePositions();
     updateOdometry();
     field.setRobotPose(odometry.getEstimatedPosition());
     SmartDashboard.putData("Field", field);
 
     for(int i = 0; i < 4; i++){
-      SmartDashboard.putNumber("module " + i +"desired speed", swerveModuleStates[i].speedMetersPerSecond);
-      SmartDashboard.putNumber("module " + i +"desired angle", swerveModuleStates[i].angle.getRadians());
-      SmartDashboard.putNumber("module " + i +"actual speed", swerveModules[i].getVelocity());
-      SmartDashboard.putNumber("module " + i +"actual angle", swerveModules[i].getAngle());
+      // SmartDashboard.putNumber("module " + i +"desired speed", swerveModuleStates[i].speedMetersPerSecond);
+      // SmartDashboard.putNumber("module " + i +"desired angle", swerveModuleStates[i].angle.getRadians());
+      // SmartDashboard.putNumber("module " + i +"actual speed", swerveModules[i].getVelocity());
+      // SmartDashboard.putNumber("module " + i +"actual angle", swerveModules[i].getAngle());
 
     }
   }

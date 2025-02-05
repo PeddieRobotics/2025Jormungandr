@@ -110,7 +110,7 @@ public final class Constants {
     public static final double kBackLeftCancoderOffset = 0.10083;
     public static final double kBackRightCancoderOffset = 0.2586;
 
-    public static final double kSkidThreshold = 1.0;
+    public static final double kSkidThreshold = 0.2;
 
   }
 
