@@ -6,6 +6,7 @@ package frc.robot.subsystems;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import com.ctre.phoenix6.hardware.Pigeon2;
 
@@ -186,14 +187,25 @@ public class Drivetrain extends SubsystemBase {
   }
 
   public boolean isSkidding(){
-    double currentRotationalVelocity = getRotationalVelocity();
-    ChassisSpeeds rotationalVelocity = new ChassisSpeeds(0,0, currentRotationalVelocity);
-    SwerveModuleState pureRotationalStates[] = DriveConstants.kinematics.toSwerveModuleStates(rotationalVelocity);
+    double currentRotationalVelocity = getRotationalVelocity()*2*Math.PI/360;
+    // double currentRotationalVelocity = 1;
 
-    SwerveModuleState[] moduleStates = swerveModuleStates;
+    if (Math.abs(currentRotationalVelocity)<0.05){
+      currentRotationalVelocity = 0;
+    }
+    ChassisSpeeds rotationalVelocity = new ChassisSpeeds(0,0, currentRotationalVelocity);
+    SwerveModuleState pureRotationalStates[] = DriveConstants.skidKinematics.toSwerveModuleStates(rotationalVelocity);
+    SmartDashboard.putNumber("SKID: rotational velocity", currentRotationalVelocity);
+    for (int i = 0; i<4; i++){
+      SmartDashboard.putNumber("SKID: " + i + " pure rotational velocity", pureRotationalStates[i].speedMetersPerSecond);
+      SmartDashboard.putNumber("SKID: " + i + " pure rotational angle", pureRotationalStates[i].angle.getDegrees());
+    }
+
+    SwerveModuleState[] moduleStates = Arrays.copyOf(swerveModuleStates, 4);
 
     Translation2d[] fullModuleStates = new Translation2d[4];
     Translation2d[] pureTranslationalStates = new Translation2d[4];
+
 
     for (int i = 0; i<4; i++){
       fullModuleStates[i] = new Translation2d(moduleStates[i].speedMetersPerSecond, moduleStates[i].angle);
@@ -201,6 +213,18 @@ public class Drivetrain extends SubsystemBase {
       Translation2d pureRotation = new Translation2d(pureRotationalStates[i].speedMetersPerSecond, pureRotationalStates[i].angle);
 
       pureTranslationalStates[i] = fullModuleStates[i].minus(pureRotation);
+    }
+
+    for (int i = 0; i<4; i++){
+      SmartDashboard.putNumber("SKID: " + i + " full module velocity", fullModuleStates[i].getNorm());
+      SmartDashboard.putNumber("SKID: " + i + " full module angle", fullModuleStates[i].getAngle().getDegrees());
+      SmartDashboard.putNumber("SKID: " + i + " pure translational velocity", pureTranslationalStates[i].getNorm());
+      SmartDashboard.putNumber("SKID: " + i + " pure translational angle", pureTranslationalStates[i].getAngle().getDegrees());
+
+      SmartDashboard.putNumber("SKID: " + i + " full module x", fullModuleStates[i].getX());
+      SmartDashboard.putNumber("SKID: " + i + " full module y", fullModuleStates[i].getY());
+      SmartDashboard.putNumber("SKID: " + i + " pure translational x", pureTranslationalStates[i].getX());
+      SmartDashboard.putNumber("SKID: " + i + " pure translational y", pureTranslationalStates[i].getY());
     }
 
     for (int i = 0; i<4; i++){
@@ -226,13 +250,13 @@ public class Drivetrain extends SubsystemBase {
     field.setRobotPose(odometry.getEstimatedPosition());
     SmartDashboard.putData("Field", field);
 
-    // for(int i = 0; i < 4; i++){
-    //   SmartDashboard.putNumber("module " + i +"desired speed", swerveModuleStates[i].speedMetersPerSecond);
-    //   SmartDashboard.putNumber("module " + i +"desired angle", swerveModuleStates[i].angle.getRadians());
-    //   SmartDashboard.putNumber("module " + i +"actual speed", swerveModules[i].getVelocity());
-    //   SmartDashboard.putNumber("module " + i +"actual angle", swerveModules[i].getAngle());
+    for(int i = 0; i < 4; i++){
+      SmartDashboard.putNumber("module " + i +"desired speed", swerveModuleStates[i].speedMetersPerSecond);
+      SmartDashboard.putNumber("module " + i +"desired angle", swerveModuleStates[i].angle.getRadians());
+      SmartDashboard.putNumber("module " + i +"actual speed", swerveModules[i].getVelocity());
+      SmartDashboard.putNumber("module " + i +"actual angle", swerveModules[i].getAngle());
 
-    // }
+    }
   }
 
   @Override

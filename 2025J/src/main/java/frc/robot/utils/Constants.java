@@ -98,13 +98,19 @@ public final class Constants {
         swerveModuleLocations[2],
         swerveModuleLocations[3]);
 
+    public static final SwerveDriveKinematics skidKinematics = new SwerveDriveKinematics(
+      swerveModuleLocations[0],
+      swerveModuleLocations[1],
+      swerveModuleLocations[2],
+      swerveModuleLocations[3]);
+
     // TODO: Update Real Values
     public static final double kFrontLeftCancoderOffset = 0.3684;
     public static final double kFrontRightCancoderOffset = 0.00293;
     public static final double kBackLeftCancoderOffset = 0.10083;
     public static final double kBackRightCancoderOffset = 0.2586;
 
-    public static final double kSkidThreshold = 0.0;
+    public static final double kSkidThreshold = 1.0;
 
   }
 
