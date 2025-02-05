@@ -187,8 +187,10 @@ public class Drivetrain extends SubsystemBase {
   }
 
 
-  /*checks if the robot is skidding. Skid is when modules' translational velocities 
-  differ greatly from each other (e.g. during acceleration, outside interference, etc)*/
+  /**
+   * Checks if the robot is skidding. Skid is when modules' translational velocities 
+   * differ greatly from each other (e.g. during acceleration, outside interference, etc)
+   */
   public boolean isSkidding(){
     //gets rotational velocity of the whole robot
     double currentRotationalVelocity = -getRotationalVelocity()*2*Math.PI/360;
