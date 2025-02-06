@@ -4,6 +4,7 @@ import com.ctre.phoenix6.swerve.SwerveModule;
 
 import edu.wpi.first.util.datalog.DataLog;
 import edu.wpi.first.util.datalog.DoubleLogEntry;
+import edu.wpi.first.util.datalog.StringLogEntry;
 import edu.wpi.first.wpilibj.DataLogManager;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Autonomous;
@@ -25,13 +26,14 @@ public class Logger {
     private Superstructure superstructure;
     private Climber climber;
     private DataLog log = DataLogManager.getLog();
-    private DoubleLogEntry gyroAngleEntry, driveTrainSpeed, driveTrainAngle, driveTrainX, driveTrainY, driveTrainXVel,
-            driveTrainYVel, driveTrainXAcc, driveTrainYAcc, driveTrainAngleVel, driveTrainAngleAcc, armAngle, armSpeed,
-            armAcc, armPosition, armVelocity, clawAngle, clawAcc, clawPosition, clawVelocity, elevatorPosition,
-            elevatorVelocity, elevatorAcc, elevatorSpeed, hpIntakePosition, hpIntakeVelocity, hpIntakeAcc,
-            superstructurePosition, superstructureVelocity, superstructureAcc, leftClimberSupplyCurrent,
-            leftClimberStatorCurrent, leftClimberTemperature, leftClimberPosition, rightClimberSupplyCurrent,
-            rightClimberStatorCurrent, rightClimberTemperature, rightClimberPosition;
+    private StringLogEntry commandEntry;
+    private DoubleLogEntry gyroAngleEntry, driveTrainSpeedEntry, driveTrainAngleEntry, driveTrainXEntry, driveTrainYEntry, driveTrainXVelEntry,driveTrainZAccEntry,
+            driveTrainYVelEntry, driveTrainXAccEntry, driveTrainYAccEntry, driveTrainAngleVelEntry, armAngleEntry, armSpeedEntry,
+            armAccEntry, armPositionEntry, armVelocityEntry, clawAngleEntry, clawAccEntry, clawPositionEntry, clawVelocityEntry, elevatorPositionEntry,
+            elevatorVelocityEntry, elevatorAccEntry, elevatorSpeedEntry, hpIntakePositionEntry, hpIntakeVelocityEntry, hpIntakeAccEntry,
+            superstructurePositionEntry, superstructureVelocityEntry, superstructureAccEntry, leftClimberSupplyCurrentEntry,
+            leftClimberStatorCurrentEntry, leftClimberTemperatureEntry, leftClimberPositionEntry, rightClimberSupplyCurrentEntry,
+            rightClimberStatorCurrentEntry, rightClimberTemperatureEntry, rightClimberPosition, fieldPositionEntry, botposeFieldPositionEntry, moduleSpeedsEntry, modulePositionsEntry;
 
     public static Logger getInstance() {
         if (instance == null) {
@@ -48,12 +50,75 @@ public class Logger {
         // elevator = Elevator.getInstance();
         // hpIntake = HPIntake.getInstance();
         // superstructure = Superstructure.getInstance();
-
         // climber = Climber.getInstance();
-        leftClimberPosition = new DoubleLogEntry(log, "/Climber/Left Climber Position");
+
+        /*
+         * Superstructure Logs
+         */
+
+        
+        /*
+         * Drivetrain Logs
+         */
+
+        gyroAngleEntry = new DoubleLogEntry(log, "/Drivetrain/Gyro Angle");
+
+        driveTrainXAccEntry = new DoubleLogEntry(log, "/Drivetrain/Drivetrain X Accel");
+        driveTrainYAccEntry = new DoubleLogEntry(log, "/Drivetrain/Drivetrain Y Accel");
+        driveTrainZAccEntry = new DoubleLogEntry(log, "/Drivetrain/Drivetrain Z Accel");
+
+        driveTrainSpeedEntry = new DoubleLogEntry(log, "/Drivetrain/Drivetrain Speed");
+        fieldPositionEntry = new DoubleLogEntry(log, "/Field/Position");
+        botposeFieldPositionEntry = new DoubleLogEntry(log, "/Field/Botpose position");
+        moduleSpeedsEntry = new DoubleLogEntry(log, "/Drivetrain/Swerve Module Speeds");
+        modulePositionsEntry = new DoubleLogEntry(log, "/Drivetrain/Swerve Module Positions");
+
+   
+
+        
+        /*
+         * Intake Logs
+         */
+
+        /*
+         * Claw logs
+         */
+
+
+        /*
+         * Arm logs
+         */
+
+
+        /*
+         * Climber logs
+         */
+
+
+        /*
+         * Limelight Logs
+         */
+
+        
+        //Commands run
+        commandEntry = new StringLogEntry(log, "/Commands/Commands Run");
+    }
+
+    public void logEvent(String event, Boolean isStart){
+        commandEntry.append(event + (isStart? "Started" : "Ended"));
     }
 
     public void updateLogs(){
-       // leftClimberPosition.append(climber.getLeftClimberPosition());
+
+
+    }
+
+    public void updateDrivetrainLogs(){
+        gyroAngleEntry.append(drivetrain.getHeading());
+
+        driveTrainXAccEntry.append(drivetrain.getGyroAccX());
+        driveTrainYAccEntry.append(drivetrain.getGyroAccY());
+        driveTrainZAccEntry.append(drivetrain.getGyroAccZ());
+
     }
 }

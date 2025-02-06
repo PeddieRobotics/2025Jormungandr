@@ -167,7 +167,17 @@ public class Drivetrain extends SubsystemBase {
     return -gyro.getAngularVelocityZWorld().getValueAsDouble();
   }
 
+  public double getGyroAccX(){
+    return gyro.getAccelerationX().getValueAsDouble();
+  }
 
+  public double getGyroAccY(){
+    return gyro.getAccelerationY().getValueAsDouble();
+  }
+
+  public double getGyroAccZ(){
+    return gyro.getAccelerationZ().getValueAsDouble();
+  }
 
   public Pose2d getPose() {
     return odometry.getEstimatedPosition();
