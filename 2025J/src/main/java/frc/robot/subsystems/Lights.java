@@ -49,22 +49,27 @@ public class Lights extends SubsystemBase{
         candle.clearAnimation(0);
         candle.setLEDs(0,0,0);
 
-        switch (request){
-            case INTAKEN:
-                lastIntaked = Timer.getFPGATimestamp();
-                break;
-            case HAS_TARGET:
-                candle.setLEDs(0, 0, 255);
-                break;
-            case ALIGNED:
-                candle.setLEDs(0, 255, 0);
-                break;
-            case FAILED:
-                candle.setLEDs(255, 0, 0);
-                break;
-            default:
-                break;
-        }
+        if (request == LightState.INTAKEN)
+            lastIntaked = Timer.getFPGATimestamp();
+        
+        requestedSystemState = request;
+        // switch (request){
+        //     case INTAKEN:
+        //         lastIntaked = Timer.getFPGATimestamp();
+        //         break;
+        //     case HAS_TARGET:
+        //         candle.setLEDs(0, 0, 255);
+        //         break;
+        //     case ALIGNED:
+        //         candle.setLEDs(0, 255, 0);
+        //         break;
+        //     case FAILED:
+        //         candle.setLEDs(255, 0, 0);
+        //         break;
+        //     default:
+        //         break;
+        // }
+        //used switch statements last year but it seems redundant; revisit if something is wrong
     }
 
     @Override
@@ -95,11 +100,13 @@ public class Lights extends SubsystemBase{
                 candle.animate(new ColorFlowAnimation(255, 0, 255, 0, 0.3, 8, Direction.Forward), 0);
                 break;
             case DONE_CLIMBING:
-                candle.animate(new RainbowAnimation(),0);
+                candle.animate(new RainbowAnimation(), 0);
                 break;
             case HAS_TARGET:
+                candle.setLEDs(0, 0, 255);
                 break;
             case ALIGNED:
+                candle.setLEDs(0, 255, 0);
                 break;
             case FAILED:
                 candle.setLEDs(255, 0, 0);
@@ -107,5 +114,9 @@ public class Lights extends SubsystemBase{
             default:
                 break;
         }
+    }
+
+    public LightState getLightState(){
+        return systemState;
     }
 }
