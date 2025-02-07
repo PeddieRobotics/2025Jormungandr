@@ -361,22 +361,32 @@ public class Superstructure extends SubsystemBase {
     SmartDashboard.putString("current superstructure state", systemState.toString());
     SmartDashboard.putString("requested superstructure state", requestedSystemState.toString());
     algaeIndex = SmartDashboard.getBoolean("algaeIndex", false);
-    coralIndex = SmartDashboard.getBoolean("coralIndex", false);
+    // coralIndex = SmartDashboard.getBoolean("coralIndex", false);
+    coralIndex = claw.getCoralSensor();
 
     switch (systemState) {
       case STOW:
-        // stop intake
-        // bring elevator down
+        hpIntake.stopIntake();
+        elevator.setElevatorPositionMotionMagicTorqueCurrentFOC(ScoreConstants.kElevatorStowPosition);
+        arm.setArmPositionMotionMagicTorqueCurrentFOC(ScoreConstants.kArmStowPosition);
+        claw.stopClaw();
         break;
 
       case HP_INTAKE:
-        // set angle
-        // set elevator
-        // run intake motor
+        hpIntake.runIntake();
+        elevator.setElevatorPositionMotionMagicTorqueCurrentFOC(ScoreConstants.kElevatorHPIntakePosition);
+        arm.setArmPositionMotionMagicTorqueCurrentFOC(ScoreConstants.kArmHPIntakePosition);
+        claw.intakePiece();
+
+        if (coralIndex) {
+          requestState(SuperstructureState.STOW);
+        }
         break;
 
       case ALGAE_GROUND_INTAKE:
-        // run intake
+        elevator.setElevatorPositionMotionMagicTorqueCurrentFOC(ScoreConstants.kElevatorGroundIntakePosition);
+        arm.setArmPositionMotionMagicTorqueCurrentFOC(ScoreConstants.kArmGroundIntakePosition);
+        claw.intakePiece();
         if (algaeIndex) {
           requestState(SuperstructureState.STOW);
         }
@@ -384,49 +394,45 @@ public class Superstructure extends SubsystemBase {
 
       case L1_PREP:
         // set prep angle
+        elevator.setElevatorPositionMotionMagicTorqueCurrentFOC(ScoreConstants.kElevatorL1ScorePosition);
+        arm.setArmPositionMotionMagicTorqueCurrentFOC(ScoreConstants.kArmL1ScorePosition);
         break;
 
       case L2_PREP:
         // set prep angle
         /*
-         * two different cases:
-         * - dunk case
-         * move to angle close to scoring angle
-         * - shoot case
          * move to scoring angle
          */
+        elevator.setElevatorPositionMotionMagicTorqueCurrentFOC(ScoreConstants.kElevatorL2ScorePosition);
+        arm.setArmPositionMotionMagicTorqueCurrentFOC(ScoreConstants.kArmL2ScorePosition);
         break;
 
       case L3_PREP:
         // set prep angle
-        /*
-         * two different cases:
-         * - dunk case
-         * move to angle close to scoring angle
-         * - shoot case
-         * move to scoring angle
-         */
+        elevator.setElevatorPositionMotionMagicTorqueCurrentFOC(ScoreConstants.kElevatorL3ScorePosition);
+        arm.setArmPositionMotionMagicTorqueCurrentFOC(ScoreConstants.kArmL3ScorePosition);
+        break;
+
+      case L4_PRESTAGE:
+        elevator.setElevatorPositionMotionMagicTorqueCurrentFOC(ScoreConstants.kElevatorL4ScorePosition);
         break;
 
       case L4_PREP:
-        // set prep angle
-        /*
-         * move elevator to scoring height
-         * one case:
-         * - dunk/score case
-         * move to angle close to scoring angle (vertical)
-         */
+        arm.setArmPositionMotionMagicTorqueCurrentFOC(ScoreConstants.kArmL4ScorePosition);
         break;
 
       case L1_SCORE:
-
         if (!timer.hasElapsed(ScoreConstants.L1ScoreTimeout)) {
           // KEEP RUNNING
           timer.start();
+          claw.outtakePiece();
         } else if (timer.hasElapsed(ScoreConstants.L1ScoreTimeout) && !coralIndex) {
           timer.reset();
 
           // stop everything
+          elevator.setElevatorPositionMotionMagicTorqueCurrentFOC(ScoreConstants.kElevatorStowPosition);
+          arm.setArmPositionMotionMagicTorqueCurrentFOC(ScoreConstants.kArmStowPosition);
+          claw.stopClaw();
           requestState(SuperstructureState.STOW);
           break;
         }
@@ -438,18 +444,15 @@ public class Superstructure extends SubsystemBase {
         if (!timer.hasElapsed(ScoreConstants.L2ScoreTimeout)) {
           // KEEP RUNNING
           timer.start();
-          /*
-           * two different cases:
-           * - dunk case
-           * move to angle and drop
-           * - shoot case
-           * eject piece
-           */
+          claw.outtakePiece();
 
         } else if (timer.hasElapsed(ScoreConstants.L2ScoreTimeout) && !coralIndex) {
           timer.reset();
 
           // stop everything
+          elevator.setElevatorPositionMotionMagicTorqueCurrentFOC(ScoreConstants.kElevatorStowPosition);
+          arm.setArmPositionMotionMagicTorqueCurrentFOC(ScoreConstants.kArmStowPosition);
+          claw.stopClaw();
           requestState(SuperstructureState.STOW);
           break;
         }
@@ -460,18 +463,15 @@ public class Superstructure extends SubsystemBase {
         if (!timer.hasElapsed(ScoreConstants.L3ScoreTimeout)) {
           // KEEP RUNNING
           timer.start();
-          /*
-           * two different cases:
-           * - dunk case
-           * move to angle and drop
-           * - shoot case
-           * eject piece
-           */
+          claw.outtakePiece();
 
         } else if (timer.hasElapsed(ScoreConstants.L3ScoreTimeout) && !coralIndex) {
           timer.reset();
 
           // stop everything
+          elevator.setElevatorPositionMotionMagicTorqueCurrentFOC(ScoreConstants.kElevatorStowPosition);
+          arm.setArmPositionMotionMagicTorqueCurrentFOC(ScoreConstants.kArmStowPosition);
+          claw.stopClaw();
           requestState(SuperstructureState.STOW);
           break;
         }
@@ -479,75 +479,96 @@ public class Superstructure extends SubsystemBase {
         break;
 
       case L4_SCORE:
-
         if (!timer.hasElapsed(ScoreConstants.L4ScoreTimeout)) {
           // KEEP RUNNING
-          /*
-           * two different cases:
-           * - dunk case
-           * move to angle and drop
-           * - shoot case
-           * move to angle and eject piece
-           */
           timer.start();
+          claw.outtakePiece();
 
         } else if (timer.hasElapsed(ScoreConstants.L4ScoreTimeout) && !coralIndex) {
           timer.reset();
 
           // stop everything
+          elevator.setElevatorPositionMotionMagicTorqueCurrentFOC(ScoreConstants.kElevatorStowPosition);
+          arm.setArmPositionMotionMagicTorqueCurrentFOC(ScoreConstants.kArmStowPosition);
+          claw.stopClaw();
           requestState(SuperstructureState.STOW);
           break;
         }
         // lower arm :)
         break;
 
-      case L4_PRESTAGE:
-        elevator.setElevatorPositionMotionMagicTorqueCurrentFOC(ElevatorConstants.kElevatorL3Height);
-        break;
-
       case BARGE_PRESTAGE:
+        elevator.setElevatorPositionMotionMagicTorqueCurrentFOC(ScoreConstants.kElevatorBargeScorePosition);
         break;
 
       case BARGE_PREP:
+        arm.setArmPositionMotionMagicTorqueCurrentFOC(ScoreConstants.kArmBargeScorePosition);
         break;
 
       case BARGE_SCORE:
         if (!timer.hasElapsed(ScoreConstants.BargeTimeout)) {
           // KEEP RUNNING
           timer.start();
+          claw.outtakePiece();
 
         } else if (timer.hasElapsed(ScoreConstants.BargeTimeout) && !algaeIndex) {
           timer.reset();
 
           // stop everything
+          elevator.setElevatorPositionMotionMagicTorqueCurrentFOC(ScoreConstants.kElevatorStowPosition);
+          arm.setArmPositionMotionMagicTorqueCurrentFOC(ScoreConstants.kArmStowPosition);
+          claw.stopClaw();
           requestState(SuperstructureState.STOW);
           break;
         }
         break;
 
       case PROCESSOR_PREP:
+        elevator.setElevatorPositionMotionMagicTorqueCurrentFOC(ScoreConstants.kElevatorProcessorScorePosition);
+        arm.setArmPositionMotionMagicTorqueCurrentFOC(ScoreConstants.kArmProcessorScorePosition);
         break;
 
       case PROCESSOR_SCORE:
-        requestState(SuperstructureState.STOW);
+        if (!timer.hasElapsed(ScoreConstants.ProcessorTimeout)) {
+          // KEEP RUNNING
+          timer.start();
+          claw.outtakePiece();
+        } else if (timer.hasElapsed(ScoreConstants.ProcessorTimeout) && !coralIndex) {
+          timer.reset();
+
+          // stop everything
+          elevator.setElevatorPositionMotionMagicTorqueCurrentFOC(ScoreConstants.kElevatorStowPosition);
+          arm.setArmPositionMotionMagicTorqueCurrentFOC(ScoreConstants.kArmStowPosition);
+          claw.stopClaw();
+          requestState(SuperstructureState.STOW);
+          break;
+        }
         break;
 
       case REEF1_INTAKE:
+        elevator.setElevatorPositionMotionMagicTorqueCurrentFOC(ScoreConstants.kElevatorReef1IntakePosition);
+        arm.setArmPositionMotionMagicTorqueCurrentFOC(ScoreConstants.kArmReef2IntakePosition);
+        claw.intakePiece();
         if (algaeIndex) {
           requestState(SuperstructureState.STOW);
         }
         break;
 
       case REEF2_INTAKE:
+      elevator.setElevatorPositionMotionMagicTorqueCurrentFOC(ScoreConstants.kElevatorReef2IntakePosition);
+      arm.setArmPositionMotionMagicTorqueCurrentFOC(ScoreConstants.kArmReef2IntakePosition);
+      claw.intakePiece();
         if (algaeIndex) {
           requestState(SuperstructureState.STOW);
         }
         break;
 
       case EJECT_ALGAE:
+        claw.outtakePiece();
         break;
 
       case EJECT_CORAL:
+        claw.outtakePiece();
         break;
     }
 
@@ -584,6 +605,9 @@ public class Superstructure extends SubsystemBase {
 
       case BARGE_PREP:
         requestState(SuperstructureState.BARGE_SCORE);
+        break;
+      
+      default:
         break;
     }
   }
