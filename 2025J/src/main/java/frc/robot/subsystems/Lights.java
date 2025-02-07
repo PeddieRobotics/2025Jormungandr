@@ -106,7 +106,7 @@ public class Lights extends SubsystemBase{
                 candle.setLEDs(0, 0, 255);
                 break;
             case ALIGNED:
-                candle.setLEDs(0, 255, 0);
+                candle.animate(new RainbowAnimation(), 0);
                 break;
             case FAILED:
                 candle.setLEDs(255, 0, 0);
