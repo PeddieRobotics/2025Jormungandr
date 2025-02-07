@@ -8,8 +8,8 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.581687881293522,
-        "y": 2.1687839529703075
+        "x": 2.7846506628061625,
+        "y": 2.2456239693115845
       },
       "isLocked": false,
       "linkedName": "CReef"
@@ -20,8 +20,8 @@
         "y": 1.2
       },
       "prevControl": {
-        "x": 2.399197196142711,
-        "y": 2.033049024892447
+        "x": 2.4230503374718992,
+        "y": 2.1226991574562524
       },
       "nextControl": null,
       "isLocked": false,
@@ -33,7 +33,7 @@
   "pointTowardsZones": [],
   "eventMarkers": [],
   "globalConstraints": {
-    "maxVelocity": 1.5,
+    "maxVelocity": 2.0,
     "maxAcceleration": 3.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0,

@@ -81,7 +81,7 @@ public final class Constants {
 
     public static final double kDriveRadius = Math.sqrt(Math.pow(kTrackWidth, 2) + Math.pow(kWheelBase, 2));
 
-    public static final double kMaxFloorSpeed = 4;
+    public static final double kMaxFloorSpeed = 3;
     public static final double kMaxRotationSpeed = 3.14;
 
     
