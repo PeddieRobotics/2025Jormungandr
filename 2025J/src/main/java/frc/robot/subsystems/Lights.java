@@ -92,28 +92,4 @@ public class Lights extends SubsystemBase{
                 break;
         }
     }
-
-    public String stateAsString(){
-        switch (systemState){
-            case IDLE:
-                return "IDLE";
-            case ALGAE_INTAKING:
-                return "ALGAE_INTAKING";
-            case CORAL_INTAKING:
-                return "CORAL_INTAKING";
-            case INTOOK:
-                return "INTOOK";
-            case CLIMBING:
-                return "CLIMBING";
-            case DONE_CLIMBING:
-                return "DONE_CLIMBING";
-            case HAS_TARGET:
-                return "HAS_TARGET";
-            case ALIGNED:
-                return "ALIGNED";
-            case FAILED:
-                return "FAILED";
-        }
-        return "";
-    }
 }
