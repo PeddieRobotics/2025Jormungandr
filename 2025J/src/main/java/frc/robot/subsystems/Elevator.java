@@ -1,5 +1,10 @@
 package frc.robot.subsystems;
 
+import com.ctre.phoenix6.configs.CANcoderConfiguration;
+import com.ctre.phoenix6.hardware.CANcoder;
+import com.ctre.phoenix6.signals.FeedbackSensorSourceValue;
+import com.ctre.phoenix6.signals.SensorDirectionValue;
+
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.utils.Constants.ArmConstants;
@@ -12,6 +17,7 @@ import frc.robot.utils.LiveData;
 public class Elevator extends SubsystemBase {
     private static Elevator elevator;
     private Kraken elevatorMainMotor, elevatorFollowerMotor;
+    private CANcoder elevatorCANcoder;
     private DigitalInput bottomLimitSwitch;
     private TunableConstant kP, kS, kV, kI, kD, kFF, kA,
             kElevatorMaxCruiseVelocity, kElevatorMaxCruiseAcceleration, kElevatorMaxCruiseJerk,
@@ -63,6 +69,15 @@ public class Elevator extends SubsystemBase {
                 ElevatorConstants.kElevatorReverseSoftLimit);
 
         bottomLimitSwitch = new DigitalInput(RobotMap.ELEVATOR_LIMIT_SWITCH_ID);
+
+        elevatorCANcoder = new CANcoder(RobotMap.ELEVATOR_CANCODER_ID);
+        CANcoderConfiguration config = new CANcoderConfiguration();
+        config.MagnetSensor.AbsoluteSensorDiscontinuityPoint = 1; // Setting this to 1 makes the absolute position unsigned [0, 1)
+                                                                // Setting this to 0.5 makes the absolute position signed [-0.5, 0.5)
+                                                                // Setting this to 0 makes the absolute position always negative [-1, 0)
+        config.MagnetSensor.SensorDirection = SensorDirectionValue.CounterClockwise_Positive;
+        elevatorCANcoder.getConfigurator().apply(config); 
+        elevatorMainMotor.setFeedbackDevice(RobotMap.ELEVATOR_CANCODER_ID, FeedbackSensorSourceValue.FusedCANcoder);
 
         kP = new TunableConstant(ElevatorConstants.kP, "Elevator kP");
         kI = new TunableConstant(ElevatorConstants.kI, "Elevator kI");
@@ -163,6 +178,10 @@ public class Elevator extends SubsystemBase {
 
     // Accessor methods
 
+    public double getElevatorCANcoderReading() {
+        return elevatorCANcoder.getPosition().getValueAsDouble();
+    }
+
     /**
      * @return whether elevator bottom limit switch is triggered
      */
@@ -185,6 +204,10 @@ public class Elevator extends SubsystemBase {
      */
     public double getElevatorPosition() {
         return elevatorMainMotor.getPosition();
+    }
+
+    public void resetElevatorPosition() {
+        elevatorMainMotor.resetEncoder();
     }
 
     /**
