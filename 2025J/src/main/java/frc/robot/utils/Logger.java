@@ -25,6 +25,7 @@ public class Logger {
     private HPIntake hpIntake;
     private Superstructure superstructure;
     private Climber climber;
+     
     private DataLog log = DataLogManager.getLog();
     private StringLogEntry commandEntry;
     private DoubleLogEntry gyroAngleEntry, driveTrainSpeedEntry, driveTrainAngleEntry, driveTrainXEntry, driveTrainYEntry, driveTrainXVelEntry,driveTrainZAccEntry,
@@ -109,8 +110,7 @@ public class Logger {
     }
 
     public void updateLogs(){
-
-
+        //updateDrivetrainLogs();
     }
 
     public void updateDrivetrainLogs(){
