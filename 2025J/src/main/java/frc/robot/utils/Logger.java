@@ -189,54 +189,54 @@ public class Logger {
          * Intake Logs
          */
 
-        hpIntakePositionEntry.append(hpIntake.getIntakePosition());
-        hpIntakeVelocityEntry.append(hpIntake.getIntakeVelocity());
-        // hpIntakeAccEntry.append(hpIntake.getIntakeAcc());
-        hpIntakeSupplyCurrentEntry.append(hpIntake.getMotorSupplyCurrent());
-        hpIntakeStatorCurrentEntry.append(hpIntake.getMotorStatorCurrent());
+        // hpIntakePositionEntry.append(hpIntake.getIntakePosition());
+        // hpIntakeVelocityEntry.append(hpIntake.getIntakeVelocity());
+        // // hpIntakeAccEntry.append(hpIntake.getIntakeAcc());
+        // hpIntakeSupplyCurrentEntry.append(hpIntake.getMotorSupplyCurrent());
+        // hpIntakeStatorCurrentEntry.append(hpIntake.getMotorStatorCurrent());
         /*
          * Claw logs
          */
 
-        clawPositionEntry.append(claw.getPosition());
-        // clawAccEntry.append(claw.getAcc());
-        clawVelocityEntry.append(claw.getVelocity());
-        clawSupplyCurrentEntry.append(claw.getMotorSupplyCurrent());
-        clawStatorCurrentEntry.append(claw.getMotorStatorCurrent());
+        // clawPositionEntry.append(claw.getPosition());
+        // // clawAccEntry.append(claw.getAcc());
+        // clawVelocityEntry.append(claw.getVelocity());
+        // clawSupplyCurrentEntry.append(claw.getMotorSupplyCurrent());
+        // clawStatorCurrentEntry.append(claw.getMotorStatorCurrent());
 
         /*
          * Elevator Logs
          */
 
-        elevatorPositionEntry.append(elevator.getPosition());
-        elevatorVelocityEntry.append(elevator.getVelocity());
+        // elevatorPositionEntry.append(elevator.getPosition());
+        // elevatorVelocityEntry.append(elevator.getVelocity());
         // elevatorAccEntry.append(elevator.getAcc());
 
         /*
          * Arm logs
          */
 
-        armAngleEntry.append(arm.getArmAngleDegrees());
-        // armAccEntry.append(arm.getAcc());
-        armSupplyCurrentEntry.append(arm.getMotorSupplyCurrent());
-        armStatorCurrentEntry.append(arm.getMotorStatorCurrent());
-        armTorqueCurrentEntry.append(arm.getMotorTorqueCurrent());
-        armPositionEntry.append(arm.getArmPosition());
-        armVelocityEntry.append(arm.getArmVelocity());
+        // armAngleEntry.append(arm.getArmAngleDegrees());
+        // // armAccEntry.append(arm.getAcc());
+        // armSupplyCurrentEntry.append(arm.getMotorSupplyCurrent());
+        // armStatorCurrentEntry.append(arm.getMotorStatorCurrent());
+        // armTorqueCurrentEntry.append(arm.getMotorTorqueCurrent());
+        // armPositionEntry.append(arm.getArmPosition());
+        // armVelocityEntry.append(arm.getArmVelocity());
 
         /*
          * Climber logs
          */
 
-        leftClimberSupplyCurrentEntry.append(climber.getLeftClimberSupplyCurrent());
-        leftClimberStatorCurrentEntry.append(climber.getLeftClimberStatorCurrent());
-        leftClimberTemperatureEntry.append(climber.getLeftClimberTemperature());
-        leftClimberPositionEntry.append(climber.getLeftClimberPosition());
+        // leftClimberSupplyCurrentEntry.append(climber.getLeftClimberSupplyCurrent());
+        // leftClimberStatorCurrentEntry.append(climber.getLeftClimberStatorCurrent());
+        // leftClimberTemperatureEntry.append(climber.getLeftClimberTemperature());
+        // leftClimberPositionEntry.append(climber.getLeftClimberPosition());
 
-        rightClimberSupplyCurrentEntry.append(climber.getRightClimberSupplyCurrent());
-        rightClimberStatorCurrentEntry.append(climber.getRightClimberStatorCurrent());
-        rightClimberTemperatureEntry.append(climber.getRightClimberTemperature());
-        rightClimberPosition.append(climber.getRightClimberPosition());
+        // rightClimberSupplyCurrentEntry.append(climber.getRightClimberSupplyCurrent());
+        // rightClimberStatorCurrentEntry.append(climber.getRightClimberStatorCurrent());
+        // rightClimberTemperatureEntry.append(climber.getRightClimberTemperature());
+        // rightClimberPosition.append(climber.getRightClimberPosition());
 
         /*
          * Limelight Logs
