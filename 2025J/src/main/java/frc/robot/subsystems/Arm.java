@@ -151,6 +151,10 @@ public class Arm extends SubsystemBase{
         return armMotor.getPosition();
     }
 
+    public double getArmVelocity(){
+        return armMotor.getRPS();
+    }
+
     /**
      * @return arm motor TorqueCurrent draw (amps)
      */
