@@ -8,20 +8,20 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.2536472249635224,
-        "y": 1.6894891948350215
+        "x": 2.193371958582036,
+        "y": 1.7530199099126178
       },
       "isLocked": false,
       "linkedName": "DReef"
     },
     {
       "anchor": {
-        "x": 1.36,
-        "y": 1.2
+        "x": 1.12125,
+        "y": 0.8952499999999998
       },
       "prevControl": {
-        "x": 2.9996718156940405,
-        "y": 2.11441915067657
+        "x": 2.6782329940446132,
+        "y": 1.687266788455049
       },
       "nextControl": null,
       "isLocked": false,
@@ -33,7 +33,7 @@
   "pointTowardsZones": [],
   "eventMarkers": [],
   "globalConstraints": {
-    "maxVelocity": 1.5,
+    "maxVelocity": 1.0,
     "maxAcceleration": 3.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0,
@@ -50,5 +50,5 @@
     "velocity": 0,
     "rotation": -119.99999999999999
   },
-  "useDefaultConstraints": false
+  "useDefaultConstraints": true
 }
