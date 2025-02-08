@@ -15,6 +15,7 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.util.sendable.Sendable;
@@ -119,6 +120,7 @@ public class Drivetrain extends SubsystemBase {
 
     swerveModuleStates = DriveConstants.kinematics.toSwerveModuleStates(robotRelativeSpeeds);
     // TODO: desaturate later!
+    SwerveDriveKinematics.desaturateWheelSpeeds(swerveModuleStates, DriveConstants.kMaxModuleSpeed);
     optimizeModuleStates();
     setSwerveModuleStates(swerveModuleStates);
   }
@@ -151,7 +153,7 @@ public class Drivetrain extends SubsystemBase {
   }
 
   public double getHeading() {
-    heading = -gyro.getYaw().getValueAsDouble();
+    heading = gyro.getYaw().getValueAsDouble();
     return Math.IEEEremainder(heading, 360);
   }
 
@@ -253,6 +255,7 @@ public class Drivetrain extends SubsystemBase {
     }
     SmartDashboard.putNumber("Odometry X", getPose().getX());
     SmartDashboard.putNumber("Odometry Y", getPose().getY());
+    SmartDashboard.putNumber("Heading", getHeading());
   }
 
   @Override
