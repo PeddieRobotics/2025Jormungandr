@@ -86,6 +86,7 @@ public class Lights extends SubsystemBase{
             case INTAKEN:
                 candle.animate(new StrobeAnimation(0, 255, 0, 0, 0.3, 8), 0);
                 if (!DriverStation.isAutonomous()){
+                    //don't do this if it'll mess w/ alignment
                     LimelightHelpers.setLEDMode_ForceBlink("limelight-left"); //change based on limelight names
                     LimelightHelpers.setLEDMode_ForceBlink("limelight-right");
                     LimelightHelpers.setLEDMode_ForceBlink("limelight-back");
