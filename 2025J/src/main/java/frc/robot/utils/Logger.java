@@ -60,13 +60,13 @@ public class Logger {
 
     public Logger() {
         drivetrain = Drivetrain.getInstance();
-        arm = Arm.getInstance();
+        // arm = Arm.getInstance();
         autonomous = Autonomous.getInstance();
-        claw = Claw.getInstance();
-        elevator = Elevator.getInstance();
-        hpIntake = HPIntake.getInstance();
+        // claw = Claw.getInstance();
+        // elevator = Elevator.getInstance();
+        // hpIntake = HPIntake.getInstance();
         superstructure = Superstructure.getInstance();
-        climber = Climber.getInstance();
+        // climber = Climber.getInstance();
 
         /*
          * Superstructure Logs
