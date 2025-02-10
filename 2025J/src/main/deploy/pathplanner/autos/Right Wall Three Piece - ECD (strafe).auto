@@ -13,13 +13,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "E to HP"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "HP to C"
+            "pathName": "E to HP to C (strafe)"
           }
         },
         {

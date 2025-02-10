@@ -8,24 +8,24 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.739750000000001,
-        "y": 2.114
+        "x": 1.2187500000000004,
+        "y": 1.4314999999999993
       },
       "isLocked": false,
       "linkedName": "CReef"
     },
     {
       "anchor": {
-        "x": 1.64775,
-        "y": 0.8464999999999998
+        "x": 1.287,
+        "y": 0.9147499999999991
       },
       "prevControl": {
-        "x": 1.5047204575970399,
-        "y": 1.1325590848059193
+        "x": 0.9534418168762919,
+        "y": 1.2872267623237854
       },
       "nextControl": {
-        "x": 1.8330000000000004,
-        "y": 0.47600000000000026
+        "x": 1.6205581831237077,
+        "y": 0.542273237676212
       },
       "isLocked": false,
       "linkedName": null
@@ -36,8 +36,8 @@
         "y": 2.66
       },
       "prevControl": {
-        "x": 2.7787499999999996,
-        "y": 1.1097499999999996
+        "x": 1.86225,
+        "y": 0.8172499999999994
       },
       "nextControl": null,
       "isLocked": false,
@@ -50,13 +50,27 @@
       "rotationDegrees": -125.06085631593605
     }
   ],
-  "constraintZones": [],
+  "constraintZones": [
+    {
+      "name": "Constraints Zone",
+      "minWaypointRelativePos": 0.6438848920863395,
+      "maxWaypointRelativePos": 1.3057553956834553,
+      "constraints": {
+        "maxVelocity": 1.5,
+        "maxAcceleration": 3.0,
+        "maxAngularVelocity": 360.0,
+        "maxAngularAcceleration": 720.0,
+        "nominalVoltage": 12.0,
+        "unlimited": false
+      }
+    }
+  ],
   "pointTowardsZones": [],
   "eventMarkers": [],
   "globalConstraints": {
-    "maxVelocity": 1.0,
+    "maxVelocity": 2.0,
     "maxAcceleration": 3.0,
-    "maxAngularVelocity": 360.0,
+    "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0,
     "nominalVoltage": 12.0,
     "unlimited": false
