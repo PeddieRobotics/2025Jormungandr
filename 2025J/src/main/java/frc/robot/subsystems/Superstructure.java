@@ -93,6 +93,10 @@ public class Superstructure extends SubsystemBase {
     return systemState;
   }
 
+  public SuperstructureState getRequestedState() {
+    return requestedSystemState;
+  }
+
   @Override
   public void periodic() {
     SmartDashboard.putString("current superstructure state", systemState.toString());

@@ -96,6 +96,14 @@ public class Claw extends SubsystemBase {
         return clawMotor.getSupplyCurrent();
     }
 
+    public double getPosition(){
+        return clawMotor.getPosition();
+    }
+
+    public double getVelocity(){
+        return clawMotor.getRPM();
+    }
+
     @Override
     public void periodic() {
     }

@@ -37,6 +37,8 @@ public class Drivetrain extends SubsystemBase {
   private SwerveModulePosition[] swerveModulePositions;
   private SwerveDrivePoseEstimator odometry;
 
+  private double currentDrivetrainSpeed = 0;
+
   private final Pigeon2 gyro;
   private double heading;
 
@@ -118,6 +120,9 @@ public class Drivetrain extends SubsystemBase {
       robotRelativeSpeeds = fieldRelativeSpeeds;
     }
 
+    currentDrivetrainSpeed = Math.sqrt(Math.pow(robotRelativeSpeeds.vxMetersPerSecond, 2)
+                + Math.pow(robotRelativeSpeeds.vyMetersPerSecond, 2));
+
     swerveModuleStates = DriveConstants.kinematics.toSwerveModuleStates(robotRelativeSpeeds);
     // TODO: desaturate later!
     SwerveDriveKinematics.desaturateWheelSpeeds(swerveModuleStates, DriveConstants.kMaxModuleSpeed);
@@ -128,6 +133,10 @@ public class Drivetrain extends SubsystemBase {
   public void driveRobotRelative(ChassisSpeeds robotRelativeSpeeds) {
     swerveModuleStates = DriveConstants.kinematics.toSwerveModuleStates(robotRelativeSpeeds);
     setSwerveModuleStates(swerveModuleStates);
+  }
+
+  public SwerveModuleState[] getSwerveModuleStates(){
+    return swerveModuleStates;
   }
 
   public void optimizeModuleStates() {
@@ -169,7 +178,21 @@ public class Drivetrain extends SubsystemBase {
     return -gyro.getAngularVelocityZWorld().getValueAsDouble();
   }
 
+  public double getGyroAccX(){
+    return gyro.getAccelerationX().getValueAsDouble();
+  }
 
+  public double getGyroAccY(){
+    return gyro.getAccelerationY().getValueAsDouble();
+  }
+
+  public double getGyroAccZ(){
+    return gyro.getAccelerationZ().getValueAsDouble();
+  }
+
+  public double getSpeed() {
+    return currentDrivetrainSpeed;
+  }
 
   public Pose2d getPose() {
     return odometry.getEstimatedPosition();

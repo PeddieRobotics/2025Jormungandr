@@ -231,6 +231,14 @@ public class Elevator extends SubsystemBase {
         return elevatorMainMotor.getSupplyCurrent();
     }
 
+    public double getPosition(){
+        return elevatorMainMotor.getPosition();
+    }
+
+    public double getVelocity(){
+        return elevatorMainMotor.getRPS();
+    }
+
     @Override
     public void periodic() {
         elevatorMainMotor.setPIDValues(kS.get(), kV.get(),
