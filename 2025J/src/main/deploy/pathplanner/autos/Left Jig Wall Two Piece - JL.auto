@@ -7,25 +7,25 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Right Tape to E"
+            "pathName": "Left Jig to J"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "E to HP"
+            "pathName": "J to HP"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "HP to C"
+            "pathName": "HP to L"
           }
         }
       ]
     }
   },
   "resetOdom": true,
-  "folder": "Tape Starts",
+  "folder": "Jig Starts",
   "choreoAuto": false
 }

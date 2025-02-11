@@ -7,43 +7,43 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Red Jig to E"
+            "pathName": "Left Jig to J"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "E to HP"
+            "pathName": "J to HP"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "HP to C"
+            "pathName": "HP to L"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "C to HP"
+            "pathName": "L to HP"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "HP to C"
+            "pathName": "HP to L"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "C to HP"
+            "pathName": "L to HP"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "HP to C"
+            "pathName": "HP to L"
           }
         }
       ]
