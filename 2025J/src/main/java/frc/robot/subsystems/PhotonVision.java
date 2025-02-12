@@ -8,6 +8,7 @@ import org.photonvision.PhotonCamera;
 import org.photonvision.PhotonPoseEstimator;
 import org.photonvision.PhotonPoseEstimator.PoseStrategy;
 import org.photonvision.PhotonUtils;
+import org.photonvision.common.hardware.VisionLEDMode;
 import org.photonvision.targeting.PhotonPipelineResult;
 import org.photonvision.targeting.PhotonTrackedTarget;
 
@@ -276,5 +277,9 @@ public abstract class PhotonVision extends SubsystemBase {
     
     public String getName() {
         return cameraName;
+    }
+    
+    public void setBlinking(boolean blinking) {
+        camera.setLED(blinking ? VisionLEDMode.kBlink : VisionLEDMode.kOff);
     }
 }

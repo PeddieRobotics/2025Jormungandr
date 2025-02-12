@@ -127,7 +127,6 @@ public final class Constants {
     public static final double kI = 0.0;
     public static final double kD = 0.0;
     public static final double kFF = 0.0;
-
   }
 
   public static class ElevatorConstants {
