@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.interpolation.InterpolatingDoubleTreeMap;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.units.Unit;
@@ -262,7 +263,18 @@ public final class Constants {
     public static final double algaeL2Setpoint = 0.0;
     public static final double processorSetpoint = 0.0;
   }
-
+  public static final class AutoAlign{
+    public static final InterpolatingDoubleTreeMap k1TagStdDevs = new InterpolatingDoubleTreeMap() {{
+        put(1.0, 0.1);
+        put(1.12, 0.5);
+        put(1.33, 1.25);
+        put(1.55, 1.6);
+        put(1.8, 1.9);
+        put(2.02, 2.7);
+        put(2.21, 4.9);
+        put(2.38, 7.0);
+    }};
+  }
   public static final class ClawConstants {
     // TODO: update real values
     public static final double kClawStatorCurrentLimit = 20.0;
