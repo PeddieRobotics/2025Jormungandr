@@ -153,10 +153,10 @@ public class Drivetrain extends SubsystemBase {
 
   public void updateOdometry() {
     odometry.update(getHeadingAsRotation2d(), swerveModulePositions);
-    PVBack.getInstance().fuseEstimatedPose(odometry);
-    // PVFrontLeft.getInstance().fuseEstimatedPose(odometry);
-    // PVFrontMiddle.getInstance().fuseEstimatedPose(odometry);
-    // PVFrontRight.getInstance().fuseEstimatedPose(odometry);
+    // PVBack.getInstance().fuseEstimatedPose(odometry);
+    PVFrontLeft.getInstance().fuseEstimatedPose(odometry);
+    PVFrontMiddle.getInstance().fuseEstimatedPose(odometry);
+    PVFrontRight.getInstance().fuseEstimatedPose(odometry);
     // PVLeft.getInstance().fuseEstimatedPose(odometry);
   }
   public void setSwerveModuleStates(SwerveModuleState[] desiredModuleStates) {

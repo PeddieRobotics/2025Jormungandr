@@ -274,6 +274,25 @@ public final class Constants {
         put(2.38, 7.0);
     }};
   }
+
+  public static final Map<Integer, Double> kReefDesiredAngle = new HashMap<>() {{
+    // red side
+    put(6, 60.0);
+    put(7, 0.0);
+    put(8, -60.0);
+    put(9, -120.0);
+    put(10, 180.0);
+    put(11, 120.0);
+
+    // blue side, same angles but opposite
+    put(17, -60.0);
+    put(18, 0.0);
+    put(19, 60.0);
+    put(20, 120.0);
+    put(21, 180.0);
+    put(22, -120.0);
+}};
+
   public static final class ClawConstants {
     // TODO: update real values
     public static final double kClawStatorCurrentLimit = 20.0;
