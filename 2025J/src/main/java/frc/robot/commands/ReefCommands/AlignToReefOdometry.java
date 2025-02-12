@@ -13,7 +13,7 @@ import frc.robot.utils.Constants;
 
 public class AlignToReefOdometry extends Command {
     private Drivetrain drivetrain;
-    private PVFrontMiddle shooterCam;
+    private PVFrontMiddle pvFrontMiddle;
     private PIDController translatePIDController, rotationPIDController;
 
     private double translateP, translateI, translateD, translateFF, translateThreshold, translateSetpoint;
@@ -27,7 +27,7 @@ public class AlignToReefOdometry extends Command {
 
     public AlignToReefOdometry() {
         drivetrain = Drivetrain.getInstance();
-        shooterCam = PVFrontMiddle.getInstance();
+        pvFrontMiddle = PVFrontMiddle.getInstance();
 
         translatePIDController = new PIDController(translateP, translateI, translateD);
         rotationPIDController = new PIDController(rotationP, rotationI, rotationD);
@@ -79,11 +79,11 @@ public class AlignToReefOdometry extends Command {
     public void initialize() {
         // must see tag!
 
-        int desiredTarget = (int) shooterCam.getTargetID();
+        int desiredTarget = (int) pvFrontMiddle.getTargetID();
         if (Constants.kReefDesiredAngle.containsKey(desiredTarget))
             desiredAngle = Constants.kReefDesiredAngle.get(desiredTarget);
 
-        Pose2d tagPose = shooterCam.getAprilTagPose();
+        Pose2d tagPose = pvFrontMiddle.getAprilTagPose();
         double tagAngle = tagPose.getRotation().getRadians();
 
         tagBackMagnitude = SmartDashboard.getNumber("align tagBackMagnitude", tagBackMagnitude);
@@ -130,12 +130,12 @@ public class AlignToReefOdometry extends Command {
         if (Math.abs(rotationError) > rotationThreshold)
           rotation = rotationPIDController.calculate(rotationError) + Math.signum(rotationError) * rotationFF;
         
-        if (!shooterCam.hasTarget()) {
+        if (!pvFrontMiddle.hasTarget()) {
             drivetrain.drive(new Translation2d(), rotation, false, null);
             return;
         }
 
-        Pose2d estimatedPose = shooterCam.getEstimatedPose();
+        Pose2d estimatedPose = pvFrontMiddle.getEstimatedPose();
 
         double xError = estimatedPose.getX() - desiredPose.getX();
         double yError = estimatedPose.getY() - desiredPose.getY();
