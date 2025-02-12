@@ -39,20 +39,20 @@ public class DriverOI {
         controller = new PS4Controller(0);
 
         Trigger xButton = new JoystickButton(controller, PS4Controller.Button.kCross.value);
-        xButton.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.STOW)));
+        //xButton.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.STOW)));
 
         Trigger circleButton = new JoystickButton(controller, PS4Controller.Button.kCircle.value);
-        circleButton.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.HP_INTAKE)));
+        //circleButton.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.HP_INTAKE)));
 
         Trigger triangleButton = new JoystickButton(controller, PS4Controller.Button.kTriangle.value);
-        triangleButton.onTrue(new InstantCommand(() -> superstructure.sendToScore()));
+        //triangleButton.onTrue(new InstantCommand(() -> superstructure.sendToScore()));
 
         Trigger squareButton = new JoystickButton(controller, PS4Controller.Button.kSquare.value);
         
         Trigger muteButton = new JoystickButton(controller, 15);
         // TODO: add sensor condition
-        muteButton.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.EJECT_CORAL)));
-        muteButton.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.EJECT_ALGAE)));
+        //muteButton.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.EJECT_CORAL)));
+        //muteButton.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.EJECT_ALGAE)));
         
         Trigger PSButton = new JoystickButton(controller, PS4Controller.Button.kPS.value);
         PSButton.onTrue(new InstantCommand(() -> Drivetrain.getInstance().resetGyro()));

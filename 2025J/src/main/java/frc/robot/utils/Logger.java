@@ -80,7 +80,7 @@ public class Logger {
         // claw = Claw.getInstance();
         // elevator = Elevator.getInstance();
         // hpIntake = HPIntake.getInstance();
-        //superstructure = Superstructure.getInstance();
+        // superstructure = Superstructure.getInstance();
         // climber = Climber.getInstance();
         //
         // pvBack = PVBack.getInstance();
