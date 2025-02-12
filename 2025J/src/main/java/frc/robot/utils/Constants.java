@@ -294,7 +294,7 @@ public final class Constants {
     public static final double kFrontLeftCamPanningAngle = 0;
     public static final int kFrontLeftCamPipeline = 0;
 
-    public static final String kFrontMiddleCamName = "NAME-HERE";
+    public static final String kFrontMiddleCamName = "front-middle-cam";
     public static final double kFrontMiddleCamForward = 0;
     public static final double kFrontMiddleCamLeftOffset = 0;
     public static final double kFrontMiddleCamUpOffset = 0;

@@ -80,17 +80,23 @@ public class Logger {
         // claw = Claw.getInstance();
         // elevator = Elevator.getInstance();
         // hpIntake = HPIntake.getInstance();
-        superstructure = Superstructure.getInstance();
+        //superstructure = Superstructure.getInstance();
         // climber = Climber.getInstance();
         //
-        pvBack = PVBack.getInstance();
-        pvFrontLeft = PVFrontLeft.getInstance();
+        // pvBack = PVBack.getInstance();
+        // pvFrontLeft = PVFrontLeft.getInstance();
         pvFrontMiddle = PVFrontMiddle.getInstance();
-        pvFrontRight = PVFrontRight.getInstance();
-        pvLeft = PVLeft.getInstance();
+        // pvFrontRight = PVFrontRight.getInstance();
+        // pvLeft = PVLeft.getInstance();
 
-        cameras = new PhotonVision[] {
-            pvBack, pvFrontLeft, pvFrontMiddle, pvFrontRight, pvLeft
+        //  uncomment when all limelights are on the robot 
+        // cameras = new PhotonVision[] {
+        //     pvBack, pvFrontLeft, pvFrontMiddle, pvFrontRight, pvLeft
+        // };
+
+        // temp     
+        cameras = new PhotonVision[] { 
+            pvFrontMiddle
         };
 
         /*
@@ -186,7 +192,7 @@ public class Logger {
         PV_TxEntry = new DoubleLogEntry[5];
         PV_TyEntry = new DoubleLogEntry[5];
 
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < 1; i++) { //5
             String cameraName = cameras[i].getName();
             PV_TyDistanceEntry[i] = new DoubleLogEntry(log, "/Camera/" + cameraName + " Ty Distance");
             PV_PoseDistanceEntry[i] = new DoubleLogEntry(log, "/Camera/" + cameraName + " Pose Distance");
@@ -213,8 +219,8 @@ public class Logger {
          * Superstructure Logs
          */
 
-        superstructureCurrentStateEntry.append(superstructure.getCurrentState().toString());
-        superstructureRequestedStateEntry.append(superstructure.getRequestedState().toString());
+        //superstructureCurrentStateEntry.append(superstructure.getCurrentState().toString());
+        //superstructureRequestedStateEntry.append(superstructure.getRequestedState().toString());
 
         /*
          * Intake Logs
@@ -270,7 +276,7 @@ public class Logger {
         // rightClimberPosition.append(climber.getRightClimberPosition());
 
         // PhotonVision Logs
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < 1; i++) { //5
             PV_TyDistanceEntry[i].append(cameras[i].getDistanceTy());
             PV_PoseDistanceEntry[i].append(cameras[i].getDistanceEstimatedPose());
             PV_FilteredTyDistanceEntry[i].append(cameras[i].getFilteredDistanceTy());
