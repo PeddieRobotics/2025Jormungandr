@@ -7,19 +7,19 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Red Jig to E"
+            "pathName": "Right Jig Center to E"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "E to HP"
+            "pathName": "E to HP to C (strafe)"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "HP to C"
+            "pathName": "C to HP to D (Strafe)"
           }
         }
       ]

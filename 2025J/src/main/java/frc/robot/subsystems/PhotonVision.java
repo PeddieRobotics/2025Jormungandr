@@ -1,5 +1,6 @@
 package frc.robot.subsystems;
 
+import java.lang.constant.Constable;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -8,20 +9,27 @@ import org.photonvision.PhotonCamera;
 import org.photonvision.PhotonPoseEstimator;
 import org.photonvision.PhotonPoseEstimator.PoseStrategy;
 import org.photonvision.PhotonUtils;
+import org.photonvision.common.hardware.VisionLEDMode;
 import org.photonvision.targeting.PhotonPipelineResult;
 import org.photonvision.targeting.PhotonTrackedTarget;
 
+import com.ctre.phoenix6.mechanisms.swerve.LegacySwerveRequest.SwerveDriveBrake;
+
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
+import edu.wpi.first.math.VecBuilder;
+import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.filter.LinearFilter;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation3d;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.utils.Constants;
 import frc.robot.utils.RollingAverage;
 
 public abstract class PhotonVision extends SubsystemBase {
@@ -124,8 +132,30 @@ public abstract class PhotonVision extends SubsystemBase {
         return estimatedPose;
     }
     
-    public Transform3d getBestCameraToTarget() {
-        return hasTarget() ? bestTarget.getBestCameraToTarget() : new Transform3d();
+    public void fuseEstimatedPose(SwerveDrivePoseEstimator odometry) {
+        int numTagsSeen = getNumberOfTagsSeen();
+        if (!hasTarget()){
+            return;
+        }
+
+        Pose2d estimatedPose = getEstimatedPose();
+        double latency = getTotalLatencyInMS();
+        double timestampLatencyComp = Timer.getFPGATimestamp() - latency / 1000.0;
+
+        double distance = getDistanceEstimatedPose();
+        double deviation = 100;
+        
+        if (numTagsSeen == 1){
+            deviation = Constants.AutoAlign.k1TagStdDevs.get(distance);
+            // TODO
+        } else {
+            deviation = Constants.AutoAlign.k1TagStdDevs.get(distance) * 0.8;
+        }
+        odometry.setVisionMeasurementStdDevs(VecBuilder.fill(
+            deviation, deviation, 100000
+        ));
+        odometry.addVisionMeasurement(estimatedPose, timestampLatencyComp);
+
     }
 
     // =======================================================
@@ -276,5 +306,9 @@ public abstract class PhotonVision extends SubsystemBase {
     
     public String getName() {
         return cameraName;
+    }
+    
+    public void setBlinking(boolean blinking) {
+        camera.setLED(blinking ? VisionLEDMode.kBlink : VisionLEDMode.kOff);
     }
 }

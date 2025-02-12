@@ -8,6 +8,7 @@ import frc.robot.subsystems.Superstructure;
 import frc.robot.subsystems.Superstructure.SuperstructureState;
 import edu.wpi.first.math.geometry.Translation2d;
 import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.PVFrontMiddle;
 import frc.robot.utils.Constants.DriveConstants;
 
 public class DriverOI {
@@ -70,6 +71,7 @@ public class DriverOI {
         //     }
         // }));
 
+
         // Set to GROUND_INTAKE (Coral or Algae)
         Trigger L1Bumper = new JoystickButton(controller, PS4Controller.Button.kL1.value);
         // TODO: align left if coral, else align algae
@@ -99,6 +101,7 @@ public class DriverOI {
         // superstructure.requestState(SuperstructureState.CLIMB)));
 
         Trigger optionButton = new JoystickButton(controller, PS4Controller.Button.kOptions.value);
+        optionButton.onTrue(new InstantCommand(() -> Drivetrain.getInstance().resetTranslation(PVFrontMiddle.getInstance().getEstimatedPose().getTranslation())));
         
         Trigger shareButton = new JoystickButton(controller, PS4Controller.Button.kShare.value);
     }

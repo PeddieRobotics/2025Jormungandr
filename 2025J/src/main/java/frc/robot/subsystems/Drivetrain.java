@@ -153,8 +153,12 @@ public class Drivetrain extends SubsystemBase {
 
   public void updateOdometry() {
     odometry.update(getHeadingAsRotation2d(), swerveModulePositions);
+    PVBack.getInstance().fuseEstimatedPose(odometry);
+    // PVFrontLeft.getInstance().fuseEstimatedPose(odometry);
+    // PVFrontMiddle.getInstance().fuseEstimatedPose(odometry);
+    // PVFrontRight.getInstance().fuseEstimatedPose(odometry);
+    // PVLeft.getInstance().fuseEstimatedPose(odometry);
   }
-
   public void setSwerveModuleStates(SwerveModuleState[] desiredModuleStates) {
     for (int i = 0; i < desiredModuleStates.length; i++) {
       swerveModules[i].setDesiredState(desiredModuleStates[i]);
@@ -198,9 +202,13 @@ public class Drivetrain extends SubsystemBase {
     return odometry.getEstimatedPosition();
   }
 
-  public void resetPose(Pose2d pose) {
+  public void setPose(Pose2d pose) {
     gyro.reset();
     odometry.resetPosition(getHeadingAsRotation2d(), swerveModulePositions, pose);
+  }
+
+  public void resetTranslation(Translation2d translation) {
+    odometry.resetTranslation(translation);
   }
 
   public ChassisSpeeds getRobotRelativeSpeeds() {
