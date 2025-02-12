@@ -101,6 +101,8 @@ public class Superstructure extends SubsystemBase {
   public void periodic() {
     SmartDashboard.putString("current superstructure state", systemState.toString());
     SmartDashboard.putString("requested superstructure state", requestedSystemState.toString());
+    
+    // TODO: get coral and algae index from Claw
     algaeIndex = SmartDashboard.getBoolean("algaeIndex", false);
     coralIndex = SmartDashboard.getBoolean("coralIndex", false);
 
@@ -684,22 +686,23 @@ public class Superstructure extends SubsystemBase {
 
   public void sendToScore() {
     switch (systemState) {
-      case L1_PREP ->{
+      // TODO: Add gate for arm angle before allowing sending to score state
+      case L1_PREP -> {
         requestState(L1_SCORE);
         timer.reset();
       }
 
-      case L2_PREP ->{
+      case L2_PREP -> {
         requestState(L2_SCORE);
         timer.reset();
       }
 
-      case L3_PREP ->{
+      case L3_PREP -> {
         requestState(L3_SCORE);
         timer.reset();
       }
 
-      case L4_PREP ->{
+      case L4_PREP -> {
         requestState(L4_SCORE);
         timer.reset();
       }
@@ -708,7 +711,7 @@ public class Superstructure extends SubsystemBase {
         requestState(PROCESSOR_SCORE);
       }
 
-      case BARGE_PREP ->{
+      case BARGE_PREP -> {
         requestState(BARGE_SCORE);
       }
     }
