@@ -278,6 +278,18 @@ public final class Constants {
     // TODO: update real values
     public static final double kClawStatorCurrentLimit = 20.0;
 
+    public static final double kCoralSensor1ProximityThreshold = 0.0;
+    public static final double kCoralSensor2ProximityThreshold = 0.0;
+    public static final double kAlgaeSensorProximityThreshold = 0.0;
+
+    public static final double kCoralSensor1ProximityHysteresis = 0.0;
+    public static final double kCoralSensor2ProximityHysteresis = 0.0;
+    public static final double kAlgaeSensorProximityHysteresis = 0.0;
+
+    public static final double kCoralSensor1SignalStrength = 0.0;
+    public static final double kCoralSensor2SignalStrength = 0.0;
+    public static final double kAlgaeSensorSignalStrength = 0.0;
+
     public static final double kClawIntakeSpeed = 0.0;
     public static final double kClawOuttakeSpeed = 0.0;
   }
