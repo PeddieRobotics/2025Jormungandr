@@ -280,6 +280,13 @@ public final class Constants {
 
   public static final class CameraConstants {
     // TODO: update real values
+    public static final String kBackCamName = "NAME-HERE";
+    public static final double kBackCamForward = 0;
+    public static final double kBackCamLeftOffset = 0;
+    public static final double kBackCamUpOffset = 0;
+    public static final double kBackCamPanningAngle = 0;
+    public static final int kBackCamPipeline = 0;
+
     public static final String kFrontLeftCamName = "NAME-HERE";
     public static final double kFrontLeftCamForward = 0;
     public static final double kFrontLeftCamLeftOffset = 0;
@@ -300,13 +307,6 @@ public final class Constants {
     public static final double kFrontRightCamUpOffset = 0;
     public static final double kFrontRightCamPanningAngle = 0;
     public static final int kFrontRightCamPipeline = 0;
-
-    public static final String kBackCamName = "NAME-HERE";
-    public static final double kBackCamForward = 0;
-    public static final double kBackCamLeftOffset = 0;
-    public static final double kBackCamUpOffset = 0;
-    public static final double kBackCamPanningAngle = 0;
-    public static final int kBackCamPipeline = 0;
 
     public static final String kLeftCamName = "NAME-HERE";
     public static final double kLeftCamForward = 0;
