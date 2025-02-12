@@ -17,7 +17,12 @@ import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.HPIntake;
-import frc.robot.subsystems.Limelight;
+import frc.robot.subsystems.PVBack;
+import frc.robot.subsystems.PVFrontLeft;
+import frc.robot.subsystems.PVFrontMiddle;
+import frc.robot.subsystems.PVFrontRight;
+import frc.robot.subsystems.PVLeft;
+import frc.robot.subsystems.PhotonVision;
 import frc.robot.subsystems.Superstructure;
 
 public class Logger {
@@ -30,6 +35,13 @@ public class Logger {
     private HPIntake hpIntake;
     private Superstructure superstructure;
     private Climber climber;
+    private PVBack pvBack;
+    private PVFrontLeft pvFrontLeft;
+    private PVFrontMiddle pvFrontMiddle;
+    private PVFrontRight pvFrontRight;
+    private PVLeft pvLeft;
+
+    PhotonVision[] cameras;
 
     private DataLog log = DataLogManager.getLog();
     private StringLogEntry commandEntry, superstructureCurrentStateEntry, superstructureRequestedStateEntry;
@@ -44,12 +56,15 @@ public class Logger {
             elevatorVelocityEntry, elevatorAccEntry, elevatorSpeedEntry,
             hpIntakePositionEntry, hpIntakeVelocityEntry, hpIntakeAccEntry, hpIntakeSupplyCurrentEntry,
             hpIntakeStatorCurrentEntry,
-            LLShooterDistanceEntry, LLShooterNumOfApriltagEntry, LLShooterTxEntry, LLIntakeTxEntry,
             leftClimberSupplyCurrentEntry, leftClimberStatorCurrentEntry, leftClimberTemperatureEntry,
             leftClimberPositionEntry,
             rightClimberSupplyCurrentEntry, rightClimberStatorCurrentEntry, rightClimberTemperatureEntry,
             rightClimberPosition;
+
     private DoubleArrayLogEntry fieldPositionEntry, botposeFieldPositionEntry, moduleSpeedsEntry, modulePositionsEntry;
+    
+    private DoubleLogEntry[] PV_TyDistanceEntry, PV_PoseDistanceEntry, PV_FilteredPoseDistanceEntry, PV_FilteredTyDistanceEntry,  
+        PV_NumOfApriltagEntry, PV_TxEntry, PV_TyEntry;
 
     public static Logger getInstance() {
         if (instance == null) {
@@ -65,8 +80,24 @@ public class Logger {
         // claw = Claw.getInstance();
         // elevator = Elevator.getInstance();
         // hpIntake = HPIntake.getInstance();
-        superstructure = Superstructure.getInstance();
+        //superstructure = Superstructure.getInstance();
         // climber = Climber.getInstance();
+        //
+        // pvBack = PVBack.getInstance();
+        // pvFrontLeft = PVFrontLeft.getInstance();
+        pvFrontMiddle = PVFrontMiddle.getInstance();
+        // pvFrontRight = PVFrontRight.getInstance();
+        // pvLeft = PVLeft.getInstance();
+
+        //  uncomment when all limelights are on the robot 
+        // cameras = new PhotonVision[] {
+        //     pvBack, pvFrontLeft, pvFrontMiddle, pvFrontRight, pvLeft
+        // };
+
+        // temp     
+        cameras = new PhotonVision[] { 
+            pvFrontMiddle
+        };
 
         /*
          * Superstructure Logs
@@ -150,21 +181,27 @@ public class Logger {
         rightClimberPosition = new DoubleLogEntry(log, "/Climber/Right Climber Motor Position");
 
         /*
-         * Limelight Logs
+         * Photonvision Logs
          */
+        
+        PV_TyDistanceEntry = new DoubleLogEntry[5];
+        PV_PoseDistanceEntry = new DoubleLogEntry[5];
+        PV_FilteredTyDistanceEntry = new DoubleLogEntry[5];
+        PV_FilteredPoseDistanceEntry = new DoubleLogEntry[5];
+        PV_NumOfApriltagEntry = new DoubleLogEntry[5];
+        PV_TxEntry = new DoubleLogEntry[5];
+        PV_TyEntry = new DoubleLogEntry[5];
 
-        // LLShooterDistanceEntry = new DoubleLogEntry(log, "/Limelight
-        // Shooter/Distance");
-        // LLShooterNumOfApriltagEntry = new DoubleLogEntry(log, "/Limelight
-        // Shooter/Number of Apriltags");
-        // LLShooterTxEntry = new DoubleLogEntry(log, "/Limelight Shooter/Tx");
-
-        // LLIntakeHasTargetEntry = new BooleanLogEntry(log, "/Limelight Intake/Has
-        // Target");
-        // LLIntakeTxEntry = new DoubleLogEntry(log, "/Limelight Intake/Tx");
-
-        // Commands run
-        // commandEntry = new StringLogEntry(log, "/Commands/Commands Run");
+        for (int i = 0; i < 1; i++) { //5
+            String cameraName = cameras[i].getName();
+            PV_TyDistanceEntry[i] = new DoubleLogEntry(log, "/Camera/" + cameraName + " Ty Distance");
+            PV_PoseDistanceEntry[i] = new DoubleLogEntry(log, "/Camera/" + cameraName + " Pose Distance");
+            PV_FilteredTyDistanceEntry[i] = new DoubleLogEntry(log, "/Camera/" + cameraName + " Filtered Ty Distance");
+            PV_FilteredPoseDistanceEntry[i] = new DoubleLogEntry(log, "/Camera/" + cameraName + " Filtered Pose Distance");
+            PV_NumOfApriltagEntry[i] = new DoubleLogEntry(log, "/Camera/" + cameraName + " Number of AprilTags");
+            PV_TxEntry[i] = new DoubleLogEntry(log, "/Camera/" + cameraName + " Tx");
+            PV_TyEntry[i] = new DoubleLogEntry(log, "/Camera/" + cameraName + " Ty");
+        }
     }
 
     public void logEvent(String event, Boolean isStart) {
@@ -182,8 +219,8 @@ public class Logger {
          * Superstructure Logs
          */
 
-        superstructureCurrentStateEntry.append(superstructure.getCurrentState().toString());
-        superstructureRequestedStateEntry.append(superstructure.getRequestedState().toString());
+        //superstructureCurrentStateEntry.append(superstructure.getCurrentState().toString());
+        //superstructureRequestedStateEntry.append(superstructure.getRequestedState().toString());
 
         /*
          * Intake Logs
@@ -238,16 +275,16 @@ public class Logger {
         // rightClimberTemperatureEntry.append(climber.getRightClimberTemperature());
         // rightClimberPosition.append(climber.getRightClimberPosition());
 
-        /*
-         * Limelight Logs
-         */
-
-        // LLShooterDistanceEntry.append(limelight.getDistance());
-        // LLShooterNumOfApriltagEntry.append(limelight.getAprilTagNum());
-        // LLShooterTxEntry.append(limelight.getShooterTx());
-
-        // LLIntakeHasTargetEntry.append(limelight.hasTarget());
-        // LLIntakeTxEntry.append(limelight.getIntakeTx());
+        // PhotonVision Logs
+        for (int i = 0; i < 1; i++) { //5
+            PV_TyDistanceEntry[i].append(cameras[i].getDistanceTy());
+            PV_PoseDistanceEntry[i].append(cameras[i].getDistanceEstimatedPose());
+            PV_FilteredTyDistanceEntry[i].append(cameras[i].getFilteredDistanceTy());
+            PV_FilteredPoseDistanceEntry[i].append(cameras[i].getFilteredDistanceEstimatedPose());
+            PV_NumOfApriltagEntry[i].append(cameras[i].getNumberOfTagsSeen());
+            PV_TxEntry[i].append(cameras[i].getTxAverage());
+            PV_TyEntry[i].append(cameras[i].getTyAverage());
+        }
 
         // Commands run
         commandEntry = new StringLogEntry(log, "/Commands/Commands Run");
