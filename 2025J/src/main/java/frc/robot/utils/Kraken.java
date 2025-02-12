@@ -81,7 +81,7 @@ public class Kraken {
     /** 
      * @return motor percent output setpoint [-1.0, 1.0]
      */
-    public double getVelocity() {
+    public double getPercentOutput() {
         return talon.get();
     }
 

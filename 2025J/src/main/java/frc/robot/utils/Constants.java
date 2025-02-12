@@ -83,7 +83,7 @@ public final class Constants {
 
     public static final double kMaxFloorSpeed = 4;
     public static final double kMaxRotationSpeed = 3.14;
-
+    public static final double kMaxModuleSpeed = 4.4;
     
     public static final Translation2d[] swerveModuleLocations = {
         new Translation2d(kWheelBase / 2.0, kTrackWidth / 2.0),
@@ -278,19 +278,42 @@ public final class Constants {
 
   }
 
-  public static final class LimelightConstants {
+  public static final class CameraConstants {
     // TODO: update real values
-    public static final double kLimelightBackHeight = 0;
-    public static final double kLimelightBackPanningAngle = 0;
-    public static final int kLimelightBackPipeline = 0;
-    
-    public static final double kLimelightFrontLeftHeight = 0;
-    public static final double kLimelightFrontLeftPanningAngle = 0;
-    public static final int kLimelightFrontLeftPipeline = 0;
-    
-    public static final double kLimelightFrontRightHeight = 0;
-    public static final double kLimelightFrontRightPanningAngle = 0;
-    public static final int kLimelightFrontRightPipeline = 0;
+    public static final String kBackCamName = "NAME-HERE";
+    public static final double kBackCamForward = 0;
+    public static final double kBackCamLeftOffset = 0;
+    public static final double kBackCamUpOffset = 0;
+    public static final double kBackCamPanningAngle = 0;
+    public static final int kBackCamPipeline = 0;
+
+    public static final String kFrontLeftCamName = "NAME-HERE";
+    public static final double kFrontLeftCamForward = 0;
+    public static final double kFrontLeftCamLeftOffset = 0;
+    public static final double kFrontLeftCamUpOffset = 0;
+    public static final double kFrontLeftCamPanningAngle = 0;
+    public static final int kFrontLeftCamPipeline = 0;
+
+    public static final String kFrontMiddleCamName = "front-middle-cam";
+    public static final double kFrontMiddleCamForward = 0;
+    public static final double kFrontMiddleCamLeftOffset = 0;
+    public static final double kFrontMiddleCamUpOffset = 0;
+    public static final double kFrontMiddleCamPanningAngle = 0;
+    public static final int kFrontMiddleCamPipeline = 0;
+
+    public static final String kFrontRightCamName = "NAME-HERE";
+    public static final double kFrontRightCamForward = 0;
+    public static final double kFrontRightCamLeftOffset = 0;
+    public static final double kFrontRightCamUpOffset = 0;
+    public static final double kFrontRightCamPanningAngle = 0;
+    public static final int kFrontRightCamPipeline = 0;
+
+    public static final String kLeftCamName = "NAME-HERE";
+    public static final double kLeftCamForward = 0;
+    public static final double kLeftCamLeftOffset = 0;
+    public static final double kLeftCamUpOffset = 0;
+    public static final double kLeftCamPanningAngle = 0;
+    public static final int kLeftCamPipeline = 0;
   }
   
   public static final class FieldConstants {

@@ -1,5 +1,7 @@
 package frc.robot.subsystems;
 
+import com.ctre.phoenix6.hardware.CANrange;
+
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -12,6 +14,7 @@ public class Claw extends SubsystemBase {
 
     private static Claw claw;
     private Kraken clawMotor;
+    private CANrange coralSensor1; 
 
     private DigitalInput coralSensor;
     private AnalogInput algaeSensor;
@@ -21,6 +24,8 @@ public class Claw extends SubsystemBase {
 
         coralSensor = new DigitalInput(RobotMap.CLAW_CORAL_SENSOR_ID);
         algaeSensor = new AnalogInput(RobotMap.CLAW_ALGAE_SENSOR_ID);
+
+        coralSensor1 = new CANrange(60, RobotMap.CANIVORE_NAME);
 
         clawMotor.setInverted(false);
         clawMotor.setStatorCurrentLimit(ClawConstants.kClawStatorCurrentLimit);
@@ -94,6 +99,14 @@ public class Claw extends SubsystemBase {
      */
     public double getMotorSupplyCurrent() {
         return clawMotor.getSupplyCurrent();
+    }
+
+    public double getPosition(){
+        return clawMotor.getPosition();
+    }
+
+    public double getVelocity(){
+        return clawMotor.getRPM();
     }
 
     @Override

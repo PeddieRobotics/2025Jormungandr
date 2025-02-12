@@ -15,6 +15,7 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.util.sendable.Sendable;
@@ -35,6 +36,8 @@ public class Drivetrain extends SubsystemBase {
   private SwerveModuleState[] swerveModuleStates;
   private SwerveModulePosition[] swerveModulePositions;
   private SwerveDrivePoseEstimator odometry;
+
+  private double currentDrivetrainSpeed = 0;
 
   private final Pigeon2 gyro;
   private double heading;
@@ -117,8 +120,12 @@ public class Drivetrain extends SubsystemBase {
       robotRelativeSpeeds = fieldRelativeSpeeds;
     }
 
+    currentDrivetrainSpeed = Math.sqrt(Math.pow(robotRelativeSpeeds.vxMetersPerSecond, 2)
+                + Math.pow(robotRelativeSpeeds.vyMetersPerSecond, 2));
+
     swerveModuleStates = DriveConstants.kinematics.toSwerveModuleStates(robotRelativeSpeeds);
     // TODO: desaturate later!
+    SwerveDriveKinematics.desaturateWheelSpeeds(swerveModuleStates, DriveConstants.kMaxModuleSpeed);
     optimizeModuleStates();
     setSwerveModuleStates(swerveModuleStates);
   }
@@ -126,6 +133,10 @@ public class Drivetrain extends SubsystemBase {
   public void driveRobotRelative(ChassisSpeeds robotRelativeSpeeds) {
     swerveModuleStates = DriveConstants.kinematics.toSwerveModuleStates(robotRelativeSpeeds);
     setSwerveModuleStates(swerveModuleStates);
+  }
+
+  public SwerveModuleState[] getSwerveModuleStates(){
+    return swerveModuleStates;
   }
 
   public void optimizeModuleStates() {
@@ -151,7 +162,7 @@ public class Drivetrain extends SubsystemBase {
   }
 
   public double getHeading() {
-    heading = -gyro.getYaw().getValueAsDouble();
+    heading = gyro.getYaw().getValueAsDouble();
     return Math.IEEEremainder(heading, 360);
   }
 
@@ -167,7 +178,21 @@ public class Drivetrain extends SubsystemBase {
     return -gyro.getAngularVelocityZWorld().getValueAsDouble();
   }
 
+  public double getGyroAccX(){
+    return gyro.getAccelerationX().getValueAsDouble();
+  }
 
+  public double getGyroAccY(){
+    return gyro.getAccelerationY().getValueAsDouble();
+  }
+
+  public double getGyroAccZ(){
+    return gyro.getAccelerationZ().getValueAsDouble();
+  }
+
+  public double getSpeed() {
+    return currentDrivetrainSpeed;
+  }
 
   public Pose2d getPose() {
     return odometry.getEstimatedPosition();
@@ -253,6 +278,7 @@ public class Drivetrain extends SubsystemBase {
     }
     SmartDashboard.putNumber("Odometry X", getPose().getX());
     SmartDashboard.putNumber("Odometry Y", getPose().getY());
+    SmartDashboard.putNumber("Heading", getHeading());
   }
 
   @Override
