@@ -54,8 +54,8 @@ public class Superstructure extends SubsystemBase {
     BARGE_SCORE,
     PROCESSOR_PREP,
     PROCESSOR_SCORE,
-    REEF1_INTAKE,
-    REEF2_INTAKE,
+    REEF1_ALGAE_INTAKE,
+    REEF2_ALGAE_INTAKE,
     EJECT_ALGAE,
     EJECT_CORAL
   }
@@ -122,8 +122,8 @@ public class Superstructure extends SubsystemBase {
           L4_PRESTAGE,
           BARGE_PRESTAGE, 
           PROCESSOR_PREP, 
-          REEF1_INTAKE, 
-          REEF2_INTAKE, 
+          REEF1_ALGAE_INTAKE, 
+          REEF2_ALGAE_INTAKE, 
           EJECT_ALGAE, 
           EJECT_CORAL)
           .contains(requestedSystemState)){
@@ -149,8 +149,8 @@ public class Superstructure extends SubsystemBase {
           L4_PRESTAGE,
           BARGE_PRESTAGE,
           PROCESSOR_PREP,
-          REEF1_INTAKE,
-          REEF2_INTAKE,
+          REEF1_ALGAE_INTAKE,
+          REEF2_ALGAE_INTAKE,
           EJECT_ALGAE,
           EJECT_CORAL)
           .contains(requestedSystemState)){
@@ -177,8 +177,8 @@ public class Superstructure extends SubsystemBase {
           L4_PRESTAGE,
           BARGE_PRESTAGE,
           PROCESSOR_PREP,
-          REEF1_INTAKE,
-          REEF2_INTAKE,
+          REEF1_ALGAE_INTAKE,
+          REEF2_ALGAE_INTAKE,
           EJECT_ALGAE,
           EJECT_CORAL)  
           .contains(requestedSystemState)){
@@ -201,8 +201,8 @@ public class Superstructure extends SubsystemBase {
           L4_PRESTAGE,
           BARGE_PRESTAGE,
           PROCESSOR_PREP,
-          REEF1_INTAKE,
-          REEF2_INTAKE,
+          REEF1_ALGAE_INTAKE,
+          REEF2_ALGAE_INTAKE,
           EJECT_ALGAE,
           EJECT_CORAL)
           .contains(requestedSystemState)){
@@ -232,8 +232,8 @@ public class Superstructure extends SubsystemBase {
           L4_PRESTAGE,
           BARGE_PRESTAGE,
           PROCESSOR_PREP,
-          REEF1_INTAKE,
-          REEF2_INTAKE,
+          REEF1_ALGAE_INTAKE,
+          REEF2_ALGAE_INTAKE,
           EJECT_ALGAE,
           EJECT_CORAL)
           .contains(requestedSystemState)){
@@ -263,8 +263,8 @@ public class Superstructure extends SubsystemBase {
           L4_PRESTAGE,
           BARGE_PRESTAGE,
           PROCESSOR_PREP,
-          REEF1_INTAKE,
-          REEF2_INTAKE,
+          REEF1_ALGAE_INTAKE,
+          REEF2_ALGAE_INTAKE,
           EJECT_ALGAE,
           EJECT_CORAL)
           .contains(requestedSystemState)){
@@ -285,8 +285,8 @@ public class Superstructure extends SubsystemBase {
           L4_PREP,
           BARGE_PRESTAGE,
           PROCESSOR_PREP,
-          REEF1_INTAKE,
-          REEF2_INTAKE,
+          REEF1_ALGAE_INTAKE,
+          REEF2_ALGAE_INTAKE,
           EJECT_ALGAE,
           EJECT_CORAL)
           .contains(requestedSystemState)){
@@ -314,8 +314,8 @@ public class Superstructure extends SubsystemBase {
           L4_PREP,
           BARGE_PRESTAGE,
           PROCESSOR_PREP,
-          REEF1_INTAKE,
-          REEF2_INTAKE,
+          REEF1_ALGAE_INTAKE,
+          REEF2_ALGAE_INTAKE,
           EJECT_ALGAE,
           EJECT_CORAL)
           .contains(requestedSystemState)){
@@ -345,8 +345,8 @@ public class Superstructure extends SubsystemBase {
           STOW,
           HP_INTAKE,
           ALGAE_GROUND_INTAKE,
-          REEF1_INTAKE,
-          REEF2_INTAKE)
+          REEF1_ALGAE_INTAKE,
+          REEF2_ALGAE_INTAKE)
           .contains(requestedSystemState)){
             systemState=requestedSystemState;
           }
@@ -381,8 +381,8 @@ public class Superstructure extends SubsystemBase {
           STOW,
           HP_INTAKE,
           ALGAE_GROUND_INTAKE,
-          REEF1_INTAKE,
-          REEF2_INTAKE)
+          REEF1_ALGAE_INTAKE,
+          REEF2_ALGAE_INTAKE)
           .contains(requestedSystemState)){
             systemState=requestedSystemState;
           }
@@ -416,8 +416,8 @@ public class Superstructure extends SubsystemBase {
           STOW,
           HP_INTAKE,
           ALGAE_GROUND_INTAKE,
-          REEF1_INTAKE,
-          REEF2_INTAKE)
+          REEF1_ALGAE_INTAKE,
+          REEF2_ALGAE_INTAKE)
           .contains(requestedSystemState)){
             systemState=requestedSystemState;
           }
@@ -452,8 +452,8 @@ public class Superstructure extends SubsystemBase {
           STOW,
           HP_INTAKE,
           ALGAE_GROUND_INTAKE,
-          REEF1_INTAKE,
-          REEF2_INTAKE)
+          REEF1_ALGAE_INTAKE,
+          REEF2_ALGAE_INTAKE)
           .contains(requestedSystemState)){
             systemState=requestedSystemState;
           }
@@ -474,8 +474,8 @@ public class Superstructure extends SubsystemBase {
           L4_PRESTAGE,
           BARGE_PREP,
           PROCESSOR_PREP,
-          REEF1_INTAKE,
-          REEF2_INTAKE,
+          REEF1_ALGAE_INTAKE,
+          REEF2_ALGAE_INTAKE,
           EJECT_ALGAE,
           EJECT_CORAL)
           .contains(requestedSystemState)){
@@ -498,8 +498,8 @@ public class Superstructure extends SubsystemBase {
           BARGE_PRESTAGE,
           BARGE_SCORE,
           PROCESSOR_PREP,
-          REEF1_INTAKE,
-          REEF2_INTAKE,
+          REEF1_ALGAE_INTAKE,
+          REEF2_ALGAE_INTAKE,
           EJECT_ALGAE,
           EJECT_CORAL)
           .contains(requestedSystemState)){
@@ -527,8 +527,8 @@ public class Superstructure extends SubsystemBase {
           STOW,
           HP_INTAKE,
           ALGAE_GROUND_INTAKE,
-          REEF1_INTAKE,
-          REEF2_INTAKE)
+          REEF1_ALGAE_INTAKE,
+          REEF2_ALGAE_INTAKE)
           .contains(requestedSystemState)){
             systemState=requestedSystemState;
           }
@@ -548,8 +548,8 @@ public class Superstructure extends SubsystemBase {
           L4_PRESTAGE,
           BARGE_PRESTAGE,
           PROCESSOR_SCORE,
-          REEF1_INTAKE,
-          REEF2_INTAKE,
+          REEF1_ALGAE_INTAKE,
+          REEF2_ALGAE_INTAKE,
           EJECT_ALGAE,
           EJECT_CORAL)
           .contains(requestedSystemState)){
@@ -577,14 +577,14 @@ public class Superstructure extends SubsystemBase {
           STOW,
           HP_INTAKE,
           ALGAE_GROUND_INTAKE,
-          REEF1_INTAKE,
-          REEF2_INTAKE)
+          REEF1_ALGAE_INTAKE,
+          REEF2_ALGAE_INTAKE)
           .contains(requestedSystemState)){
             systemState=requestedSystemState;
           }
       }
 
-      case REEF1_INTAKE ->{
+      case REEF1_ALGAE_INTAKE ->{
         elevator.setElevatorPositionMotionMagicTorqueCurrentFOC(ScoreConstants.kElevatorReef1IntakePosition);
         arm.setArmPositionMotionMagicTorqueCurrentFOC(ScoreConstants.kArmReef1IntakePosition);
         claw.intakePiece();
@@ -603,7 +603,7 @@ public class Superstructure extends SubsystemBase {
           L4_PRESTAGE,
           BARGE_PRESTAGE,
           PROCESSOR_PREP,
-          REEF2_INTAKE,
+          REEF2_ALGAE_INTAKE,
           EJECT_ALGAE,
           EJECT_CORAL)
           .contains(requestedSystemState)){
@@ -611,7 +611,7 @@ public class Superstructure extends SubsystemBase {
           }
       }
 
-      case REEF2_INTAKE -> {
+      case REEF2_ALGAE_INTAKE -> {
         elevator.setElevatorPositionMotionMagicTorqueCurrentFOC(ScoreConstants.kElevatorReef2IntakePosition);
         arm.setArmPositionMotionMagicTorqueCurrentFOC(ScoreConstants.kArmReef2IntakePosition);
         claw.intakePiece();
@@ -629,7 +629,7 @@ public class Superstructure extends SubsystemBase {
           L4_PRESTAGE,
           BARGE_PRESTAGE,
           PROCESSOR_PREP,
-          REEF1_INTAKE,
+          REEF1_ALGAE_INTAKE,
           EJECT_ALGAE,
           EJECT_CORAL)
           .contains(requestedSystemState)){
@@ -650,8 +650,8 @@ public class Superstructure extends SubsystemBase {
           L4_PRESTAGE,
           BARGE_PRESTAGE,
           PROCESSOR_PREP,
-          REEF1_INTAKE,
-          REEF2_INTAKE,
+          REEF1_ALGAE_INTAKE,
+          REEF2_ALGAE_INTAKE,
           EJECT_CORAL)
           .contains(requestedSystemState)){
             systemState=requestedSystemState;
@@ -671,8 +671,8 @@ public class Superstructure extends SubsystemBase {
           L4_PRESTAGE,
           BARGE_PRESTAGE,
           PROCESSOR_PREP,
-          REEF1_INTAKE,
-          REEF2_INTAKE,
+          REEF1_ALGAE_INTAKE,
+          REEF2_ALGAE_INTAKE,
           EJECT_ALGAE)
           .contains(requestedSystemState)){
             systemState=requestedSystemState;
