@@ -51,7 +51,6 @@ public class DriverOI {
         
         Trigger muteButton = new JoystickButton(controller, 15);
         // TODO: add sensor condition
-        muteButton.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.EJECT_CORAL)));
         muteButton.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.EJECT_ALGAE)));
         
         Trigger PSButton = new JoystickButton(controller, PS4Controller.Button.kPS.value);
