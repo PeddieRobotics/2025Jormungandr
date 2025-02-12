@@ -3,29 +3,29 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 3.9682500000000003,
-        "y": 2.66
+        "x": 7.761,
+        "y": 3.3424999999999994
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.407808794911001,
-        "y": 1.6602789809551386
+        "x": 6.555228425764573,
+        "y": 3.3424895782784505
       },
       "isLocked": false,
-      "linkedName": "DReef"
+      "linkedName": "RedTape"
     },
     {
       "anchor": {
-        "x": 1.131,
-        "y": 0.905
+        "x": 5.0,
+        "y": 2.6779605263157897
       },
       "prevControl": {
-        "x": 2.4759592787631766,
-        "y": 1.7437600115272063
+        "x": 6.139236174906117,
+        "y": 2.6668562315463844
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "BottomHP"
+      "linkedName": "EReef"
     }
   ],
   "rotationTargets": [],
@@ -33,7 +33,7 @@
   "pointTowardsZones": [],
   "eventMarkers": [],
   "globalConstraints": {
-    "maxVelocity": 2.0,
+    "maxVelocity": 1.0,
     "maxAcceleration": 3.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0,
@@ -42,13 +42,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -126.86989764584402
+    "rotation": -59.99999999999999
   },
   "reversed": false,
-  "folder": "HP Intake",
+  "folder": "Starts",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": -119.99999999999999
+    "rotation": -90.15383516463184
   },
-  "useDefaultConstraints": false
+  "useDefaultConstraints": true
 }

@@ -47,7 +47,7 @@ public class Autonomous extends SubsystemBase {
     public void configureAutoBuilder() {
         AutoBuilder.configure(
                 drivetrain::getPose, // Robot pose supplier
-                drivetrain::resetPose, // Method to reset odometry (will be called if your auto has a starting pose)
+                drivetrain::setPose, // Method to reset odometry (will be called if your auto has a starting pose)
                 drivetrain::getRobotRelativeSpeeds, // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
                 drivetrain::driveRobotRelative, // Method that will drive the robot given ROBOT RELATIVE ChassisSpeeds.
                 new PPHolonomicDriveController( // PPHolonomicController is the built in path following controller for
