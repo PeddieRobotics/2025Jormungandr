@@ -688,31 +688,43 @@ public class Superstructure extends SubsystemBase {
     switch (systemState) {
       // TODO: Add gate for arm angle before allowing sending to score state
       case L1_PREP -> {
-        requestState(L1_SCORE);
-        timer.reset();
+        if (arm.isAtAngle(ScoreConstants.kArmL1ScorePosition) && elevator.isAtHeight(ScoreConstants.kElevatorL1ScorePosition)){
+          requestState(L1_SCORE);
+          timer.reset();
+        }
       }
 
       case L2_PREP -> {
-        requestState(L2_SCORE);
-        timer.reset();
+        if (arm.isAtAngle(ScoreConstants.kArmL2ScorePosition) && elevator.isAtHeight(ScoreConstants.kElevatorL2ScorePosition)){
+          requestState(L2_SCORE);
+          timer.reset();
+        } 
       }
 
       case L3_PREP -> {
-        requestState(L3_SCORE);
-        timer.reset();
+        if (arm.isAtAngle(ScoreConstants.kArmL3ScorePosition) && elevator.isAtHeight(ScoreConstants.kElevatorL3ScorePosition)){
+          requestState(L3_SCORE);
+          timer.reset();
+        }
       }
 
       case L4_PREP -> {
-        requestState(L4_SCORE);
-        timer.reset();
+        if (arm.isAtAngle(ScoreConstants.kArmL4ScorePosition) && elevator.isAtHeight(ScoreConstants.kElevatorL4ScorePosition)){
+          requestState(L4_SCORE);
+          timer.reset();
+        }
       }
 
       case PROCESSOR_PREP -> {
-        requestState(PROCESSOR_SCORE);
+        if (arm.isAtAngle(ScoreConstants.kArmProcessorScorePosition) && elevator.isAtHeight(ScoreConstants.kElevatorProcessorScorePosition)){
+          requestState(PROCESSOR_SCORE);
+        }
       }
 
       case BARGE_PREP -> {
-        requestState(BARGE_SCORE);
+        if (arm.isAtAngle(ScoreConstants.kArmBargeScorePosition)&& elevator.isAtHeight(ScoreConstants.kElevatorBargeScorePosition)){
+          requestState(BARGE_SCORE);
+        }
       }
     }
   }
