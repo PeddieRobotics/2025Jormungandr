@@ -323,5 +323,4 @@ public final class Constants {
       put(22, 12.125);
     }};
   }
-
 }

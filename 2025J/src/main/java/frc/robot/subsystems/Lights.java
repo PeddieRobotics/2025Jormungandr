@@ -9,17 +9,10 @@ import com.ctre.phoenix.led.StrobeAnimation;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.utils.LimelightHelpers;
+import frc.robot.utils.RobotMap;
 
-
-
-public class Lights extends SubsystemBase{
-    public static Lights lights;
-    private final CANdle candle;
-    private double lastIntaked;
-    private boolean isClimbing;
-
-    public enum LightState{
+public class Lights extends SubsystemBase {
+    private enum LightState {
         IDLE,
         ALGAE_INTAKING,
         CORAL_INTAKING,
@@ -31,21 +24,24 @@ public class Lights extends SubsystemBase{
         FAILED
     }
 
-    LightState systemState;
-    LightState requestedSystemState;
+    public static Lights lights;
 
-    public Lights(){
-        candle = new CANdle(0);
-    }
+    private final CANdle candle;
+    private double lastIntaked;
+    private boolean isClimbing;
+    private LightState systemState, requestedSystemState;
 
-    public static Lights getInstance(){
-        if(lights == null){
+    public static Lights getInstance() {
+        if (lights == null)
             lights = new Lights();
-        }
         return lights;
     }
 
-    public void requestState(LightState request){
+    public Lights() {
+        candle = new CANdle(RobotMap.CANDLE_ID);
+    }
+
+    public void requestState(LightState request) {
         candle.clearAnimation(0);
         candle.setLEDs(0,0,0);
 
@@ -53,7 +49,7 @@ public class Lights extends SubsystemBase{
             lastIntaked = Timer.getFPGATimestamp();
         
         requestedSystemState = request;
-        // switch (request){
+        // switch (request) {
         //     case INTAKEN:
         //         lastIntaked = Timer.getFPGATimestamp();
         //         break;
@@ -73,29 +69,34 @@ public class Lights extends SubsystemBase{
     }
 
     @Override
-    public void periodic(){
-        switch (systemState){
+    public void periodic() {
+        switch (systemState) {
             case IDLE:
                 break;
             case ALGAE_INTAKING:
+                // aqua color
                 candle.setLEDs(0, 128, 128);
                 break;
             case CORAL_INTAKING:
-                candle.setLEDs(255, 127, 80); //spsd to be a coral color
+                // orange color
+                candle.setLEDs(255, 127, 80); // spsd to be a coral color
                 break;
             case INTAKEN:
                 candle.animate(new StrobeAnimation(0, 255, 0, 0, 0.3, 8), 0);
-                if (!DriverStation.isAutonomous()){
+
+                if (!DriverStation.isAutonomous()) {
+                    // TODO: photonvision
                     //don't do this if it'll mess w/ alignment
-                    LimelightHelpers.setLEDMode_ForceBlink("limelight-left"); //change based on limelight names
-                    LimelightHelpers.setLEDMode_ForceBlink("limelight-right");
-                    LimelightHelpers.setLEDMode_ForceBlink("limelight-back");
+                    // LimelightHelpers.setLEDMode_ForceBlink("limelight-left"); //change based on limelight names
+                    // LimelightHelpers.setLEDMode_ForceBlink("limelight-right");
+                    // LimelightHelpers.setLEDMode_ForceBlink("limelight-back");
                 }
 
-                if(Timer.getFPGATimestamp() - lastIntaked > 1.5){
+                if(Timer.getFPGATimestamp() - lastIntaked > 1.5) {
                     //TODO: verify that there is no additional limelight logic needed here
                     requestState(LightState.IDLE);
                 }
+
                 break;
             case CLIMBING:
                 candle.animate(new ColorFlowAnimation(255, 0, 255, 0, 0.3, 8, Direction.Forward), 0);
@@ -117,7 +118,7 @@ public class Lights extends SubsystemBase{
         }
     }
 
-    public LightState getLightState(){
+    public LightState getLightState() {
         return systemState;
     }
 }
