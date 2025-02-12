@@ -3,45 +3,45 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 3.55875,
-        "y": 2.90375
+        "x": 5.0,
+        "y": 2.68
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.2187500000000004,
-        "y": 1.4314999999999993
+        "x": 1.71056497168402,
+        "y": 0.5401148030456926
       },
       "isLocked": false,
-      "linkedName": "CReef"
+      "linkedName": "EReef"
     },
     {
       "anchor": {
-        "x": 1.287,
-        "y": 0.9147499999999991
+        "x": 1.4336348684210527,
+        "y": 0.5611842105263156
       },
       "prevControl": {
-        "x": 0.9534418168762919,
-        "y": 1.2872267623237854
+        "x": 1.7319078947368418,
+        "y": 0.33988486842105314
       },
       "nextControl": {
-        "x": 1.6205581831237077,
-        "y": 0.542273237676212
+        "x": 1.126874710259426,
+        "y": 0.7887804569042961
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 3.9682500000000003,
-        "y": 2.66
+        "x": 3.0688524590163935,
+        "y": 3.7792520491803274
       },
       "prevControl": {
-        "x": 1.86225,
-        "y": 0.8172499999999994
+        "x": 1.570341810241368,
+        "y": 1.195811526999738
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "DReef"
+      "linkedName": "BReef"
     }
   ],
   "rotationTargets": [
@@ -53,7 +53,7 @@
   "constraintZones": [
     {
       "name": "Constraints Zone",
-      "minWaypointRelativePos": 0.6438848920863395,
+      "minWaypointRelativePos": 0.6427289048473964,
       "maxWaypointRelativePos": 1.3057553956834553,
       "constraints": {
         "maxVelocity": 1.5,
@@ -77,13 +77,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -119.99999999999999
+    "rotation": 178.66778014613035
   },
   "reversed": false,
   "folder": "HP Intake",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": -119.99999999999999
+    "rotation": -59.99999999999999
   },
   "useDefaultConstraints": false
 }

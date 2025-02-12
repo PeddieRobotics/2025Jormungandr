@@ -3,45 +3,45 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 3.55875,
-        "y": 2.90375
+        "x": 3.9682500000000003,
+        "y": 2.66
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.2187500000000004,
-        "y": 1.4314999999999993
+        "x": 1.8762335526315788,
+        "y": 1.330921052631579
       },
       "isLocked": false,
-      "linkedName": "CReef"
+      "linkedName": "DReef"
     },
     {
       "anchor": {
-        "x": 1.287,
-        "y": 0.9147499999999991
+        "x": 1.4336348684210527,
+        "y": 0.5611842105263156
       },
       "prevControl": {
-        "x": 0.9534418168762919,
-        "y": 1.2872267623237854
+        "x": 1.0776315789473683,
+        "y": 0.8498355263157897
       },
       "nextControl": {
-        "x": 1.6205581831237077,
-        "y": 0.542273237676212
+        "x": 1.7326418498794314,
+        "y": 0.31874611745195447
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 3.9682500000000003,
-        "y": 2.66
+        "x": 5.0,
+        "y": 2.68
       },
       "prevControl": {
-        "x": 1.86225,
-        "y": 0.8172499999999994
+        "x": 2.6866842105263156,
+        "y": 1.0334046052631582
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "DReef"
+      "linkedName": "EReef"
     }
   ],
   "rotationTargets": [
@@ -53,7 +53,7 @@
   "constraintZones": [
     {
       "name": "Constraints Zone",
-      "minWaypointRelativePos": 0.6438848920863395,
+      "minWaypointRelativePos": 0.6427289048473964,
       "maxWaypointRelativePos": 1.3057553956834553,
       "constraints": {
         "maxVelocity": 1.5,
@@ -77,7 +77,7 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -119.99999999999999
+    "rotation": -59.99999999999999
   },
   "reversed": false,
   "folder": "HP Intake",

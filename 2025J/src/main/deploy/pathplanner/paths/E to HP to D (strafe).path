@@ -3,29 +3,29 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 3.55875,
-        "y": 2.90375
+        "x": 5.0,
+        "y": 2.68
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.2187500000000004,
-        "y": 1.4314999999999993
+        "x": 1.9050986842105262,
+        "y": 0.40723684210526345
       },
       "isLocked": false,
-      "linkedName": "CReef"
+      "linkedName": "EReef"
     },
     {
       "anchor": {
-        "x": 1.287,
-        "y": 0.9147499999999991
+        "x": 1.4336348684210527,
+        "y": 0.5611842105263156
       },
       "prevControl": {
-        "x": 0.9534418168762919,
-        "y": 1.2872267623237854
+        "x": 1.8403889828061752,
+        "y": 0.2704075085181057
       },
       "nextControl": {
-        "x": 1.6205581831237077,
-        "y": 0.542273237676212
+        "x": 1.1204802631578947,
+        "y": 0.7850493421052634
       },
       "isLocked": false,
       "linkedName": null
@@ -36,8 +36,8 @@
         "y": 2.66
       },
       "prevControl": {
-        "x": 1.86225,
-        "y": 0.8172499999999994
+        "x": 1.6549342105263158,
+        "y": 1.0134046052631582
       },
       "nextControl": null,
       "isLocked": false,
@@ -53,7 +53,7 @@
   "constraintZones": [
     {
       "name": "Constraints Zone",
-      "minWaypointRelativePos": 0.6438848920863395,
+      "minWaypointRelativePos": 0.6427289048473964,
       "maxWaypointRelativePos": 1.3057553956834553,
       "constraints": {
         "maxVelocity": 1.5,
@@ -83,7 +83,7 @@
   "folder": "HP Intake",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": -119.99999999999999
+    "rotation": -59.99999999999999
   },
   "useDefaultConstraints": false
 }

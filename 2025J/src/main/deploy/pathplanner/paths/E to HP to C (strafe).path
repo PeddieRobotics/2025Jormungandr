@@ -56,7 +56,7 @@
       "minWaypointRelativePos": 0.7820143884892095,
       "maxWaypointRelativePos": 1.3633093525179816,
       "constraints": {
-        "maxVelocity": 1.0,
+        "maxVelocity": 1.5,
         "maxAcceleration": 3.0,
         "maxAngularVelocity": 360.0,
         "maxAngularAcceleration": 720.0,
@@ -68,9 +68,9 @@
   "pointTowardsZones": [],
   "eventMarkers": [],
   "globalConstraints": {
-    "maxVelocity": 1.0,
+    "maxVelocity": 2.0,
     "maxAcceleration": 3.0,
-    "maxAngularVelocity": 360.0,
+    "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0,
     "nominalVoltage": 12.0,
     "unlimited": false

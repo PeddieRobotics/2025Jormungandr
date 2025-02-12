@@ -1,0 +1,37 @@
+{
+  "version": "2025.0",
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Right Jig Center to E"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "E to HP to D (strafe)"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "D to HP to C (Strafe)"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "C to HP to B (Strafe)"
+          }
+        }
+      ]
+    }
+  },
+  "resetOdom": true,
+  "folder": "Jig Starts",
+  "choreoAuto": false
+}

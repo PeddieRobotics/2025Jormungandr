@@ -65,7 +65,7 @@ public class Logger {
         // claw = Claw.getInstance();
         // elevator = Elevator.getInstance();
         // hpIntake = HPIntake.getInstance();
-        superstructure = Superstructure.getInstance();
+        // superstructure = Superstructure.getInstance();
         // climber = Climber.getInstance();
 
         /*
@@ -182,8 +182,8 @@ public class Logger {
          * Superstructure Logs
          */
 
-        superstructureCurrentStateEntry.append(superstructure.getCurrentState().toString());
-        superstructureRequestedStateEntry.append(superstructure.getRequestedState().toString());
+        //superstructureCurrentStateEntry.append(superstructure.getCurrentState().toString());
+        //superstructureRequestedStateEntry.append(superstructure.getRequestedState().toString());
 
         /*
          * Intake Logs
