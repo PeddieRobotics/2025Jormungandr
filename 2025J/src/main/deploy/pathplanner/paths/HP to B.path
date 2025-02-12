@@ -3,29 +3,29 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 3.9682500000000003,
-        "y": 2.66
-      },
-      "prevControl": null,
-      "nextControl": {
-        "x": 2.407808794911001,
-        "y": 1.6602789809551386
-      },
-      "isLocked": false,
-      "linkedName": "DReef"
-    },
-    {
-      "anchor": {
         "x": 1.131,
         "y": 0.905
       },
+      "prevControl": null,
+      "nextControl": {
+        "x": 1.4625,
+        "y": 1.388651315789474
+      },
+      "isLocked": false,
+      "linkedName": "BottomHP"
+    },
+    {
+      "anchor": {
+        "x": 3.0688524590163935,
+        "y": 3.7792520491803274
+      },
       "prevControl": {
-        "x": 2.4759592787631766,
-        "y": 1.7437600115272063
+        "x": 2.7518092105263157,
+        "y": 3.2360197368421053
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "BottomHP"
+      "linkedName": "BReef"
     }
   ],
   "rotationTargets": [],
@@ -42,13 +42,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -126.86989764584402
+    "rotation": 178.66778014613035
   },
   "reversed": false,
-  "folder": "HP Intake",
+  "folder": "Score",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": -119.99999999999999
+    "rotation": -126.86989764584402
   },
   "useDefaultConstraints": false
 }
