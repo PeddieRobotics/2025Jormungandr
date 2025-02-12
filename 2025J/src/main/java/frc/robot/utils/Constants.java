@@ -47,7 +47,7 @@ public final class Constants {
     public static final double kDriveMotorStatorCurrentLimit = 0.0;
     public static final double kSteerMotorStatorCurrentLimit = 0.0;
 
-    public static final double kWheelDiameterInches = 4.0;
+    public static final double kWheelDiameterInches = 3.906;
     public static final double kDriveMotorReduction = 7.13;
     public static final double kDriveEncoderPositionFactor = (Math.PI * Units.inchesToMeters(kWheelDiameterInches))
         / kDriveMotorReduction;
@@ -57,10 +57,10 @@ public final class Constants {
     // TODO: Update Real Values
     public static final double kSteerMotorReduction = 18.75;
 
-    public static final double kDriveS = 0.0;
-    public static final double kDriveV = 0.0;
+    public static final double kDriveS = 0.2;
+    public static final double kDriveV = 0.12;
     public static final double kDriveA = 0.0;
-    public static final double kDriveP = 0.0;
+    public static final double kDriveP = 0.5;
     public static final double kDriveI = 0.0;
     public static final double kDriveD = 0.0;
     public static final double kDriveFF = 0.0;
@@ -68,7 +68,7 @@ public final class Constants {
     public static final double kSteerS = 0.0;
     public static final double kSteerV = 0.0;
     public static final double kSteerA = 0.0;
-    public static final double kSteerP = 0.0;
+    public static final double kSteerP = 25.0;
     public static final double kSteerI = 0.0;
     public static final double kSteerD = 0.0;
     public static final double kSteerFF = 0.0;
@@ -81,8 +81,10 @@ public final class Constants {
 
     public static final double kDriveRadius = Math.sqrt(Math.pow(kTrackWidth, 2) + Math.pow(kWheelBase, 2));
 
-    public static final double kMaxFloorSpeed = 4.0;
-
+    public static final double kMaxFloorSpeed = 4;
+    public static final double kMaxRotationSpeed = 3.14;
+    public static final double kMaxModuleSpeed = 4.4;
+    
     public static final Translation2d[] swerveModuleLocations = {
         new Translation2d(kWheelBase / 2.0, kTrackWidth / 2.0),
         new Translation2d(kWheelBase / 2.0, -kTrackWidth / 2.0),
@@ -96,18 +98,36 @@ public final class Constants {
         swerveModuleLocations[2],
         swerveModuleLocations[3]);
 
+    public static final SwerveDriveKinematics skidKinematics = new SwerveDriveKinematics(
+      swerveModuleLocations[0],
+      swerveModuleLocations[1],
+      swerveModuleLocations[2],
+      swerveModuleLocations[3]);
+
     // TODO: Update Real Values
-    public static final double kFrontLeftCancoderOffset = 0.0;
-    public static final double kFrontRightCancoderOffset = 0.0;
-    public static final double kBackLeftCancoderOffset = 0.0;
-    public static final double kBackRightCancoderOffset = 0.0;
+    public static final double kFrontLeftCancoderOffset = 0.3684;
+    public static final double kFrontRightCancoderOffset = 0.00293;
+    public static final double kBackLeftCancoderOffset = 0.10083;
+    public static final double kBackRightCancoderOffset = 0.2586;
+
+    public static final double kSkidThreshold = 0.2;
 
   }
 
   public static class IntakeConstants {
     // TODO: Update real values
-    public static final double kHPIntakeMotorStatorCurrentLimit = 0.0;
+    public static final double kHPIntakeRollerSupplyCurrentLimit = 0.0;
+    public static final double kHPIntakePivotSupplyCurrentLimit = 0.0;
     public static final double kHPIntakeSpeed = 0.0;
+
+    public static final double kS = 0.0;
+    public static final double kV = 0.0;
+    public static final double kA = 0.0;
+    public static final double kP = 0.0;
+    public static final double kI = 0.0;
+    public static final double kD = 0.0;
+    public static final double kFF = 0.0;
+
   }
 
   public static class ElevatorConstants {
@@ -164,7 +184,29 @@ public final class Constants {
     public static final double ProcessorTimeout = 10.0; //NOT DEFINED YET!!!!
     public static final double BargeTimeout = 10.0; //NOT DEFINED YET!!!!
 
+    public static final double kElevatorStowPosition = 0.0;
+    public static final double kElevatorHPIntakePosition = 0.0;
+    public static final double kElevatorGroundIntakePosition = 0.0;
+    public static final double kElevatorL1ScorePosition = 0.0;
+    public static final double kElevatorL2ScorePosition = 0.0;
+    public static final double kElevatorL3ScorePosition = 0.0;
+    public static final double kElevatorL4ScorePosition = 0.0;
+    public static final double kElevatorBargeScorePosition = 0.0;
+    public static final double kElevatorProcessorScorePosition = 0.0;
+    public static final double kElevatorReef1IntakePosition = 0.0;
+    public static final double kElevatorReef2IntakePosition = 0.0;
 
+    public static final double kArmStowPosition = 0.0;
+    public static final double kArmHPIntakePosition = 0.0;
+    public static final double kArmGroundIntakePosition = 0.0;
+    public static final double kArmL1ScorePosition = 0.0;
+    public static final double kArmL2ScorePosition = 0.0;
+    public static final double kArmL3ScorePosition = 0.0;
+    public static final double kArmL4ScorePosition = 0.0;
+    public static final double kArmBargeScorePosition = 0.0;
+    public static final double kArmProcessorScorePosition = 0.0;
+    public static final double kArmReef1IntakePosition = 0.0;
+    public static final double kArmReef2IntakePosition = 0.0;
 
   }
   public static final class ArmConstants {
@@ -236,19 +278,42 @@ public final class Constants {
 
   }
 
-  public static final class LimelightConstants {
+  public static final class CameraConstants {
     // TODO: update real values
-    public static final double kLimelightBackHeight = 0;
-    public static final double kLimelightBackPanningAngle = 0;
-    public static final int kLimelightBackPipeline = 0;
-    
-    public static final double kLimelightFrontLeftHeight = 0;
-    public static final double kLimelightFrontLeftPanningAngle = 0;
-    public static final int kLimelightFrontLeftPipeline = 0;
-    
-    public static final double kLimelightFrontRightHeight = 0;
-    public static final double kLimelightFrontRightPanningAngle = 0;
-    public static final int kLimelightFrontRightPipeline = 0;
+    public static final String kBackCamName = "NAME-HERE";
+    public static final double kBackCamForward = 0;
+    public static final double kBackCamLeftOffset = 0;
+    public static final double kBackCamUpOffset = 0;
+    public static final double kBackCamPanningAngle = 0;
+    public static final int kBackCamPipeline = 0;
+
+    public static final String kFrontLeftCamName = "NAME-HERE";
+    public static final double kFrontLeftCamForward = 0;
+    public static final double kFrontLeftCamLeftOffset = 0;
+    public static final double kFrontLeftCamUpOffset = 0;
+    public static final double kFrontLeftCamPanningAngle = 0;
+    public static final int kFrontLeftCamPipeline = 0;
+
+    public static final String kFrontMiddleCamName = "front-middle-cam";
+    public static final double kFrontMiddleCamForward = 0;
+    public static final double kFrontMiddleCamLeftOffset = 0;
+    public static final double kFrontMiddleCamUpOffset = 0;
+    public static final double kFrontMiddleCamPanningAngle = 0;
+    public static final int kFrontMiddleCamPipeline = 0;
+
+    public static final String kFrontRightCamName = "NAME-HERE";
+    public static final double kFrontRightCamForward = 0;
+    public static final double kFrontRightCamLeftOffset = 0;
+    public static final double kFrontRightCamUpOffset = 0;
+    public static final double kFrontRightCamPanningAngle = 0;
+    public static final int kFrontRightCamPipeline = 0;
+
+    public static final String kLeftCamName = "NAME-HERE";
+    public static final double kLeftCamForward = 0;
+    public static final double kLeftCamLeftOffset = 0;
+    public static final double kLeftCamUpOffset = 0;
+    public static final double kLeftCamPanningAngle = 0;
+    public static final int kLeftCamPipeline = 0;
   }
   
   public static final class FieldConstants {
@@ -283,4 +348,5 @@ public final class Constants {
       put(22, 12.125);
     }};
   }
+
 }

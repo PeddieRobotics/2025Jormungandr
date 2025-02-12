@@ -5,6 +5,11 @@
 package frc.robot.subsystems;
 
 import java.security.DrbgParameters.NextBytes;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+import java.util.Arrays;
 
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -13,6 +18,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.utils.Constants.ArmConstants;
 import frc.robot.utils.Constants.ElevatorConstants;
 import frc.robot.utils.Constants.ScoreConstants;
+import static frc.robot.subsystems.Superstructure.SuperstructureState.*;
 
 public class Superstructure extends SubsystemBase {
   private static Superstructure superstructure;
@@ -24,7 +30,6 @@ public class Superstructure extends SubsystemBase {
   private final HPIntake hpIntake;
 
   private SuperstructureState systemState;
-  private SuperstructureState nextSystemState;
   private SuperstructureState requestedSystemState;
 
   private boolean algaeIndex, coralIndex; // get from intakes :) - not yet set up... :/
@@ -34,13 +39,12 @@ public class Superstructure extends SubsystemBase {
   public enum SuperstructureState {
     STOW,
     HP_INTAKE,
-    CORAL_GROUND_INTAKE, // likely not used
     ALGAE_GROUND_INTAKE,
     L1_PREP,
     L2_PREP,
     L3_PREP,
+    L4_PRESTAGE,
     L4_PREP,
-    L3L4_PRESTAGE,
     L1_SCORE,
     L2_SCORE,
     L3_SCORE,
@@ -57,9 +61,8 @@ public class Superstructure extends SubsystemBase {
   }
 
   public Superstructure() {
-    systemState = SuperstructureState.STOW;
-    nextSystemState = SuperstructureState.STOW;
-    requestedSystemState = SuperstructureState.STOW;
+    systemState = STOW;
+    requestedSystemState = STOW;
 
     arm = Arm.getInstance();
     claw = Claw.getInstance();
@@ -90,6 +93,10 @@ public class Superstructure extends SubsystemBase {
     return systemState;
   }
 
+  public SuperstructureState getRequestedState() {
+    return requestedSystemState;
+  }
+
   @Override
   public void periodic() {
     SmartDashboard.putString("current superstructure state", systemState.toString());
@@ -98,171 +105,112 @@ public class Superstructure extends SubsystemBase {
     coralIndex = SmartDashboard.getBoolean("coralIndex", false);
 
     switch (systemState) {
-      case STOW:
+      case STOW -> {
         // stop intake
         // bring elevator down
-        if (requestedSystemState == SuperstructureState.HP_INTAKE) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.CORAL_GROUND_INTAKE) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.ALGAE_GROUND_INTAKE) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.L1_PREP) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.L2_PREP) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.L3L4_PRESTAGE) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.BARGE_PRESTAGE) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.BARGE_PREP) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.PROCESSOR_PREP) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.REEF1_INTAKE) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.REEF2_INTAKE) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.EJECT_ALGAE) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.EJECT_CORAL) {
-          nextSystemState = requestedSystemState;
-        }
-        break;
+        hpIntake.stopIntake();
+        elevator.setElevatorPositionMotionMagicTorqueCurrentFOC(ScoreConstants.kElevatorStowPosition);
+        arm.setArmPositionMotionMagicTorqueCurrentFOC(ScoreConstants.kArmStowPosition);
+        claw.stopClaw();
 
-      case HP_INTAKE:
+        if(Arrays.asList(
+          STOW, HP_INTAKE, 
+          ALGAE_GROUND_INTAKE, 
+          L1_PREP, 
+          L2_PREP, 
+          L3_PREP, 
+          L4_PRESTAGE,
+          BARGE_PRESTAGE, 
+          PROCESSOR_PREP, 
+          REEF1_INTAKE, 
+          REEF2_INTAKE, 
+          EJECT_ALGAE, 
+          EJECT_CORAL)
+          .contains(requestedSystemState)){
+            systemState=requestedSystemState;
+          }
+      }
+
+      case HP_INTAKE -> {
         // set angle
         // set elevator
         // run intake motor
-        if (requestedSystemState == SuperstructureState.STOW) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.ALGAE_GROUND_INTAKE) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.CORAL_GROUND_INTAKE) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.L1_PREP) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.L2_PREP) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.L3L4_PRESTAGE) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.BARGE_PREP) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.BARGE_PRESTAGE) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.PROCESSOR_PREP) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.REEF1_INTAKE) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.REEF2_INTAKE) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.EJECT_ALGAE) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.EJECT_CORAL) {
-          nextSystemState = requestedSystemState;
-        }
-        break;
+        hpIntake.runIntake();
+        elevator.setElevatorPositionMotionMagicTorqueCurrentFOC(ScoreConstants.kElevatorHPIntakePosition);
+        arm.setArmPositionMotionMagicTorqueCurrentFOC(ScoreConstants.kArmHPIntakePosition);
+        claw.intakePiece();
 
-      case CORAL_GROUND_INTAKE:
+        if(Arrays.asList(
+          STOW,
+          ALGAE_GROUND_INTAKE,
+          L1_PREP,
+          L2_PREP,
+          L3_PREP,
+          L4_PRESTAGE,
+          BARGE_PRESTAGE,
+          PROCESSOR_PREP,
+          REEF1_INTAKE,
+          REEF2_INTAKE,
+          EJECT_ALGAE,
+          EJECT_CORAL)
+          .contains(requestedSystemState)){
+            systemState=requestedSystemState;
+          }
+      }
+
+      case ALGAE_GROUND_INTAKE -> {
         // run intake
-        if (coralIndex) {
-          // stop intaking
-          requestState(SuperstructureState.STOW);
-        }
+        elevator.setElevatorPositionMotionMagicTorqueCurrentFOC(ScoreConstants.kElevatorGroundIntakePosition);
+        arm.setArmPositionMotionMagicTorqueCurrentFOC(ScoreConstants.kArmGroundIntakePosition);
+        claw.intakePiece();
 
-        if (requestedSystemState == SuperstructureState.STOW) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.L1_PREP) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.L2_PREP) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.HP_INTAKE) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.ALGAE_GROUND_INTAKE) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.L3L4_PRESTAGE) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.REEF1_INTAKE) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.REEF2_INTAKE) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.BARGE_PRESTAGE) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.PROCESSOR_PREP) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.EJECT_ALGAE) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.EJECT_CORAL) {
-          nextSystemState = requestedSystemState;
-        }
-        break;
-
-      case ALGAE_GROUND_INTAKE:
-        // run intake
         if (algaeIndex) {
-          requestState(SuperstructureState.STOW);
+          requestState(STOW);
         }
 
-        if (requestedSystemState == SuperstructureState.STOW) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.HP_INTAKE) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.CORAL_GROUND_INTAKE) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.L1_PREP) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.L2_PREP) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.L3L4_PRESTAGE) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.REEF1_INTAKE) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.REEF2_INTAKE) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.BARGE_PRESTAGE) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.PROCESSOR_PREP) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.EJECT_ALGAE) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.EJECT_CORAL) {
-          nextSystemState = requestedSystemState;
-        }
-        break;
+        if(Arrays.asList(
+          STOW,
+          HP_INTAKE,
+          L1_PREP,
+          L2_PREP,
+          L3_PREP,
+          L4_PRESTAGE,
+          BARGE_PRESTAGE,
+          PROCESSOR_PREP,
+          REEF1_INTAKE,
+          REEF2_INTAKE,
+          EJECT_ALGAE,
+          EJECT_CORAL)  
+          .contains(requestedSystemState)){
+            systemState=requestedSystemState;
+          }
+      }
 
-      case L1_PREP:
+      case L1_PREP -> {
         // set prep angle
-        if (requestedSystemState == SuperstructureState.STOW) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.L1_SCORE) { // may add another logic gate (?)
-          timer.reset();
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.HP_INTAKE) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.CORAL_GROUND_INTAKE) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.ALGAE_GROUND_INTAKE) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.L2_PREP) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.L3L4_PRESTAGE) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.REEF1_INTAKE) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.BARGE_PRESTAGE) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.PROCESSOR_PREP) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.REEF2_INTAKE) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.EJECT_ALGAE) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.EJECT_CORAL) {
-          nextSystemState = requestedSystemState;
-        }
-        break;
+        elevator.setElevatorPositionMotionMagicTorqueCurrentFOC(ScoreConstants.kElevatorL1ScorePosition);
+        arm.setArmPositionMotionMagicTorqueCurrentFOC(ScoreConstants.kArmL1ScorePosition);
 
-      case L2_PREP:
+        if(Arrays.asList(
+          STOW,
+          HP_INTAKE,
+          ALGAE_GROUND_INTAKE,
+          L1_SCORE,
+          L2_PREP,
+          L3_PREP,
+          L4_PRESTAGE,
+          BARGE_PRESTAGE,
+          PROCESSOR_PREP,
+          REEF1_INTAKE,
+          REEF2_INTAKE,
+          EJECT_ALGAE,
+          EJECT_CORAL)
+          .contains(requestedSystemState)){
+            systemState=requestedSystemState;
+          }
+      }
+
+      case L2_PREP -> {
         // set prep angle
         /*
          * two different cases:
@@ -271,37 +219,29 @@ public class Superstructure extends SubsystemBase {
          * - shoot case
          * move to scoring angle
          */
-        if (requestedSystemState == SuperstructureState.STOW) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.L2_SCORE) { // may add another logic gate (?)
-          timer.reset();
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.CORAL_GROUND_INTAKE) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.ALGAE_GROUND_INTAKE) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.L1_PREP) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.L3L4_PRESTAGE) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.REEF1_INTAKE) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.REEF2_INTAKE) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.EJECT_ALGAE) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.EJECT_CORAL) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.BARGE_PRESTAGE) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.PROCESSOR_PREP) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.HP_INTAKE) {
-          nextSystemState = requestedSystemState;
-        }
-        break;
+        elevator.setElevatorPositionMotionMagicTorqueCurrentFOC(ScoreConstants.kElevatorL2ScorePosition);
+        arm.setArmPositionMotionMagicTorqueCurrentFOC(ScoreConstants.kArmL2ScorePosition);
 
-      case L3_PREP:
+        if(Arrays.asList(
+          STOW,
+          HP_INTAKE,
+          ALGAE_GROUND_INTAKE,
+          L1_PREP,
+          L2_SCORE,
+          L3_PREP,
+          L4_PRESTAGE,
+          BARGE_PRESTAGE,
+          PROCESSOR_PREP,
+          REEF1_INTAKE,
+          REEF2_INTAKE,
+          EJECT_ALGAE,
+          EJECT_CORAL)
+          .contains(requestedSystemState)){
+            systemState=requestedSystemState;
+          }
+      }
+
+      case L3_PREP -> {
         // set prep angle
         /*
          * two different cases:
@@ -310,39 +250,51 @@ public class Superstructure extends SubsystemBase {
          * - shoot case
          * move to scoring angle
          */
-        if (requestedSystemState == SuperstructureState.STOW) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.HP_INTAKE) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.L3_SCORE) { // may add another logic gate (?)
-          timer.reset();
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.CORAL_GROUND_INTAKE) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.ALGAE_GROUND_INTAKE) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.L1_PREP) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.L2_PREP) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.BARGE_PRESTAGE) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.PROCESSOR_PREP) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.L3L4_PRESTAGE) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.REEF1_INTAKE) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.REEF2_INTAKE) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.EJECT_ALGAE) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.EJECT_CORAL) {
-          nextSystemState = requestedSystemState;
-        }
-        break;
+        elevator.setElevatorPositionMotionMagicTorqueCurrentFOC(ScoreConstants.kElevatorL3ScorePosition);
+        arm.setArmPositionMotionMagicTorqueCurrentFOC(ScoreConstants.kArmL3ScorePosition);
 
-      case L4_PREP:
+        if(Arrays.asList(
+          STOW,
+          HP_INTAKE,
+          ALGAE_GROUND_INTAKE,
+          L1_PREP,
+          L2_PREP,
+          L3_SCORE,
+          L4_PRESTAGE,
+          BARGE_PRESTAGE,
+          PROCESSOR_PREP,
+          REEF1_INTAKE,
+          REEF2_INTAKE,
+          EJECT_ALGAE,
+          EJECT_CORAL)
+          .contains(requestedSystemState)){
+            systemState=requestedSystemState;
+          }
+      }
+
+      case L4_PRESTAGE -> {
+        elevator.setElevatorPositionMotionMagicTorqueCurrentFOC(ScoreConstants.kElevatorL4ScorePosition);
+
+        if(Arrays.asList(
+          STOW,
+          HP_INTAKE,
+          ALGAE_GROUND_INTAKE,
+          L1_PREP,
+          L2_PREP,
+          L3_PREP,
+          L4_PREP,
+          BARGE_PRESTAGE,
+          PROCESSOR_PREP,
+          REEF1_INTAKE,
+          REEF2_INTAKE,
+          EJECT_ALGAE,
+          EJECT_CORAL)
+          .contains(requestedSystemState)){
+            systemState=requestedSystemState;
+          }
+      }
+
+      case L4_PREP -> {
         // set prep angle
         /*
          * move elevator to scoring height
@@ -350,82 +302,62 @@ public class Superstructure extends SubsystemBase {
          * - dunk/score case
          * move to angle close to scoring angle (vertical)
          */
+        arm.setArmPositionMotionMagicTorqueCurrentFOC(ScoreConstants.kArmL4ScorePosition);
 
-        if (requestedSystemState == SuperstructureState.HP_INTAKE) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.L4_SCORE) { // may add another logic gate (?)
-          timer.reset();
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.CORAL_GROUND_INTAKE) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.ALGAE_GROUND_INTAKE) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.L1_PREP) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.L2_PREP) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.L3L4_PRESTAGE) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.BARGE_PRESTAGE) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.PROCESSOR_PREP) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.REEF1_INTAKE) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.REEF2_INTAKE) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.EJECT_ALGAE) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.EJECT_CORAL) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.STOW) {
-          nextSystemState = requestedSystemState;
-        }
-        break;
+        if(Arrays.asList(
+          STOW,
+          HP_INTAKE,
+          ALGAE_GROUND_INTAKE,
+          L1_PREP,
+          L2_PREP,
+          L3_PREP,
+          L4_PREP,
+          BARGE_PRESTAGE,
+          PROCESSOR_PREP,
+          REEF1_INTAKE,
+          REEF2_INTAKE,
+          EJECT_ALGAE,
+          EJECT_CORAL)
+          .contains(requestedSystemState)){
+            systemState=requestedSystemState;
+          }
+      }
+      
 
-      case L1_SCORE:
+      case L1_SCORE -> {
 
         if (!timer.hasElapsed(ScoreConstants.L1ScoreTimeout)) {
           // KEEP RUNNING
           timer.start();
+          claw.outtakePiece();
         } else if (timer.hasElapsed(ScoreConstants.L1ScoreTimeout) && !coralIndex) {
           timer.reset();
 
           // stop everything
-          requestState(SuperstructureState.STOW);
-          break;
+          elevator.setElevatorPositionMotionMagicTorqueCurrentFOC(ScoreConstants.kElevatorStowPosition);
+          arm.setArmPositionMotionMagicTorqueCurrentFOC(ScoreConstants.kArmStowPosition);
+          claw.stopClaw();
+          requestState(STOW);
         }
-
         // lower arm :)
 
-        if (requestedSystemState == SuperstructureState.STOW) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.HP_INTAKE) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.CORAL_GROUND_INTAKE) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.ALGAE_GROUND_INTAKE) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.BARGE_PRESTAGE) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.PROCESSOR_PREP) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.REEF1_INTAKE) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.REEF2_INTAKE) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.EJECT_ALGAE) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.EJECT_CORAL) {
-          nextSystemState = requestedSystemState;
-        }
-        break;
+        if(Arrays.asList(
+          STOW,
+          HP_INTAKE,
+          ALGAE_GROUND_INTAKE,
+          REEF1_INTAKE,
+          REEF2_INTAKE)
+          .contains(requestedSystemState)){
+            systemState=requestedSystemState;
+          }
+      }
 
-      case L2_SCORE:
+      case L2_SCORE -> {
 
         if (!timer.hasElapsed(ScoreConstants.L2ScoreTimeout)) {
           // KEEP RUNNING
           timer.start();
+          claw.outtakePiece();
           /*
            * two different cases:
            * - dunk case
@@ -438,40 +370,29 @@ public class Superstructure extends SubsystemBase {
           timer.reset();
 
           // stop everything
-          requestState(SuperstructureState.STOW);
-          break;
+          elevator.setElevatorPositionMotionMagicTorqueCurrentFOC(ScoreConstants.kElevatorStowPosition);
+          arm.setArmPositionMotionMagicTorqueCurrentFOC(ScoreConstants.kArmStowPosition);
+          claw.stopClaw();
+          requestState(STOW);
         }
-
         // lower arm :)
 
-        if (requestedSystemState == SuperstructureState.STOW) {
-          nextSystemState = requestedSystemState;
+        if(Arrays.asList(
+          STOW,
+          HP_INTAKE,
+          ALGAE_GROUND_INTAKE,
+          REEF1_INTAKE,
+          REEF2_INTAKE)
+          .contains(requestedSystemState)){
+            systemState=requestedSystemState;
+          }
+      }
 
-        } else if (requestedSystemState == SuperstructureState.HP_INTAKE) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.CORAL_GROUND_INTAKE) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.ALGAE_GROUND_INTAKE) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.REEF1_INTAKE) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.REEF2_INTAKE) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.BARGE_PRESTAGE) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.PROCESSOR_PREP) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.EJECT_ALGAE) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.EJECT_CORAL) {
-          nextSystemState = requestedSystemState;
-        }
-        break;
-
-      case L3_SCORE:
+      case L3_SCORE -> {
         if (!timer.hasElapsed(ScoreConstants.L3ScoreTimeout)) {
           // KEEP RUNNING
           timer.start();
+          claw.outtakePiece();
           /*
            * two different cases:
            * - dunk case
@@ -484,37 +405,25 @@ public class Superstructure extends SubsystemBase {
           timer.reset();
 
           // stop everything
-          requestState(SuperstructureState.STOW);
-          break;
+          elevator.setElevatorPositionMotionMagicTorqueCurrentFOC(ScoreConstants.kElevatorStowPosition);
+          arm.setArmPositionMotionMagicTorqueCurrentFOC(ScoreConstants.kArmStowPosition);
+          claw.stopClaw();
+          requestState(STOW);
         }
-
         // lower arm :)
 
-        if (requestedSystemState == SuperstructureState.STOW) {
-          nextSystemState = requestedSystemState;
+        if(Arrays.asList(
+          STOW,
+          HP_INTAKE,
+          ALGAE_GROUND_INTAKE,
+          REEF1_INTAKE,
+          REEF2_INTAKE)
+          .contains(requestedSystemState)){
+            systemState=requestedSystemState;
+          }
+      }
 
-        } else if (requestedSystemState == SuperstructureState.HP_INTAKE) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.CORAL_GROUND_INTAKE) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.ALGAE_GROUND_INTAKE) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.REEF1_INTAKE) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.REEF2_INTAKE) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.BARGE_PRESTAGE) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.PROCESSOR_PREP) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.EJECT_ALGAE) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.EJECT_CORAL) {
-          nextSystemState = requestedSystemState;
-        }
-        break;
-
-      case L4_SCORE:
+      case L4_SCORE -> {
 
         if (!timer.hasElapsed(ScoreConstants.L4ScoreTimeout)) {
           // KEEP RUNNING
@@ -526,382 +435,282 @@ public class Superstructure extends SubsystemBase {
            * move to angle and eject piece
            */
           timer.start();
+          claw.outtakePiece();
 
         } else if (timer.hasElapsed(ScoreConstants.L4ScoreTimeout) && !coralIndex) {
           timer.reset();
 
           // stop everything
-          requestState(SuperstructureState.STOW);
-          break;
+          elevator.setElevatorPositionMotionMagicTorqueCurrentFOC(ScoreConstants.kElevatorStowPosition);
+          arm.setArmPositionMotionMagicTorqueCurrentFOC(ScoreConstants.kArmStowPosition);
+          claw.stopClaw();
+          requestState(STOW);
         }
-
         // lower arm :)
 
-        if (requestedSystemState == SuperstructureState.STOW) {
-          nextSystemState = requestedSystemState;
+        if(Arrays.asList(
+          STOW,
+          HP_INTAKE,
+          ALGAE_GROUND_INTAKE,
+          REEF1_INTAKE,
+          REEF2_INTAKE)
+          .contains(requestedSystemState)){
+            systemState=requestedSystemState;
+          }
+      }
 
-        } else if (requestedSystemState == SuperstructureState.HP_INTAKE) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.CORAL_GROUND_INTAKE) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.ALGAE_GROUND_INTAKE) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.BARGE_PRESTAGE) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.PROCESSOR_PREP) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.REEF1_INTAKE) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.REEF2_INTAKE) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.EJECT_ALGAE) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.EJECT_CORAL) {
-          nextSystemState = requestedSystemState;
-        }
-        break;
 
-      case L3L4_PRESTAGE:
-        elevator.setElevatorPositionMotionMagicTorqueCurrentFOC(ElevatorConstants.kElevatorL3Height);
-        if (requestedSystemState == SuperstructureState.STOW) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.HP_INTAKE) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.CORAL_GROUND_INTAKE) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.ALGAE_GROUND_INTAKE) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.L1_PREP) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.L2_PREP) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.L3_PREP) { // check for any other logic
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.L4_PREP) { // check for any other logic
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.BARGE_PRESTAGE) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.PROCESSOR_PREP) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.REEF1_INTAKE) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.REEF2_INTAKE) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.EJECT_ALGAE) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.EJECT_CORAL) {
-          nextSystemState = requestedSystemState;
-        }
-        break;
+      case BARGE_PRESTAGE -> {
 
-      case BARGE_PRESTAGE:
-        if (requestedSystemState == SuperstructureState.STOW) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.HP_INTAKE) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.CORAL_GROUND_INTAKE) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.ALGAE_GROUND_INTAKE) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.L1_PREP) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.L2_PREP) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.L3L4_PRESTAGE) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.PROCESSOR_PREP) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.BARGE_PREP) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.REEF1_INTAKE) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.REEF2_INTAKE) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.EJECT_ALGAE) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.EJECT_CORAL) {
-          nextSystemState = requestedSystemState;
-        }
-        break;
+        elevator.setElevatorPositionMotionMagicTorqueCurrentFOC(ScoreConstants.kElevatorBargeScorePosition);
 
-      case BARGE_PREP:
-        if (requestedSystemState == SuperstructureState.STOW) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.HP_INTAKE) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.CORAL_GROUND_INTAKE) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.ALGAE_GROUND_INTAKE) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.L1_PREP) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.L2_PREP) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.L3L4_PRESTAGE) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.BARGE_PRESTAGE) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.BARGE_SCORE) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.PROCESSOR_PREP) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.REEF1_INTAKE) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.REEF2_INTAKE) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.EJECT_ALGAE) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.EJECT_CORAL) {
-          nextSystemState = requestedSystemState;
-        }
-        break;
+        if(Arrays.asList(
+          STOW,
+          HP_INTAKE,
+          ALGAE_GROUND_INTAKE,
+          L1_PREP,
+          L2_PREP,
+          L3_PREP,
+          L4_PRESTAGE,
+          BARGE_PREP,
+          PROCESSOR_PREP,
+          REEF1_INTAKE,
+          REEF2_INTAKE,
+          EJECT_ALGAE,
+          EJECT_CORAL)
+          .contains(requestedSystemState)){
+            systemState=requestedSystemState;
+          }
+      }
 
-      case BARGE_SCORE:
+      case BARGE_PREP -> {
 
+        arm.setArmPositionMotionMagicTorqueCurrentFOC(ScoreConstants.kArmBargeScorePosition);
+
+        if(Arrays.asList(
+          STOW,
+          HP_INTAKE,
+          ALGAE_GROUND_INTAKE,
+          L1_PREP,
+          L2_PREP,
+          L3_PREP,
+          L4_PRESTAGE,
+          BARGE_PRESTAGE,
+          BARGE_SCORE,
+          PROCESSOR_PREP,
+          REEF1_INTAKE,
+          REEF2_INTAKE,
+          EJECT_ALGAE,
+          EJECT_CORAL)
+          .contains(requestedSystemState)){
+            systemState=requestedSystemState;
+          }
+      }
+
+      case BARGE_SCORE-> {
         if (!timer.hasElapsed(ScoreConstants.BargeTimeout)) {
           // KEEP RUNNING
           timer.start();
+          claw.outtakePiece();
 
         } else if (timer.hasElapsed(ScoreConstants.BargeTimeout) && !algaeIndex) {
           timer.reset();
 
           // stop everything
-          requestState(SuperstructureState.STOW);
-          break;
+          elevator.setElevatorPositionMotionMagicTorqueCurrentFOC(ScoreConstants.kElevatorStowPosition);
+          arm.setArmPositionMotionMagicTorqueCurrentFOC(ScoreConstants.kArmStowPosition);
+          claw.stopClaw();
+          requestState(STOW);
         }
 
-        if (requestedSystemState == SuperstructureState.STOW) {
-          nextSystemState = requestedSystemState;
+        if(Arrays.asList(
+          STOW,
+          HP_INTAKE,
+          ALGAE_GROUND_INTAKE,
+          REEF1_INTAKE,
+          REEF2_INTAKE)
+          .contains(requestedSystemState)){
+            systemState=requestedSystemState;
+          }
+      }
 
-        } else if (requestedSystemState == SuperstructureState.HP_INTAKE) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.CORAL_GROUND_INTAKE) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.ALGAE_GROUND_INTAKE) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.L1_PREP) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.L2_PREP) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.L3L4_PRESTAGE) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.REEF1_INTAKE) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.REEF2_INTAKE) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.EJECT_ALGAE) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.EJECT_CORAL) {
-          nextSystemState = requestedSystemState;
+      case PROCESSOR_PREP -> {
+        elevator.setElevatorPositionMotionMagicTorqueCurrentFOC(ScoreConstants.kElevatorProcessorScorePosition);
+        arm.setArmPositionMotionMagicTorqueCurrentFOC(ScoreConstants.kArmProcessorScorePosition);
+
+        if(Arrays.asList(
+          STOW,
+          HP_INTAKE,
+          ALGAE_GROUND_INTAKE,
+          L1_PREP,
+          L2_PREP,
+          L3_PREP,
+          L4_PRESTAGE,
+          BARGE_PRESTAGE,
+          PROCESSOR_SCORE,
+          REEF1_INTAKE,
+          REEF2_INTAKE,
+          EJECT_ALGAE,
+          EJECT_CORAL)
+          .contains(requestedSystemState)){
+            systemState=requestedSystemState;
+          }
+      }
+
+      case PROCESSOR_SCORE -> {
+        if (!timer.hasElapsed(ScoreConstants.ProcessorTimeout)) {
+          // KEEP RUNNING
+          timer.start();
+          claw.outtakePiece();
+
+        } else if (timer.hasElapsed(ScoreConstants.ProcessorTimeout) && !algaeIndex) {
+          timer.reset();
+
+          // stop everything
+          elevator.setElevatorPositionMotionMagicTorqueCurrentFOC(ScoreConstants.kElevatorStowPosition);
+          arm.setArmPositionMotionMagicTorqueCurrentFOC(ScoreConstants.kArmStowPosition);
+          claw.stopClaw();
+          requestState(STOW);
         }
-        break;
 
-      case PROCESSOR_PREP:
-        if (requestedSystemState == SuperstructureState.STOW) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.HP_INTAKE) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.CORAL_GROUND_INTAKE) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.ALGAE_GROUND_INTAKE) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.L1_PREP) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.L2_PREP) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.L3L4_PRESTAGE) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.BARGE_PRESTAGE) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.PROCESSOR_SCORE) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.REEF1_INTAKE) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.REEF2_INTAKE) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.EJECT_ALGAE) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.EJECT_CORAL) {
-          nextSystemState = requestedSystemState;
-        }
-        break;
+        if(Arrays.asList(
+          STOW,
+          HP_INTAKE,
+          ALGAE_GROUND_INTAKE,
+          REEF1_INTAKE,
+          REEF2_INTAKE)
+          .contains(requestedSystemState)){
+            systemState=requestedSystemState;
+          }
+      }
 
-      case PROCESSOR_SCORE:
-        requestState(SuperstructureState.STOW);
-        if (requestedSystemState == SuperstructureState.STOW) {
-          nextSystemState = requestedSystemState;
+      case REEF1_INTAKE ->{
+        elevator.setElevatorPositionMotionMagicTorqueCurrentFOC(ScoreConstants.kElevatorReef1IntakePosition);
+        arm.setArmPositionMotionMagicTorqueCurrentFOC(ScoreConstants.kArmReef1IntakePosition);
+        claw.intakePiece();
 
-        } else if (requestedSystemState == SuperstructureState.HP_INTAKE) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.CORAL_GROUND_INTAKE) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.ALGAE_GROUND_INTAKE) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.L1_PREP) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.L2_PREP) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.L3L4_PRESTAGE) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.REEF1_INTAKE) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.REEF2_INTAKE) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.EJECT_ALGAE) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.EJECT_CORAL) {
-          nextSystemState = requestedSystemState;
-        }
-        break;
-
-      case REEF1_INTAKE:
         if (algaeIndex) {
-          requestState(SuperstructureState.STOW);
+          requestState(STOW);
         }
 
-        if (requestedSystemState == SuperstructureState.STOW) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.HP_INTAKE) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.CORAL_GROUND_INTAKE) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.ALGAE_GROUND_INTAKE) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.L1_PREP) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.L2_PREP) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.L3L4_PRESTAGE) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.BARGE_PRESTAGE) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.PROCESSOR_PREP) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.REEF2_INTAKE) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.EJECT_ALGAE) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.EJECT_CORAL) {
-          nextSystemState = requestedSystemState;
-        }
-        break;
+        if(Arrays.asList(
+          STOW,
+          HP_INTAKE,
+          ALGAE_GROUND_INTAKE,
+          L1_PREP,
+          L2_PREP,
+          L3_PREP,
+          L4_PRESTAGE,
+          BARGE_PRESTAGE,
+          PROCESSOR_PREP,
+          REEF2_INTAKE,
+          EJECT_ALGAE,
+          EJECT_CORAL)
+          .contains(requestedSystemState)){
+            systemState=requestedSystemState;
+          }
+      }
 
-      case REEF2_INTAKE:
+      case REEF2_INTAKE -> {
+        elevator.setElevatorPositionMotionMagicTorqueCurrentFOC(ScoreConstants.kElevatorReef2IntakePosition);
+        arm.setArmPositionMotionMagicTorqueCurrentFOC(ScoreConstants.kArmReef2IntakePosition);
+        claw.intakePiece();
         if (algaeIndex) {
-          requestState(SuperstructureState.STOW);
+          requestState(STOW);
         }
 
-        if (requestedSystemState == SuperstructureState.STOW) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.HP_INTAKE) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.CORAL_GROUND_INTAKE) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.ALGAE_GROUND_INTAKE) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.L1_PREP) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.L2_PREP) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.L3L4_PRESTAGE) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.BARGE_PRESTAGE) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.PROCESSOR_PREP) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.REEF1_INTAKE) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.EJECT_ALGAE) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.EJECT_CORAL) {
-          nextSystemState = requestedSystemState;
-        }
-        break;
+        if(Arrays.asList(
+          STOW,
+          HP_INTAKE,
+          ALGAE_GROUND_INTAKE,
+          L1_PREP,
+          L2_PREP,
+          L3_PREP,
+          L4_PRESTAGE,
+          BARGE_PRESTAGE,
+          PROCESSOR_PREP,
+          REEF1_INTAKE,
+          EJECT_ALGAE,
+          EJECT_CORAL)
+          .contains(requestedSystemState)){
+            systemState=requestedSystemState;
+          }
+      }
 
-      case EJECT_ALGAE:
-        if (requestedSystemState == SuperstructureState.STOW) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.HP_INTAKE) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.CORAL_GROUND_INTAKE) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.ALGAE_GROUND_INTAKE) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.L1_PREP) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.L2_PREP) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.L3L4_PRESTAGE) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.BARGE_PRESTAGE) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.PROCESSOR_PREP) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.REEF1_INTAKE) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.REEF2_INTAKE) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.EJECT_CORAL) {
-          nextSystemState = requestedSystemState;
-        }
-        break;
+      case EJECT_ALGAE -> {
+        claw.outtakePiece();
 
-      case EJECT_CORAL:
-        if (requestedSystemState == SuperstructureState.STOW) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.HP_INTAKE) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.CORAL_GROUND_INTAKE) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.ALGAE_GROUND_INTAKE) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.L1_PREP) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.L2_PREP) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.BARGE_PRESTAGE) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.PROCESSOR_PREP) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.L3L4_PRESTAGE) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.REEF1_INTAKE) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.REEF2_INTAKE) {
-          nextSystemState = requestedSystemState;
-        } else if (requestedSystemState == SuperstructureState.EJECT_ALGAE) {
-          nextSystemState = requestedSystemState;
-        }
-        break;
+        if(Arrays.asList(
+          STOW,
+          HP_INTAKE,
+          ALGAE_GROUND_INTAKE,
+          L1_PREP,
+          L2_PREP,
+          L3_PREP,
+          L4_PRESTAGE,
+          BARGE_PRESTAGE,
+          PROCESSOR_PREP,
+          REEF1_INTAKE,
+          REEF2_INTAKE,
+          EJECT_CORAL)
+          .contains(requestedSystemState)){
+            systemState=requestedSystemState;
+          }
+      }
+
+      case EJECT_CORAL -> {
+        claw.outtakePiece();
+
+        if(Arrays.asList(
+          STOW,
+          HP_INTAKE,
+          ALGAE_GROUND_INTAKE,
+          L1_PREP,
+          L2_PREP,
+          L3_PREP,
+          L4_PRESTAGE,
+          BARGE_PRESTAGE,
+          PROCESSOR_PREP,
+          REEF1_INTAKE,
+          REEF2_INTAKE,
+          EJECT_ALGAE)
+          .contains(requestedSystemState)){
+            systemState=requestedSystemState;
+          }
+      }
     }
-    systemState = nextSystemState;
+
   }
 
   public void sendToScore() {
     switch (systemState) {
-      case L1_PREP:
-        requestState(SuperstructureState.L1_SCORE);
-        break;
+      case L1_PREP ->{
+        requestState(L1_SCORE);
+        timer.reset();
+      }
 
-      case L2_PREP:
-        requestState(SuperstructureState.L2_SCORE);
-        break;
+      case L2_PREP ->{
+        requestState(L2_SCORE);
+        timer.reset();
+      }
 
-      case L3_PREP:
-        requestState(SuperstructureState.L3_SCORE);
-        break;
+      case L3_PREP ->{
+        requestState(L3_SCORE);
+        timer.reset();
+      }
 
-      case L4_PREP:
-        requestState(SuperstructureState.L4_SCORE);
-        break;
+      case L4_PREP ->{
+        requestState(L4_SCORE);
+        timer.reset();
+      }
 
-      case PROCESSOR_PREP:
-        requestState(SuperstructureState.PROCESSOR_SCORE);
-        break;
+      case PROCESSOR_PREP -> {
+        requestState(PROCESSOR_SCORE);
+      }
 
-      case BARGE_PREP:
-        requestState(SuperstructureState.BARGE_SCORE);
-        break;
+      case BARGE_PREP ->{
+        requestState(BARGE_SCORE);
+      }
     }
   }
 

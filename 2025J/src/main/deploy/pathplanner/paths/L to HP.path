@@ -33,7 +33,7 @@
   "pointTowardsZones": [],
   "eventMarkers": [],
   "globalConstraints": {
-    "maxVelocity": 3.0,
+    "maxVelocity": 1.0,
     "maxAcceleration": 3.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0,
@@ -42,13 +42,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 125.27242144859835
+    "rotation": 126.0
   },
   "reversed": false,
-  "folder": null,
+  "folder": "HP Intake",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 118.19497906246217
+    "rotation": 119.99999999999999
   },
   "useDefaultConstraints": true
 }

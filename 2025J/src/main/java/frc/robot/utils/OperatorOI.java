@@ -22,7 +22,7 @@ public class OperatorOI {
     }
 
     public OperatorOI() {
-        superstructure = Superstructure.getInstance();
+        //superstructure = Superstructure.getInstance();
         configureController();
         SmartDashboard.putBoolean("L3 Held?", false);
     }
@@ -34,79 +34,28 @@ public class OperatorOI {
 
         controller = new PS4Controller(1);
 
-        // If L3 held, sets to PROCESSOR_PREP --- If L3 is NOT held, sets to L1_PREP
         Trigger xButton = new JoystickButton(controller, PS4Controller.Button.kCross.value);
-        xButton.onTrue(new InstantCommand(() -> {
-            if (L3Held()) {
-                superstructure.requestState(SuperstructureState.PROCESSOR_PREP);
-            } else {
-                superstructure.requestState(SuperstructureState.L1_PREP);
-            }
-        }));
+        xButton.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.L1_PREP)));
 
-        // If L3 held, sets to REEF1_INTAKE --- If L3 is NOT held, sets to L2_PREP
         Trigger circleButton = new JoystickButton(controller, PS4Controller.Button.kCircle.value);
-        circleButton.onTrue(new InstantCommand(() -> {
-            if (L3Held()) {
-                superstructure.requestState(SuperstructureState.REEF1_INTAKE);
-            } else {
-                superstructure.requestState(SuperstructureState.L2_PREP);
-            }
-        }));
+        circleButton.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.L2_PREP)));
 
-        // If L3 held, sets to BARGE_PRESTAGE--- If L3 is NOT held, sets to L4_PREP
-        Trigger triangleButton = new JoystickButton(controller, PS4Controller.Button.kTriangle.value);
-        triangleButton.onTrue(new InstantCommand(() -> {
-            if (L3Held()) {
-                if (superstructure.getCurrentState() != SuperstructureState.BARGE_PRESTAGE
-                        && superstructure.getCurrentState() != SuperstructureState.BARGE_PREP) {
-                    superstructure.requestState(SuperstructureState.BARGE_PRESTAGE);
-                } else {
-                    superstructure.requestState(SuperstructureState.BARGE_PREP);
-                }
-            } else if (superstructure.getCurrentState() != SuperstructureState.L3L4_PRESTAGE
-                    && superstructure.getCurrentState() != SuperstructureState.L4_PREP) {
-                superstructure.requestState(SuperstructureState.L3L4_PRESTAGE);
-            } else {
-                superstructure.requestState(SuperstructureState.L4_PREP);
-            }
-        }));
-
-        // If L3 held, sets to REEF2_INTAKE --- If L3 is NOT held, sets to L3_PREP
         Trigger squareButton = new JoystickButton(controller, PS4Controller.Button.kSquare.value);
-        squareButton.onTrue(new InstantCommand(() -> {
-            if (L3Held()) {
-                superstructure.requestState(SuperstructureState.REEF2_INTAKE);
-            } else if (superstructure.getCurrentState() != SuperstructureState.L3L4_PRESTAGE
-                    && superstructure.getCurrentState() != SuperstructureState.L3_PREP) {
-                superstructure.requestState(SuperstructureState.L3L4_PRESTAGE);
-            } else {
-                superstructure.requestState(SuperstructureState.L3_PREP);
-            }
-        }));
+        squareButton.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.L3_PREP)));
+
+        Trigger triangleButton = new JoystickButton(controller, PS4Controller.Button.kTriangle.value);
+        triangleButton.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.L4_PRESTAGE)));
 
         // Set to STOW state
         Trigger touchpadButton = new JoystickButton(controller, PS4Controller.Button.kTouchpad.value);
         touchpadButton.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.STOW)));
 
         Trigger muteButton = new JoystickButton(controller, 15);
-        muteButton.onTrue(new InstantCommand(() -> {
-            if (L3Held()) {
-                superstructure.requestState(SuperstructureState.EJECT_ALGAE);
-            } else {
-                superstructure.requestState(SuperstructureState.EJECT_CORAL);
-            }
-        }));
 
-        // Set to CLIMB_PREP
         Trigger L1Bumper = new JoystickButton(controller, PS4Controller.Button.kL1.value);
-        // L1Bumper.onTrue(new InstantCommand(() ->
-        // superstructure.requestState(SuperstructureState.CLIMB_PREP)));
 
-        // Set to CLIMB
         Trigger R1Bumper = new JoystickButton(controller, PS4Controller.Button.kR1.value);
-        // R1Bumper.onTrue(new InstantCommand(() ->
-        // superstructure.requestState(SuperstructureState.CLIMB)));
+        R1Bumper.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.L4_PREP)));
 
         Trigger L2Trigger = new JoystickButton(controller, PS4Controller.Button.kL2.value);
 
@@ -118,17 +67,23 @@ public class OperatorOI {
 
         Trigger ps5Button = new JoystickButton(controller, PS4Controller.Button.kPS.value);
 
-        Trigger optionButton = new JoystickButton(controller, PS4Controller.Button.kOptions.value);
-
-        Trigger shareButton = new JoystickButton(controller, PS4Controller.Button.kShare.value);
-
         Trigger dpadUpTrigger = new Trigger(() -> controller.getPOV() == 0);
+        dpadUpTrigger.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.BARGE_PRESTAGE)));
 
         Trigger dpadLeftTrigger = new Trigger(() -> controller.getPOV() == 270);
+        dpadLeftTrigger.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.ALGAE_GROUND_INTAKE)));
 
         Trigger dpadRightTrigger = new Trigger(() -> controller.getPOV() == 90);
+        // TODO: algae reef intake
 
         Trigger dpadDownTrigger = new Trigger(() -> controller.getPOV() == 180);
+        dpadDownTrigger.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.PROCESSOR_PREP)));
+
+        Trigger optionButton = new JoystickButton(controller, PS4Controller.Button.kOptions.value);
+        // TODO: home elevator
+        
+        Trigger shareButton = new JoystickButton(controller, PS4Controller.Button.kShare.value);
+        // TODO: home arm
     }
 
     public boolean bothBumpersHeld() {

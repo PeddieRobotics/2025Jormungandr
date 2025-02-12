@@ -33,7 +33,7 @@
   "pointTowardsZones": [],
   "eventMarkers": [],
   "globalConstraints": {
-    "maxVelocity": 3.0,
+    "maxVelocity": 2.0,
     "maxAcceleration": 3.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0,
@@ -42,13 +42,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -59.42077312751098
+    "rotation": -59.99999999999999
   },
   "reversed": false,
   "folder": "Starts",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": -90.093038588132
+    "rotation": -90.09303858813202
   },
-  "useDefaultConstraints": true
+  "useDefaultConstraints": false
 }

@@ -19,7 +19,7 @@ public class DriverOI {
     public DriverOI() {
         controller = new PS4Controller(0);
 
-        superstructure = Superstructure.getInstance();
+        //superstructure = Superstructure.getInstance();
         configureController();
 
     }
@@ -39,68 +39,68 @@ public class DriverOI {
         controller = new PS4Controller(0);
 
         Trigger xButton = new JoystickButton(controller, PS4Controller.Button.kCross.value);
+        xButton.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.STOW)));
 
         Trigger circleButton = new JoystickButton(controller, PS4Controller.Button.kCircle.value);
+        circleButton.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.HP_INTAKE)));
 
         Trigger triangleButton = new JoystickButton(controller, PS4Controller.Button.kTriangle.value);
+        triangleButton.onTrue(new InstantCommand(() -> superstructure.sendToScore()));
 
         Trigger squareButton = new JoystickButton(controller, PS4Controller.Button.kSquare.value);
+        
+        Trigger muteButton = new JoystickButton(controller, 15);
+        // TODO: add sensor condition
+        muteButton.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.EJECT_CORAL)));
+        muteButton.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.EJECT_ALGAE)));
+        
+        Trigger PSButton = new JoystickButton(controller, PS4Controller.Button.kPS.value);
+        PSButton.onTrue(new InstantCommand(() -> Drivetrain.getInstance().resetGyro()));
 
         // Set to STOW state
-        Trigger touchpadButton = new JoystickButton(controller, PS4Controller.Button.kTouchpad.value);
-        touchpadButton.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.STOW)));
+        // Trigger touchpadButton = new JoystickButton(controller, PS4Controller.Button.kTouchpad.value);
+        // touchpadButton.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.STOW)));
 
-        Trigger muteButton = new JoystickButton(controller, 15);
-        muteButton.onTrue(new InstantCommand(() -> {
-            if (OperatorOI.getInstance().L3Held()) {
-                superstructure.requestState(SuperstructureState.EJECT_ALGAE);
-            } else {
-                superstructure.requestState(SuperstructureState.EJECT_CORAL);
-            }
-        }));
+        // Trigger muteButton = new JoystickButton(controller, 15);
+        // muteButton.onTrue(new InstantCommand(() -> {
+        //     if (OperatorOI.getInstance().L3Held()) {
+        //         superstructure.requestState(SuperstructureState.EJECT_ALGAE);
+        //     } else {
+        //         superstructure.requestState(SuperstructureState.EJECT_CORAL);
+        //     }
+        // }));
 
         // Set to GROUND_INTAKE (Coral or Algae)
         Trigger L1Bumper = new JoystickButton(controller, PS4Controller.Button.kL1.value);
+        // TODO: align left if coral, else align algae
+
+        
         // L1Bumper.whileTrue(new InstantCommand(() ->
         // superstructure.requestState(SuperstructureState.CORAL_GROUND_INTAKE)));
-        L1Bumper.onTrue(new InstantCommand(() -> {
-            if (OperatorOI.getInstance().R3Held()) {
-                superstructure.requestState(SuperstructureState.ALGAE_GROUND_INTAKE);
-            } else {
-                superstructure.requestState(SuperstructureState.CORAL_GROUND_INTAKE);
-            }
-        }));
-        // Send to score
+        // L1Bumper.onTrue(new InstantCommand(() -> {
+        //     if (OperatorOI.getInstance().R3Held()) {
+        //         superstructure.requestState(SuperstructureState.ALGAE_GROUND_INTAKE);
+        //     } else {
+        //         superstructure.requestState(SuperstructureState.CORAL_GROUND_INTAKE);
+        //     }
+        // }));
+
         Trigger R1Bumper = new JoystickButton(controller, PS4Controller.Button.kR1.value);
-        R1Bumper.onTrue(new InstantCommand(() -> superstructure.sendToScore()));
+        // TODO: align right if coral, else align HP
 
         Trigger L2Trigger = new JoystickButton(controller, PS4Controller.Button.kL2.value);
 
         Trigger R2Trigger = new JoystickButton(controller, PS4Controller.Button.kR2.value);
 
-        // Set to HP_INTAKE
         Trigger L3Trigger = new JoystickButton(controller, PS4Controller.Button.kL3.value);
-        L3Trigger.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.HP_INTAKE)));
 
-        // Set to CLIMB
         Trigger R3Trigger = new JoystickButton(controller, PS4Controller.Button.kR3.value);
         // R3Trigger.onTrue(new InstantCommand(() ->
         // superstructure.requestState(SuperstructureState.CLIMB)));
 
-        Trigger PSButton = new JoystickButton(controller, PS4Controller.Button.kPS.value);
-        PSButton.onTrue(new InstantCommand(() -> Drivetrain.getInstance().resetGyro()));
-
         Trigger optionButton = new JoystickButton(controller, PS4Controller.Button.kOptions.value);
-
+        
         Trigger shareButton = new JoystickButton(controller, PS4Controller.Button.kShare.value);
-
-        Trigger dpadUpTrigger = new Trigger(() -> controller.getPOV() == 0);
-
-        Trigger dpadLeftTrigger = new Trigger(() -> controller.getPOV() == 270);
-
-        Trigger dpadRightTrigger = new Trigger(() -> controller.getPOV() == 90);
-
-        Trigger dpadDownTrigger = new Trigger(() -> controller.getPOV() == 180);
     }
 
     public boolean bothBumpersHeld() {
@@ -185,6 +185,6 @@ public class DriverOI {
 
         double combinedRotation = (rightRotation - leftRotation) / 2.0;
 
-        return Math.abs(combinedRotation) < 0.1 ? 0 : combinedRotation; // TODO: convert to rad/s
+        return Math.abs(combinedRotation) < 0.1 ? 0 : combinedRotation * DriveConstants.kMaxRotationSpeed; // TODO: convert to rad/s
     }
 }

@@ -2,6 +2,7 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.utils.Constants.IntakeConstants;
+import frc.robot.utils.Constants.ModuleConstants;
 import frc.robot.utils.Kraken;
 import frc.robot.utils.RobotMap;
 
@@ -9,15 +10,21 @@ public class HPIntake extends SubsystemBase{
 
     private static HPIntake hpIntake;
     private final Kraken rollerMotor;
+    private final Kraken pivotMotor;
     
     public HPIntake() {
-        rollerMotor = new Kraken(RobotMap.HP_INTAKE_ID, RobotMap.CANIVORE_NAME);
+        rollerMotor = new Kraken(RobotMap.HP_INTAKE_ROLLER_ID, RobotMap.CANIVORE_NAME);
+        pivotMotor = new Kraken(RobotMap.HP_INTAKE_PIVOT_ID, RobotMap.CANIVORE_NAME);
 
         // TODO: update to reflect desired behavior
         rollerMotor.setInverted(false);
-        //rollerMotor.setSupplyCurrentLimit(IntakeConstants.kHPIntakeMotorSupplyCurrentLimit);
-        rollerMotor.setStatorCurrentLimit(IntakeConstants.kHPIntakeMotorStatorCurrentLimit);
+        rollerMotor.setSupplyCurrentLimit(IntakeConstants.kHPIntakeRollerSupplyCurrentLimit);
         rollerMotor.setBrake();
+
+        pivotMotor.setInverted(false);
+        pivotMotor.setSupplyCurrentLimit(IntakeConstants.kHPIntakePivotSupplyCurrentLimit);
+        pivotMotor.setBrake();
+        pivotMotor.setPIDValues(IntakeConstants.kS, IntakeConstants.kV, IntakeConstants.kA, IntakeConstants.kP, IntakeConstants.kI, IntakeConstants.kD, IntakeConstants.kFF);
     }
 
     /**
@@ -58,6 +65,21 @@ public class HPIntake extends SubsystemBase{
      */
     public void reverseIntake(){
         setIntake(-1*IntakeConstants.kHPIntakeSpeed);
+    }
+
+    /**
+     * Sets pivotMotor position to the specific position
+     */
+    public void setIntakePosition(double position){
+        pivotMotor.setPositionVoltage(position);
+    }
+
+    public double getIntakePosition(){
+        return pivotMotor.getPosition();
+    }
+
+    public double getIntakeVelocity(){
+        return pivotMotor.getRPS();
     }
 
     //Accessor methods
