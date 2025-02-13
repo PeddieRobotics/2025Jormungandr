@@ -322,6 +322,7 @@ public final class Constants {
 
   public static final class CameraConstants {
     // TODO: update real values
+    
     public static final String kBackCamName = "back-cam";
     public static final double kBackCamForward = 0;
     public static final double kBackCamLeftOffset = 0;
@@ -329,23 +330,26 @@ public final class Constants {
     public static final double kBackCamPanningAngle = 0;
     public static final int kBackCamPipeline = 0;
 
+    // 3G: 10.58.95.90
     public static final String kFrontLeftCamName = "front-left-cam";
-    public static final double kFrontLeftCamForward = 7.7188 * 0.0254;
-    public static final double kFrontLeftCamLeftOffset = 6.48511 * 0.0254;
+    public static final double kFrontLeftCamForward = 7.7188 * 0.0254 * -1;
+    public static final double kFrontLeftCamLeftOffset = 6.48511 * 0.0254 * -1;
     public static final double kFrontLeftCamUpOffset = 6.9909 * 0.0254;
     public static final double kFrontLeftCamPanningAngle = 0;
     public static final int kFrontLeftCamPipeline = 0;
 
+    // 3: 10.58.95.81
     public static final String kFrontMiddleCamName = "front-middle-cam";
-    public static final double kFrontMiddleCamForward = 7.7188 * 0.0254;
+    public static final double kFrontMiddleCamForward = 7.7188 * 0.0254 * -1;
     public static final double kFrontMiddleCamLeftOffset = 0;
     public static final double kFrontMiddleCamUpOffset = 6.9909 * 0.0254;
     public static final double kFrontMiddleCamPanningAngle = 0;
     public static final int kFrontMiddleCamPipeline = 0;
 
+    // 3G: 10.58.95.91
     public static final String kFrontRightCamName = "front-right-cam";
-    public static final double kFrontRightCamForward = 7.7188 * 0.0254;
-    public static final double kFrontRightCamLeftOffset = -6.4909 * 0.0254;
+    public static final double kFrontRightCamForward = 7.7188 * 0.0254 * -1;
+    public static final double kFrontRightCamLeftOffset = -6.4909 * 0.0254 * -1;
     public static final double kFrontRightCamUpOffset = 6.9909 * 0.0254;
     public static final double kFrontRightCamPanningAngle = 0;
     public static final int kFrontRightCamPipeline = 0;

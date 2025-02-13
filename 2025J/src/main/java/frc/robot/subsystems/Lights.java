@@ -47,11 +47,11 @@ public class Lights extends SubsystemBase {
     public Lights() {
         candle = new CANdle(RobotMap.CANDLE_ID);
         
-        pvBack = PVBack.getInstance();
+        // pvBack = PVBack.getInstance();
         pvFrontLeft = PVFrontLeft.getInstance();
         pvFrontMiddle = PVFrontMiddle.getInstance();
         pvFrontRight = PVFrontRight.getInstance();
-        pvLeft = PVLeft.getInstance();
+        // pvLeft = PVLeft.getInstance();
     }
 
     public void requestState(LightState request) {
