@@ -15,7 +15,9 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.utils.Constants;
 import frc.robot.utils.Constants.ArmConstants;
+import frc.robot.utils.Constants.ClawConstants;
 import frc.robot.utils.Constants.ElevatorConstants;
 import frc.robot.utils.Constants.ScoreConstants;
 import static frc.robot.subsystems.Superstructure.SuperstructureState.*;
@@ -102,15 +104,13 @@ public class Superstructure extends SubsystemBase {
     SmartDashboard.putString("current superstructure state", systemState.toString());
     SmartDashboard.putString("requested superstructure state", requestedSystemState.toString());
     
-    // TODO: get coral and algae index from Claw
-    algaeIndex = SmartDashboard.getBoolean("algaeIndex", false);
-    coralIndex = SmartDashboard.getBoolean("coralIndex", false);
+    coralIndex = claw.hasCoral();
+    algaeIndex = claw.hasAlgae();
 
     switch (systemState) {
       case STOW -> {
         // stop intake
         // bring elevator down
-        hpIntake.stopIntake();
         elevator.setElevatorPositionMotionMagicTorqueCurrentFOC(ScoreConstants.kElevatorStowPosition);
         arm.setArmPositionMotionMagicTorqueCurrentFOC(ScoreConstants.kArmStowPosition);
         claw.stopClaw();
@@ -137,10 +137,17 @@ public class Superstructure extends SubsystemBase {
         // set angle
         // set elevator
         // run intake motor
-        hpIntake.runIntake();
         elevator.setElevatorPositionMotionMagicTorqueCurrentFOC(ScoreConstants.kElevatorHPIntakePosition);
         arm.setArmPositionMotionMagicTorqueCurrentFOC(ScoreConstants.kArmHPIntakePosition);
-        claw.intakePiece();
+        // add gate to check elevator height and arm angle ?
+        claw.intakePiece(ClawConstants.kCoralIntakeSpeed);
+
+        if (claw.getCoralSensor1()){
+          claw.intakePiece(ClawConstants.kCoralSlowIntake);
+        }
+        if (claw.getCoralSensor2() && !claw.getCoralSensor1()){
+          claw.stopClaw();
+        } 
 
         if(Arrays.asList(
           STOW,
@@ -164,7 +171,6 @@ public class Superstructure extends SubsystemBase {
         // run intake
         elevator.setElevatorPositionMotionMagicTorqueCurrentFOC(ScoreConstants.kElevatorGroundIntakePosition);
         arm.setArmPositionMotionMagicTorqueCurrentFOC(ScoreConstants.kArmGroundIntakePosition);
-        claw.intakePiece();
 
         if (algaeIndex) {
           requestState(STOW);
@@ -589,9 +595,10 @@ public class Superstructure extends SubsystemBase {
       case REEF1_ALGAE_INTAKE ->{
         elevator.setElevatorPositionMotionMagicTorqueCurrentFOC(ScoreConstants.kElevatorReef1IntakePosition);
         arm.setArmPositionMotionMagicTorqueCurrentFOC(ScoreConstants.kArmReef1IntakePosition);
-        claw.intakePiece();
+        claw.intakePiece(ClawConstants.kAlgaeIntakeSpeed);
 
-        if (algaeIndex) {
+        if (algaeIndex){
+          claw.stopClaw();
           requestState(STOW);
         }
 
@@ -616,8 +623,10 @@ public class Superstructure extends SubsystemBase {
       case REEF2_ALGAE_INTAKE -> {
         elevator.setElevatorPositionMotionMagicTorqueCurrentFOC(ScoreConstants.kElevatorReef2IntakePosition);
         arm.setArmPositionMotionMagicTorqueCurrentFOC(ScoreConstants.kArmReef2IntakePosition);
-        claw.intakePiece();
-        if (algaeIndex) {
+        claw.intakePiece(ClawConstants.kAlgaeIntakeSpeed);
+        
+        if (algaeIndex){
+          claw.stopClaw();
           requestState(STOW);
         }
 
@@ -686,7 +695,6 @@ public class Superstructure extends SubsystemBase {
 
   public void sendToScore() {
     switch (systemState) {
-      // TODO: Add gate for arm angle before allowing sending to score state
       case L1_PREP -> {
         if (arm.isAtAngle(ScoreConstants.kArmL1ScorePosition) && elevator.isAtHeight(ScoreConstants.kElevatorL1ScorePosition)){
           requestState(L1_SCORE);

@@ -290,8 +290,12 @@ public final class Constants {
     public static final double kCoralSensor2SignalStrength = 0.0;
     public static final double kAlgaeSensorSignalStrength = 0.0;
 
-    public static final double kClawIntakeSpeed = 0.0;
-    public static final double kClawOuttakeSpeed = 0.0;
+    public static final double kCoralIntakeSpeed = 0.0;
+    public static final double kCoralOuttakeSpeed = 0.0;
+    public static final double kCoralSlowIntake = 0.0;
+
+    public static final double kAlgaeIntakeSpeed = 0.0;
+    public static final double kAlgaeOuttakeSpeed = 0.0;
   }
 
   public static final class ClimberConstants {
