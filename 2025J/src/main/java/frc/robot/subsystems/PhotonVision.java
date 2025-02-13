@@ -60,11 +60,17 @@ public abstract class PhotonVision extends SubsystemBase {
         this.cameraUpOffset = cameraUpOffset;
         this.cameraPitchRadians = Math.toRadians(cameraPitchDegrees);
 
+        /*
+         * PLEASE PLEASE:
+         * TODO: CHANGE Math.toRadians(180) to 0
+         * Once the "forward" is defined correctly on robot!!!
+         * This is only here because the "forward" cameras are actually back!
+         */
         camera = new PhotonCamera(cameraName);
         Transform3d robotToCam = new Transform3d(new Translation3d(
             cameraForwardOffset, cameraLeftOffset, cameraUpOffset
         ), new Rotation3d(
-            0, cameraPitchRadians, 0
+            0, cameraPitchRadians, Math.toRadians(180)
         ));
 
         aprilTagFieldLayout = AprilTagFieldLayout.loadField(AprilTagFields.kDefaultField);
