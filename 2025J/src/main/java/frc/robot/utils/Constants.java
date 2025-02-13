@@ -322,12 +322,18 @@ public final class Constants {
 
   public static final class CameraConstants {
     // TODO: update real values
+    /*
+     * TODO: ONCE ROBOT ORIENTATION IS CORRECTED
+     *  - Front(Left/Middle/Right) Yaw: 180 -> 0
+     *  - Front(Left/Middle/Right) (Left/Up)Offset: remove "* -1"
+     */
     
     public static final String kBackCamName = "back-cam";
     public static final double kBackCamForward = 0;
     public static final double kBackCamLeftOffset = 0;
     public static final double kBackCamUpOffset = 0;
-    public static final double kBackCamPanningAngle = 0;
+    public static final double kBackCamPitchDeg = 0;
+    public static final double kBackCamYawDeg = 0;
     public static final int kBackCamPipeline = 0;
 
     // 3G: 10.58.95.90
@@ -335,7 +341,8 @@ public final class Constants {
     public static final double kFrontLeftCamForward = 7.7188 * 0.0254 * -1;
     public static final double kFrontLeftCamLeftOffset = 6.48511 * 0.0254 * -1;
     public static final double kFrontLeftCamUpOffset = 6.9909 * 0.0254;
-    public static final double kFrontLeftCamPanningAngle = 0;
+    public static final double kFrontLeftCamPitchDeg = 0;
+    public static final double kFrontLeftCamYawDeg = 180;
     public static final int kFrontLeftCamPipeline = 0;
 
     // 3: 10.58.95.81
@@ -343,7 +350,8 @@ public final class Constants {
     public static final double kFrontMiddleCamForward = 7.7188 * 0.0254 * -1;
     public static final double kFrontMiddleCamLeftOffset = 0;
     public static final double kFrontMiddleCamUpOffset = 6.9909 * 0.0254;
-    public static final double kFrontMiddleCamPanningAngle = 0;
+    public static final double kFrontMiddleCamPitchDeg = 0;
+    public static final double kFrontMiddleCamYawDeg = 180;
     public static final int kFrontMiddleCamPipeline = 0;
 
     // 3G: 10.58.95.91
@@ -351,14 +359,16 @@ public final class Constants {
     public static final double kFrontRightCamForward = 7.7188 * 0.0254 * -1;
     public static final double kFrontRightCamLeftOffset = -6.4909 * 0.0254 * -1;
     public static final double kFrontRightCamUpOffset = 6.9909 * 0.0254;
-    public static final double kFrontRightCamPanningAngle = 0;
+    public static final double kFrontRightCamPitchDeg = 0;
+    public static final double kFrontRightCamYawDeg = 180;
     public static final int kFrontRightCamPipeline = 0;
 
     public static final String kLeftCamName = "left-cam";
     public static final double kLeftCamForward = 0;
     public static final double kLeftCamLeftOffset = 0;
     public static final double kLeftCamUpOffset = 0;
-    public static final double kLeftCamPanningAngle = 0;
+    public static final double kLeftCamPitchDeg = 0;
+    public static final double kLeftCamYawDeg = 0;
     public static final int kLeftCamPipeline = 0;
   }
   

@@ -11,7 +11,8 @@ public class PVFrontRight extends PhotonVision {
             CameraConstants.kFrontRightCamForward,
             CameraConstants.kFrontRightCamLeftOffset,
             CameraConstants.kFrontRightCamUpOffset,
-            CameraConstants.kFrontRightCamPanningAngle
+            CameraConstants.kFrontRightCamPitchDeg,
+            CameraConstants.kFrontRightCamYawDeg
         );
     }
 

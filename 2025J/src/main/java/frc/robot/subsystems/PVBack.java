@@ -11,7 +11,8 @@ public class PVBack extends PhotonVision {
             CameraConstants.kBackCamForward,
             CameraConstants.kBackCamLeftOffset,
             CameraConstants.kBackCamUpOffset,
-            CameraConstants.kBackCamPanningAngle
+            CameraConstants.kBackCamPitchDeg,
+            CameraConstants.kBackCamYawDeg
         );
     }
 

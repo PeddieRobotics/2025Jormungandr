@@ -11,7 +11,8 @@ public class PVFrontMiddle extends PhotonVision {
             CameraConstants.kFrontMiddleCamForward,
             CameraConstants.kFrontMiddleCamLeftOffset,
             CameraConstants.kFrontMiddleCamUpOffset,
-            CameraConstants.kFrontMiddleCamPanningAngle
+            CameraConstants.kFrontMiddleCamPitchDeg,
+            CameraConstants.kFrontMiddleCamYawDeg
         );
     }
 
