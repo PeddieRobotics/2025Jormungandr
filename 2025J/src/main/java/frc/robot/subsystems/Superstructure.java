@@ -319,7 +319,7 @@ public class Superstructure extends SubsystemBase {
           L1_PREP,
           L2_PREP,
           L3_PREP,
-          L4_PREP,
+          L4_SCORE,
           BARGE_PRESTAGE,
           PROCESSOR_PREP,
           REEF1_ALGAE_INTAKE,
@@ -334,11 +334,11 @@ public class Superstructure extends SubsystemBase {
 
       case L1_SCORE -> {
 
-        if (!timer.hasElapsed(ScoreConstants.L1ScoreTimeout)) {
+        if (!timer.hasElapsed(ScoreConstants.L1ScoreTimeout) && coralIndex) {
           // KEEP RUNNING
           timer.start();
           claw.outtakePiece();
-        } else if (timer.hasElapsed(ScoreConstants.L1ScoreTimeout) && !coralIndex) {
+        } else if (timer.hasElapsed(ScoreConstants.L1ScoreTimeout) || !coralIndex) {
           timer.reset();
 
           // stop everything
@@ -346,7 +346,7 @@ public class Superstructure extends SubsystemBase {
           arm.setArmPositionMotionMagicTorqueCurrentFOC(ScoreConstants.kArmStowPosition);
           claw.stopClaw();
           requestState(STOW);
-        }
+        } 
         // lower arm :)
 
         if(Arrays.asList(
@@ -362,7 +362,7 @@ public class Superstructure extends SubsystemBase {
 
       case L2_SCORE -> {
 
-        if (!timer.hasElapsed(ScoreConstants.L2ScoreTimeout)) {
+        if (!timer.hasElapsed(ScoreConstants.L2ScoreTimeout) && coralIndex) {
           // KEEP RUNNING
           timer.start();
           claw.outtakePiece();
@@ -374,7 +374,7 @@ public class Superstructure extends SubsystemBase {
            * eject piece
            */
 
-        } else if (timer.hasElapsed(ScoreConstants.L2ScoreTimeout) && !coralIndex) {
+        } else if (timer.hasElapsed(ScoreConstants.L2ScoreTimeout) || !coralIndex) {
           timer.reset();
 
           // stop everything
@@ -397,7 +397,7 @@ public class Superstructure extends SubsystemBase {
       }
 
       case L3_SCORE -> {
-        if (!timer.hasElapsed(ScoreConstants.L3ScoreTimeout)) {
+        if (!timer.hasElapsed(ScoreConstants.L3ScoreTimeout) && coralIndex) {
           // KEEP RUNNING
           timer.start();
           claw.outtakePiece();
@@ -409,7 +409,7 @@ public class Superstructure extends SubsystemBase {
            * eject piece
            */
 
-        } else if (timer.hasElapsed(ScoreConstants.L3ScoreTimeout) && !coralIndex) {
+        } else if (timer.hasElapsed(ScoreConstants.L3ScoreTimeout) || !coralIndex) {
           timer.reset();
 
           // stop everything
@@ -433,7 +433,7 @@ public class Superstructure extends SubsystemBase {
 
       case L4_SCORE -> {
 
-        if (!timer.hasElapsed(ScoreConstants.L4ScoreTimeout)) {
+        if (!timer.hasElapsed(ScoreConstants.L4ScoreTimeout) && coralIndex) {
           // KEEP RUNNING
           /*
            * two different cases:
@@ -445,7 +445,7 @@ public class Superstructure extends SubsystemBase {
           timer.start();
           claw.outtakePiece();
 
-        } else if (timer.hasElapsed(ScoreConstants.L4ScoreTimeout) && !coralIndex) {
+        } else if (timer.hasElapsed(ScoreConstants.L4ScoreTimeout) || !coralIndex) {
           timer.reset();
 
           // stop everything
@@ -651,6 +651,10 @@ public class Superstructure extends SubsystemBase {
       case EJECT_ALGAE -> {
         claw.outtakePiece();
 
+        if (!algaeIndex){
+          claw.stopClaw();
+        }
+
         if(Arrays.asList(
           STOW,
           HP_INTAKE,
@@ -671,6 +675,10 @@ public class Superstructure extends SubsystemBase {
 
       case EJECT_CORAL -> {
         claw.outtakePiece();
+
+        if(!coralIndex){
+          claw.stopClaw();
+        }
 
         if(Arrays.asList(
           STOW,
