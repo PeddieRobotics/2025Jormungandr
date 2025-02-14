@@ -287,7 +287,8 @@ public class Superstructure extends SubsystemBase {
       }
 
       case L4_PRESTAGE -> {
-        elevator.setElevatorPositionMotionMagicTorqueCurrentFOC(ScoreConstants.kElevatorL4ScorePosition);
+        elevator.setElevatorPositionMotionMagicTorqueCurrentFOC(ScoreConstants.kElevatorL4PrestagePosition);
+        arm.setArmPositionMotionMagicTorqueCurrentFOC(ScoreConstants.kArmStowPosition);
 
         if(Arrays.asList(
           STOW,
@@ -316,6 +317,7 @@ public class Superstructure extends SubsystemBase {
          * - dunk/score case
          * move to angle close to scoring angle (vertical)
          */
+        elevator.setElevatorPositionMotionMagicTorqueCurrentFOC(ScoreConstants.kElevatorL4ScorePosition);
         arm.setArmPositionMotionMagicTorqueCurrentFOC(ScoreConstants.kArmL4ScorePosition);
 
         if(Arrays.asList(
@@ -468,7 +470,8 @@ public class Superstructure extends SubsystemBase {
 
       case BARGE_PRESTAGE -> {
 
-        elevator.setElevatorPositionMotionMagicTorqueCurrentFOC(ScoreConstants.kElevatorBargeScorePosition);
+        elevator.setElevatorPositionMotionMagicTorqueCurrentFOC(ScoreConstants.kElevatorBargePrestagePosition);
+        arm.setArmPositionMotionMagicTorqueCurrentFOC(ScoreConstants.kArmStowPosition);
 
         if(Arrays.asList(
           STOW,
@@ -491,6 +494,7 @@ public class Superstructure extends SubsystemBase {
 
       case BARGE_PREP -> {
 
+        elevator.setElevatorPositionMotionMagicTorqueCurrentFOC(ScoreConstants.kArmBargeScorePosition);
         arm.setArmPositionMotionMagicTorqueCurrentFOC(ScoreConstants.kArmBargeScorePosition);
 
         if(Arrays.asList(
@@ -645,6 +649,7 @@ public class Superstructure extends SubsystemBase {
 
         if (!algaeIndex){
           claw.stopClaw();
+          requestState(HP_INTAKE);
         }
 
         if(Arrays.asList(
@@ -670,6 +675,7 @@ public class Superstructure extends SubsystemBase {
 
         if(!claw.hasCoral()){
           claw.stopClaw();
+          requestState(HP_INTAKE);
         }
 
         if(Arrays.asList(
@@ -701,40 +707,43 @@ public class Superstructure extends SubsystemBase {
           timer.reset();
         }
       }
-
+        
       case L2_PREP -> {
         if (arm.isAtAngle(ScoreConstants.kArmL2ScorePosition) && elevator.isAtHeight(ScoreConstants.kElevatorL2ScorePosition)){
           requestState(L2_SCORE);
           timer.reset();
         } 
       }
-
+        
       case L3_PREP -> {
         if (arm.isAtAngle(ScoreConstants.kArmL3ScorePosition) && elevator.isAtHeight(ScoreConstants.kElevatorL3ScorePosition)){
           requestState(L3_SCORE);
           timer.reset();
         }
       }
-
+        
       case L4_PREP -> {
         if (arm.isAtAngle(ScoreConstants.kArmL4ScorePosition) && elevator.isAtHeight(ScoreConstants.kElevatorL4ScorePosition)){
           requestState(L4_SCORE);
           timer.reset();
         }
       }
-
+        
       case PROCESSOR_PREP -> {
         if (arm.isAtAngle(ScoreConstants.kArmProcessorScorePosition) && elevator.isAtHeight(ScoreConstants.kElevatorProcessorScorePosition)){
           requestState(PROCESSOR_SCORE);
           timer.reset();
         }
       }
-
+        
       case BARGE_PREP -> {
         if (arm.isAtAngle(ScoreConstants.kArmBargeScorePosition)&& elevator.isAtHeight(ScoreConstants.kElevatorBargeScorePosition)){
           requestState(BARGE_SCORE);
           timer.reset();
         }
+      }
+      default -> {
+        break;
       }
     }
   }
