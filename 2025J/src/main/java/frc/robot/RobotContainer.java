@@ -60,9 +60,9 @@ public class RobotContainer {
     driverOI = DriverOI.getInstance();
     operatorOI = OperatorOI.getInstance();
     // pvBack = PVBack.getInstance();
-    // pvFrontLeft = PVFrontLeft.getInstance();
+    pvFrontLeft = PVFrontLeft.getInstance();
     pvFrontMiddle = PVFrontMiddle.getInstance();
-    // pvFrontRight = PVFrontRight.getInstance();
+    pvFrontRight = PVFrontRight.getInstance();
     // pvLeft = PVLeft.getInstance();
     // lights = Lights.getInstance();
 

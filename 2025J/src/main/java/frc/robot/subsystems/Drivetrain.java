@@ -42,7 +42,7 @@ public class Drivetrain extends SubsystemBase {
   private final Pigeon2 gyro;
   private double heading;
 
-  private final Field2d field;
+  private final Field2d fusedOdometry;
 
   public Drivetrain() {
     frontLeftModule = new SwerveModule(RobotMap.CANIVORE_NAME, RobotMap.FRONT_LEFT_MODULE_DRIVE_ID,
@@ -89,7 +89,8 @@ public class Drivetrain extends SubsystemBase {
       }
     });
 
-    field = new Field2d();
+    fusedOdometry = new Field2d();
+    SmartDashboard.putData("Fused odometry", fusedOdometry);
   }
 
   /**
@@ -153,10 +154,10 @@ public class Drivetrain extends SubsystemBase {
 
   public void updateOdometry() {
     odometry.update(getHeadingAsRotation2d(), swerveModulePositions);
-    PVBack.getInstance().fuseEstimatedPose(odometry);
-    // PVFrontLeft.getInstance().fuseEstimatedPose(odometry);
-    // PVFrontMiddle.getInstance().fuseEstimatedPose(odometry);
-    // PVFrontRight.getInstance().fuseEstimatedPose(odometry);
+    // PVBack.getInstance().fuseEstimatedPose(odometry);
+    PVFrontLeft.getInstance().fuseEstimatedPose(odometry);
+    PVFrontMiddle.getInstance().fuseEstimatedPose(odometry);
+    PVFrontRight.getInstance().fuseEstimatedPose(odometry);
     // PVLeft.getInstance().fuseEstimatedPose(odometry);
   }
   public void setSwerveModuleStates(SwerveModuleState[] desiredModuleStates) {
@@ -274,8 +275,7 @@ public class Drivetrain extends SubsystemBase {
     // SmartDashboard.putBoolean("skid", isSkidding());
     updateModulePositions();
     updateOdometry();
-    field.setRobotPose(odometry.getEstimatedPosition());
-    SmartDashboard.putData("Field", field);
+    fusedOdometry.setRobotPose(odometry.getEstimatedPosition());
 
     for(int i = 0; i < 4; i++){
       // SmartDashboard.putNumber("module " + i +"desired speed", swerveModuleStates[i].speedMetersPerSecond);

@@ -47,24 +47,25 @@ public abstract class PhotonVision extends SubsystemBase {
     private String cameraName; 
     
     private double cameraForwardOffset, cameraLeftOffset, cameraUpOffset;
-    private double cameraPitchRadians;
+    private double cameraPitchRadians, cameraYawRadians;
 
     // TODO: check if directions are right (specifically if cameraPitchRadians positive means up or down)
     protected PhotonVision(String cameraName, double cameraForwardOffset,
                         double cameraLeftOffset, double cameraUpOffset,
-                        double cameraPitchDegrees) {
+                        double cameraPitchDegrees, double cameraYawDegrees) {
         
         this.cameraName = cameraName;
         this.cameraForwardOffset = cameraForwardOffset;
         this.cameraLeftOffset = cameraLeftOffset;
         this.cameraUpOffset = cameraUpOffset;
         this.cameraPitchRadians = Math.toRadians(cameraPitchDegrees);
+        this.cameraYawRadians = Math.toRadians(cameraYawDegrees);
 
         camera = new PhotonCamera(cameraName);
         Transform3d robotToCam = new Transform3d(new Translation3d(
             cameraForwardOffset, cameraLeftOffset, cameraUpOffset
         ), new Rotation3d(
-            0, cameraPitchRadians, 0
+            0, cameraPitchRadians, cameraYawRadians
         ));
 
         aprilTagFieldLayout = AprilTagFieldLayout.loadField(AprilTagFields.kDefaultField);

@@ -11,7 +11,8 @@ public class PVLeft extends PhotonVision {
             CameraConstants.kLeftCamForward,
             CameraConstants.kLeftCamLeftOffset,
             CameraConstants.kLeftCamUpOffset,
-            CameraConstants.kLeftCamPanningAngle
+            CameraConstants.kLeftCamPitchDeg,
+            CameraConstants.kLeftCamYawDeg
         );
     }
 
