@@ -104,7 +104,7 @@ public class Superstructure extends SubsystemBase {
     SmartDashboard.putString("current superstructure state", systemState.toString());
     SmartDashboard.putString("requested superstructure state", requestedSystemState.toString());
     
-    coralIndex = claw.hasCoral();
+    coralIndex = claw.coralIndexed();
     algaeIndex = claw.hasAlgae();
 
     switch (systemState) {
@@ -113,7 +113,11 @@ public class Superstructure extends SubsystemBase {
         // bring elevator down
         elevator.setElevatorPositionMotionMagicTorqueCurrentFOC(ScoreConstants.kElevatorStowPosition);
         arm.setArmPositionMotionMagicTorqueCurrentFOC(ScoreConstants.kArmStowPosition);
-        claw.stopClaw();
+        if(algaeIndex){
+          claw.holdAlgae();
+        } else {
+          claw.stopClaw();
+        }
 
         if(Arrays.asList(
           STOW, HP_INTAKE, 
@@ -145,7 +149,7 @@ public class Superstructure extends SubsystemBase {
         if (claw.getCoralSensor1()){
           claw.intakePiece(ClawConstants.kCoralSlowIntake);
         }
-        if (claw.getCoralSensor2() && !claw.getCoralSensor1()){
+        if (coralIndex){
           claw.stopClaw();
         } 
 
@@ -173,6 +177,7 @@ public class Superstructure extends SubsystemBase {
         arm.setArmPositionMotionMagicTorqueCurrentFOC(ScoreConstants.kArmGroundIntakePosition);
 
         if (algaeIndex) {
+          claw.holdAlgae();
           requestState(STOW);
         }
 
@@ -334,16 +339,14 @@ public class Superstructure extends SubsystemBase {
 
       case L1_SCORE -> {
 
-        if (!timer.hasElapsed(ScoreConstants.L1ScoreTimeout) && coralIndex) {
+        if (!timer.hasElapsed(ScoreConstants.L1ScoreTimeout)) {
           // KEEP RUNNING
           timer.start();
           claw.outtakePiece();
-        } else if (timer.hasElapsed(ScoreConstants.L1ScoreTimeout) || !coralIndex) {
+        } else if (timer.hasElapsed(ScoreConstants.L1ScoreTimeout) && !claw.hasCoral()) {
           timer.reset();
 
           // stop everything
-          elevator.setElevatorPositionMotionMagicTorqueCurrentFOC(ScoreConstants.kElevatorStowPosition);
-          arm.setArmPositionMotionMagicTorqueCurrentFOC(ScoreConstants.kArmStowPosition);
           claw.stopClaw();
           requestState(STOW);
         } 
@@ -362,7 +365,7 @@ public class Superstructure extends SubsystemBase {
 
       case L2_SCORE -> {
 
-        if (!timer.hasElapsed(ScoreConstants.L2ScoreTimeout) && coralIndex) {
+        if (!timer.hasElapsed(ScoreConstants.L2ScoreTimeout)) {
           // KEEP RUNNING
           timer.start();
           claw.outtakePiece();
@@ -374,12 +377,10 @@ public class Superstructure extends SubsystemBase {
            * eject piece
            */
 
-        } else if (timer.hasElapsed(ScoreConstants.L2ScoreTimeout) || !coralIndex) {
+        } else if (timer.hasElapsed(ScoreConstants.L2ScoreTimeout) && !claw.hasCoral()) {
           timer.reset();
 
           // stop everything
-          elevator.setElevatorPositionMotionMagicTorqueCurrentFOC(ScoreConstants.kElevatorStowPosition);
-          arm.setArmPositionMotionMagicTorqueCurrentFOC(ScoreConstants.kArmStowPosition);
           claw.stopClaw();
           requestState(STOW);
         }
@@ -397,7 +398,7 @@ public class Superstructure extends SubsystemBase {
       }
 
       case L3_SCORE -> {
-        if (!timer.hasElapsed(ScoreConstants.L3ScoreTimeout) && coralIndex) {
+        if (!timer.hasElapsed(ScoreConstants.L3ScoreTimeout)) {
           // KEEP RUNNING
           timer.start();
           claw.outtakePiece();
@@ -409,12 +410,10 @@ public class Superstructure extends SubsystemBase {
            * eject piece
            */
 
-        } else if (timer.hasElapsed(ScoreConstants.L3ScoreTimeout) || !coralIndex) {
+        } else if (timer.hasElapsed(ScoreConstants.L3ScoreTimeout) && !claw.hasCoral()) {
           timer.reset();
 
           // stop everything
-          elevator.setElevatorPositionMotionMagicTorqueCurrentFOC(ScoreConstants.kElevatorStowPosition);
-          arm.setArmPositionMotionMagicTorqueCurrentFOC(ScoreConstants.kArmStowPosition);
           claw.stopClaw();
           requestState(STOW);
         }
@@ -433,7 +432,7 @@ public class Superstructure extends SubsystemBase {
 
       case L4_SCORE -> {
 
-        if (!timer.hasElapsed(ScoreConstants.L4ScoreTimeout) && coralIndex) {
+        if (!timer.hasElapsed(ScoreConstants.L4ScoreTimeout)) {
           // KEEP RUNNING
           /*
            * two different cases:
@@ -445,12 +444,10 @@ public class Superstructure extends SubsystemBase {
           timer.start();
           claw.outtakePiece();
 
-        } else if (timer.hasElapsed(ScoreConstants.L4ScoreTimeout) || !coralIndex) {
+        } else if (timer.hasElapsed(ScoreConstants.L4ScoreTimeout) && !claw.hasCoral()) {
           timer.reset();
 
           // stop everything
-          elevator.setElevatorPositionMotionMagicTorqueCurrentFOC(ScoreConstants.kElevatorStowPosition);
-          arm.setArmPositionMotionMagicTorqueCurrentFOC(ScoreConstants.kArmStowPosition);
           claw.stopClaw();
           requestState(STOW);
         }
@@ -525,8 +522,6 @@ public class Superstructure extends SubsystemBase {
           timer.reset();
 
           // stop everything
-          elevator.setElevatorPositionMotionMagicTorqueCurrentFOC(ScoreConstants.kElevatorStowPosition);
-          arm.setArmPositionMotionMagicTorqueCurrentFOC(ScoreConstants.kArmStowPosition);
           claw.stopClaw();
           requestState(STOW);
         }
@@ -575,8 +570,6 @@ public class Superstructure extends SubsystemBase {
           timer.reset();
 
           // stop everything
-          elevator.setElevatorPositionMotionMagicTorqueCurrentFOC(ScoreConstants.kElevatorStowPosition);
-          arm.setArmPositionMotionMagicTorqueCurrentFOC(ScoreConstants.kArmStowPosition);
           claw.stopClaw();
           requestState(STOW);
         }
@@ -598,7 +591,7 @@ public class Superstructure extends SubsystemBase {
         claw.intakePiece(ClawConstants.kAlgaeIntakeSpeed);
 
         if (algaeIndex){
-          claw.stopClaw();
+          claw.holdAlgae();
           requestState(STOW);
         }
 
@@ -626,7 +619,7 @@ public class Superstructure extends SubsystemBase {
         claw.intakePiece(ClawConstants.kAlgaeIntakeSpeed);
         
         if (algaeIndex){
-          claw.stopClaw();
+          claw.holdAlgae();
           requestState(STOW);
         }
 
@@ -676,7 +669,7 @@ public class Superstructure extends SubsystemBase {
       case EJECT_CORAL -> {
         claw.outtakePiece();
 
-        if(!coralIndex){
+        if(!claw.hasCoral()){
           claw.stopClaw();
         }
 

@@ -93,6 +93,9 @@ public class Claw extends SubsystemBase {
         setClaw(ClawConstants.kCoralOuttakeSpeed);
     }
 
+    public void holdAlgae(){
+        setClaw(ClawConstants.kAlgaeHoldSpeed);
+    }
     // Accessor methods
 
     /**
@@ -149,6 +152,10 @@ public class Claw extends SubsystemBase {
 
     public boolean hasCoral(){
         return getCoralSensor1() || getCoralSensor2();
+    }
+
+    public boolean coralIndexed(){
+        return getCoralSensor2() && !getCoralSensor1();
     }
 
     public boolean hasAlgae(){

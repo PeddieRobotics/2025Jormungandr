@@ -296,6 +296,8 @@ public final class Constants {
 
     public static final double kAlgaeIntakeSpeed = 0.0;
     public static final double kAlgaeOuttakeSpeed = 0.0;
+
+    public static final double kAlgaeHoldSpeed = 0.0;
   }
 
   public static final class ClimberConstants {
