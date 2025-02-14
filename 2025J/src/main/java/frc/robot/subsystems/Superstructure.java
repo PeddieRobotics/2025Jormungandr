@@ -151,6 +151,7 @@ public class Superstructure extends SubsystemBase {
         }
         if (coralIndex){
           claw.stopClaw();
+          requestState(STOW);
         } 
 
         if(Arrays.asList(
@@ -592,7 +593,6 @@ public class Superstructure extends SubsystemBase {
 
         if (algaeIndex){
           claw.holdAlgae();
-          requestState(STOW);
         }
 
         if(Arrays.asList(
@@ -620,7 +620,6 @@ public class Superstructure extends SubsystemBase {
         
         if (algaeIndex){
           claw.holdAlgae();
-          requestState(STOW);
         }
 
         if(Arrays.asList(
@@ -727,12 +726,14 @@ public class Superstructure extends SubsystemBase {
       case PROCESSOR_PREP -> {
         if (arm.isAtAngle(ScoreConstants.kArmProcessorScorePosition) && elevator.isAtHeight(ScoreConstants.kElevatorProcessorScorePosition)){
           requestState(PROCESSOR_SCORE);
+          timer.reset();
         }
       }
 
       case BARGE_PREP -> {
         if (arm.isAtAngle(ScoreConstants.kArmBargeScorePosition)&& elevator.isAtHeight(ScoreConstants.kElevatorBargeScorePosition)){
           requestState(BARGE_SCORE);
+          timer.reset();
         }
       }
     }
