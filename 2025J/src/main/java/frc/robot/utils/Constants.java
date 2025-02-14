@@ -190,7 +190,9 @@ public final class Constants {
     public static final double kElevatorL1ScorePosition = 0.0;
     public static final double kElevatorL2ScorePosition = 0.0;
     public static final double kElevatorL3ScorePosition = 0.0;
+    public static final double kElevatorL4PrestagePosition = 0.0;
     public static final double kElevatorL4ScorePosition = 0.0;
+    public static final double kElevatorBargePrestagePosition = 0.0;
     public static final double kElevatorBargeScorePosition = 0.0;
     public static final double kElevatorProcessorScorePosition = 0.0;
     public static final double kElevatorReef1IntakePosition = 0.0;
