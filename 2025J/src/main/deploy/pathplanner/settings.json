@@ -1,6 +1,6 @@
 {
   "robotWidth": 0.883,
-  "robotLength": 0.88265,
+  "robotLength": 0.883,
   "holonomicMode": true,
   "pathFolders": [
     "HP Intake",

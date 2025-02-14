@@ -13,6 +13,7 @@ import frc.robot.subsystems.Claw;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.HPIntake;
+import frc.robot.subsystems.Lights;
 import frc.robot.subsystems.PVBack;
 import frc.robot.subsystems.PVFrontLeft;
 import frc.robot.subsystems.PVFrontMiddle;
@@ -46,7 +47,7 @@ public class RobotContainer {
   private PVFrontMiddle pvFrontMiddle;
   private PVFrontRight pvFrontRight;
   private PVLeft pvLeft;
-
+  private Lights lights;
 
   public RobotContainer() {
     // arm = Arm.getInstance();
@@ -63,6 +64,7 @@ public class RobotContainer {
     pvFrontMiddle = PVFrontMiddle.getInstance();
     // pvFrontRight = PVFrontRight.getInstance();
     // pvLeft = PVLeft.getInstance();
+    // lights = Lights.getInstance();
 
     SmartDashboard.putData("Auto Routines", autonomous.getAutoChooser());
     drivetrain.setDefaultCommand(new SwerveDriveCommand());

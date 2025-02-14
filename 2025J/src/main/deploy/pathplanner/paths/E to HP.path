@@ -16,12 +16,12 @@
     },
     {
       "anchor": {
-        "x": 1.12125,
-        "y": 0.8952499999999998
+        "x": 1.131,
+        "y": 0.905
       },
       "prevControl": {
-        "x": 2.761682561388186,
-        "y": 1.5761216358676098
+        "x": 2.7714325613881865,
+        "y": 1.58587163586761
       },
       "nextControl": null,
       "isLocked": false,
@@ -42,7 +42,7 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -126.0
+    "rotation": -126.86989764584402
   },
   "reversed": false,
   "folder": "HP Intake",

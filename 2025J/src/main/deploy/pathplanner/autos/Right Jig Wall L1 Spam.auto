@@ -7,7 +7,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Red Jig to E"
+            "pathName": "Right Jig Wall to E"
           }
         },
         {
@@ -31,7 +31,19 @@
         {
           "type": "path",
           "data": {
-            "pathName": "HP to D"
+            "pathName": "HP to C"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "C to HP"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "HP to C"
           }
         }
       ]

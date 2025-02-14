@@ -81,8 +81,8 @@ public class Claw extends SubsystemBase {
      * Sets clawMotor speed to the designated percent output listed in the
      * ClawConstants class
      */
-    public void intakePiece() {
-        setClaw(ClawConstants.kClawIntakeSpeed);
+    public void intakePiece(double speed) {
+        setClaw(speed);
     }
 
     /**
@@ -90,7 +90,7 @@ public class Claw extends SubsystemBase {
      * ClawConstants class
      */
     public void outtakePiece() {
-        setClaw(ClawConstants.kClawOuttakeSpeed);
+        setClaw(ClawConstants.kCoralOuttakeSpeed);
     }
 
     // Accessor methods

@@ -7,7 +7,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Right Tape to E"
+            "pathName": "Right Jig Wall to E"
           }
         },
         {
@@ -21,11 +21,23 @@
           "data": {
             "pathName": "HP to C"
           }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "C to HP"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "HP to D"
+          }
         }
       ]
     }
   },
   "resetOdom": true,
-  "folder": "Tape Starts",
+  "folder": "Jig Starts",
   "choreoAuto": false
 }

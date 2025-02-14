@@ -7,37 +7,49 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Right Mid Cage to C"
+            "pathName": "Left Jig to J"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "C to Lollipop 1"
+            "pathName": "J to HP"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Lollipop 1 to B"
+            "pathName": "HP to L"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "B to Lollipop 2"
+            "pathName": "L to HP"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Lollipop2 to A"
+            "pathName": "HP to L"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "L to HP"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "HP to L"
           }
         }
       ]
     }
   },
   "resetOdom": true,
-  "folder": "Mid Start",
+  "folder": "Jig Starts",
   "choreoAuto": false
 }

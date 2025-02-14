@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.interpolation.InterpolatingDoubleTreeMap;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.units.Unit;
@@ -127,7 +128,6 @@ public final class Constants {
     public static final double kI = 0.0;
     public static final double kD = 0.0;
     public static final double kFF = 0.0;
-
   }
 
   public static class ElevatorConstants {
@@ -262,7 +262,18 @@ public final class Constants {
     public static final double algaeL2Setpoint = 0.0;
     public static final double processorSetpoint = 0.0;
   }
-
+  public static final class AutoAlign{
+    public static final InterpolatingDoubleTreeMap k1TagStdDevs = new InterpolatingDoubleTreeMap() {{
+        put(1.0, 0.1);
+        put(1.12, 0.5);
+        put(1.33, 1.25);
+        put(1.55, 1.6);
+        put(1.8, 1.9);
+        put(2.02, 2.7);
+        put(2.21, 4.9);
+        put(2.38, 7.0);
+    }};
+  }
   public static final class ClawConstants {
     // TODO: update real values
     public static final double kClawStatorCurrentLimit = 20.0;
@@ -279,8 +290,12 @@ public final class Constants {
     public static final double kCoralSensor2SignalStrength = 0.0;
     public static final double kAlgaeSensorSignalStrength = 0.0;
 
-    public static final double kClawIntakeSpeed = 0.0;
-    public static final double kClawOuttakeSpeed = 0.0;
+    public static final double kCoralIntakeSpeed = 0.0;
+    public static final double kCoralOuttakeSpeed = 0.0;
+    public static final double kCoralSlowIntake = 0.0;
+
+    public static final double kAlgaeIntakeSpeed = 0.0;
+    public static final double kAlgaeOuttakeSpeed = 0.0;
   }
 
   public static final class ClimberConstants {
@@ -329,6 +344,8 @@ public final class Constants {
   }
   
   public static final class FieldConstants {
+    public static final double reefCenterX = 4.5;
+    public static final double reefCenterY = 4.0;
     public static final Map<Integer, Double> kAprilTagHeights = new HashMap<>() {{
       put(1, 58.5);
       put(2, 58.5);
@@ -358,5 +375,4 @@ public final class Constants {
       put(22, 12.125);
     }};
   }
-
 }
