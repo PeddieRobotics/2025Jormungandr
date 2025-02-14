@@ -151,7 +151,7 @@ public class Superstructure extends SubsystemBase {
         }
         if (coralIndex){
           claw.stopClaw();
-          requestState(STOW);
+          requestState(HP_INTAKE);
         } 
 
         if(Arrays.asList(
@@ -179,7 +179,7 @@ public class Superstructure extends SubsystemBase {
 
         if (algaeIndex) {
           claw.holdAlgae();
-          requestState(STOW);
+          requestState(HP_INTAKE);
         }
 
         if(Arrays.asList(
@@ -349,7 +349,7 @@ public class Superstructure extends SubsystemBase {
 
           // stop everything
           claw.stopClaw();
-          requestState(STOW);
+          requestState(HP_INTAKE);
         } 
         // lower arm :)
 
@@ -383,7 +383,7 @@ public class Superstructure extends SubsystemBase {
 
           // stop everything
           claw.stopClaw();
-          requestState(STOW);
+          requestState(HP_INTAKE);
         }
         // lower arm :)
 
@@ -416,7 +416,7 @@ public class Superstructure extends SubsystemBase {
 
           // stop everything
           claw.stopClaw();
-          requestState(STOW);
+          requestState(HP_INTAKE);
         }
         // lower arm :)
 
@@ -450,7 +450,7 @@ public class Superstructure extends SubsystemBase {
 
           // stop everything
           claw.stopClaw();
-          requestState(STOW);
+          requestState(HP_INTAKE);
         }
         // lower arm :)
 
@@ -524,7 +524,7 @@ public class Superstructure extends SubsystemBase {
 
           // stop everything
           claw.stopClaw();
-          requestState(STOW);
+          requestState(HP_INTAKE);
         }
 
         if(Arrays.asList(
@@ -572,7 +572,7 @@ public class Superstructure extends SubsystemBase {
 
           // stop everything
           claw.stopClaw();
-          requestState(STOW);
+          requestState(HP_INTAKE);
         }
 
         if(Arrays.asList(

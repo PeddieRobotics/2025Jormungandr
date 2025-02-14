@@ -2,6 +2,7 @@ package frc.robot.utils;
 
 import edu.wpi.first.wpilibj.PS4Controller;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.subsystems.Superstructure;
@@ -47,7 +48,7 @@ public class DriverOI {
         //circleButton.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.HP_INTAKE)));
 
         Trigger triangleButton = new JoystickButton(controller, PS4Controller.Button.kTriangle.value);
-        //triangleButton.onTrue(new InstantCommand(() -> superstructure.sendToScore()));
+        triangleButton.onTrue(new SequentialCommandGroup(new AlignToReefOdometry(), new InstantCommand(() -> superstructure.sendToScore())));
 
         Trigger squareButton = new JoystickButton(controller, PS4Controller.Button.kSquare.value);
         squareButton.onTrue(new AlignToReefOdometry());
