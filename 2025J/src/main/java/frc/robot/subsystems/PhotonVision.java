@@ -1,19 +1,18 @@
 package frc.robot.subsystems;
 
-import java.lang.constant.Constable;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
+import org.photonvision.EstimatedRobotPose;
 import org.photonvision.PhotonCamera;
 import org.photonvision.PhotonPoseEstimator;
 import org.photonvision.PhotonPoseEstimator.PoseStrategy;
 import org.photonvision.PhotonUtils;
 import org.photonvision.common.hardware.VisionLEDMode;
+import org.photonvision.targeting.MultiTargetPNPResult;
 import org.photonvision.targeting.PhotonPipelineResult;
 import org.photonvision.targeting.PhotonTrackedTarget;
-
-import com.ctre.phoenix6.mechanisms.swerve.LegacySwerveRequest.SwerveDriveBrake;
 
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
@@ -27,7 +26,6 @@ import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.networktables.StructPublisher;
-import edu.wpi.first.networktables.StructTopic;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -36,6 +34,8 @@ import frc.robot.utils.Constants;
 import frc.robot.utils.RollingAverage;
 
 public abstract class PhotonVision extends SubsystemBase {
+    private static AprilTagFieldLayout aprilTagFieldLayout;
+
     private PhotonCamera camera;
     private PhotonPoseEstimator ppe;
     private PhotonPipelineResult result;
@@ -43,8 +43,8 @@ public abstract class PhotonVision extends SubsystemBase {
     private PhotonTrackedTarget bestTarget;
     private RollingAverage txAverage, tyAverage;
     private LinearFilter distTyFilter, distEstimatedPoseFilter;
-    private AprilTagFieldLayout aprilTagFieldLayout;
     private Pose3d estimatedPose;
+    private double reprojectionError;
     
     private String cameraName; 
     
@@ -81,8 +81,9 @@ public abstract class PhotonVision extends SubsystemBase {
         );
         // TODO: maybe try this out??
         // ppe.setMultiTagFallbackStrategy(PoseStrategy.XXX);
-        
+
         estimatedPose = new Pose3d();
+        reprojectionError = Integer.MAX_VALUE;
 
         result = new PhotonPipelineResult();
 
@@ -96,10 +97,8 @@ public abstract class PhotonVision extends SubsystemBase {
         SmartDashboard.putData(cameraName + " estimated pose", field);
 
         publisher = NetworkTableInstance.getDefault().getStructTopic(cameraName + " estimated pose for advantagescope", Pose2d.struct).publish();
-
-        SmartDashboard.putNumber("standard deviation", 50);
     }
-
+    
     @Override 
     public void periodic() {
         List<PhotonPipelineResult> pipelineResults = camera.getAllUnreadResults();
@@ -110,20 +109,26 @@ public abstract class PhotonVision extends SubsystemBase {
         result = pipelineResults.get(0);
         if (!result.hasTargets())
             return;
-
+        
         targets = result.getTargets();
         // sort the list by area / get largest area
         Collections.sort(targets, (o1, o2) -> (int) (o2.getArea() - o1.getArea()));
         bestTarget = targets.get(0);
-        updateRollingAverages();
 
+        updateRollingAverages();
         getEstimatedPoseInternal();
 
         field.setRobotPose(estimatedPose.toPose2d());
         publisher.set(estimatedPose.toPose2d());
 
+        Optional<MultiTargetPNPResult> thing = result.getMultiTagResult();
+        SmartDashboard.putBoolean(cameraName + " has reproj error?", thing.isPresent());
+        if (thing.isPresent())
+            reprojectionError = thing.get().estimatedPose.bestReprojErr;
+
         SmartDashboard.putNumber(cameraName + " distance estimated pose", getDistanceEstimatedPose());
-        SmartDashboard.putNumber(cameraName + " estimated pose Z", estimatedPose.getZ());
+        SmartDashboard.putNumber(cameraName + " reprojection error", reprojectionError);
+        SmartDashboard.putNumber(cameraName + " number of targets", getNumberOfTagsSeen());
     }
 
     // ========================================================
@@ -133,20 +138,22 @@ public abstract class PhotonVision extends SubsystemBase {
     // PLEASE PLEASE do not call this function yourself
     // the PhotonPoseEstimator only occasionally has updates
     // the public getEstimatedPose returns the latest update
-    private void getEstimatedPoseInternal(){
+    private void getEstimatedPoseInternal() {
         if (!hasTarget())
             return;
 
-        var update = ppe.update(result);
-        if (!update.isPresent())
-            return;
-        
-        estimatedPose = update.get().estimatedPose;
+        Optional<EstimatedRobotPose> update = ppe.update(result);
+        if (update.isPresent())
+            estimatedPose = update.get().estimatedPose;
     }
     
     // you should use this for estimated pose
     public Pose2d getEstimatedPose() {
         return estimatedPose.toPose2d();
+    }
+    
+    public double getReprojectionError() {
+        return reprojectionError;
     }
     
     public void fuseEstimatedPose(SwerveDrivePoseEstimator odometry) {
@@ -264,15 +271,8 @@ public abstract class PhotonVision extends SubsystemBase {
         return result.hasTargets();
     }
 
-    public Pose2d getAprilTagPose(int number) {
-        var aprilTagPose = aprilTagFieldLayout.getTagPose(number);
-        if (!aprilTagPose.isPresent())
-            return new Pose2d();
-        return aprilTagPose.get().toPose2d();
-    }
-    
-    public Pose2d getAprilTagPose() {
-        var aprilTagPose = aprilTagFieldLayout.getTagPose(getTargetID());
+    public static Pose2d getAprilTagPose(int tag) {
+        var aprilTagPose = aprilTagFieldLayout.getTagPose(tag);
         if (!aprilTagPose.isPresent())
             return new Pose2d();
         return aprilTagPose.get().toPose2d();

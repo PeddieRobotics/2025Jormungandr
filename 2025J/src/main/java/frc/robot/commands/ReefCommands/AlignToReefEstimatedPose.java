@@ -1,13 +1,13 @@
 package frc.robot.commands.ReefCommands;
 
-import org.ejml.data.DEigenpair;
-import org.opencv.photo.Photo;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.math.kinematics.Odometry;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Drivetrain;
@@ -17,10 +17,18 @@ import frc.robot.subsystems.PVFrontRight;
 import frc.robot.subsystems.PhotonVision;
 import frc.robot.utils.Constants;
 
+class Pair<T, S> {
+    public T first;
+    public S second;
+    public Pair(T first, S second) {
+        this.first = first;
+        this.second = second;
+    }
+}
+
 public class AlignToReefEstimatedPose extends Command {
     private Drivetrain drivetrain;
-    // private PhotonVision[] cameras;
-    private PhotonVision camera;
+    private PhotonVision[] cameras;
 
     private PIDController translatePIDController, rotationPIDController;
 
@@ -36,12 +44,11 @@ public class AlignToReefEstimatedPose extends Command {
 
     public AlignToReefEstimatedPose() {
         drivetrain = Drivetrain.getInstance();
-        // cameras = new PhotonVision[] {
-        //     PVFrontLeft.getInstance(),
-        //     PVFrontMiddle.getInstance(),
-        //     PVFrontRight.getInstance(),
-        // };
-        camera = PVFrontRight.getInstance();
+        cameras = new PhotonVision[] {
+            PVFrontLeft.getInstance(),
+            PVFrontMiddle.getInstance(),
+            PVFrontRight.getInstance(),
+        };
 
         translatePIDController = new PIDController(translateP, translateI, translateD);
         rotationPIDController = new PIDController(rotationP, rotationI, rotationD);
@@ -92,22 +99,54 @@ public class AlignToReefEstimatedPose extends Command {
             SmartDashboard.putNumber("align maxSpeed", maxSpeed);
         }
     }
+    
+    private double cosineSimilarity(Translation2d a, Translation2d b) {
+        return (a.getX() * b.getX() + a.getY() * b.getY()) / (a.getNorm() * b.getNorm());
+    }
 
     @Override
     public void initialize() {
-        // must see tag!
-        PhotonVision pvFrontMiddle = PVFrontMiddle.getInstance();
-        if (!pvFrontMiddle.hasTarget()) {
-            desiredAngle = 0;
-            desiredPose = null;
-            return;
+        /*
+         * desired target algorithm
+         * 1. calculate distance from current odometry to each tag and order list
+         * 2. if lowest is "significantly lower" than second lowest, use lowest (END)
+         * 3. find the robot's current movement vector
+         * 4. find cosine similarity between robot movement vector and vector
+         *      from robot to each of the top 2 tags
+         * 5. use tag with lower cosine similarity
+         */
+
+        // calculate current odometry poes
+        Translation2d odometryPose = drivetrain.getPose().getTranslation();
+        List<Pair<Integer, Translation2d>> robotToTag = new ArrayList<>();
+        
+        // BLUE:
+        for (int i = 17; i <= 22; i++) {
+            Translation2d tagPose = PhotonVision.getAprilTagPose(i).getTranslation();
+            robotToTag.add(new Pair<>(i, tagPose.minus(odometryPose)));
+        }
+        // RED:
+        // for (int i = 6; i <= 11; i++) {
+        //     Translation2d tagPose = PhotonVision.getAprilTagPose(i).getTranslation();
+        //     robotToTag.add(new Pair<>(i, tagPose.minus(odometryPose)));
+        // }
+        
+        Collections.sort(robotToTag, (o1, o2) -> (int) (o2.second.getNorm() - o1.second.getNorm()));
+        
+        int desiredTarget;
+        if (robotToTag.get(0).second.getNorm() - robotToTag.get(1).second.getNorm() >= 0.5)
+            desiredTarget = robotToTag.get(0).first;
+        else {
+            Translation2d robotMovement = drivetrain.getCurrentMovement();
+            double similar0 = cosineSimilarity(robotToTag.get(0).second, robotMovement);
+            double similar1 = cosineSimilarity(robotToTag.get(1).second, robotMovement);
+            desiredTarget = similar0 > similar1 ? robotToTag.get(0).first : robotToTag.get(1).first;
         }
 
-        int desiredTarget = (int) pvFrontMiddle.getTargetID();
         if (Constants.kReefDesiredAngle.containsKey(desiredTarget))
             desiredAngle = Constants.kReefDesiredAngle.get(desiredTarget) + 180;
         
-        Pose2d tagPose = pvFrontMiddle.getAprilTagPose();
+        Pose2d tagPose = PhotonVision.getAprilTagPose(desiredTarget);
         double tagAngle = tagPose.getRotation().getRadians();
 
         tagBackMagnitude = SmartDashboard.getNumber("align tagBackMagnitude", tagBackMagnitude);
@@ -123,7 +162,17 @@ public class AlignToReefEstimatedPose extends Command {
     
     // TODO: find camera with lowest reprojection error
     private Pose2d getBestEstimatedPose() {
-        return new Pose2d();
+        // double bestReprojErr = Integer.MAX_VALUE;
+        // Pose2d bestPose = drivetrain.getPose();
+        // for (PhotonVision camera : cameras) {
+        //     if (!camera.hasTarget())
+        //         continue;
+        //     if (camera.getReprojectionError() < bestReprojErr) {
+        //         bestReprojErr = camera.getReprojectionError();
+        //         bestPose = camera.getEstimatedPose();
+        //     }
+        // }
+        return PVFrontRight.getInstance().getEstimatedPose();
     }
 
     @Override
@@ -169,7 +218,7 @@ public class AlignToReefEstimatedPose extends Command {
         //     return;
         // }
 
-        Pose2d estimatedPose = camera.hasTarget() ? camera.getEstimatedPose() : drivetrain.getPose();
+        Pose2d estimatedPose = getBestEstimatedPose();
 
         double xError = estimatedPose.getX() - desiredPose.getX();
         double yError = estimatedPose.getY() - desiredPose.getY();

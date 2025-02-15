@@ -43,6 +43,8 @@ public class Drivetrain extends SubsystemBase {
 
   private final Field2d fusedOdometry;
   private final StructPublisher<Pose2d> fusedOdometryAdvScope, pureOdometryAdvScope;
+  
+  private Translation2d currentMovement;
 
   public Drivetrain() {
     frontLeftModule = new SwerveModule(RobotMap.CANIVORE_NAME, RobotMap.FRONT_LEFT_MODULE_DRIVE_ID,
@@ -89,6 +91,8 @@ public class Drivetrain extends SubsystemBase {
         builder.addDoubleProperty("Robot Angle", () -> getPose().getRotation().getRadians(), null);
       }
     });
+    
+    currentMovement = new Translation2d();
 
     fusedOdometry = new Field2d();
     SmartDashboard.putData("Fused odometry", fusedOdometry);
@@ -115,6 +119,9 @@ public class Drivetrain extends SubsystemBase {
    * @param centerOfRotation - robot's center of rotation
    */
   public void drive(Translation2d translation, double rotation, boolean fieldOriented, Translation2d centerOfRotation) {
+    if (fieldOriented)
+      currentMovement = translation;
+
     ChassisSpeeds fieldRelativeSpeeds = new ChassisSpeeds(translation.getX(), translation.getY(), rotation);
 
     ChassisSpeeds robotRelativeSpeeds;
@@ -197,6 +204,10 @@ public class Drivetrain extends SubsystemBase {
 
   public double getGyroAccZ(){
     return gyro.getAccelerationZ().getValueAsDouble();
+  }
+  
+  public Translation2d getCurrentMovement() {
+    return currentMovement;
   }
 
   public double getSpeed() {
