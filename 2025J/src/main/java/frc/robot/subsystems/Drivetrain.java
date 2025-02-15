@@ -44,6 +44,8 @@ public class Drivetrain extends SubsystemBase {
 
   private final Field2d fusedOdometry;
 
+  private static int pipelineNumber;
+
   public Drivetrain() {
     frontLeftModule = new SwerveModule(RobotMap.CANIVORE_NAME, RobotMap.FRONT_LEFT_MODULE_DRIVE_ID,
         RobotMap.FRONT_LEFT_MODULE_TURN_ID, RobotMap.FRONT_LEFT_MODULE_CANCODER_ID,
@@ -65,6 +67,8 @@ public class Drivetrain extends SubsystemBase {
 
     gyro = new Pigeon2(RobotMap.GYRO_ID, RobotMap.CANIVORE_NAME);
     gyro.setYaw(0);
+
+    pipelineNumber = 0;
 
     odometry = new SwerveDrivePoseEstimator(DriveConstants.kinematics, getHeadingAsRotation2d(), swerveModulePositions, new Pose2d());
 
@@ -101,6 +105,10 @@ public class Drivetrain extends SubsystemBase {
       instance = new Drivetrain();
     }
     return instance;
+  }
+
+  public static int getPipelineNumber(){
+    return pipelineNumber;
   }
 
   /**
