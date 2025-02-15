@@ -153,8 +153,7 @@ public class LeftAlignScore extends Command {
         Translation2d translation = new Translation2d(xTranslate, yTranslate);
         drivetrain.drive(translation, rotation, true, null);
 
-        //for L4: if it meets the translation threshold + a little bit, then were sending it to L4 PREP. AND we got command to L4 it. 
-        //
+        //for L4: if it meets the translation threshold + a little bit, then were sending it to L4 PREP. AND we got command to L4 it.
     }
 
     @Override
@@ -164,9 +163,9 @@ public class LeftAlignScore extends Command {
 
     @Override
     public boolean isFinished() {
-        //return false;
          return (Math.abs(pvFrontMiddle.getEstimatedPose().getX() - desiredPose.getX()) < translateThreshold) 
-         && (Math.abs(pvFrontMiddle.getEstimatedPose().getY() - desiredPose.getY()) < translateThreshold);
+                    && (Math.abs(pvFrontMiddle.getEstimatedPose().getY() - desiredPose.getY()) < translateThreshold)
+                    && (Math.abs(desiredAngle + drivetrain.getHeading()) < rotationThreshold);
 
     }
 }
