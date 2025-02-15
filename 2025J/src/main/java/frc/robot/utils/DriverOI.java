@@ -50,7 +50,7 @@ public class DriverOI {
         //triangleButton.onTrue(new InstantCommand(() -> superstructure.sendToScore()));
 
         Trigger squareButton = new JoystickButton(controller, PS4Controller.Button.kSquare.value);
-        squareButton.onTrue(new AlignToReefOdometry());
+        squareButton.whileTrue(new AlignToReefOdometry());
         
         Trigger muteButton = new JoystickButton(controller, 15);
         // TODO: add sensor condition

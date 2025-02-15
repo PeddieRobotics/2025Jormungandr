@@ -198,7 +198,6 @@ public class AlignToReef2D extends Command {
     
     double translateX = translation.getX();
     double translateY = translation.getY();
-    
     double translateX_sgn = Math.signum(translateX);
     double translateY_sgn = Math.signum(translateY);
     double desaturatedX = Math.min(Math.abs(translateX), 1);

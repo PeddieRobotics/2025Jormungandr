@@ -19,6 +19,7 @@ public class AlignToReefOdometry extends Command {
     private double translateP, translateI, translateD, translateFF, translateThreshold, translateSetpoint;
     private double rotationP, rotationI, rotationD, rotationFF, rotationThreshold;
     private double rotationLowerP, rotationUseLowerPThreshold;
+    private double maxSpeed;
 
     private Pose2d desiredPose;
     private double tagBackMagnitude, tagLeftMagnitude;
@@ -32,25 +33,27 @@ public class AlignToReefOdometry extends Command {
         translatePIDController = new PIDController(translateP, translateI, translateD);
         rotationPIDController = new PIDController(rotationP, rotationI, rotationD);
         
-        translateP = 2;
+        translateP = 0.8;
         translateI = 0;
         translateD = 0;
         translateFF = 0;
         translateThreshold = 0.0254;
         translateSetpoint = 0;
 
-        rotationP = 0.05;
+        rotationP = 0.15;
         rotationI = 0;
         rotationD = 0;
         rotationFF = 0;
-        rotationThreshold = 0.8;
-        rotationLowerP = 0.03;
+        rotationThreshold = 1;
+        rotationLowerP = 0.09;
         rotationUseLowerPThreshold = 1.5;
         
         // center of robot distance to tag -- back (+ = back, - = forwards)
-        tagBackMagnitude = 0.8;
+        tagBackMagnitude = 0.5;
         // center of robot distance to tag -- left (+ = left, - = right)
-        tagLeftMagnitude = 0.1;
+        tagLeftMagnitude = 0.1651;
+        
+        maxSpeed = 1;
 
         addRequirements(drivetrain);
         
@@ -72,6 +75,8 @@ public class AlignToReefOdometry extends Command {
 
             SmartDashboard.putNumber("align tagBackMagnitude", tagBackMagnitude);
             SmartDashboard.putNumber("align tagLeftMagnitude", tagLeftMagnitude);
+
+            SmartDashboard.putNumber("align maxSpeed", maxSpeed);
         }
     }
 
@@ -81,7 +86,7 @@ public class AlignToReefOdometry extends Command {
 
         int desiredTarget = (int) pvFrontMiddle.getTargetID();
         if (Constants.kReefDesiredAngle.containsKey(desiredTarget))
-            desiredAngle = Constants.kReefDesiredAngle.get(desiredTarget);
+            desiredAngle = Constants.kReefDesiredAngle.get(desiredTarget) + 180;
 
         Pose2d tagPose = pvFrontMiddle.getAprilTagPose();
         double tagAngle = tagPose.getRotation().getRadians();
@@ -114,6 +119,8 @@ public class AlignToReefOdometry extends Command {
             rotationThreshold = SmartDashboard.getNumber("align rotationThreshold", rotationThreshold);
             rotationLowerP = SmartDashboard.getNumber("align rotationLowerP", rotationLowerP);
             rotationUseLowerPThreshold = SmartDashboard.getNumber("align rotationUseLowerPThreshold", rotationUseLowerPThreshold);
+
+            maxSpeed = SmartDashboard.getNumber("align maxSpeed", maxSpeed);
         }
 
         double rotationError = desiredAngle + drivetrain.getHeading();
@@ -130,10 +137,10 @@ public class AlignToReefOdometry extends Command {
         if (Math.abs(rotationError) > rotationThreshold)
           rotation = rotationPIDController.calculate(rotationError) + Math.signum(rotationError) * rotationFF;
         
-        if (!pvFrontMiddle.hasTarget()) {
-            drivetrain.drive(new Translation2d(), rotation, false, null);
-            return;
-        }
+        // if (!pvFrontMiddle.hasTarget()) {
+        //     drivetrain.drive(new Translation2d(), rotation, false, null);
+        //     return;
+        // }
 
         Pose2d estimatedPose = pvFrontMiddle.getEstimatedPose();
 
@@ -150,6 +157,14 @@ public class AlignToReefOdometry extends Command {
             yTranslate = translatePIDController.calculate(yError) + Math.signum(yError) * translateFF;
 
         Translation2d translation = new Translation2d(xTranslate, yTranslate);
+        double translateX = translation.getX();
+        double translateY = translation.getY();
+        double translateX_sgn = Math.signum(translateX);
+        double translateY_sgn = Math.signum(translateY);
+        double desaturatedX = Math.min(Math.abs(translateX), maxSpeed);
+        double desaturatedY = Math.min(Math.abs(translateY), maxSpeed);
+        translation = new Translation2d(translateX_sgn * desaturatedX, translateY_sgn * desaturatedY);
+
         drivetrain.drive(translation, rotation, true, null);
     }
 
