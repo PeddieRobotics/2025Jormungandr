@@ -79,6 +79,8 @@ public abstract class PhotonVision extends SubsystemBase {
             PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR,
             robotToCam
         );
+        // TODO: maybe try this out??
+        // ppe.setMultiTagFallbackStrategy(PoseStrategy.XXX);
         
         estimatedPose = new Pose3d();
 
@@ -91,6 +93,8 @@ public abstract class PhotonVision extends SubsystemBase {
         distEstimatedPoseFilter = LinearFilter.singlePoleIIR(0.24, 0.02);
 
         field = new Field2d();
+        SmartDashboard.putData(cameraName + " estimated pose", field);
+
         publisher = NetworkTableInstance.getDefault().getStructTopic(cameraName + " estimated pose for advantagescope", Pose2d.struct).publish();
 
         SmartDashboard.putNumber("standard deviation", 50);

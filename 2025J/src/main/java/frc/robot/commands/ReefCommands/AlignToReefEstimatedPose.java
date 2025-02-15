@@ -1,19 +1,27 @@
-
 package frc.robot.commands.ReefCommands;
+
+import org.ejml.data.DEigenpair;
+import org.opencv.photo.Photo;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.kinematics.Odometry;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.PVFrontLeft;
 import frc.robot.subsystems.PVFrontMiddle;
+import frc.robot.subsystems.PVFrontRight;
+import frc.robot.subsystems.PhotonVision;
 import frc.robot.utils.Constants;
 
-public class AlignToReefOdometry extends Command {
+public class AlignToReefEstimatedPose extends Command {
     private Drivetrain drivetrain;
-    private PVFrontMiddle pvFrontMiddle;
+    // private PhotonVision[] cameras;
+    private PhotonVision camera;
+
     private PIDController translatePIDController, rotationPIDController;
 
     private double translateP, translateI, translateD, translateFF, translateThreshold, translateSetpoint;
@@ -26,34 +34,39 @@ public class AlignToReefOdometry extends Command {
 
     private double desiredAngle;
 
-    public AlignToReefOdometry() {
+    public AlignToReefEstimatedPose() {
         drivetrain = Drivetrain.getInstance();
-        pvFrontMiddle = PVFrontMiddle.getInstance();
+        // cameras = new PhotonVision[] {
+        //     PVFrontLeft.getInstance(),
+        //     PVFrontMiddle.getInstance(),
+        //     PVFrontRight.getInstance(),
+        // };
+        camera = PVFrontRight.getInstance();
 
         translatePIDController = new PIDController(translateP, translateI, translateD);
         rotationPIDController = new PIDController(rotationP, rotationI, rotationD);
         
-        translateP = 0.8;
+        translateP = 2.0;
         translateI = 0;
         translateD = 0;
         translateFF = 0;
-        translateThreshold = 0.0254;
+        translateThreshold = 0.015;
         translateSetpoint = 0;
 
-        rotationP = 0.15;
+        rotationP = 0.04;
         rotationI = 0;
         rotationD = 0;
         rotationFF = 0;
         rotationThreshold = 1;
-        rotationLowerP = 0.09;
+        rotationLowerP = 0.03;
         rotationUseLowerPThreshold = 1.5;
         
         // center of robot distance to tag -- back (+ = back, - = forwards)
-        tagBackMagnitude = 0.5;
+        tagBackMagnitude = 0.3;
         // center of robot distance to tag -- left (+ = left, - = right)
         tagLeftMagnitude = 0.1651;
         
-        maxSpeed = 1;
+        maxSpeed = 2.0;
 
         addRequirements(drivetrain);
         
@@ -83,11 +96,17 @@ public class AlignToReefOdometry extends Command {
     @Override
     public void initialize() {
         // must see tag!
+        PhotonVision pvFrontMiddle = PVFrontMiddle.getInstance();
+        if (!pvFrontMiddle.hasTarget()) {
+            desiredAngle = 0;
+            desiredPose = null;
+            return;
+        }
 
         int desiredTarget = (int) pvFrontMiddle.getTargetID();
         if (Constants.kReefDesiredAngle.containsKey(desiredTarget))
             desiredAngle = Constants.kReefDesiredAngle.get(desiredTarget) + 180;
-
+        
         Pose2d tagPose = pvFrontMiddle.getAprilTagPose();
         double tagAngle = tagPose.getRotation().getRadians();
 
@@ -100,6 +119,11 @@ public class AlignToReefOdometry extends Command {
             tagPose.getY() + tagBackMagnitude * Math.sin(tagAngle) - tagLeftMagnitude * Math.cos(tagAngle),
             new Rotation2d(0)
         );
+    }
+    
+    // TODO: find camera with lowest reprojection error
+    private Pose2d getBestEstimatedPose() {
+        return new Pose2d();
     }
 
     @Override
@@ -122,6 +146,9 @@ public class AlignToReefOdometry extends Command {
 
             maxSpeed = SmartDashboard.getNumber("align maxSpeed", maxSpeed);
         }
+        
+        if (desiredPose == null)
+            return;
 
         double rotationError = desiredAngle + drivetrain.getHeading();
 
@@ -142,7 +169,7 @@ public class AlignToReefOdometry extends Command {
         //     return;
         // }
 
-        Pose2d estimatedPose = pvFrontMiddle.getEstimatedPose();
+        Pose2d estimatedPose = camera.hasTarget() ? camera.getEstimatedPose() : drivetrain.getPose();
 
         double xError = estimatedPose.getX() - desiredPose.getX();
         double yError = estimatedPose.getY() - desiredPose.getY();
@@ -175,6 +202,6 @@ public class AlignToReefOdometry extends Command {
 
     @Override
     public boolean isFinished() {
-        return false;
+        return desiredPose == null;
     }
 }
