@@ -5,9 +5,8 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.subsystems.Superstructure;
-import frc.robot.subsystems.Superstructure.SuperstructureState;
 import edu.wpi.first.math.geometry.Translation2d;
-import frc.robot.commands.ReefCommands.AlignToReefOdometry;
+import frc.robot.commands.ReefCommands.AlignToReefEstimatedPose;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.PVFrontMiddle;
 import frc.robot.utils.Constants.DriveConstants;
@@ -50,7 +49,7 @@ public class DriverOI {
         //triangleButton.onTrue(new InstantCommand(() -> superstructure.sendToScore()));
 
         Trigger squareButton = new JoystickButton(controller, PS4Controller.Button.kSquare.value);
-        squareButton.whileTrue(new AlignToReefOdometry());
+        squareButton.whileTrue(new AlignToReefEstimatedPose());
         
         Trigger muteButton = new JoystickButton(controller, 15);
         // TODO: add sensor condition

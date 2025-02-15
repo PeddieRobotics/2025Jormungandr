@@ -1,9 +1,6 @@
 package frc.robot.utils;
 
-import com.ctre.phoenix6.swerve.SwerveModule;
-
 import edu.wpi.first.math.kinematics.SwerveModuleState;
-import edu.wpi.first.networktables.DoubleEntry;
 import edu.wpi.first.util.datalog.BooleanLogEntry;
 import edu.wpi.first.util.datalog.DataLog;
 import edu.wpi.first.util.datalog.DoubleArrayLogEntry;

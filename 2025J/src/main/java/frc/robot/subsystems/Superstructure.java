@@ -4,20 +4,13 @@
 
 package frc.robot.subsystems;
 
-import java.security.DrbgParameters.NextBytes;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
 import java.util.Arrays;
 
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.utils.Constants.ArmConstants;
-import frc.robot.utils.Constants.ElevatorConstants;
 import frc.robot.utils.Constants.ScoreConstants;
+
 import static frc.robot.subsystems.Superstructure.SuperstructureState.*;
 
 public class Superstructure extends SubsystemBase {

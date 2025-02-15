@@ -10,7 +10,6 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.utils.RobotMap;
-import frc.robot.utils.Constants.IntakeConstants;
 
 public class Lights extends SubsystemBase {
     private enum LightState {

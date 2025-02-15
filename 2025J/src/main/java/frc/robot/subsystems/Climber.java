@@ -1,7 +1,6 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Robot;
 import frc.robot.utils.Constants.ClimberConstants;
 import frc.robot.utils.Kraken;
 import frc.robot.utils.RobotMap;

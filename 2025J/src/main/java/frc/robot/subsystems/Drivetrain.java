@@ -4,8 +4,6 @@
 
 package frc.robot.subsystems;
 
-import java.lang.reflect.Array;
-import java.util.ArrayList;
 import java.util.Arrays;
 
 import com.ctre.phoenix6.hardware.Pigeon2;
@@ -25,7 +23,6 @@ import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.utils.Constants;
 import frc.robot.utils.Constants.DriveConstants;
 import frc.robot.utils.RobotMap;
 

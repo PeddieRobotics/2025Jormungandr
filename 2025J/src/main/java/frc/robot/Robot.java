@@ -6,8 +6,6 @@ package frc.robot;
 
 import frc.robot.utils.Logger;
 
-import javax.xml.crypto.Data;
-
 import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
