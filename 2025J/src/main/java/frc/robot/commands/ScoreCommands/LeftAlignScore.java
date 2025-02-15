@@ -84,7 +84,7 @@ public class LeftAlignScore extends Command {
         if (Constants.kReefDesiredAngle.containsKey(desiredTarget))
             desiredAngle = Constants.kReefDesiredAngle.get(desiredTarget);
 
-        Pose2d tagPose = pvFrontMiddle.getAprilTagPose();
+        Pose2d tagPose = pvFrontMiddle.getAprilTagPose(); 
         double tagAngle = tagPose.getRotation().getRadians();
 
         tagBackMagnitude = SmartDashboard.getNumber("align tagBackMagnitude", tagBackMagnitude);
@@ -152,6 +152,9 @@ public class LeftAlignScore extends Command {
 
         Translation2d translation = new Translation2d(xTranslate, yTranslate);
         drivetrain.drive(translation, rotation, true, null);
+
+        //for L4: if it meets the translation threshold + a little bit, then were sending it to L4 PREP. AND we got command to L4 it. 
+        //
     }
 
     @Override
@@ -161,6 +164,9 @@ public class LeftAlignScore extends Command {
 
     @Override
     public boolean isFinished() {
-        return false;
+        //return false;
+         return (Math.abs(pvFrontMiddle.getEstimatedPose().getX() - desiredPose.getX()) < translateThreshold) 
+         && (Math.abs(pvFrontMiddle.getEstimatedPose().getY() - desiredPose.getY()) < translateThreshold);
+
     }
 }
