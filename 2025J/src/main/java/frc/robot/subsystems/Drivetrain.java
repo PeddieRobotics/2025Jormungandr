@@ -18,6 +18,8 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.networktables.StructPublisher;
 import edu.wpi.first.util.sendable.Sendable;
 import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
@@ -35,7 +37,7 @@ public class Drivetrain extends SubsystemBase {
 
   private SwerveModuleState[] swerveModuleStates;
   private SwerveModulePosition[] swerveModulePositions;
-  private SwerveDrivePoseEstimator odometry;
+  private SwerveDrivePoseEstimator odometry, pureOdometry;
 
   private double currentDrivetrainSpeed = 0;
 
@@ -43,6 +45,7 @@ public class Drivetrain extends SubsystemBase {
   private double heading;
 
   private final Field2d fusedOdometry;
+  private final StructPublisher<Pose2d> fusedOdometryAdvScope, pureOdometryAdvScope;
 
   public Drivetrain() {
     frontLeftModule = new SwerveModule(RobotMap.CANIVORE_NAME, RobotMap.FRONT_LEFT_MODULE_DRIVE_ID,
@@ -67,6 +70,7 @@ public class Drivetrain extends SubsystemBase {
     gyro.setYaw(0);
 
     odometry = new SwerveDrivePoseEstimator(DriveConstants.kinematics, getHeadingAsRotation2d(), swerveModulePositions, new Pose2d());
+    pureOdometry = new SwerveDrivePoseEstimator(DriveConstants.kinematics, getHeadingAsRotation2d(), swerveModulePositions, new Pose2d());
 
     SmartDashboard.putData("Swerve Drive", new Sendable() {
       @Override
@@ -91,6 +95,8 @@ public class Drivetrain extends SubsystemBase {
 
     fusedOdometry = new Field2d();
     SmartDashboard.putData("Fused odometry", fusedOdometry);
+    fusedOdometryAdvScope = NetworkTableInstance.getDefault().getStructTopic("fused odometry for advantagescope", Pose2d.struct).publish();
+    pureOdometryAdvScope = NetworkTableInstance.getDefault().getStructTopic("nonfused odometry for advantagescope", Pose2d.struct).publish();
   }
 
   /**
@@ -153,11 +159,12 @@ public class Drivetrain extends SubsystemBase {
   }
 
   public void updateOdometry() {
-    odometry.update(getHeadingAsRotation2d(), swerveModulePositions);
     // PVBack.getInstance().fuseEstimatedPose(odometry);
     PVFrontLeft.getInstance().fuseEstimatedPose(odometry);
     PVFrontMiddle.getInstance().fuseEstimatedPose(odometry);
     PVFrontRight.getInstance().fuseEstimatedPose(odometry);
+    odometry.update(getHeadingAsRotation2d(), swerveModulePositions);
+    pureOdometry.update(getHeadingAsRotation2d(), swerveModulePositions);
     // PVLeft.getInstance().fuseEstimatedPose(odometry);
   }
   public void setSwerveModuleStates(SwerveModuleState[] desiredModuleStates) {
@@ -210,6 +217,9 @@ public class Drivetrain extends SubsystemBase {
 
   public void resetTranslation(Translation2d translation) {
     odometry.resetTranslation(translation);
+  }
+  public void resetPureOdometryTranslation(Translation2d translation) {
+    pureOdometry.resetTranslation(translation);
   }
 
   public ChassisSpeeds getRobotRelativeSpeeds() {
@@ -276,6 +286,8 @@ public class Drivetrain extends SubsystemBase {
     updateModulePositions();
     updateOdometry();
     fusedOdometry.setRobotPose(odometry.getEstimatedPosition());
+    fusedOdometryAdvScope.set(odometry.getEstimatedPosition());
+    pureOdometryAdvScope.set(pureOdometry.getEstimatedPosition());
 
     for(int i = 0; i < 4; i++){
       // SmartDashboard.putNumber("module " + i +"desired speed", swerveModuleStates[i].speedMetersPerSecond);

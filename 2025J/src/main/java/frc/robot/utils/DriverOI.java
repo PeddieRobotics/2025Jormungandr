@@ -106,6 +106,7 @@ public class DriverOI {
         optionButton.onTrue(new InstantCommand(() -> Drivetrain.getInstance().resetTranslation(PVFrontMiddle.getInstance().getEstimatedPose().getTranslation())));
         
         Trigger shareButton = new JoystickButton(controller, PS4Controller.Button.kShare.value);
+        shareButton.onTrue(new InstantCommand(() -> Drivetrain.getInstance().resetPureOdometryTranslation(PVFrontMiddle.getInstance().getEstimatedPose().getTranslation())));
     }
 
     public boolean bothBumpersHeld() {

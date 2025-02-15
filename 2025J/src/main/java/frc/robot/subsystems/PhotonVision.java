@@ -25,6 +25,9 @@ import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation3d;
+import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.networktables.StructPublisher;
+import edu.wpi.first.networktables.StructTopic;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -35,19 +38,21 @@ import frc.robot.utils.RollingAverage;
 public abstract class PhotonVision extends SubsystemBase {
     private PhotonCamera camera;
     private PhotonPoseEstimator ppe;
-    private Field2d field;
     private PhotonPipelineResult result;
     private List<PhotonTrackedTarget> targets;
     private PhotonTrackedTarget bestTarget;
     private RollingAverage txAverage, tyAverage;
     private LinearFilter distTyFilter, distEstimatedPoseFilter;
     private AprilTagFieldLayout aprilTagFieldLayout;
-    private Pose2d estimatedPose;
+    private Pose3d estimatedPose;
     
     private String cameraName; 
     
     private double cameraForwardOffset, cameraLeftOffset, cameraUpOffset;
     private double cameraPitchRadians, cameraYawRadians;
+    
+    private Field2d field;
+    private StructPublisher<Pose2d> publisher;
 
     // TODO: check if directions are right (specifically if cameraPitchRadians positive means up or down)
     protected PhotonVision(String cameraName, double cameraForwardOffset,
@@ -75,18 +80,20 @@ public abstract class PhotonVision extends SubsystemBase {
             robotToCam
         );
         
-        estimatedPose = new Pose2d();
+        estimatedPose = new Pose3d();
 
-        field = new Field2d();
         result = new PhotonPipelineResult();
-
-        SmartDashboard.putData(cameraName + " estimated pose", field);
 
         txAverage = new RollingAverage();
         tyAverage = new RollingAverage();
 
         distTyFilter = LinearFilter.singlePoleIIR(0.24, 0.02);
         distEstimatedPoseFilter = LinearFilter.singlePoleIIR(0.24, 0.02);
+
+        field = new Field2d();
+        publisher = NetworkTableInstance.getDefault().getStructTopic(cameraName + " estimated pose for advantagescope", Pose2d.struct).publish();
+
+        SmartDashboard.putNumber("standard deviation", 50);
     }
 
     @Override 
@@ -107,7 +114,12 @@ public abstract class PhotonVision extends SubsystemBase {
         updateRollingAverages();
 
         getEstimatedPoseInternal();
-        field.setRobotPose(estimatedPose);
+
+        field.setRobotPose(estimatedPose.toPose2d());
+        publisher.set(estimatedPose.toPose2d());
+
+        SmartDashboard.putNumber(cameraName + " distance estimated pose", getDistanceEstimatedPose());
+        SmartDashboard.putNumber(cameraName + " estimated pose Z", estimatedPose.getZ());
     }
 
     // ========================================================
@@ -125,37 +137,51 @@ public abstract class PhotonVision extends SubsystemBase {
         if (!update.isPresent())
             return;
         
-        estimatedPose = update.get().estimatedPose.toPose2d();
+        estimatedPose = update.get().estimatedPose;
     }
     
     // you should use this for estimated pose
     public Pose2d getEstimatedPose() {
-        return estimatedPose;
+        return estimatedPose.toPose2d();
     }
     
     public void fuseEstimatedPose(SwerveDrivePoseEstimator odometry) {
-        int numTagsSeen = getNumberOfTagsSeen();
-        if (!hasTarget()){
+        if (!hasTarget())
             return;
-        }
+        if (Math.abs(estimatedPose.getZ()) > 0.4)
+            return;
 
-        Pose2d estimatedPose = getEstimatedPose();
+        int numTagsSeen = getNumberOfTagsSeen();
+        double distance = getDistanceEstimatedPose();
+
+        if (numTagsSeen == 1 && distance > 1.3)
+            return; 
+        
+        // this may not even be necessary
+        if (numTagsSeen >= 2 && distance > 3.3)
+            return;    
+            
+        Pose2d odoCurrent = odometry.getEstimatedPosition();
+        Pose2d estimatedPose2d = estimatedPose.toPose2d();
+
+        double distX = estimatedPose2d.getX() - odoCurrent.getX();
+        double distY = estimatedPose2d.getY() - odoCurrent.getY();
+        if (Math.sqrt((distX * distX) + (distY * distY)) > 3)
+            return;
+
+        double deviation;
+        if (numTagsSeen == 1)
+            deviation = Constants.AutoAlign.k1TagStdDevs.get(distance);
+        else
+            deviation = Constants.AutoAlign.k2TagStdDevs.get(distance);
+        
+        odometry.setVisionMeasurementStdDevs(VecBuilder.fill(
+            deviation, deviation, 30
+        ));
+
         double latency = getTotalLatencyInMS();
         double timestampLatencyComp = Timer.getFPGATimestamp() - latency / 1000.0;
-
-        double distance = getDistanceEstimatedPose();
-        double deviation = 100;
-        
-        if (numTagsSeen == 1){
-            deviation = Constants.AutoAlign.k1TagStdDevs.get(distance);
-            // TODO
-        } else {
-            deviation = Constants.AutoAlign.k1TagStdDevs.get(distance) * 0.8;
-        }
-        odometry.setVisionMeasurementStdDevs(VecBuilder.fill(
-            deviation, deviation, 100000
-        ));
-        odometry.addVisionMeasurement(estimatedPose, timestampLatencyComp);
+        odometry.addVisionMeasurement(estimatedPose2d, timestampLatencyComp);
 
     }
 

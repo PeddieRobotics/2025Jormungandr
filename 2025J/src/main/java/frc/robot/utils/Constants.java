@@ -264,14 +264,29 @@ public final class Constants {
   }
   public static final class AutoAlign{
     public static final InterpolatingDoubleTreeMap k1TagStdDevs = new InterpolatingDoubleTreeMap() {{
-        put(1.0, 0.1);
-        put(1.12, 0.5);
-        put(1.33, 1.25);
-        put(1.55, 1.6);
-        put(1.8, 1.9);
-        put(2.02, 2.7);
-        put(2.21, 4.9);
-        put(2.38, 7.0);
+        put(0.0, 0.1);
+        put(0.4, 0.1);
+        put(0.53, 0.15);
+        put(0.64, 0.25);
+        put(0.74, 0.3);
+        put(0.8, 0.4);
+        put(0.85, 0.5);
+        put(0.89, 0.55);
+        put(0.93, 0.7);
+        put(0.94, 1.2);
+        put(1.0, 1.4);
+        put(1.1, 1.6);
+        put(1.25, 2.5);
+    }};
+
+    public static final InterpolatingDoubleTreeMap k2TagStdDevs = new InterpolatingDoubleTreeMap() {{
+        put(0.0, 0.3);
+        put(1.5, 0.5);
+        put(2.5, 0.7);
+        put(3.5, 0.9);
+        // put(2.0, 0.2);
+        // put(2.5, 0.3);
+        // put(3.0, 0.5);
     }};
   }
 
@@ -339,9 +354,9 @@ public final class Constants {
     // 3G: 10.58.95.90
     public static final String kFrontLeftCamName = "front-left-cam";
     public static final double kFrontLeftCamForward = 7.7188 * 0.0254 * -1;
-    public static final double kFrontLeftCamLeftOffset = 6.48511 * 0.0254 * -1;
+    public static final double kFrontLeftCamLeftOffset = 6.625 * 0.0254 * -1;
     public static final double kFrontLeftCamUpOffset = 6.9909 * 0.0254;
-    public static final double kFrontLeftCamPitchDeg = 0;
+    public static final double kFrontLeftCamPitchDeg = 16;
     public static final double kFrontLeftCamYawDeg = 180;
     public static final int kFrontLeftCamPipeline = 0;
 
@@ -350,16 +365,16 @@ public final class Constants {
     public static final double kFrontMiddleCamForward = 7.7188 * 0.0254 * -1;
     public static final double kFrontMiddleCamLeftOffset = 0;
     public static final double kFrontMiddleCamUpOffset = 6.9909 * 0.0254;
-    public static final double kFrontMiddleCamPitchDeg = 0;
+    public static final double kFrontMiddleCamPitchDeg = 16;
     public static final double kFrontMiddleCamYawDeg = 180;
     public static final int kFrontMiddleCamPipeline = 0;
 
     // 3G: 10.58.95.91
     public static final String kFrontRightCamName = "front-right-cam";
     public static final double kFrontRightCamForward = 7.7188 * 0.0254 * -1;
-    public static final double kFrontRightCamLeftOffset = -6.4909 * 0.0254 * -1;
+    public static final double kFrontRightCamLeftOffset = -6.5 * 0.0254 * -1;
     public static final double kFrontRightCamUpOffset = 6.9909 * 0.0254;
-    public static final double kFrontRightCamPitchDeg = 0;
+    public static final double kFrontRightCamPitchDeg = 16;
     public static final double kFrontRightCamYawDeg = 180;
     public static final int kFrontRightCamPipeline = 0;
 
