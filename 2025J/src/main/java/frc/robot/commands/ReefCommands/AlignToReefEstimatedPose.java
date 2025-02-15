@@ -17,12 +17,15 @@ import frc.robot.subsystems.PVFrontRight;
 import frc.robot.subsystems.PhotonVision;
 import frc.robot.utils.Constants;
 
-class Pair<T, S> {
-    public T first;
-    public S second;
-    public Pair(T first, S second) {
-        this.first = first;
-        this.second = second;
+class IDVectorPair {
+    public int id;
+    public Translation2d vector;
+    public IDVectorPair(int id, Translation2d vector) {
+        this.id = id;
+        this.vector = vector;
+    }
+    public String toString() {
+        return id + ": " + vector.getNorm();
     }
 }
 
@@ -118,12 +121,12 @@ public class AlignToReefEstimatedPose extends Command {
 
         // calculate current odometry poes
         Translation2d odometryPose = drivetrain.getPose().getTranslation();
-        List<Pair<Integer, Translation2d>> robotToTag = new ArrayList<>();
+        List<IDVectorPair> robotToTag = new ArrayList<>();
         
         // BLUE:
         for (int i = 17; i <= 22; i++) {
             Translation2d tagPose = PhotonVision.getAprilTagPose(i).getTranslation();
-            robotToTag.add(new Pair<>(i, tagPose.minus(odometryPose)));
+            robotToTag.add(new IDVectorPair(i, odometryPose.minus(tagPose)));
         }
         // RED:
         // for (int i = 6; i <= 11; i++) {
@@ -131,16 +134,23 @@ public class AlignToReefEstimatedPose extends Command {
         //     robotToTag.add(new Pair<>(i, tagPose.minus(odometryPose)));
         // }
         
-        Collections.sort(robotToTag, (o1, o2) -> (int) (o2.second.getNorm() - o1.second.getNorm()));
+        Collections.sort(robotToTag, (o1, o2) -> (
+            ((Double) o1.vector.getNorm()).compareTo(o2.vector.getNorm())
+        ));
+        SmartDashboard.putString("thingy thingy", robotToTag.toString());
         
         int desiredTarget;
-        if (robotToTag.get(0).second.getNorm() - robotToTag.get(1).second.getNorm() >= 0.5)
-            desiredTarget = robotToTag.get(0).first;
+        if (robotToTag.get(0).vector.getNorm() - robotToTag.get(1).vector.getNorm() >= 0.35)
+            desiredTarget = robotToTag.get(0).id;
         else {
             Translation2d robotMovement = drivetrain.getCurrentMovement();
-            double similar0 = cosineSimilarity(robotToTag.get(0).second, robotMovement);
-            double similar1 = cosineSimilarity(robotToTag.get(1).second, robotMovement);
-            desiredTarget = similar0 > similar1 ? robotToTag.get(0).first : robotToTag.get(1).first;
+            if (robotMovement.getNorm() == 0)
+                desiredTarget = robotToTag.get(0).id;
+            else {
+                double similar0 = cosineSimilarity(robotToTag.get(0).vector, robotMovement);
+                double similar1 = cosineSimilarity(robotToTag.get(1).vector, robotMovement);
+                desiredTarget = similar0 > similar1 ? robotToTag.get(0).id : robotToTag.get(1).id;
+            }
         }
 
         if (Constants.kReefDesiredAngle.containsKey(desiredTarget))
@@ -158,6 +168,8 @@ public class AlignToReefEstimatedPose extends Command {
             tagPose.getY() + tagBackMagnitude * Math.sin(tagAngle) - tagLeftMagnitude * Math.cos(tagAngle),
             new Rotation2d(0)
         );
+        
+        SmartDashboard.putNumber("align desired tag", desiredTarget);
     }
     
     // TODO: find camera with lowest reprojection error

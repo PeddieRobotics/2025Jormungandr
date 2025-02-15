@@ -112,7 +112,9 @@ public abstract class PhotonVision extends SubsystemBase {
         
         targets = result.getTargets();
         // sort the list by area / get largest area
-        Collections.sort(targets, (o1, o2) -> (int) (o2.getArea() - o1.getArea()));
+        Collections.sort(targets, (o1, o2) -> (
+            ((Double) o2.getArea()).compareTo(o1.getArea())
+        ));
         bestTarget = targets.get(0);
 
         updateRollingAverages();
