@@ -105,7 +105,7 @@ public class Arm extends SubsystemBase{
     /**
      * Commands armMotor to a designated position with position voltage PID (closed loop control)
      * 
-     * @param position - commanded motor position (motor encoder units)
+     * @param position - commanded motor position (cancoder units)
      */
     public void setArmPositionVoltage(double position){
         armSetpoint.set(position);
@@ -115,7 +115,7 @@ public class Arm extends SubsystemBase{
     /**
      * Commands armMotor to a designated position with MotionMagic voltage (closed loop control)
      * 
-     * @param position - commanded motor position (motor encoder units)
+     * @param position - commanded motor position (cancoder units)
      */
     public void setArmPositionMotionMagicVoltage(double position){
         armSetpoint.set(position);
@@ -125,7 +125,7 @@ public class Arm extends SubsystemBase{
     /**
      * Commands armMotor to a designated position with MotionMagic TorqueCurrentFOC (closed loop control)
      * 
-     * @param position - commanded motor position (motor encoder units)
+     * @param position - commanded motor position (cancoder units)
      */
     public void setArmPositionMotionMagicTorqueCurrentFOC(double position){
         armSetpoint.set(position);
