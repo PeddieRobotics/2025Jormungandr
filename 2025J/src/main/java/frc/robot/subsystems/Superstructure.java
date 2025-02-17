@@ -702,42 +702,42 @@ public class Superstructure extends SubsystemBase {
   public void sendToScore() {
     switch (systemState) {
       case L1_PREP -> {
-        if (arm.isAtAngle(ScoreConstants.kArmL1ScorePosition) && elevator.isAtHeight(ScoreConstants.kElevatorL1ScorePosition)){
+        if (arm.isAtAngle(ScoreConstants.kArmL1ScorePosition) && elevator.isAtPosition(ScoreConstants.kElevatorL1ScorePosition)){
           requestState(L1_SCORE);
           timer.reset();
         }
       }
         
       case L2_PREP -> {
-        if (arm.isAtAngle(ScoreConstants.kArmL2ScorePosition) && elevator.isAtHeight(ScoreConstants.kElevatorL2ScorePosition)){
+        if (arm.isAtAngle(ScoreConstants.kArmL2ScorePosition) && elevator.isAtPosition(ScoreConstants.kElevatorL2ScorePosition)){
           requestState(L2_SCORE);
           timer.reset();
         } 
       }
         
       case L3_PREP -> {
-        if (arm.isAtAngle(ScoreConstants.kArmL3ScorePosition) && elevator.isAtHeight(ScoreConstants.kElevatorL3ScorePosition)){
+        if (arm.isAtAngle(ScoreConstants.kArmL3ScorePosition) && elevator.isAtPosition(ScoreConstants.kElevatorL3ScorePosition)){
           requestState(L3_SCORE);
           timer.reset();
         }
       }
         
       case L4_PREP -> {
-        if (arm.isAtAngle(ScoreConstants.kArmL4ScorePosition) && elevator.isAtHeight(ScoreConstants.kElevatorL4ScorePosition)){
+        if (arm.isAtAngle(ScoreConstants.kArmL4ScorePosition) && elevator.isAtPosition(ScoreConstants.kElevatorL4ScorePosition)){
           requestState(L4_SCORE);
           timer.reset();
         }
       }
         
       case PROCESSOR_PREP -> {
-        if (arm.isAtAngle(ScoreConstants.kArmProcessorScorePosition) && elevator.isAtHeight(ScoreConstants.kElevatorProcessorScorePosition)){
+        if (arm.isAtAngle(ScoreConstants.kArmProcessorScorePosition) && elevator.isAtPosition(ScoreConstants.kElevatorProcessorScorePosition)){
           requestState(PROCESSOR_SCORE);
           timer.reset();
         }
       }
         
       case BARGE_PREP -> {
-        if (arm.isAtAngle(ScoreConstants.kArmBargeScorePosition)&& elevator.isAtHeight(ScoreConstants.kElevatorBargeScorePosition)){
+        if (arm.isAtAngle(ScoreConstants.kArmBargeScorePosition)&& elevator.isAtPosition(ScoreConstants.kElevatorBargeScorePosition)){
           requestState(BARGE_SCORE);
           timer.reset();
         }

@@ -154,7 +154,7 @@ public final class Constants {
     public static final double kD = 0.0; 
     public static final double kFF = 0.0; 
 
-    public static final double kElevatorHeightEpsilon = 0.0;
+    public static final double kElevatorPositionEpsilon = 0.0;
     public static final double kElevatorL1Height = 0.0;
     public static final double kElevatorL2Height = 0.0;
     public static final double kElevatorL3Height = 0.0;

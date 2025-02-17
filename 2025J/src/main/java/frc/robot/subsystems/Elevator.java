@@ -183,13 +183,8 @@ public class Elevator extends SubsystemBase {
         return bottomLimitSwitch.get();
     }
 
-    public double getElevatorHeight() {
-        // TODO: implement this code
-        return 0;
-    }
-
-    public boolean isAtHeight(double targetHeight) {
-        return Math.abs(getElevatorHeight() - targetHeight) < ElevatorConstants.kElevatorHeightEpsilon;
+    public boolean isAtPosition(double desiredPosition) {
+        return Math.abs(getElevatorCANcoderReading() - desiredPosition) < ElevatorConstants.kElevatorPositionEpsilon;
     }
 
     /**
