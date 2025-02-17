@@ -28,17 +28,18 @@ import edu.wpi.first.units.Unit;
 public final class Constants {
   public static class AutoConstants {
     // TODO: update or real values (Default was TranslationP = ThetaP = 5.0)
-    public static final double kTranslationP = 0.0;
+    public static final double kTranslationP = 5.0;
     public static final double kTranslationI = 0.0;
     public static final double kTranslationD = 0.0;
 
-    public static final double kThetaP = 0.0;
+    public static final double kThetaP = 5.0;
     public static final double kThetaI = 0.0;
     public static final double kThetaD = 0.0;
   }
 
-  public static class OperatorConstants {
+  public static class OIConstants {
     public static final int kDriverControllerPort = 0;
+    public static final int kOperatorControllerPort = 1;
   }
 
   public static class ModuleConstants {
