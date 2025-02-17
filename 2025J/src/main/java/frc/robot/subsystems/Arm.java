@@ -177,7 +177,7 @@ public class Arm extends SubsystemBase{
      * @return arm motor angle
      */
     public double getArmAngleDegrees() {
-        return armMotor.getPosition() / ArmConstants.kArmReduction;
+        return getAbsoluteCANcoderPosition() * 360.0;
     }
 
     public boolean isAtAngle(double targetAngle) {
