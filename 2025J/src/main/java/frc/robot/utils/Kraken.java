@@ -629,8 +629,7 @@ public class Kraken {
     /**
      * put info about motor onto smart dashboard, including CANbus name and device CANId (diagnostics)
      */
-    public void updateSmartdashBoard() {
+    public void updateSmartDashboard() {
         SmartDashboard.putNumber(canbusName + " " + deviceID + " motor", 1);
     }
-
 }
