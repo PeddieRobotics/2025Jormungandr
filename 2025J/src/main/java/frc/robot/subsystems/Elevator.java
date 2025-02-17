@@ -76,6 +76,8 @@ public class Elevator extends SubsystemBase {
         elevatorCANcoder.getConfigurator().apply(config); 
 
         elevatorMainMotor.setFeedbackDevice(RobotMap.ELEVATOR_CANCODER_ID, FeedbackSensorSourceValue.FusedCANcoder);
+        elevatorMainMotor.setRotorToSensorRatio(ElevatorConstants.kElevatorRotorToSensorRatio);
+        elevatorMainMotor.setSensorToMechanismRatio(ElevatorConstants.kElevatorSensortoMechanismRatio);
 
         kP = new TunableConstant(ElevatorConstants.kP, "Elevator kP");
         kI = new TunableConstant(ElevatorConstants.kI, "Elevator kI");
