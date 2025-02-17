@@ -415,5 +415,7 @@ public final class Constants {
       put(21, 12.125);
       put(22, 12.125);
     }};
+
+    public static final double kCageDesiredAngle = 0;
   }
 }
