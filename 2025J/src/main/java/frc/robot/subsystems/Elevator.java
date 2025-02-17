@@ -18,7 +18,6 @@ public class Elevator extends SubsystemBase {
     private static Elevator elevator;
     private Kraken elevatorMainMotor, elevatorFollowerMotor;
     private CANcoder elevatorCANcoder;
-    private DigitalInput bottomLimitSwitch;
     private TunableConstant kP, kS, kV, kI, kD, kFF, kA,
             kElevatorMaxCruiseVelocity, kElevatorMaxCruiseAcceleration, kElevatorMaxCruiseJerk,
             kElevatorForwardSoftLimit, kElevatorReverseSoftLimit,
@@ -66,8 +65,6 @@ public class Elevator extends SubsystemBase {
                 ElevatorConstants.kElevatorReverseSoftLimit);
         elevatorFollowerMotor.setSoftLimits(true, ElevatorConstants.kElevatorForwardSoftLimit,
                 ElevatorConstants.kElevatorReverseSoftLimit);
-
-        bottomLimitSwitch = new DigitalInput(RobotMap.ELEVATOR_LIMIT_SWITCH_ID);
 
         elevatorCANcoder = new CANcoder(RobotMap.ELEVATOR_CANCODER_ID);
         CANcoderConfiguration config = new CANcoderConfiguration();
@@ -175,14 +172,7 @@ public class Elevator extends SubsystemBase {
     public double getElevatorCANcoderReading() {
         return elevatorCANcoder.getPosition().getValueAsDouble();
     }
-
-    /**
-     * @return whether elevator bottom limit switch is triggered
-     */
-    public boolean getBottomLimitSwitch() {
-        return bottomLimitSwitch.get();
-    }
-
+    
     public boolean isAtPosition(double desiredPosition) {
         return Math.abs(getElevatorCANcoderReading() - desiredPosition) < ElevatorConstants.kElevatorPositionEpsilon;
     }
