@@ -98,19 +98,19 @@ public class Elevator extends SubsystemBase {
                 "Elevator kElevatorMaxCruiseJerk");
         kElevatorMaxCruiseAcceleration = new TunableConstant(ElevatorConstants.kElevatorMaxCruiseAcceleration,
                 "Elevator kElevatorMaxCruiseAcceleration");
-        L1Setpoint = new TunableConstant(ElevatorConstants.L1Setpoint, "Elevator L1Setpoint");
-        L2Setpoint = new TunableConstant(ElevatorConstants.L2Setpoint, "Elevator L2Setpoint");
-        L3Setpoint = new TunableConstant(ElevatorConstants.L3Setpoint, "Elevator L3Setpoint");
-        L4Setpoint = new TunableConstant(ElevatorConstants.L4Setpoint, "Elevator L4Setpoint");
-        HPIntakeSetpoint = new TunableConstant(ElevatorConstants.HPIntakeSetpoint, "Elevator HPIntakeSetpoint");
-        stowSetpoint = new TunableConstant(ElevatorConstants.stowSetpoint, "Elevator stowSetpoint");
+        L1Setpoint = new TunableConstant(ElevatorConstants.kL1Setpoint, "Elevator L1Setpoint");
+        L2Setpoint = new TunableConstant(ElevatorConstants.kL2Setpoint, "Elevator L2Setpoint");
+        L3Setpoint = new TunableConstant(ElevatorConstants.kL3Setpoint, "Elevator L3Setpoint");
+        L4Setpoint = new TunableConstant(ElevatorConstants.kL4Setpoint, "Elevator L4Setpoint");
+        HPIntakeSetpoint = new TunableConstant(ElevatorConstants.kHPIntakeSetpoint, "Elevator HPIntakeSetpoint");
+        stowSetpoint = new TunableConstant(ElevatorConstants.kStowSetpoint, "Elevator stowSetpoint");
 
-        bargeSetpoint = new TunableConstant(ElevatorConstants.bargeSetpoint, "Elevator bargeSetpoint");
-        algaeL1Setpoint = new TunableConstant(ElevatorConstants.algaeL1Setpoint, "Elevator algaeL1Setpoint");
-        algaeL2Setpoint = new TunableConstant(ElevatorConstants.algaeL2Setpoint, "Elevator algaeL2Setpoint");
-        processorSetpoint = new TunableConstant(ElevatorConstants.processorSetpoint, "Elevator processorSetpoint");
+        bargeSetpoint = new TunableConstant(ElevatorConstants.kBargeSetpoint, "Elevator bargeSetpoint");
+        algaeL1Setpoint = new TunableConstant(ElevatorConstants.kAlgaeL1Setpoint, "Elevator algaeL1Setpoint");
+        algaeL2Setpoint = new TunableConstant(ElevatorConstants.kAlgaeL2Setpoint, "Elevator algaeL2Setpoint");
+        processorSetpoint = new TunableConstant(ElevatorConstants.kProcessorSetpoint, "Elevator processorSetpoint");
 
-        elevatorSetpoint = new LiveData(ElevatorConstants.stowSetpoint, "Elevator Current Setpoint");
+        elevatorSetpoint = new LiveData(ElevatorConstants.kStowSetpoint, "Elevator Current Setpoint");
         elevatorPosition = new LiveData(elevatorMainMotor.getPosition(), "Elevator Current Position");
 
         mainMotorCurrent = new LiveData(elevatorMainMotor.getSupplyCurrent(), "Elevator Main Motor Current");

@@ -63,14 +63,14 @@ public class Drivetrain extends SubsystemBase {
     swerveModules = new SwerveModule[] { frontLeftModule, frontRightModule, backLeftModule, backRightModule };
     swerveModulePositions = new SwerveModulePosition[] { frontLeftModule.getPosition(), frontRightModule.getPosition(),
         backLeftModule.getPosition(), backRightModule.getPosition() };
-    swerveModuleStates = DriveConstants.kinematics.toSwerveModuleStates(new ChassisSpeeds(0, 0, 0));
+    swerveModuleStates = DriveConstants.kKinematics.toSwerveModuleStates(new ChassisSpeeds(0, 0, 0));
 
     gyro = new Pigeon2(RobotMap.GYRO_ID, RobotMap.CANIVORE_NAME);
     gyro.setYaw(0);
 
     pipelineNumber = 0;
 
-    odometry = new SwerveDrivePoseEstimator(DriveConstants.kinematics, getHeadingAsRotation2d(), swerveModulePositions, new Pose2d());
+    odometry = new SwerveDrivePoseEstimator(DriveConstants.kKinematics, getHeadingAsRotation2d(), swerveModulePositions, new Pose2d());
 
     SmartDashboard.putData("Swerve Drive", new Sendable() {
       @Override
@@ -132,7 +132,7 @@ public class Drivetrain extends SubsystemBase {
     currentDrivetrainSpeed = Math.sqrt(Math.pow(robotRelativeSpeeds.vxMetersPerSecond, 2)
                 + Math.pow(robotRelativeSpeeds.vyMetersPerSecond, 2));
 
-    swerveModuleStates = DriveConstants.kinematics.toSwerveModuleStates(robotRelativeSpeeds);
+    swerveModuleStates = DriveConstants.kKinematics.toSwerveModuleStates(robotRelativeSpeeds);
     // TODO: desaturate later!
     SwerveDriveKinematics.desaturateWheelSpeeds(swerveModuleStates, DriveConstants.kMaxModuleSpeed);
     optimizeModuleStates();
@@ -140,7 +140,7 @@ public class Drivetrain extends SubsystemBase {
   }
 
   public void driveRobotRelative(ChassisSpeeds robotRelativeSpeeds) {
-    swerveModuleStates = DriveConstants.kinematics.toSwerveModuleStates(robotRelativeSpeeds);
+    swerveModuleStates = DriveConstants.kKinematics.toSwerveModuleStates(robotRelativeSpeeds);
     setSwerveModuleStates(swerveModuleStates);
   }
 
@@ -221,7 +221,7 @@ public class Drivetrain extends SubsystemBase {
   }
 
   public ChassisSpeeds getRobotRelativeSpeeds() {
-    return DriveConstants.kinematics.toChassisSpeeds(
+    return DriveConstants.kKinematics.toChassisSpeeds(
         frontLeftModule.getState(),
         frontRightModule.getState(),
         backLeftModule.getState(),
@@ -244,7 +244,7 @@ public class Drivetrain extends SubsystemBase {
 
     //gets rotational velocity of each module
     ChassisSpeeds rotationalVelocity = new ChassisSpeeds(0,0, currentRotationalVelocity);
-    SwerveModuleState pureRotationalStates[] = DriveConstants.skidKinematics.toSwerveModuleStates(rotationalVelocity);
+    SwerveModuleState pureRotationalStates[] = DriveConstants.kSkidKinematics.toSwerveModuleStates(rotationalVelocity);
    
     //gets rotational and translational velocity of each module
     SwerveModuleState[] moduleStates = Arrays.copyOf(swerveModuleStates, 4);

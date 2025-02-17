@@ -69,16 +69,16 @@ public class Arm extends SubsystemBase{
         kArmMaxCruiseJerk = new TunableConstant(ArmConstants.kArmMaxCruiseJerk, "Arm kArmMaxCruiseJerk");
         kArmReverseTorqueCurrentLimit = new TunableConstant(ArmConstants.kArmReverseTorqueCurrentLimit, "Arm kArmReverseTorqueCurrentLimit");
         kArmForwardTorqueCurrentLimit = new TunableConstant(ArmConstants.kArmForwardTorqueCurrentLimit, "Arm kArmForwardTorqueCurrentLimit");
-        L1Setpoint = new TunableConstant(ArmConstants.L1Setpoint, "Arm L1Setpoint");
-        L2Setpoint = new TunableConstant(ArmConstants.L2Setpoint, "Arm L2Setpoint");
-        L3Setpoint = new TunableConstant(ArmConstants.L3Setpoint, "Arm L3Setpoint");
-        L4Setpoint = new TunableConstant(ArmConstants.L4Setpoint, "Arm L4Setpoint");
-        HPIntakeSetpoint = new TunableConstant(ArmConstants.HPIntakeSetpoint, "Arm HPIntakeSetpoint");
-        stowSetpoint = new TunableConstant(ArmConstants.stowSetpoint, "Arm stowSetpoint");
-        bargeSetpoint = new TunableConstant(ArmConstants.bargeSetpoint, "Arm bargeSetpoint");
-        algaeL1Setpoint = new TunableConstant(ArmConstants.algaeL1Setpoint, "Arm algaeL1Setpoint");
-        algaeL2Setpoint = new TunableConstant(ArmConstants.algaeL2Setpoint, "Arm algaeL2Setpoint");
-        processorSetpoint = new TunableConstant(ArmConstants.processorSetpoint, "Arm processorSetpoint");
+        L1Setpoint = new TunableConstant(ArmConstants.kL1Setpoint, "Arm L1Setpoint");
+        L2Setpoint = new TunableConstant(ArmConstants.kL2Setpoint, "Arm L2Setpoint");
+        L3Setpoint = new TunableConstant(ArmConstants.kL3Setpoint, "Arm L3Setpoint");
+        L4Setpoint = new TunableConstant(ArmConstants.kL4Setpoint, "Arm L4Setpoint");
+        HPIntakeSetpoint = new TunableConstant(ArmConstants.kHPIntakeSetpoint, "Arm HPIntakeSetpoint");
+        stowSetpoint = new TunableConstant(ArmConstants.kStowSetpoint, "Arm stowSetpoint");
+        bargeSetpoint = new TunableConstant(ArmConstants.kBargeSetpoint, "Arm bargeSetpoint");
+        algaeL1Setpoint = new TunableConstant(ArmConstants.kAlgaeL1Setpoint, "Arm algaeL1Setpoint");
+        algaeL2Setpoint = new TunableConstant(ArmConstants.kAlgaeL2Setpoint, "Arm algaeL2Setpoint");
+        processorSetpoint = new TunableConstant(ArmConstants.kProcessorSetpoint, "Arm processorSetpoint");
 
         armSetpoint = new LiveData(stowSetpoint.get(), "Arm Current Setpoint"); 
         armAngle = new LiveData(getAbsoluteCANcoderPosition(), "Arm Current Angle"); 

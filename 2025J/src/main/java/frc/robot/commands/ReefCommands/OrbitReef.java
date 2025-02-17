@@ -56,7 +56,7 @@ public class OrbitReef extends Command {
         double currentHeading = drivetrain.getHeading();
         double poseX = drivetrain.getPose().getX();
         double poseY = drivetrain.getPose().getY();
-        setpoint = Math.atan2(FieldConstants.reefCenterY - poseY, FieldConstants.reefCenterX - poseX);
+        setpoint = Math.atan2(FieldConstants.kReefCenterY - poseY, FieldConstants.kReefCenterX - poseX);
         setpoint = Math.toDegrees(setpoint);
 
         double turnToReef = turnPIDController.calculate(currentHeading, setpoint);
