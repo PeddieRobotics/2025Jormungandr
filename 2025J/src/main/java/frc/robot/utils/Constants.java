@@ -299,6 +299,11 @@ public final class Constants {
     // TODO: update real values
     public static final double kClawStatorCurrentLimit = 20.0;
 
+    public static final double kP = 0.0;
+    public static final double kI = 0.0;
+    public static final double kD = 0.0;
+    public static final double kFF = 0.0;
+
     public static final double kCoralSensor1ProximityThreshold = 0.0;
     public static final double kCoralSensor2ProximityThreshold = 0.0;
     public static final double kAlgaeSensorProximityThreshold = 0.0;
@@ -319,6 +324,8 @@ public final class Constants {
     public static final double kAlgaeOuttakeSpeed = 0.0;
 
     public static final double kAlgaeHoldSpeed = 0.0;
+
+    public static final double kCoralPositionIncrement = 0.0;
   }
 
   public static final class ClimberConstants {

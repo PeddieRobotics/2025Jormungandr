@@ -3,14 +3,13 @@ package frc.robot.subsystems;
 import com.ctre.phoenix6.configs.CANrangeConfiguration;
 import com.ctre.phoenix6.hardware.CANrange;
 
-import edu.wpi.first.wpilibj.AnalogInput;
-import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.utils.Constants.ClawConstants;
 import frc.robot.utils.Constants;
+import frc.robot.utils.Constants.ClawConstants;
 import frc.robot.utils.Kraken;
 import frc.robot.utils.RobotMap;
+import frc.robot.utils.TunableConstant;
 
 public class Claw extends SubsystemBase {
 
@@ -22,6 +21,8 @@ public class Claw extends SubsystemBase {
     private CANrangeConfiguration coralSensor1Config;
     private CANrangeConfiguration coralSensor2Config;
     private CANrangeConfiguration algaeSensorConfig;
+
+    private TunableConstant kP, kI, kD;
 
     public Claw() {
         clawMotor = new Kraken(RobotMap.CLAW_MOTOR_ID, RobotMap.CANIVORE_NAME);
@@ -38,6 +39,7 @@ public class Claw extends SubsystemBase {
         clawMotor.setInverted(false);
         clawMotor.setStatorCurrentLimit(ClawConstants.kClawStatorCurrentLimit);
         clawMotor.setBrake();
+        clawMotor.setPIDValues(ClawConstants.kP, ClawConstants.kI, ClawConstants.kD, ClawConstants.kFF);
 
         configureCANrange(coralSensor1, coralSensor1Config, Constants.ClawConstants.kCoralSensor1SignalStrength, 
                             Constants.ClawConstants.kCoralSensor1ProximityThreshold, Constants.ClawConstants.kCoralSensor1ProximityHysteresis);
@@ -96,6 +98,11 @@ public class Claw extends SubsystemBase {
     public void holdAlgae(){
         setClaw(ClawConstants.kAlgaeHoldSpeed);
     }
+
+    public void incrementClaw(){
+        clawMotor.setPositionVoltage(clawMotor.getPosition() + ClawConstants.kCoralPositionIncrement);
+    }
+
     // Accessor methods
 
     /**
