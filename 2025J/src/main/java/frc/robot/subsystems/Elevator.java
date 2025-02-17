@@ -25,8 +25,7 @@ public class Elevator extends SubsystemBase {
             L1Setpoint, L2Setpoint, L3Setpoint, L4Setpoint, HPIntakeSetpoint, stowSetpoint, bargeSetpoint,
             algaeL1Setpoint, algaeL2Setpoint, processorSetpoint;
 
-    private LiveData elevatorPosition, elevatorSetpoint, mainMotorTemp, followerMotorTemp, mainMotorCurrent,
-            followerMotorCurrent;
+    private LiveData elevatorSetpoint;
 
     public Elevator() {
         elevatorMainMotor = new Kraken(RobotMap.ELEVATOR_MAIN_ID, RobotMap.CANIVORE_NAME);
@@ -109,14 +108,6 @@ public class Elevator extends SubsystemBase {
         processorSetpoint = new TunableConstant(ElevatorConstants.processorSetpoint, "Elevator processorSetpoint");
 
         elevatorSetpoint = new LiveData(ElevatorConstants.stowSetpoint, "Elevator Current Setpoint");
-        elevatorPosition = new LiveData(elevatorMainMotor.getPosition(), "Elevator Current Position");
-
-        mainMotorTemp = new LiveData(elevatorMainMotor.getMotorTemperature(), "Elevator Main Motor Temp");
-        followerMotorTemp = new LiveData(elevatorFollowerMotor.getMotorTemperature(), "Elevator Follower Motor Temp");
-
-        mainMotorCurrent = new LiveData(elevatorMainMotor.getSupplyCurrent(), "Elevator Main Motor Current");
-        followerMotorCurrent = new LiveData(elevatorFollowerMotor.getSupplyCurrent(),
-                "Elevator Follower Motor Current");
     }
 
     /**
@@ -153,6 +144,7 @@ public class Elevator extends SubsystemBase {
      * @param position - commanded motor position (motor encoder units)
      */
     public void setElevatorPositionVoltage(double position) {
+        elevatorSetpoint.set(position);
         elevatorMainMotor.setPositionVoltage(position);
     }
 
@@ -163,6 +155,7 @@ public class Elevator extends SubsystemBase {
      * @param position - commanded motor position (motor encoder units)
      */
     public void setElevatorPositionMotionMagicVoltage(double position) {
+        elevatorSetpoint.set(position);
         elevatorMainMotor.setPositionMotionMagicVoltage(position);
     }
 
@@ -173,6 +166,7 @@ public class Elevator extends SubsystemBase {
      * @param position - commanded motor position (motor encoder units)
      */
     public void setElevatorPositionMotionMagicTorqueCurrentFOC(double position) {
+        elevatorSetpoint.set(position);
         elevatorMainMotor.setPositionMotionMagicTorqueCurrentFOC(position);
     }
 
@@ -231,12 +225,18 @@ public class Elevator extends SubsystemBase {
         return elevatorMainMotor.getSupplyCurrent();
     }
 
-    public double getPosition(){
-        return elevatorMainMotor.getPosition();
+    /**
+     * @return elevator motor velocity (rotations per second)
+     */
+    public double getElevatorVelocity(){
+        return elevatorMainMotor.getRPS();
     }
 
-    public double getVelocity(){
-        return elevatorMainMotor.getRPS();
+    /**
+     * @return elevator motor setpoint (motor encoder units)
+     */
+    public double getElevatorSetpoint(){
+        return elevatorSetpoint.get();
     }
 
     @Override
@@ -257,13 +257,6 @@ public class Elevator extends SubsystemBase {
 
         elevatorMainMotor.setSoftLimits(true, kElevatorForwardSoftLimit.get(), kElevatorReverseSoftLimit.get());
         elevatorFollowerMotor.setSoftLimits(true, kElevatorForwardSoftLimit.get(), kElevatorReverseSoftLimit.get());
-
-        elevatorPosition.set(elevatorMainMotor.getPosition());
-        mainMotorTemp.set(elevatorMainMotor.getMotorTemperature());
-        followerMotorTemp.set(elevatorFollowerMotor.getMotorTemperature());
-
-        mainMotorCurrent.set(elevatorMainMotor.getSupplyCurrent());
-        followerMotorCurrent.set(elevatorFollowerMotor.getSupplyCurrent());
     }
 
     @Override

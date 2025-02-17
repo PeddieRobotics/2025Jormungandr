@@ -180,6 +180,10 @@ public class Arm extends SubsystemBase{
         return getAbsoluteCANcoderPosition() * 360.0;
     }
 
+    public double getArmSetpoint() {
+        return armSetpoint.get();
+    }
+    
     public boolean isAtAngle(double targetAngle) {
         return Math.abs(getArmAngleDegrees() - targetAngle) < ArmConstants.kArmPositionEpsilon;
     }
