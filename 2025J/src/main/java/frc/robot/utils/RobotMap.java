@@ -22,7 +22,6 @@ public class RobotMap {
 
     public static final int ELEVATOR_MAIN_ID = 0;
     public static final int ELEVATOR_SECONDARY_ID = 0;
-    public static final int ELEVATOR_LIMIT_SWITCH_ID = 0;
     public static final int ELEVATOR_CANCODER_ID = 0;
     
     public static final int HP_INTAKE_SERVO_ID = 0;

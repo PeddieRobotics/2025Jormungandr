@@ -72,7 +72,9 @@ public class Elevator extends SubsystemBase {
                                                                 // Setting this to 0.5 makes the absolute position signed [-0.5, 0.5)
                                                                 // Setting this to 0 makes the absolute position always negative [-1, 0)
         config.MagnetSensor.SensorDirection = SensorDirectionValue.CounterClockwise_Positive;
+        config.MagnetSensor.MagnetOffset = ElevatorConstants.kElevatorMagnetOffset;
         elevatorCANcoder.getConfigurator().apply(config); 
+
         elevatorMainMotor.setFeedbackDevice(RobotMap.ELEVATOR_CANCODER_ID, FeedbackSensorSourceValue.FusedCANcoder);
 
         kP = new TunableConstant(ElevatorConstants.kP, "Elevator kP");
@@ -172,7 +174,7 @@ public class Elevator extends SubsystemBase {
     public double getElevatorCANcoderReading() {
         return elevatorCANcoder.getPosition().getValueAsDouble();
     }
-    
+
     public boolean isAtPosition(double desiredPosition) {
         return Math.abs(getElevatorCANcoderReading() - desiredPosition) < ElevatorConstants.kElevatorPositionEpsilon;
     }
