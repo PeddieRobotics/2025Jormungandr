@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.utils.Constants.ClawConstants;
 import frc.robot.utils.Constants;
 import frc.robot.utils.Kraken;
+import frc.robot.utils.LiveData;
 import frc.robot.utils.RobotMap;
 
 public class Claw extends SubsystemBase {
@@ -22,6 +23,8 @@ public class Claw extends SubsystemBase {
     private CANrangeConfiguration coralSensor1Config;
     private CANrangeConfiguration coralSensor2Config;
     private CANrangeConfiguration algaeSensorConfig;
+
+    private LiveData motorTemp;
 
     public Claw() {
         clawMotor = new Kraken(RobotMap.CLAW_MOTOR_ID, RobotMap.CANIVORE_NAME);
@@ -45,6 +48,8 @@ public class Claw extends SubsystemBase {
                             Constants.ClawConstants.kCoralSensor2ProximityThreshold, Constants.ClawConstants.kCoralSensor2ProximityHysteresis);
         configureCANrange(algaeSensor, algaeSensorConfig, Constants.ClawConstants.kAlgaeSensorSignalStrength, 
                             Constants.ClawConstants.kAlgaeSensorProximityThreshold, Constants.ClawConstants.kAlgaeSensorProximityHysteresis);
+
+        motorTemp = new LiveData(clawMotor.getMotorTemperature(), "Claw Motor Temp");
     }
 
     public void configureCANrange(CANrange sensor, CANrangeConfiguration config, double signalStrengthThreshold, double proximityThreshold, double proximityHysteresis){
@@ -162,11 +167,17 @@ public class Claw extends SubsystemBase {
         return getAlgaeSensor();
     }
 
+    public double getClawMotorTemperature(){
+        return motorTemp.get();
+    }
+
     @Override
     public void periodic() {
         SmartDashboard.putBoolean("Coral Sensor 1", getCoralSensor1());
         SmartDashboard.putBoolean("Coral Sensor 2", getCoralSensor2());
         SmartDashboard.putNumber("Algae Sensor", getAlgaeSensorDistance());
+
+        motorTemp.set(clawMotor.getMotorTemperature());
     }
 
     @Override

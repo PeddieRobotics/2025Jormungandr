@@ -17,6 +17,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.utils.Constants.ModuleConstants;
 import frc.robot.utils.Kraken;
+import frc.robot.utils.LiveData;
 
 public class SwerveModule extends SubsystemBase {
   
@@ -31,6 +32,8 @@ public class SwerveModule extends SubsystemBase {
 
   private SwerveModuleState desiredState;
   private double moduleAngularOffset;
+
+  private LiveData driveMotorTemp, steerMotorTemp;
   
   public SwerveModule(String canbusName, int drivingCANId, int steerCANId, int CANCoderId, double moduleAngularOffset) {
     this.drivingCANId = drivingCANId;
@@ -73,6 +76,8 @@ public class SwerveModule extends SubsystemBase {
     steerMotor.setPIDValues(ModuleConstants.kSteerS, ModuleConstants.kSteerV, ModuleConstants.kSteerA, 
                                     ModuleConstants.kSteerP, ModuleConstants.kSteerI, ModuleConstants.kSteerD, ModuleConstants.kSteerFF, StaticFeedforwardSignValue.UseClosedLoopSign);
 
+    driveMotorTemp = new LiveData(driveMotor.getMotorTemperature(), "Drive Motor Temp");
+    steerMotorTemp = new LiveData(steerMotor.getMotorTemperature(), "Steer Motor Temp");
   }
 
   public void configureCANCoder(){
@@ -120,11 +125,21 @@ public class SwerveModule extends SubsystemBase {
     steerMotor.setPositionVoltageWithFeedForward(desiredAngle);
   }
 
+  public double getDriveMotorTemperature(){
+    return driveMotorTemp.get();
+  }
+
+  public double getSteerMotorTemperature(){
+    return steerMotorTemp.get();
+  }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
     SmartDashboard.putNumber(CANCoderId + " CANCoder Reading", getCANCoderReading());
+
+    driveMotorTemp.set(driveMotor.getMotorTemperature());
+    steerMotorTemp.set(steerMotor.getMotorTemperature());
   }
 
   @Override

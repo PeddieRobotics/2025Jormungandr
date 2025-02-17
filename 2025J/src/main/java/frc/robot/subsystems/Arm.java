@@ -185,6 +185,10 @@ public class Arm extends SubsystemBase{
         return Math.abs(getArmAngleDegrees() - targetAngle) < ArmConstants.kArmPositionEpsilon;
     }
 
+    public double getArmMotorTemperature(){
+        return motorTemp.get();
+    }
+
     @Override
     public void periodic() {
         armMotor.setPIDValues(kS.get(), kV.get(),

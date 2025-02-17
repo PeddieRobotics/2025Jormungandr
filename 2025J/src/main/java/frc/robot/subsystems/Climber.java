@@ -4,19 +4,12 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Robot;
 import frc.robot.utils.Constants.ClimberConstants;
 import frc.robot.utils.Kraken;
+import frc.robot.utils.LiveData;
 import frc.robot.utils.RobotMap;
 
 public class Climber extends SubsystemBase {
     private static Climber instance;
-    private Kraken leftClimberMotor;
-    private Kraken rightClimberMotor;
-
-    public static Climber getInstance() {
-        if (instance == null) {
-            instance = new Climber();
-        }
-        return instance;
-    }
+    private Kraken leftClimberMotor, rightClimberMotor;
 
     public Climber() {
         leftClimberMotor = new Kraken(RobotMap.LEFT_CLIMBER_MOTOR_ID, RobotMap.CANIVORE_NAME);
@@ -32,6 +25,13 @@ public class Climber extends SubsystemBase {
         rightClimberMotor.setStatorCurrentLimit(ClimberConstants.kClimberStatorCurrentLimit);
         leftClimberMotor.setSupplyCurrentLimit(ClimberConstants.kClimberSupplyCurrentLimit);
         rightClimberMotor.setSupplyCurrentLimit(ClimberConstants.kClimberSupplyCurrentLimit);
+    }
+
+    public static Climber getInstance() {
+        if (instance == null) {
+            instance = new Climber();
+        }
+        return instance;
     }
 
     public void setSpeed(double speed) {

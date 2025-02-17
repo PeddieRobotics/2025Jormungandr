@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.utils.Constants.IntakeConstants;
 import frc.robot.utils.Constants.ModuleConstants;
 import frc.robot.utils.Kraken;
+import frc.robot.utils.LiveData;
 import frc.robot.utils.RobotMap;
 
 public class HPIntake extends SubsystemBase{
@@ -11,6 +12,8 @@ public class HPIntake extends SubsystemBase{
     private static HPIntake hpIntake;
     private final Kraken rollerMotor;
     private final Kraken pivotMotor;
+
+    private LiveData rollerMotorTemp, pivotMotorTemp;
     
     public HPIntake() {
         rollerMotor = new Kraken(RobotMap.HP_INTAKE_ROLLER_ID, RobotMap.CANIVORE_NAME);
@@ -25,6 +28,9 @@ public class HPIntake extends SubsystemBase{
         pivotMotor.setSupplyCurrentLimit(IntakeConstants.kHPIntakePivotSupplyCurrentLimit);
         pivotMotor.setBrake();
         pivotMotor.setPIDValues(IntakeConstants.kS, IntakeConstants.kV, IntakeConstants.kA, IntakeConstants.kP, IntakeConstants.kI, IntakeConstants.kD, IntakeConstants.kFF);
+
+        rollerMotorTemp = new LiveData(rollerMotor.getMotorTemperature(), "HP Intake Roller Motor Temp");
+        pivotMotorTemp = new LiveData(pivotMotor.getMotorTemperature(), "HP Intake Pivot Motor Temp");
     }
 
     /**
@@ -98,8 +104,18 @@ public class HPIntake extends SubsystemBase{
         return rollerMotor.getSupplyCurrent();
     }
 
+    public double getRollerMotorTemperature(){
+        return rollerMotorTemp.get();
+    }
+    
+    public double getPivotMotorTemperature(){
+        return pivotMotorTemp.get();
+    }
+
     @Override
     public void periodic() {
+        rollerMotorTemp.set(rollerMotor.getMotorTemperature());
+        pivotMotorTemp.set(pivotMotor.getMotorTemperature());
     }
 
     @Override
