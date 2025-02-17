@@ -24,7 +24,7 @@ public class Arm extends SubsystemBase{
         kArmMaxCruiseVelocity, kArmMaxCruiseAcceleration, kArmMaxCruiseJerk, kArmReverseTorqueCurrentLimit, kArmForwardTorqueCurrentLimit,
         L1Setpoint, L2Setpoint, L3Setpoint, L4Setpoint, HPIntakeSetpoint, stowSetpoint, bargeSetpoint, algaeL1Setpoint, algaeL2Setpoint, processorSetpoint;
 
-    private LiveData armAngle, armSetpoint, motorTemp, motorCurrent;
+    private LiveData armSetpoint;
 
     public Arm() {
         armCANcoder = new CANcoder(RobotMap.ARM_CANCODER_ID, RobotMap.CANIVORE_NAME);
@@ -80,13 +80,7 @@ public class Arm extends SubsystemBase{
         algaeL2Setpoint = new TunableConstant(ArmConstants.algaeL2Setpoint, "Arm algaeL2Setpoint");
         processorSetpoint = new TunableConstant(ArmConstants.processorSetpoint, "Arm processorSetpoint");
 
-        armSetpoint = new LiveData(stowSetpoint.get(), "Arm Current Setpoint"); 
-        armAngle = new LiveData(getAbsoluteCANcoderPosition(), "Arm Current Angle"); 
-
-        motorTemp = new LiveData(armMotor.getMotorTemperature(), "Arm Motor Temp"); 
-        motorCurrent = new LiveData(armMotor.getSupplyCurrent(), "Arm Motor Current");
-
-        
+        armSetpoint = new LiveData(stowSetpoint.get(), "Arm Current Setpoint");  
     }
 
     /**
@@ -114,6 +108,7 @@ public class Arm extends SubsystemBase{
      * @param position - commanded motor position (motor encoder units)
      */
     public void setArmPositionVoltage(double position){
+        armSetpoint.set(position);
         armMotor.setPositionVoltage(position);
     }
 
@@ -123,6 +118,7 @@ public class Arm extends SubsystemBase{
      * @param position - commanded motor position (motor encoder units)
      */
     public void setArmPositionMotionMagicVoltage(double position){
+        armSetpoint.set(position);
         armMotor.setPositionMotionMagicVoltage(position);
     }
 
@@ -132,6 +128,7 @@ public class Arm extends SubsystemBase{
      * @param position - commanded motor position (motor encoder units)
      */
     public void setArmPositionMotionMagicTorqueCurrentFOC(double position){
+        armSetpoint.set(position);
         armMotor.setPositionMotionMagicTorqueCurrentFOC(position);
     }
 
@@ -176,9 +173,11 @@ public class Arm extends SubsystemBase{
         return armMotor.getSupplyCurrent();
     }
 
+    /**
+     * @return arm motor angle
+     */
     public double getArmAngleDegrees() {
-        //TODO: implement this code
-        return 0;
+        return armMotor.getPosition() / ArmConstants.kArmReduction;
     }
 
     public boolean isAtAngle(double targetAngle) {
@@ -196,10 +195,6 @@ public class Arm extends SubsystemBase{
         armMotor.setReverseTorqueCurrentLimit(kArmReverseTorqueCurrentLimit.get());
 
         armMotor.setMotionMagicParameters(kArmMaxCruiseVelocity.get(), kArmMaxCruiseAcceleration.get(), kArmMaxCruiseJerk.get());
-        armAngle.set(getAbsoluteCANcoderPosition());
-
-        motorTemp.set(armMotor.getMotorTemperature()); 
-        motorCurrent.set(armMotor.getSupplyCurrent()); 
     }
 
     @Override
