@@ -120,14 +120,6 @@ public final class Constants {
     public static final double kHPIntakeRollerSupplyCurrentLimit = 0.0;
     public static final double kHPIntakePivotSupplyCurrentLimit = 0.0;
     public static final double kHPIntakeSpeed = 0.0;
-
-    public static final double kS = 0.0;
-    public static final double kV = 0.0;
-    public static final double kA = 0.0;
-    public static final double kP = 0.0;
-    public static final double kI = 0.0;
-    public static final double kD = 0.0;
-    public static final double kFF = 0.0;
   }
 
   public static class ElevatorConstants {
