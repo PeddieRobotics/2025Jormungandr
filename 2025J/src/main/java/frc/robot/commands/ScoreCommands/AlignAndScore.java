@@ -12,7 +12,7 @@ import frc.robot.subsystems.PVFrontMiddle;
 import frc.robot.subsystems.Superstructure;
 import frc.robot.utils.Constants;
 
-public class LeftAlignScore extends Command {
+public class AlignAndScore extends Command {
     private Drivetrain drivetrain;
     private PVFrontMiddle pvFrontMiddle;
     private PIDController translatePIDController, rotationPIDController;
@@ -26,7 +26,7 @@ public class LeftAlignScore extends Command {
 
     private double desiredAngle;
 
-    public LeftAlignScore() {
+    public AlignAndScore(boolean rightAlign) {
         drivetrain = Drivetrain.getInstance();
         pvFrontMiddle = PVFrontMiddle.getInstance();
 
@@ -51,7 +51,12 @@ public class LeftAlignScore extends Command {
         // center of robot distance to tag -- back (+ = back, - = forwards)
         tagBackMagnitude = 0.8;
         // center of robot distance to tag -- left (+ = left, - = right)
-        tagLeftMagnitude = 0.1;
+        
+        if (rightAlign) {
+            tagLeftMagnitude = -0.1;
+        } else {
+            tagLeftMagnitude = 0.1;
+        }
 
         addRequirements(drivetrain);
         
