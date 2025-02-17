@@ -34,38 +34,68 @@ public class Climber extends SubsystemBase {
         rightClimberMotor.setSupplyCurrentLimit(ClimberConstants.kClimberSupplyCurrentLimit);
     }
 
+    /**
+     * Sets leftClimberMotor speed to a designated percent output (open loop control)
+     * ex: input of 0.5 will run 50% of its max speed forward
+     * 
+     * @param speed - Percent of leftClimberMotor's speed [-1.0, 1.0]
+     */
     public void setSpeed(double speed) {
         leftClimberMotor.setPercentOutput(speed);
     }
 
+    /**
+     * @return returns left climber supply current draw (amps)
+     */
     public double getLeftClimberSupplyCurrent() {
         return leftClimberMotor.getSupplyCurrent();
     }
 
+    /**
+     * @return returns right climber supply current draw (amps)
+     */
     public double getRightClimberSupplyCurrent() {
         return rightClimberMotor.getSupplyCurrent();
     }
 
+    /**
+     * @return returns left climber stator current draw (amps)
+     */
     public double getLeftClimberStatorCurrent() {
         return leftClimberMotor.getStatorCurrent();
     }
 
+    /**
+     * @return returns right climber stator current draw (amps)
+     */
     public double getRightClimberStatorCurrent() {
         return rightClimberMotor.getStatorCurrent();
     }
 
+    /**
+     * @return returns temperature of leftClimberMotor in celcius
+     */
     public double getLeftClimberTemperature() {
         return leftClimberMotor.getMotorTemperature();
     }
 
+    /**
+     * @return returns temperature of rightClimberMotor in celcius
+     */
     public double getRightClimberTemperature() {
         return rightClimberMotor.getMotorTemperature();
     }
 
+    /**
+     * @return returns position reading of leftClimberMotor encoder (mechanism rotations)
+     */
     public double getLeftClimberPosition() {
         return leftClimberMotor.getPosition();
     }
 
+    /**
+     * @return returns position reading of rightClimberMotor encoder (mechanism rotations)
+     */
     public double getRightClimberPosition() {
         return rightClimberMotor.getPosition();
     }

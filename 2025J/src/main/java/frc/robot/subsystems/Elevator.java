@@ -178,6 +178,9 @@ public class Elevator extends SubsystemBase {
 
     // Accessor methods
 
+    /**
+     * @return returns cancoder reading from elevator in rotations, more accurate than just encoder
+     */
     public double getElevatorCANcoderReading() {
         return elevatorCANcoder.getPosition().getValueAsDouble();
     }
@@ -189,11 +192,18 @@ public class Elevator extends SubsystemBase {
         return bottomLimitSwitch.get();
     }
 
+    /**
+     * @return returns current height of elevator
+     */
     public double getElevatorHeight() {
         // TODO: implement this code
         return 0;
     }
 
+    /**
+     * @param targetHeight - Desired height
+     * @return returns if the difference between current and target elevator height is within our threshold
+     */
     public boolean isAtHeight(double targetHeight) {
         return Math.abs(getElevatorHeight() - targetHeight) < ElevatorConstants.kElevatorHeightEpsilon;
     }
@@ -206,6 +216,9 @@ public class Elevator extends SubsystemBase {
         return elevatorMainMotor.getPosition();
     }
 
+    /**
+     * resets encoder on elevatorMotor
+     */
     public void resetElevatorPosition() {
         elevatorMainMotor.resetEncoder();
     }
@@ -231,10 +244,16 @@ public class Elevator extends SubsystemBase {
         return elevatorMainMotor.getSupplyCurrent();
     }
 
+    /**
+     * @return returns position reading of elevatorMainMotor encoder
+     */
     public double getPosition(){
         return elevatorMainMotor.getPosition();
     }
 
+    /**
+     * @return returns velocity reading of elevatorMainMotor encoder
+     */
     public double getVelocity(){
         return elevatorMainMotor.getRPS();
     }

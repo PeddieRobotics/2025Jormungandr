@@ -151,6 +151,9 @@ public class Arm extends SubsystemBase{
         return armMotor.getPosition();
     }
 
+    /**
+     * @return velocity of armMotor encoder (rotor rotations per second)
+     */
     public double getArmVelocity(){
         return armMotor.getRPS();
     }
@@ -176,11 +179,18 @@ public class Arm extends SubsystemBase{
         return armMotor.getSupplyCurrent();
     }
 
+    /**
+     * @return angle of arm in degrees
+     */
     public double getArmAngleDegrees() {
         //TODO: implement this code
         return 0;
     }
 
+    /**
+     * @param targetAngle - In degrees
+     * @return returns if the difference between current and target angle is within threshold
+     */
     public boolean isAtAngle(double targetAngle) {
         return Math.abs(getArmAngleDegrees() - targetAngle) < ArmConstants.kArmPositionEpsilon;
     }

@@ -74,10 +74,16 @@ public class HPIntake extends SubsystemBase{
         pivotMotor.setPositionVoltage(position);
     }
 
+    /**
+     * @return returns position reading of pivotMotor encoder
+     */
     public double getIntakePosition(){
         return pivotMotor.getPosition();
     }
 
+    /**
+     * @return returns velocity reading of pivotMotor encoder
+     */
     public double getIntakeVelocity(){
         return pivotMotor.getRPS();
     }
