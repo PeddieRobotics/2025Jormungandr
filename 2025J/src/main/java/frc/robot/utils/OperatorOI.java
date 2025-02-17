@@ -1,12 +1,12 @@
 package frc.robot.utils;
 
-import static frc.robot.subsystems.Superstructure.SuperstructureState.L4_PRESTAGE;
-
 import edu.wpi.first.wpilibj.PS4Controller;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.commands.ManualArmControl;
+import frc.robot.commands.ManualElevatorControl;
 import frc.robot.subsystems.Superstructure;
 import frc.robot.subsystems.Superstructure.SuperstructureState;
 
@@ -66,8 +66,10 @@ public class OperatorOI {
         R1Bumper.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.L4_PREP)));
 
         Trigger L2Trigger = new JoystickButton(controller, PS4Controller.Button.kL2.value);
+        L2Trigger.whileTrue(new ManualElevatorControl());
 
         Trigger R2Trigger = new JoystickButton(controller, PS4Controller.Button.kR2.value);
+        R2Trigger.whileTrue(new ManualArmControl());
 
         Trigger L3Trigger = new JoystickButton(controller, PS4Controller.Button.kL3.value);
 
@@ -85,19 +87,24 @@ public class OperatorOI {
         }));
 
         Trigger dpadLeftTrigger = new Trigger(() -> controller.getPOV() == 270);
-        // dpadLeftTrigger.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.REEF1_ALGAE_INTAKE)));
+        dpadLeftTrigger.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.REEF1_ALGAE_INTAKE)));
 
         Trigger dpadRightTrigger = new Trigger(() -> controller.getPOV() == 90);
-        // dpadRightTrigger.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.REEF2_ALGAE_INTAKE)));
+        dpadRightTrigger.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.REEF2_ALGAE_INTAKE)));
 
         Trigger dpadDownTrigger = new Trigger(() -> controller.getPOV() == 180);
-        //dpadDownTrigger.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.PROCESSOR_PREP)));
+        dpadDownTrigger.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.PROCESSOR_PREP)));
 
         Trigger optionButton = new JoystickButton(controller, PS4Controller.Button.kOptions.value);
         // TODO: home elevator
         
         Trigger shareButton = new JoystickButton(controller, PS4Controller.Button.kShare.value);
         // TODO: home arm
+    }
+
+    public double getForward() {
+        double val = -controller.getRawAxis(PS4Controller.Axis.kLeftY.value);
+        return Math.abs(val) < 0.1 ? 0 : val;
     }
 
     public boolean bothBumpersHeld() {
