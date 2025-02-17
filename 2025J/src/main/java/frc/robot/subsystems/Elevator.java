@@ -25,8 +25,7 @@ public class Elevator extends SubsystemBase {
             L1Setpoint, L2Setpoint, L3Setpoint, L4Setpoint, HPIntakeSetpoint, stowSetpoint, bargeSetpoint,
             algaeL1Setpoint, algaeL2Setpoint, processorSetpoint;
 
-    private LiveData elevatorPosition, elevatorSetpoint, mainMotorTemp, followerMotorTemp, mainMotorCurrent,
-            followerMotorCurrent;
+    private LiveData elevatorPosition, elevatorSetpoint, mainMotorCurrent, followerMotorCurrent;
 
     public Elevator() {
         elevatorMainMotor = new Kraken(RobotMap.ELEVATOR_MAIN_ID, RobotMap.CANIVORE_NAME);
@@ -72,11 +71,14 @@ public class Elevator extends SubsystemBase {
 
         elevatorCANcoder = new CANcoder(RobotMap.ELEVATOR_CANCODER_ID);
         CANcoderConfiguration config = new CANcoderConfiguration();
-        config.MagnetSensor.AbsoluteSensorDiscontinuityPoint = 1; // Setting this to 1 makes the absolute position unsigned [0, 1)
-                                                                // Setting this to 0.5 makes the absolute position signed [-0.5, 0.5)
-                                                                // Setting this to 0 makes the absolute position always negative [-1, 0)
+        config.MagnetSensor.AbsoluteSensorDiscontinuityPoint = 1; // Setting this to 1 makes the absolute position
+                                                                  // unsigned [0, 1)
+                                                                  // Setting this to 0.5 makes the absolute position
+                                                                  // signed [-0.5, 0.5)
+                                                                  // Setting this to 0 makes the absolute position
+                                                                  // always negative [-1, 0)
         config.MagnetSensor.SensorDirection = SensorDirectionValue.CounterClockwise_Positive;
-        elevatorCANcoder.getConfigurator().apply(config); 
+        elevatorCANcoder.getConfigurator().apply(config);
         elevatorMainMotor.setFeedbackDevice(RobotMap.ELEVATOR_CANCODER_ID, FeedbackSensorSourceValue.FusedCANcoder);
 
         kP = new TunableConstant(ElevatorConstants.kP, "Elevator kP");
@@ -110,9 +112,6 @@ public class Elevator extends SubsystemBase {
 
         elevatorSetpoint = new LiveData(ElevatorConstants.stowSetpoint, "Elevator Current Setpoint");
         elevatorPosition = new LiveData(elevatorMainMotor.getPosition(), "Elevator Current Position");
-
-        mainMotorTemp = new LiveData(elevatorMainMotor.getMotorTemperature(), "Elevator Main Motor Temp");
-        followerMotorTemp = new LiveData(elevatorFollowerMotor.getMotorTemperature(), "Elevator Follower Motor Temp");
 
         mainMotorCurrent = new LiveData(elevatorMainMotor.getSupplyCurrent(), "Elevator Main Motor Current");
         followerMotorCurrent = new LiveData(elevatorFollowerMotor.getSupplyCurrent(),
@@ -231,20 +230,20 @@ public class Elevator extends SubsystemBase {
         return elevatorMainMotor.getSupplyCurrent();
     }
 
-    public double getPosition(){
+    public double getPosition() {
         return elevatorMainMotor.getPosition();
     }
 
-    public double getVelocity(){
+    public double getVelocity() {
         return elevatorMainMotor.getRPS();
     }
 
-    public double getElevatorMainMotorTemperature(){
-        return mainMotorTemp.get();
+    public double getElevatorMainMotorTemperature() {
+        return elevatorMainMotor.getMotorTemperature();
     }
 
-    public double getElevatorFollowerMotorTemperature(){
-        return followerMotorTemp.get();
+    public double getElevatorFollowerMotorTemperature() {
+        return elevatorFollowerMotor.getMotorTemperature();
     }
 
     @Override
@@ -267,8 +266,6 @@ public class Elevator extends SubsystemBase {
         elevatorFollowerMotor.setSoftLimits(true, kElevatorForwardSoftLimit.get(), kElevatorReverseSoftLimit.get());
 
         elevatorPosition.set(elevatorMainMotor.getPosition());
-        mainMotorTemp.set(elevatorMainMotor.getMotorTemperature());
-        followerMotorTemp.set(elevatorFollowerMotor.getMotorTemperature());
 
         mainMotorCurrent.set(elevatorMainMotor.getSupplyCurrent());
         followerMotorCurrent.set(elevatorFollowerMotor.getSupplyCurrent());

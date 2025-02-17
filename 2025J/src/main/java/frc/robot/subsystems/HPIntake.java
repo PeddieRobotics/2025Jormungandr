@@ -12,8 +12,6 @@ public class HPIntake extends SubsystemBase{
     private static HPIntake hpIntake;
     private final Kraken rollerMotor;
     private final Kraken pivotMotor;
-
-    private LiveData rollerMotorTemp, pivotMotorTemp;
     
     public HPIntake() {
         rollerMotor = new Kraken(RobotMap.HP_INTAKE_ROLLER_ID, RobotMap.CANIVORE_NAME);
@@ -28,9 +26,6 @@ public class HPIntake extends SubsystemBase{
         pivotMotor.setSupplyCurrentLimit(IntakeConstants.kHPIntakePivotSupplyCurrentLimit);
         pivotMotor.setBrake();
         pivotMotor.setPIDValues(IntakeConstants.kS, IntakeConstants.kV, IntakeConstants.kA, IntakeConstants.kP, IntakeConstants.kI, IntakeConstants.kD, IntakeConstants.kFF);
-
-        rollerMotorTemp = new LiveData(rollerMotor.getMotorTemperature(), "HP Intake Roller Motor Temp");
-        pivotMotorTemp = new LiveData(pivotMotor.getMotorTemperature(), "HP Intake Pivot Motor Temp");
     }
 
     /**
@@ -105,17 +100,15 @@ public class HPIntake extends SubsystemBase{
     }
 
     public double getRollerMotorTemperature(){
-        return rollerMotorTemp.get();
+        return rollerMotor.getMotorTemperature();
     }
     
     public double getPivotMotorTemperature(){
-        return pivotMotorTemp.get();
+        return pivotMotor.getMotorTemperature();
     }
 
     @Override
     public void periodic() {
-        rollerMotorTemp.set(rollerMotor.getMotorTemperature());
-        pivotMotorTemp.set(pivotMotor.getMotorTemperature());
     }
 
     @Override
