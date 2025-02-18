@@ -105,6 +105,12 @@ public final class Constants {
       kSwerveModuleLocations[2],
       kSwerveModuleLocations[3]);
 
+    // Steps to doing offsets for swerves:
+    // 1. remove offsets (set all to 0) and then deploy code
+    // 2. spin all modules so that bevel gears face left relative to robot (shooter
+    // in front)
+    // 3. read the cancoder values from dashboard, and put those values for these
+    // offsets (check robotmap for ids)
     // TODO: Update Real Values
     public static final double kFrontLeftCancoderOffset = 0.3684;
     public static final double kFrontRightCancoderOffset = 0.00293;
