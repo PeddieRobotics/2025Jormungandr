@@ -2,6 +2,7 @@ package frc.robot.utils;
 
 import edu.wpi.first.wpilibj.PS4Controller;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.subsystems.Superstructure;
@@ -11,6 +12,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.util.WPIUtilJNI;
 import frc.robot.commands.ReefCommands.AlignToReefOdometry;
+import frc.robot.commands.ScoreCommands.AlignAndScore;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.PVFrontMiddle;
 import frc.robot.utils.Constants.DriveConstants;
@@ -50,10 +52,12 @@ public class DriverOI {
         //circleButton.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.HP_INTAKE)));
 
         Trigger triangleButton = new JoystickButton(controller, PS4Controller.Button.kTriangle.value);
-        //triangleButton.onTrue(new InstantCommand(() -> superstructure.sendToScore()));
-
+        triangleButton.onTrue(new AlignAndScore(true)); //right align
+        
         Trigger squareButton = new JoystickButton(controller, PS4Controller.Button.kSquare.value);
-        squareButton.onTrue(new AlignToReefOdometry());
+        squareButton.onTrue(new AlignAndScore(false)); //left align
+        //squareButton.onTrue(new AlignToReefOdometry());
+        
         
         Trigger muteButton = new JoystickButton(controller, 15);
         // TODO: add sensor condition

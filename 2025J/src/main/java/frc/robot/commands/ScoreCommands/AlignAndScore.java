@@ -1,5 +1,5 @@
 
-package frc.robot.commands.ReefCommands;
+package frc.robot.commands.ScoreCommands;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -12,7 +12,7 @@ import frc.robot.subsystems.PVFrontMiddle;
 import frc.robot.subsystems.Superstructure;
 import frc.robot.utils.Constants;
 
-public class AlignToReefOdometry extends Command {
+public class AlignAndScore extends Command {
     private Drivetrain drivetrain;
     private PVFrontMiddle pvFrontMiddle;
     private PIDController translatePIDController, rotationPIDController;
@@ -26,7 +26,7 @@ public class AlignToReefOdometry extends Command {
 
     private double desiredAngle;
 
-    public AlignToReefOdometry() {
+    public AlignAndScore(boolean rightAlign) {
         drivetrain = Drivetrain.getInstance();
         pvFrontMiddle = PVFrontMiddle.getInstance();
 
@@ -51,7 +51,12 @@ public class AlignToReefOdometry extends Command {
         // center of robot distance to tag -- back (+ = back, - = forwards)
         tagBackMagnitude = 0.8;
         // center of robot distance to tag -- left (+ = left, - = right)
-        tagLeftMagnitude = 0.1;
+        
+        if (rightAlign) {
+            tagLeftMagnitude = -0.1;
+        } else {
+            tagLeftMagnitude = 0.1;
+        }
 
         addRequirements(drivetrain);
         
@@ -84,7 +89,7 @@ public class AlignToReefOdometry extends Command {
         if (Constants.kReefDesiredAngle.containsKey(desiredTarget))
             desiredAngle = Constants.kReefDesiredAngle.get(desiredTarget);
 
-        Pose2d tagPose = pvFrontMiddle.getAprilTagPose();
+        Pose2d tagPose = pvFrontMiddle.getAprilTagPose(); 
         double tagAngle = tagPose.getRotation().getRadians();
 
         tagBackMagnitude = SmartDashboard.getNumber("align tagBackMagnitude", tagBackMagnitude);
@@ -152,14 +157,20 @@ public class AlignToReefOdometry extends Command {
 
         Translation2d translation = new Translation2d(xTranslate, yTranslate);
         drivetrain.drive(translation, rotation, true, null);
+
+        //for L4: if it meets the translation threshold + a little bit, then were sending it to L4 PREP. AND we got command to L4 it.
     }
 
     @Override
     public void end(boolean interrupted) {
+        Superstructure.getInstance().sendToScore();
     }
 
     @Override
     public boolean isFinished() {
-        return false;
+         return (Math.abs(pvFrontMiddle.getEstimatedPose().getX() - desiredPose.getX()) < translateThreshold) 
+                    && (Math.abs(pvFrontMiddle.getEstimatedPose().getY() - desiredPose.getY()) < translateThreshold)
+                    && (Math.abs(desiredAngle + drivetrain.getHeading()) < rotationThreshold);
+
     }
 }
