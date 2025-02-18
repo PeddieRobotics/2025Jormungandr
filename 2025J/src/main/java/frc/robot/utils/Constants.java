@@ -220,9 +220,9 @@ public final class Constants {
 
     public static final double kArmMagnetOffset = 0.0;
 
-    public static final double kArmReduction = 0.0;
-    public static final double kArmRotorToSensorRatio = 0.0;
-    public static final double kArmSensortoMechanismRatio = 0.0;
+    public static final double kArmReduction = 120.0/1.0;
+    public static final double kArmRotorToSensorRatio = kArmReduction/2.0;
+    public static final double kArmSensortoMechanismRatio = 2.0;
 
     public static final double kS = 0.0;
     public static final double kV = 0.0;
@@ -325,6 +325,9 @@ public final class Constants {
 
     public static final double kClimberStatorCurrentLimit = 0;
     public static final double kClimberSupplyCurrentLimit = 0;
+
+    public static final double kClimberReduction = 120.0/1.0;
+    
 
   }
 
