@@ -280,6 +280,13 @@ public abstract class PhotonVision extends SubsystemBase {
         return aprilTagPose.get().toPose2d();
     }
 
+    public Pose2d getAprilTagPose() {
+        var aprilTagPose = aprilTagFieldLayout.getTagPose(getTargetID());
+        if (!aprilTagPose.isPresent())
+            return new Pose2d();
+        return aprilTagPose.get().toPose2d();
+    }
+
     // ====================================================
     //                 Pipeline Controllers
     // ====================================================
