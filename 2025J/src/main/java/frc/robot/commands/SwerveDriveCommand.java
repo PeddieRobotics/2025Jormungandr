@@ -11,33 +11,33 @@ import frc.robot.utils.DriverOI;
 
 public class SwerveDriveCommand extends Command {
 
-  private Drivetrain drivetrain;
-  private DriverOI oi;
+    private Drivetrain drivetrain;
+    private DriverOI oi;
 
-  public SwerveDriveCommand() {
-    drivetrain = Drivetrain.getInstance();
+    public SwerveDriveCommand() {
+        drivetrain = Drivetrain.getInstance();
 
-    addRequirements(drivetrain);
-  }
+        addRequirements(drivetrain);
+    }
 
-  @Override
-  public void initialize() {
-    oi = DriverOI.getInstance();
-  }
+    @Override
+    public void initialize() {
+        oi = DriverOI.getInstance();
+    }
 
-  @Override
-  public void execute() {
-    Translation2d translation = oi.getSwerveTranslation();
-    double rotation = oi.getRotation();
+    @Override
+    public void execute() {
+        Translation2d translation = oi.getSwerveTranslation();
+        double rotation = oi.getRotation();
 
-    drivetrain.drive(translation, rotation, true, new Translation2d(0, 0));
-  }
+        drivetrain.drive(translation, rotation, true, new Translation2d(0, 0));
+    }
 
-  @Override
-  public void end(boolean interrupted) {}
+    @Override
+    public void end(boolean interrupted) {}
 
-  @Override
-  public boolean isFinished() {
-    return false;
-  }
+    @Override
+    public boolean isFinished() {
+        return false;
+    }
 }

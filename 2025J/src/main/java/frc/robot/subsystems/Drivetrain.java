@@ -27,364 +27,364 @@ import frc.robot.utils.Constants.DriveConstants;
 import frc.robot.utils.RobotMap;
 
 public class Drivetrain extends SubsystemBase {
-  private static Drivetrain instance;
+    private static Drivetrain instance;
 
-  private final SwerveModule[] swerveModules;
-  private final SwerveModule frontLeftModule, frontRightModule, backLeftModule, backRightModule;
+    private final SwerveModule[] swerveModules;
+    private final SwerveModule frontLeftModule, frontRightModule, backLeftModule, backRightModule;
 
-  private SwerveModuleState[] swerveModuleStates;
-  private SwerveModulePosition[] swerveModulePositions;
-  private SwerveDrivePoseEstimator odometry, pureOdometry;
+    private SwerveModuleState[] swerveModuleStates;
+    private SwerveModulePosition[] swerveModulePositions;
+    private SwerveDrivePoseEstimator odometry, pureOdometry;
 
-  private double currentDrivetrainSpeed = 0;
+    private double currentDrivetrainSpeed = 0;
 
-  private final Pigeon2 gyro;
-  private double heading;
+    private final Pigeon2 gyro;
+    private double heading;
 
-  private final Field2d fusedOdometry;
-  private final StructPublisher<Pose2d> fusedOdometryAdvScope, pureOdometryAdvScope;
-  
-  private Translation2d currentMovement;
-
-  private static int pipelineNumber;
-
-  public Drivetrain() {
-    frontLeftModule = new SwerveModule(RobotMap.CANIVORE_NAME, RobotMap.FRONT_LEFT_MODULE_DRIVE_ID,
-        RobotMap.FRONT_LEFT_MODULE_TURN_ID, RobotMap.FRONT_LEFT_MODULE_CANCODER_ID,
-        DriveConstants.kFrontLeftCancoderOffset);
-    frontRightModule = new SwerveModule(RobotMap.CANIVORE_NAME, RobotMap.FRONT_RIGHT_MODULE_DRIVE_ID,
-        RobotMap.FRONT_RIGHT_MODULE_TURN_ID, RobotMap.FRONT_RIGHT_MODULE_CANCODER_ID,
-        DriveConstants.kFrontRightCancoderOffset);
-    backLeftModule = new SwerveModule(RobotMap.CANIVORE_NAME, RobotMap.BACK_LEFT_MODULE_DRIVE_ID,
-        RobotMap.BACK_LEFT_MODULE_TURN_ID, RobotMap.BACK_LEFT_MODULE_CANCODER_ID,
-        DriveConstants.kBackLeftCancoderOffset);
-    backRightModule = new SwerveModule(RobotMap.CANIVORE_NAME, RobotMap.BACK_RIGHT_MODULE_DRIVE_ID,
-        RobotMap.BACK_RIGHT_MODULE_TURN_ID, RobotMap.BACK_RIGHT_MODULE_CANCODER_ID,
-        DriveConstants.kBackRightCancoderOffset);
-
-    swerveModules = new SwerveModule[] { frontLeftModule, frontRightModule, backLeftModule, backRightModule };
-    swerveModulePositions = new SwerveModulePosition[] { frontLeftModule.getPosition(), frontRightModule.getPosition(),
-        backLeftModule.getPosition(), backRightModule.getPosition() };
-    swerveModuleStates = DriveConstants.kKinematics.toSwerveModuleStates(new ChassisSpeeds(0, 0, 0));
-
-    gyro = new Pigeon2(RobotMap.GYRO_ID, RobotMap.CANIVORE_NAME);
-    gyro.setYaw(0);
-
-    odometry = new SwerveDrivePoseEstimator(DriveConstants.kKinematics, getHeadingAsRotation2d(), swerveModulePositions, new Pose2d());
-    pureOdometry = new SwerveDrivePoseEstimator(DriveConstants.kKinematics, getHeadingAsRotation2d(), swerveModulePositions, new Pose2d());
-    pipelineNumber = 0;
-
-    SmartDashboard.putData("Swerve Drive", new Sendable() {
-      @Override
-      public void initSendable(SendableBuilder builder) {
-        builder.setSmartDashboardType("SwerveDrive");
-
-        builder.addDoubleProperty("Front Left Angle", () -> frontLeftModule.getAngle(), null);
-        builder.addDoubleProperty("Front Left Velocity", () -> frontLeftModule.getVelocity(), null);
-
-        builder.addDoubleProperty("Front Right Angle", () -> frontRightModule.getAngle(), null);
-        builder.addDoubleProperty("Front Right Velocity", () -> frontRightModule.getVelocity(), null);
-
-        builder.addDoubleProperty("Back Left Angle", () -> backLeftModule.getAngle(), null);
-        builder.addDoubleProperty("Back Left Velocity", () -> backLeftModule.getVelocity(), null);
-
-        builder.addDoubleProperty("Back Right Angle", () -> backRightModule.getAngle(), null);
-        builder.addDoubleProperty("Back Right Velocity", () -> backRightModule.getVelocity(), null);
-
-        builder.addDoubleProperty("Robot Angle", () -> getPose().getRotation().getRadians(), null);
-      }
-    });
+    private final Field2d fusedOdometry;
+    private final StructPublisher<Pose2d> fusedOdometryAdvScope, pureOdometryAdvScope;
     
-    currentMovement = new Translation2d();
+    private Translation2d currentMovement;
 
-    fusedOdometry = new Field2d();
-    SmartDashboard.putData("Fused odometry", fusedOdometry);
-    fusedOdometryAdvScope = NetworkTableInstance.getDefault().getStructTopic("fused odometry for advantagescope", Pose2d.struct).publish();
-    pureOdometryAdvScope = NetworkTableInstance.getDefault().getStructTopic("nonfused odometry for advantagescope", Pose2d.struct).publish();
-  }
+    private static int pipelineNumber;
 
-  /**
-   * returns the existing drivetrain instance or creates it if it doesn't exist
-   */
-  public static Drivetrain getInstance() {
-    if (instance == null) {
-      instance = new Drivetrain();
-    }
-    return instance;
-  }
+    public Drivetrain() {
+        frontLeftModule = new SwerveModule(RobotMap.CANIVORE_NAME, RobotMap.FRONT_LEFT_MODULE_DRIVE_ID,
+                RobotMap.FRONT_LEFT_MODULE_TURN_ID, RobotMap.FRONT_LEFT_MODULE_CANCODER_ID,
+                DriveConstants.kFrontLeftCancoderOffset);
+        frontRightModule = new SwerveModule(RobotMap.CANIVORE_NAME, RobotMap.FRONT_RIGHT_MODULE_DRIVE_ID,
+                RobotMap.FRONT_RIGHT_MODULE_TURN_ID, RobotMap.FRONT_RIGHT_MODULE_CANCODER_ID,
+                DriveConstants.kFrontRightCancoderOffset);
+        backLeftModule = new SwerveModule(RobotMap.CANIVORE_NAME, RobotMap.BACK_LEFT_MODULE_DRIVE_ID,
+                RobotMap.BACK_LEFT_MODULE_TURN_ID, RobotMap.BACK_LEFT_MODULE_CANCODER_ID,
+                DriveConstants.kBackLeftCancoderOffset);
+        backRightModule = new SwerveModule(RobotMap.CANIVORE_NAME, RobotMap.BACK_RIGHT_MODULE_DRIVE_ID,
+                RobotMap.BACK_RIGHT_MODULE_TURN_ID, RobotMap.BACK_RIGHT_MODULE_CANCODER_ID,
+                DriveConstants.kBackRightCancoderOffset);
 
-  /**
-   * @return pipeline number for limelight
-   */
-  public static int getPipelineNumber(){
-    return pipelineNumber;
-  }
+        swerveModules = new SwerveModule[] { frontLeftModule, frontRightModule, backLeftModule, backRightModule };
+        swerveModulePositions = new SwerveModulePosition[] { frontLeftModule.getPosition(), frontRightModule.getPosition(),
+                backLeftModule.getPosition(), backRightModule.getPosition() };
+        swerveModuleStates = DriveConstants.kKinematics.toSwerveModuleStates(new ChassisSpeeds(0, 0, 0));
 
-  /**
-   * commands the robot to drive
-   * 
-   * @param translation - translation input (x,y meters/sec in field space)
-   * @param rotation - rotation input (degrees/sec)
-   * @param fieldOriented - whether the robot is field oriented (true) or robot oriented (false)
-   * @param centerOfRotation - robot's center of rotation
-   */
-  public void drive(Translation2d translation, double rotation, boolean fieldOriented, Translation2d centerOfRotation) {
-    if (fieldOriented)
-      currentMovement = translation;
+        gyro = new Pigeon2(RobotMap.GYRO_ID, RobotMap.CANIVORE_NAME);
+        gyro.setYaw(0);
 
-    ChassisSpeeds fieldRelativeSpeeds = new ChassisSpeeds(translation.getX(), translation.getY(), rotation);
+        odometry = new SwerveDrivePoseEstimator(DriveConstants.kKinematics, getHeadingAsRotation2d(), swerveModulePositions, new Pose2d());
+        pureOdometry = new SwerveDrivePoseEstimator(DriveConstants.kKinematics, getHeadingAsRotation2d(), swerveModulePositions, new Pose2d());
+        pipelineNumber = 0;
 
-    ChassisSpeeds robotRelativeSpeeds;
-    if (fieldOriented) {
-      robotRelativeSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(fieldRelativeSpeeds, getHeadingAsRotation2d());
-    } else {
-      robotRelativeSpeeds = fieldRelativeSpeeds;
-    }
+        SmartDashboard.putData("Swerve Drive", new Sendable() {
+            @Override
+            public void initSendable(SendableBuilder builder) {
+                builder.setSmartDashboardType("SwerveDrive");
 
-    currentDrivetrainSpeed = Math.sqrt(Math.pow(robotRelativeSpeeds.vxMetersPerSecond, 2)
-                + Math.pow(robotRelativeSpeeds.vyMetersPerSecond, 2));
+                builder.addDoubleProperty("Front Left Angle", () -> frontLeftModule.getAngle(), null);
+                builder.addDoubleProperty("Front Left Velocity", () -> frontLeftModule.getVelocity(), null);
 
-    swerveModuleStates = DriveConstants.kKinematics.toSwerveModuleStates(robotRelativeSpeeds);
-    // TODO: desaturate later!
-    SwerveDriveKinematics.desaturateWheelSpeeds(swerveModuleStates, DriveConstants.kMaxModuleSpeed);
-    optimizeModuleStates();
-    setSwerveModuleStates(swerveModuleStates);
-  }
+                builder.addDoubleProperty("Front Right Angle", () -> frontRightModule.getAngle(), null);
+                builder.addDoubleProperty("Front Right Velocity", () -> frontRightModule.getVelocity(), null);
 
-  /**
-   * Only used during autonomous, sets driving strictly to robot relative
-   * 
-   * @param robotRelativeSpeeds
-   */
-  public void driveRobotRelative(ChassisSpeeds robotRelativeSpeeds) {
-    swerveModuleStates = DriveConstants.kKinematics.toSwerveModuleStates(robotRelativeSpeeds);
-    setSwerveModuleStates(swerveModuleStates);
-  }
+                builder.addDoubleProperty("Back Left Angle", () -> backLeftModule.getAngle(), null);
+                builder.addDoubleProperty("Back Left Velocity", () -> backLeftModule.getVelocity(), null);
 
-  /**
-   * @return returns swerveModuleStates, which contain speed and angle of a 
-   * swerve module that tell you how to get to desired position
-   */
-  public SwerveModuleState[] getSwerveModuleStates(){
-    return swerveModuleStates;
-  }
+                builder.addDoubleProperty("Back Right Angle", () -> backRightModule.getAngle(), null);
+                builder.addDoubleProperty("Back Right Velocity", () -> backRightModule.getVelocity(), null);
 
-  /**
-   * optimizes the angle in each module state, will turn the closer direction
-   */
-  public void optimizeModuleStates() {
-    for (int i = 0; i < swerveModuleStates.length; i++) {
-      swerveModuleStates[i].optimize(new Rotation2d(swerveModules[i].getCANCoderReading()));
-    }
-  }
+                builder.addDoubleProperty("Robot Angle", () -> getPose().getRotation().getRadians(), null);
+            }
+        });
+        
+        currentMovement = new Translation2d();
 
-  /**
-   * gets the module position from each swerveModule
-   */
-  public void updateModulePositions() {
-    for (int i = 0; i < swerveModulePositions.length; i++) {
-      swerveModulePositions[i] = swerveModules[i].getPosition();
-    }
-  }
-
-  /**
-   * updates odometry, where the robot thinks it is, using cameras and our current odometry
-   */
-  public void updateOdometry() {
-    // PVBack.getInstance().fuseEstimatedPose(odometry);
-    PVFrontLeft.getInstance().fuseEstimatedPose(odometry);
-    PVFrontMiddle.getInstance().fuseEstimatedPose(odometry);
-    PVFrontRight.getInstance().fuseEstimatedPose(odometry);
-    odometry.update(getHeadingAsRotation2d(), swerveModulePositions);
-    pureOdometry.update(getHeadingAsRotation2d(), swerveModulePositions);
-    // PVLeft.getInstance().fuseEstimatedPose(odometry);
-  }
-
-  /**
-   *
-   * @param desiredModuleStates
-   */
-  public void setSwerveModuleStates(SwerveModuleState[] desiredModuleStates) {
-    for (int i = 0; i < desiredModuleStates.length; i++) {
-      swerveModules[i].setDesiredState(desiredModuleStates[i]);
-    }
-  }
-
-  /**
-   * @return returns heading in degrees 
-   */
-  public double getHeading() {
-    heading = gyro.getYaw().getValueAsDouble();
-    return Math.IEEEremainder(heading, 360);
-  }
-
-  /**
-   * resets gyro
-   */
-  public void resetGyro() {
-    gyro.reset();
-  }
-
-  /**
-   * @return returns gyro heading in terms of rotation2d
-   */
-  public Rotation2d getHeadingAsRotation2d() {
-    return gyro.getRotation2d();
-  }
-
-  /**
-   * @return returns rotational velocity in DPS
-   */
-  public double getRotationalVelocity(){
-    return -gyro.getAngularVelocityZWorld().getValueAsDouble();
-  }
-
-  /**
-   * @return returns X acceleration of gyro
-   */
-  public double getGyroAccX(){
-    return gyro.getAccelerationX().getValueAsDouble();
-  }
-
-  /**
-   * @return returns Y acceleration of gyro
-   */
-  public double getGyroAccY(){
-    return gyro.getAccelerationY().getValueAsDouble();
-  }
-
-  /**
-   * @return returns Z acceleration of gyro
-   */
-  public double getGyroAccZ(){
-    return gyro.getAccelerationZ().getValueAsDouble();
-  }
-  
-  public Translation2d getCurrentMovement() {
-    return currentMovement;
-  }
-
-  /**
-   * @return returns current speed
-   */
-  public double getSpeed() {
-    return currentDrivetrainSpeed;
-  }
-
-  /**
-   * @return returns current pose as a pose2d, which containts both translational and rotational
-   */
-  public Pose2d getPose() {
-    return odometry.getEstimatedPosition();
-  }
-
-  /**
-   * Resets gyro and sets robot's position to said pose including both rotation and translation
-   * 
-   * @param pose - Pose 2D
-   */
-  public void setPose(Pose2d pose) {
-    gyro.reset();
-    odometry.resetPosition(getHeadingAsRotation2d(), swerveModulePositions, pose);
-  }
-
-  /**
-   * Does not reset gyro, only changes where you are on the field
-   * 
-   * @param translation - Translation 2D
-   */
-  public void resetTranslation(Translation2d translation) {
-    odometry.resetTranslation(translation);
-  }
-  public void resetPureOdometryTranslation(Translation2d translation) {
-    pureOdometry.resetTranslation(translation);
-  }
-
-  /**
-   * @return returns current robot relative chassis speeds by getting the state of each module and 
-   * then converting to chassis speeds
-   */
-  public ChassisSpeeds getRobotRelativeSpeeds() {
-    return DriveConstants.kKinematics.toChassisSpeeds(
-        frontLeftModule.getState(),
-        frontRightModule.getState(),
-        backLeftModule.getState(),
-        backRightModule.getState());
-  }
-
-
-  /**
-   * Checks if the robot is skidding. Skid is when modules' translational velocities 
-   * differ greatly from each other (e.g. during acceleration, outside interference, etc)
-   */
-  public boolean isSkidding(){
-    //gets rotational velocity of the whole robot
-    double currentRotationalVelocity = -getRotationalVelocity()*2*Math.PI/360;
-
-
-    if (Math.abs(currentRotationalVelocity)<0.05){
-      currentRotationalVelocity = 0;
+        fusedOdometry = new Field2d();
+        SmartDashboard.putData("Fused odometry", fusedOdometry);
+        fusedOdometryAdvScope = NetworkTableInstance.getDefault().getStructTopic("fused odometry for advantagescope", Pose2d.struct).publish();
+        pureOdometryAdvScope = NetworkTableInstance.getDefault().getStructTopic("nonfused odometry for advantagescope", Pose2d.struct).publish();
     }
 
-    //gets rotational velocity of each module
-    ChassisSpeeds rotationalVelocity = new ChassisSpeeds(0,0, currentRotationalVelocity);
-    SwerveModuleState pureRotationalStates[] = DriveConstants.kSkidKinematics.toSwerveModuleStates(rotationalVelocity);
-   
-    //gets rotational and translational velocity of each module
-    SwerveModuleState[] moduleStates = Arrays.copyOf(swerveModuleStates, 4);
-
-    Translation2d[] fullModuleStates = new Translation2d[4];
-    Translation2d[] pureTranslationalStates = new Translation2d[4];
-
-
-    for (int i = 0; i<4; i++){
-      fullModuleStates[i] = new Translation2d(moduleStates[i].speedMetersPerSecond, moduleStates[i].angle);
-
-      Translation2d pureRotation = new Translation2d(pureRotationalStates[i].speedMetersPerSecond, pureRotationalStates[i].angle);
-
-      //subtracts rotational velocity from full states, leaving only translational velocity
-      pureTranslationalStates[i] = fullModuleStates[i].minus(pureRotation);
+    /**
+     * returns the existing drivetrain instance or creates it if it doesn't exist
+     */
+    public static Drivetrain getInstance() {
+        if (instance == null) {
+            instance = new Drivetrain();
+        }
+        return instance;
     }
 
-    //compares the translational velocity of each module to each other, checking for large differences
-    for (int i = 0; i<4; i++){
-      for (int j = i+1; j<4; j++){
-        Translation2d difference = pureTranslationalStates[i].minus(pureTranslationalStates[j]);
+    /**
+     * @return pipeline number for limelight
+     */
+    public static int getPipelineNumber(){
+        return pipelineNumber;
+    }
 
-        double vtotal = Math.sqrt(Math.pow(difference.getX(),2) + Math.pow(difference.getY(), 2));
+    /**
+     * commands the robot to drive
+     * 
+     * @param translation - translation input (x,y meters/sec in field space)
+     * @param rotation - rotation input (degrees/sec)
+     * @param fieldOriented - whether the robot is field oriented (true) or robot oriented (false)
+     * @param centerOfRotation - robot's center of rotation
+     */
+    public void drive(Translation2d translation, double rotation, boolean fieldOriented, Translation2d centerOfRotation) {
+        if (fieldOriented)
+            currentMovement = translation;
 
-        if(vtotal>DriveConstants.kSkidThreshold){
-          return true;
+        ChassisSpeeds fieldRelativeSpeeds = new ChassisSpeeds(translation.getX(), translation.getY(), rotation);
+
+        ChassisSpeeds robotRelativeSpeeds;
+        if (fieldOriented) {
+            robotRelativeSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(fieldRelativeSpeeds, getHeadingAsRotation2d());
+        } else {
+            robotRelativeSpeeds = fieldRelativeSpeeds;
         }
 
-      }
+        currentDrivetrainSpeed = Math.sqrt(Math.pow(robotRelativeSpeeds.vxMetersPerSecond, 2)
+                                + Math.pow(robotRelativeSpeeds.vyMetersPerSecond, 2));
+
+        swerveModuleStates = DriveConstants.kKinematics.toSwerveModuleStates(robotRelativeSpeeds);
+        // TODO: desaturate later!
+        SwerveDriveKinematics.desaturateWheelSpeeds(swerveModuleStates, DriveConstants.kMaxModuleSpeed);
+        optimizeModuleStates();
+        setSwerveModuleStates(swerveModuleStates);
     }
-    return false;
-  }
 
-  @Override
-  public void periodic() {
-    // SmartDashboard.putBoolean("skid", isSkidding());
-    updateModulePositions();
-    updateOdometry();
-    fusedOdometry.setRobotPose(odometry.getEstimatedPosition());
-    fusedOdometryAdvScope.set(odometry.getEstimatedPosition());
-    pureOdometryAdvScope.set(pureOdometry.getEstimatedPosition());
-
-    for(int i = 0; i < 4; i++){
-      // SmartDashboard.putNumber("module " + i +"desired speed", swerveModuleStates[i].speedMetersPerSecond);
-      // SmartDashboard.putNumber("module " + i +"desired angle", swerveModuleStates[i].angle.getRadians());
-      // SmartDashboard.putNumber("module " + i +"actual speed", swerveModules[i].getVelocity());
-      // SmartDashboard.putNumber("module " + i +"actual angle", swerveModules[i].getAngle());
-
+    /**
+     * Only used during autonomous, sets driving strictly to robot relative
+     * 
+     * @param robotRelativeSpeeds
+     */
+    public void driveRobotRelative(ChassisSpeeds robotRelativeSpeeds) {
+        swerveModuleStates = DriveConstants.kKinematics.toSwerveModuleStates(robotRelativeSpeeds);
+        setSwerveModuleStates(swerveModuleStates);
     }
-    SmartDashboard.putNumber("Odometry X", getPose().getX());
-    SmartDashboard.putNumber("Odometry Y", getPose().getY());
-    SmartDashboard.putNumber("Heading", getHeading());
-  }
 
-  @Override
-  public void simulationPeriodic() {
-    // This method will be called once per scheduler run during simulation
-  }
+    /**
+     * @return returns swerveModuleStates, which contain speed and angle of a 
+     * swerve module that tell you how to get to desired position
+     */
+    public SwerveModuleState[] getSwerveModuleStates(){
+        return swerveModuleStates;
+    }
+
+    /**
+     * optimizes the angle in each module state, will turn the closer direction
+     */
+    public void optimizeModuleStates() {
+        for (int i = 0; i < swerveModuleStates.length; i++) {
+            swerveModuleStates[i].optimize(new Rotation2d(swerveModules[i].getCANCoderReading()));
+        }
+    }
+
+    /**
+     * gets the module position from each swerveModule
+     */
+    public void updateModulePositions() {
+        for (int i = 0; i < swerveModulePositions.length; i++) {
+            swerveModulePositions[i] = swerveModules[i].getPosition();
+        }
+    }
+
+    /**
+     * updates odometry, where the robot thinks it is, using cameras and our current odometry
+     */
+    public void updateOdometry() {
+        // PVBack.getInstance().fuseEstimatedPose(odometry);
+        PVFrontLeft.getInstance().fuseEstimatedPose(odometry);
+        PVFrontMiddle.getInstance().fuseEstimatedPose(odometry);
+        PVFrontRight.getInstance().fuseEstimatedPose(odometry);
+        odometry.update(getHeadingAsRotation2d(), swerveModulePositions);
+        pureOdometry.update(getHeadingAsRotation2d(), swerveModulePositions);
+        // PVLeft.getInstance().fuseEstimatedPose(odometry);
+    }
+
+    /**
+     *
+     * @param desiredModuleStates
+     */
+    public void setSwerveModuleStates(SwerveModuleState[] desiredModuleStates) {
+        for (int i = 0; i < desiredModuleStates.length; i++) {
+            swerveModules[i].setDesiredState(desiredModuleStates[i]);
+        }
+    }
+
+    /**
+     * @return returns heading in degrees 
+     */
+    public double getHeading() {
+        heading = gyro.getYaw().getValueAsDouble();
+        return Math.IEEEremainder(heading, 360);
+    }
+
+    /**
+     * resets gyro
+     */
+    public void resetGyro() {
+        gyro.reset();
+    }
+
+    /**
+     * @return returns gyro heading in terms of rotation2d
+     */
+    public Rotation2d getHeadingAsRotation2d() {
+        return gyro.getRotation2d();
+    }
+
+    /**
+     * @return returns rotational velocity in DPS
+     */
+    public double getRotationalVelocity(){
+        return -gyro.getAngularVelocityZWorld().getValueAsDouble();
+    }
+
+    /**
+     * @return returns X acceleration of gyro
+     */
+    public double getGyroAccX(){
+        return gyro.getAccelerationX().getValueAsDouble();
+    }
+
+    /**
+     * @return returns Y acceleration of gyro
+     */
+    public double getGyroAccY(){
+        return gyro.getAccelerationY().getValueAsDouble();
+    }
+
+    /**
+     * @return returns Z acceleration of gyro
+     */
+    public double getGyroAccZ(){
+        return gyro.getAccelerationZ().getValueAsDouble();
+    }
+    
+    public Translation2d getCurrentMovement() {
+        return currentMovement;
+    }
+
+    /**
+     * @return returns current speed
+     */
+    public double getSpeed() {
+        return currentDrivetrainSpeed;
+    }
+
+    /**
+     * @return returns current pose as a pose2d, which containts both translational and rotational
+     */
+    public Pose2d getPose() {
+        return odometry.getEstimatedPosition();
+    }
+
+    /**
+     * Resets gyro and sets robot's position to said pose including both rotation and translation
+     * 
+     * @param pose - Pose 2D
+     */
+    public void setPose(Pose2d pose) {
+        gyro.reset();
+        odometry.resetPosition(getHeadingAsRotation2d(), swerveModulePositions, pose);
+    }
+
+    /**
+     * Does not reset gyro, only changes where you are on the field
+     * 
+     * @param translation - Translation 2D
+     */
+    public void resetTranslation(Translation2d translation) {
+        odometry.resetTranslation(translation);
+    }
+    public void resetPureOdometryTranslation(Translation2d translation) {
+        pureOdometry.resetTranslation(translation);
+    }
+
+    /**
+     * @return returns current robot relative chassis speeds by getting the state of each module and 
+     * then converting to chassis speeds
+     */
+    public ChassisSpeeds getRobotRelativeSpeeds() {
+        return DriveConstants.kKinematics.toChassisSpeeds(
+                frontLeftModule.getState(),
+                frontRightModule.getState(),
+                backLeftModule.getState(),
+                backRightModule.getState());
+    }
+
+
+    /**
+     * Checks if the robot is skidding. Skid is when modules' translational velocities 
+     * differ greatly from each other (e.g. during acceleration, outside interference, etc)
+     */
+    public boolean isSkidding(){
+        //gets rotational velocity of the whole robot
+        double currentRotationalVelocity = -getRotationalVelocity()*2*Math.PI/360;
+
+
+        if (Math.abs(currentRotationalVelocity)<0.05){
+            currentRotationalVelocity = 0;
+        }
+
+        //gets rotational velocity of each module
+        ChassisSpeeds rotationalVelocity = new ChassisSpeeds(0,0, currentRotationalVelocity);
+        SwerveModuleState pureRotationalStates[] = DriveConstants.kSkidKinematics.toSwerveModuleStates(rotationalVelocity);
+     
+        //gets rotational and translational velocity of each module
+        SwerveModuleState[] moduleStates = Arrays.copyOf(swerveModuleStates, 4);
+
+        Translation2d[] fullModuleStates = new Translation2d[4];
+        Translation2d[] pureTranslationalStates = new Translation2d[4];
+
+
+        for (int i = 0; i<4; i++){
+            fullModuleStates[i] = new Translation2d(moduleStates[i].speedMetersPerSecond, moduleStates[i].angle);
+
+            Translation2d pureRotation = new Translation2d(pureRotationalStates[i].speedMetersPerSecond, pureRotationalStates[i].angle);
+
+            //subtracts rotational velocity from full states, leaving only translational velocity
+            pureTranslationalStates[i] = fullModuleStates[i].minus(pureRotation);
+        }
+
+        //compares the translational velocity of each module to each other, checking for large differences
+        for (int i = 0; i<4; i++){
+            for (int j = i+1; j<4; j++){
+                Translation2d difference = pureTranslationalStates[i].minus(pureTranslationalStates[j]);
+
+                double vtotal = Math.sqrt(Math.pow(difference.getX(),2) + Math.pow(difference.getY(), 2));
+
+                if(vtotal>DriveConstants.kSkidThreshold){
+                    return true;
+                }
+
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public void periodic() {
+        // SmartDashboard.putBoolean("skid", isSkidding());
+        updateModulePositions();
+        updateOdometry();
+        fusedOdometry.setRobotPose(odometry.getEstimatedPosition());
+        fusedOdometryAdvScope.set(odometry.getEstimatedPosition());
+        pureOdometryAdvScope.set(pureOdometry.getEstimatedPosition());
+
+        for(int i = 0; i < 4; i++){
+            // SmartDashboard.putNumber("module " + i +"desired speed", swerveModuleStates[i].speedMetersPerSecond);
+            // SmartDashboard.putNumber("module " + i +"desired angle", swerveModuleStates[i].angle.getRadians());
+            // SmartDashboard.putNumber("module " + i +"actual speed", swerveModules[i].getVelocity());
+            // SmartDashboard.putNumber("module " + i +"actual angle", swerveModules[i].getAngle());
+
+        }
+        SmartDashboard.putNumber("Odometry X", getPose().getX());
+        SmartDashboard.putNumber("Odometry Y", getPose().getY());
+        SmartDashboard.putNumber("Heading", getHeading());
+    }
+
+    @Override
+    public void simulationPeriodic() {
+        // This method will be called once per scheduler run during simulation
+    }
 }

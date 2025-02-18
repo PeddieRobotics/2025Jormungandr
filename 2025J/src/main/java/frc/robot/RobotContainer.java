@@ -33,44 +33,44 @@ import frc.robot.utils.OperatorOI;
  * subsystems, commands, and trigger mappings) should be declared here.
  */
 public class RobotContainer {
-  private Arm arm;
-  private Autonomous autonomous;
-  private Claw claw;
-  private Drivetrain drivetrain;
-  private Superstructure superstructure;
-  private DriverOI driverOI;
-  private OperatorOI operatorOI;
-  private Elevator elevator;
-  private HPIntake hpIntake;
-  private PVBack pvBack;  
-  private PVFrontLeft pvFrontLeft;
-  private PVFrontMiddle pvFrontMiddle;
-  private PVFrontRight pvFrontRight;
-  private PVLeft pvLeft;
-  private Lights lights;
+    private Arm arm;
+    private Autonomous autonomous;
+    private Claw claw;
+    private Drivetrain drivetrain;
+    private Superstructure superstructure;
+    private DriverOI driverOI;
+    private OperatorOI operatorOI;
+    private Elevator elevator;
+    private HPIntake hpIntake;
+    private PVBack pvBack;    
+    private PVFrontLeft pvFrontLeft;
+    private PVFrontMiddle pvFrontMiddle;
+    private PVFrontRight pvFrontRight;
+    private PVLeft pvLeft;
+    private Lights lights;
 
-  public RobotContainer() {
-    // arm = Arm.getInstance();
-    // claw = Claw.getInstance();
-    autonomous = Autonomous.getInstance();
-    drivetrain = Drivetrain.getInstance();
-    // elevator = Elevator.getInstance();
-    // hpIntake = HPIntake.getInstance();
-    // superstructure = Superstructure.getInstance();
-    driverOI = DriverOI.getInstance();
-    operatorOI = OperatorOI.getInstance();
-    // pvBack = PVBack.getInstance();
-    pvFrontLeft = PVFrontLeft.getInstance();
-    pvFrontMiddle = PVFrontMiddle.getInstance();
-    pvFrontRight = PVFrontRight.getInstance();
-    // pvLeft = PVLeft.getInstance();
-    // lights = Lights.getInstance();
+    public RobotContainer() {
+        // arm = Arm.getInstance();
+        // claw = Claw.getInstance();
+        autonomous = Autonomous.getInstance();
+        drivetrain = Drivetrain.getInstance();
+        // elevator = Elevator.getInstance();
+        // hpIntake = HPIntake.getInstance();
+        // superstructure = Superstructure.getInstance();
+        driverOI = DriverOI.getInstance();
+        operatorOI = OperatorOI.getInstance();
+        // pvBack = PVBack.getInstance();
+        pvFrontLeft = PVFrontLeft.getInstance();
+        pvFrontMiddle = PVFrontMiddle.getInstance();
+        pvFrontRight = PVFrontRight.getInstance();
+        // pvLeft = PVLeft.getInstance();
+        // lights = Lights.getInstance();
 
-    SmartDashboard.putData("Auto Routines", autonomous.getAutoChooser());
-    drivetrain.setDefaultCommand(new SwerveDriveCommand());
-  }
+        SmartDashboard.putData("Auto Routines", autonomous.getAutoChooser());
+        drivetrain.setDefaultCommand(new SwerveDriveCommand());
+    }
 
-  public Command getAutonomousCommand() {
-    return Autonomous.getAutonomousCommand();
-  }
+    public Command getAutonomousCommand() {
+        return Autonomous.getAutonomousCommand();
+    }
 }
