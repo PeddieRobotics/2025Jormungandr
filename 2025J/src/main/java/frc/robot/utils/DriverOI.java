@@ -6,7 +6,10 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.subsystems.Superstructure;
 import frc.robot.subsystems.Superstructure.SuperstructureState;
+import edu.wpi.first.math.filter.SlewRateLimiter;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.util.WPIUtilJNI;
 import frc.robot.commands.ReefCommands.AlignToReefOdometry;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.PVFrontMiddle;
@@ -177,11 +180,36 @@ public class DriverOI {
         return Math.abs(val) < 0.1 ? 0 : val;
     }
 
-    public Translation2d getSwerveTranslation() {
+   public Translation2d getSwerveTranslation() {
         double xSpeed = getForward();
         double ySpeed = getStrafe();
 
-        return new Translation2d(DriveConstants.kMaxFloorSpeed * xSpeed, DriveConstants.kMaxFloorSpeed * ySpeed);
+        double xSpeedCommanded;
+        double ySpeedCommanded;
+
+        xSpeedCommanded = xSpeed;
+        ySpeedCommanded = ySpeed;
+
+        Translation2d next_translation = new Translation2d(xSpeedCommanded, ySpeedCommanded);
+
+        double norm = next_translation.getNorm();
+        if (norm < DriveConstants.kDrivingDeadband) {
+            return new Translation2d();
+        } else {
+            Rotation2d deadband_direction = new Rotation2d(next_translation.getX(), next_translation.getY());
+            Translation2d deadband_vector = fromPolar(deadband_direction, DriveConstants.kDrivingDeadband);
+
+            double new_translation_x = next_translation.getX()
+                    - (deadband_vector.getX()) / (1 - deadband_vector.getX());
+            double new_translation_y = next_translation.getY()
+                    - (deadband_vector.getY()) / (1 - deadband_vector.getY());
+
+            next_translation = new Translation2d(
+                    new_translation_x * DriveConstants.kMaxFloorSpeed,
+                    new_translation_y * DriveConstants.kMaxFloorSpeed);
+
+            return next_translation;
+        }
     }
 
     public double getRotation() {
@@ -192,4 +220,9 @@ public class DriverOI {
 
         return Math.abs(combinedRotation) < 0.1 ? 0 : combinedRotation * DriveConstants.kMaxRotationSpeed; // TODO: convert to rad/s
     }
+
+    public Translation2d fromPolar(Rotation2d direction, double magnitude) {
+        return new Translation2d(direction.getCos() * magnitude, direction.getSin() * magnitude);
+    }
+
 }

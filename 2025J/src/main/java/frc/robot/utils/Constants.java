@@ -112,6 +112,7 @@ public final class Constants {
     public static final double kBackRightCancoderOffset = 0.2586;
 
     public static final double kSkidThreshold = 0.2;
+    public static final double kDrivingDeadband = 0.05;
 
   }
 
@@ -327,7 +328,7 @@ public final class Constants {
     public static final double kClimberSupplyCurrentLimit = 0;
 
     public static final double kClimberReduction = 120.0/1.0;
-    
+
 
   }
 
