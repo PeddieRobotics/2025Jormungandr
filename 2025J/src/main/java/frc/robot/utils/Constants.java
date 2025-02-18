@@ -28,17 +28,18 @@ import edu.wpi.first.units.Unit;
 public final class Constants {
   public static class AutoConstants {
     // TODO: update or real values (Default was TranslationP = ThetaP = 5.0)
-    public static final double kTranslationP = 0.0;
+    public static final double kTranslationP = 5.0;
     public static final double kTranslationI = 0.0;
     public static final double kTranslationD = 0.0;
 
-    public static final double kThetaP = 0.0;
+    public static final double kThetaP = 5.0;
     public static final double kThetaI = 0.0;
     public static final double kThetaD = 0.0;
   }
 
-  public static class OperatorConstants {
+  public static class OIConstants {
     public static final int kDriverControllerPort = 0;
+    public static final int kOperatorControllerPort = 1;
   }
 
   public static class ModuleConstants {
@@ -118,6 +119,7 @@ public final class Constants {
     public static final double kBackRightCancoderOffset = 0.2586;
 
     public static final double kSkidThreshold = 0.2;
+    public static final double kDrivingDeadband = 0.05;
 
   }
 
@@ -139,6 +141,12 @@ public final class Constants {
     public static final double kElevatorForwardSoftLimit = 0.0;
     public static final double kElevatorReverseSoftLimit = 0.0;
 
+    public static final double kElevatorReduction = 0.0;
+    public static final double kElevatorRotorToSensorRatio = 0.0;
+    public static final double kElevatorSensortoMechanismRatio = 0.0;
+
+    public static final double kElevatorMagnetOffset = 0.0;
+
     // Motion Magic Parameters
     public static final double kElevatorMaxCruiseVelocity = 0.0;
     public static final double kElevatorMaxCruiseAcceleration = 0.0;
@@ -152,7 +160,7 @@ public final class Constants {
     public static final double kD = 0.0; 
     public static final double kFF = 0.0; 
 
-    public static final double kElevatorHeightEpsilon = 0.0;
+    public static final double kElevatorPositionEpsilon = 0.0;
     public static final double kElevatorL1Height = 0.0;
     public static final double kElevatorL2Height = 0.0;
     public static final double kElevatorL3Height = 0.0;
@@ -218,9 +226,9 @@ public final class Constants {
 
     public static final double kArmMagnetOffset = 0.0;
 
-    public static final double kArmReduction = 0.0;
-    public static final double kArmRotorToSensorRatio = 0.0;
-    public static final double kArmSensortoMechanismRatio = 0.0;
+    public static final double kArmReduction = 120.0/1.0;
+    public static final double kArmRotorToSensorRatio = kArmReduction/2.0;
+    public static final double kArmSensortoMechanismRatio = 2.0;
 
     public static final double kS = 0.0;
     public static final double kV = 0.0;
@@ -273,6 +281,10 @@ public final class Constants {
         put(2.21, 4.9);
         put(2.38, 7.0);
     }};
+    
+    public static final double rotationErrorEpsilon = 0.0;    
+    public static final double xErrorEpsilon = 0.0; 
+    public static final double yErrorEpsilon = 0.0;
   }
 
   public static final Map<Integer, Double> kReefDesiredAngle = new HashMap<>() {{
@@ -297,6 +309,11 @@ public final class Constants {
     // TODO: update real values
     public static final double kClawStatorCurrentLimit = 20.0;
 
+    public static final double kP = 0.0;
+    public static final double kI = 0.0;
+    public static final double kD = 0.0;
+    public static final double kFF = 0.0;
+
     public static final double kCoralSensor1ProximityThreshold = 0.0;
     public static final double kCoralSensor2ProximityThreshold = 0.0;
     public static final double kAlgaeSensorProximityThreshold = 0.0;
@@ -317,12 +334,17 @@ public final class Constants {
     public static final double kAlgaeOuttakeSpeed = 0.0;
 
     public static final double kAlgaeHoldSpeed = 0.0;
+
+    public static final double kCoralPositionIncrement = 0.0;
   }
 
   public static final class ClimberConstants {
 
     public static final double kClimberStatorCurrentLimit = 0;
     public static final double kClimberSupplyCurrentLimit = 0;
+
+    public static final double kClimberReduction = 120.0/1.0;
+
 
   }
 
@@ -379,8 +401,10 @@ public final class Constants {
   }
   
   public static final class FieldConstants {
-    public static final double kReefCenterX = 4.5;
-    public static final double kReefCenterY = 4.0;
+    public static final double kReefCenterXBlue = 4.5;
+    public static final double kReefCenterYBlue = 4.0;
+    public static final double kReefCenterXRed = 13.063;
+    public static final double kReefCenterYRed = 4.0;
     public static final Map<Integer, Double> kAprilTagHeights = new HashMap<>() {{
       put(1, 58.5);
       put(2, 58.5);

@@ -18,14 +18,13 @@ public class Elevator extends SubsystemBase {
     private static Elevator elevator;
     private Kraken elevatorMainMotor, elevatorFollowerMotor;
     private CANcoder elevatorCANcoder;
-    private DigitalInput bottomLimitSwitch;
     private TunableConstant kP, kS, kV, kI, kD, kFF, kA,
             kElevatorMaxCruiseVelocity, kElevatorMaxCruiseAcceleration, kElevatorMaxCruiseJerk,
             kElevatorForwardSoftLimit, kElevatorReverseSoftLimit,
             L1Setpoint, L2Setpoint, L3Setpoint, L4Setpoint, HPIntakeSetpoint, stowSetpoint, bargeSetpoint,
             algaeL1Setpoint, algaeL2Setpoint, processorSetpoint;
 
-    private LiveData elevatorPosition, elevatorSetpoint, mainMotorCurrent, followerMotorCurrent;
+    private LiveData elevatorSetpoint;
 
     public Elevator() {
         elevatorMainMotor = new Kraken(RobotMap.ELEVATOR_MAIN_ID, RobotMap.CANIVORE_NAME);
@@ -67,8 +66,6 @@ public class Elevator extends SubsystemBase {
         elevatorFollowerMotor.setSoftLimits(true, ElevatorConstants.kElevatorForwardSoftLimit,
                 ElevatorConstants.kElevatorReverseSoftLimit);
 
-        bottomLimitSwitch = new DigitalInput(RobotMap.ELEVATOR_LIMIT_SWITCH_ID);
-
         elevatorCANcoder = new CANcoder(RobotMap.ELEVATOR_CANCODER_ID);
         CANcoderConfiguration config = new CANcoderConfiguration();
         config.MagnetSensor.AbsoluteSensorDiscontinuityPoint = 1; // Setting this to 1 makes the absolute position
@@ -78,8 +75,12 @@ public class Elevator extends SubsystemBase {
                                                                   // Setting this to 0 makes the absolute position
                                                                   // always negative [-1, 0)
         config.MagnetSensor.SensorDirection = SensorDirectionValue.CounterClockwise_Positive;
-        elevatorCANcoder.getConfigurator().apply(config);
+        config.MagnetSensor.MagnetOffset = ElevatorConstants.kElevatorMagnetOffset;
+        elevatorCANcoder.getConfigurator().apply(config); 
+
         elevatorMainMotor.setFeedbackDevice(RobotMap.ELEVATOR_CANCODER_ID, FeedbackSensorSourceValue.FusedCANcoder);
+        elevatorMainMotor.setRotorToSensorRatio(ElevatorConstants.kElevatorRotorToSensorRatio);
+        elevatorMainMotor.setSensorToMechanismRatio(ElevatorConstants.kElevatorSensortoMechanismRatio);
 
         kP = new TunableConstant(ElevatorConstants.kP, "Elevator kP");
         kI = new TunableConstant(ElevatorConstants.kI, "Elevator kI");
@@ -111,11 +112,6 @@ public class Elevator extends SubsystemBase {
         processorSetpoint = new TunableConstant(ElevatorConstants.kProcessorSetpoint, "Elevator processorSetpoint");
 
         elevatorSetpoint = new LiveData(ElevatorConstants.kStowSetpoint, "Elevator Current Setpoint");
-        elevatorPosition = new LiveData(elevatorMainMotor.getPosition(), "Elevator Current Position");
-
-        mainMotorCurrent = new LiveData(elevatorMainMotor.getSupplyCurrent(), "Elevator Main Motor Current");
-        followerMotorCurrent = new LiveData(elevatorFollowerMotor.getSupplyCurrent(),
-                "Elevator Follower Motor Current");
     }
 
     /**
@@ -152,6 +148,7 @@ public class Elevator extends SubsystemBase {
      * @param position - commanded motor position (motor encoder units)
      */
     public void setElevatorPositionVoltage(double position) {
+        elevatorSetpoint.set(position);
         elevatorMainMotor.setPositionVoltage(position);
     }
 
@@ -162,6 +159,7 @@ public class Elevator extends SubsystemBase {
      * @param position - commanded motor position (motor encoder units)
      */
     public void setElevatorPositionMotionMagicVoltage(double position) {
+        elevatorSetpoint.set(position);
         elevatorMainMotor.setPositionMotionMagicVoltage(position);
     }
 
@@ -172,29 +170,21 @@ public class Elevator extends SubsystemBase {
      * @param position - commanded motor position (motor encoder units)
      */
     public void setElevatorPositionMotionMagicTorqueCurrentFOC(double position) {
+        elevatorSetpoint.set(position);
         elevatorMainMotor.setPositionMotionMagicTorqueCurrentFOC(position);
     }
 
     // Accessor methods
 
+    /**
+     * @return returns cancoder reading from elevator in rotations, more accurate than just encoder
+     */
     public double getElevatorCANcoderReading() {
         return elevatorCANcoder.getPosition().getValueAsDouble();
     }
 
-    /**
-     * @return whether elevator bottom limit switch is triggered
-     */
-    public boolean getBottomLimitSwitch() {
-        return bottomLimitSwitch.get();
-    }
-
-    public double getElevatorHeight() {
-        // TODO: implement this code
-        return 0;
-    }
-
-    public boolean isAtHeight(double targetHeight) {
-        return Math.abs(getElevatorHeight() - targetHeight) < ElevatorConstants.kElevatorHeightEpsilon;
+    public boolean isAtPosition(double desiredPosition) {
+        return Math.abs(getElevatorCANcoderReading() - desiredPosition) < ElevatorConstants.kElevatorPositionEpsilon;
     }
 
     /**
@@ -205,6 +195,9 @@ public class Elevator extends SubsystemBase {
         return elevatorMainMotor.getPosition();
     }
 
+    /**
+     * resets encoder on elevatorMotor
+     */
     public void resetElevatorPosition() {
         elevatorMainMotor.resetEncoder();
     }
@@ -230,12 +223,18 @@ public class Elevator extends SubsystemBase {
         return elevatorMainMotor.getSupplyCurrent();
     }
 
-    public double getPosition() {
-        return elevatorMainMotor.getPosition();
+    /**
+     * @return elevator motor velocity (rotations per second)
+     */
+    public double getElevatorVelocity(){
+        return elevatorMainMotor.getRPS();
     }
 
-    public double getVelocity() {
-        return elevatorMainMotor.getRPS();
+    /**
+     * @return elevator motor setpoint (motor encoder units)
+     */
+    public double getElevatorSetpoint(){
+        return elevatorSetpoint.get();
     }
 
     public double getElevatorMainMotorTemperature() {
@@ -264,11 +263,6 @@ public class Elevator extends SubsystemBase {
 
         elevatorMainMotor.setSoftLimits(true, kElevatorForwardSoftLimit.get(), kElevatorReverseSoftLimit.get());
         elevatorFollowerMotor.setSoftLimits(true, kElevatorForwardSoftLimit.get(), kElevatorReverseSoftLimit.get());
-
-        elevatorPosition.set(elevatorMainMotor.getPosition());
-
-        mainMotorCurrent.set(elevatorMainMotor.getSupplyCurrent());
-        followerMotorCurrent.set(elevatorFollowerMotor.getSupplyCurrent());
     }
 
     @Override

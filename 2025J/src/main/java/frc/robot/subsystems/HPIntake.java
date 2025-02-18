@@ -1,5 +1,6 @@
 package frc.robot.subsystems;
 
+import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.utils.Constants.IntakeConstants;
 import frc.robot.utils.Constants.ModuleConstants;
@@ -10,15 +11,11 @@ import frc.robot.utils.RobotMap;
 public class HPIntake extends SubsystemBase{
 
     private static HPIntake hpIntake;
-    private final Kraken rollerMotor;
+    private final Servo linearActuator;
     
     public HPIntake() {
-        rollerMotor = new Kraken(RobotMap.HP_INTAKE_ROLLER_ID, RobotMap.CANIVORE_NAME);
-
-        // TODO: update to reflect desired behavior
-        rollerMotor.setInverted(false);
-        rollerMotor.setSupplyCurrentLimit(IntakeConstants.kHPIntakeRollerSupplyCurrentLimit);
-        rollerMotor.setBrake();
+        linearActuator = new Servo(RobotMap.HP_INTAKE_SERVO_ID);
+        linearActuator.setBoundsMicroseconds(2000, 1800, 1500, 1200, 1000);
     }
 
     /**
@@ -31,54 +28,12 @@ public class HPIntake extends SubsystemBase{
         return hpIntake;
     }
     
-    /**
-     * Sets rollerMotor speed to a designated percent output (open loop control)
-     * 
-     * @param speed - Percent of rollerMotor's speed (-1.0 to 1.0)
-     */
-    // public void setIntake(double speed){
-    //     rollerMotor.setPercentOutput(speed);
-    // }
-
-    /**
-     * Stops rollerMotor by setting the speed to 0
-     */
-    // public void stopIntake(){
-    //     setIntake(0);
-    // }
-
-    /**
-     * Sets rollerMotor speed to the designated percent output listed in the IntakeConstants class
-     */
-    // public void runIntake(){
-    //     setIntake(IntakeConstants.kHPIntakeSpeed);
-    // }
-
-    /**
-     * Sets rollerMotor speed to the opposite of the designated percent output listed in the IntakeConstants class
-     */
-    // public void reverseIntake(){
-    //     setIntake(-1*IntakeConstants.kHPIntakeSpeed);
-    // }
-
-    //Accessor methods
-
-    /**
-     * @return HP intake motor stator current draw (amps)
-     */
-    public double getMotorStatorCurrent(){
-        return rollerMotor.getStatorCurrent();
+    public void extendLinearActuator(){
+        linearActuator.set(1);
     }
 
-    /**
-     * @return claw motor supply current draw (amps)
-     */
-    public double getMotorSupplyCurrent(){
-        return rollerMotor.getSupplyCurrent();
-    }
-
-    public double getRollerMotorTemperature(){
-        return rollerMotor.getMotorTemperature();
+    public void retractLinearActuator(){
+        linearActuator.set(0);
     }
 
     @Override

@@ -3,15 +3,14 @@ package frc.robot.subsystems;
 import com.ctre.phoenix6.configs.CANrangeConfiguration;
 import com.ctre.phoenix6.hardware.CANrange;
 
-import edu.wpi.first.wpilibj.AnalogInput;
-import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.utils.Constants.ClawConstants;
 import frc.robot.utils.Constants;
+import frc.robot.utils.Constants.ClawConstants;
 import frc.robot.utils.Kraken;
 import frc.robot.utils.LiveData;
 import frc.robot.utils.RobotMap;
+import frc.robot.utils.TunableConstant;
 
 public class Claw extends SubsystemBase {
 
@@ -23,6 +22,8 @@ public class Claw extends SubsystemBase {
     private CANrangeConfiguration coralSensor1Config;
     private CANrangeConfiguration coralSensor2Config;
     private CANrangeConfiguration algaeSensorConfig;
+
+    private TunableConstant kP, kI, kD;
 
     public Claw() {
         clawMotor = new Kraken(RobotMap.CLAW_MOTOR_ID, RobotMap.CANIVORE_NAME);
@@ -39,6 +40,7 @@ public class Claw extends SubsystemBase {
         clawMotor.setInverted(false);
         clawMotor.setStatorCurrentLimit(ClawConstants.kClawStatorCurrentLimit);
         clawMotor.setBrake();
+        clawMotor.setPIDValues(ClawConstants.kP, ClawConstants.kI, ClawConstants.kD, ClawConstants.kFF);
 
         configureCANrange(coralSensor1, coralSensor1Config, Constants.ClawConstants.kCoralSensor1SignalStrength, 
                             Constants.ClawConstants.kCoralSensor1ProximityThreshold, Constants.ClawConstants.kCoralSensor1ProximityHysteresis);
@@ -97,6 +99,11 @@ public class Claw extends SubsystemBase {
     public void holdAlgae(){
         setClaw(ClawConstants.kAlgaeHoldSpeed);
     }
+
+    public void incrementClaw(){
+        clawMotor.setPositionVoltage(clawMotor.getPosition() + ClawConstants.kCoralPositionIncrement);
+    }
+
     // Accessor methods
 
     /**
@@ -143,22 +150,37 @@ public class Claw extends SubsystemBase {
         return clawMotor.getSupplyCurrent();
     }
 
+    /**
+     * @return position of clawMotor encoder (mechanism rotations)
+     */
     public double getPosition(){
         return clawMotor.getPosition();
     }
 
+    /**
+     * @return velocity of clawMotor encoder (rotor rotations per minute)
+     */
     public double getVelocity(){
         return clawMotor.getRPM();
     }
 
+    /**
+     * @return returns if either sensor has a coral
+     */
     public boolean hasCoral(){
         return getCoralSensor1() || getCoralSensor2();
     }
 
+    /**
+     * @return returns if ready to shoot, sensor 2 detects the coral but not sensor 1
+     */
     public boolean coralIndexed(){
         return getCoralSensor2() && !getCoralSensor1();
     }
 
+    /**
+     * @return returns if sensor detects algae
+     */
     public boolean hasAlgae(){
         return getAlgaeSensor();
     }
