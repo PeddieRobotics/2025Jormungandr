@@ -1,8 +1,5 @@
-package frc.robot.commands.ReefCommands;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+package frc.robot.commands.ScoreCommands;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -11,73 +8,55 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Drivetrain;
-import frc.robot.subsystems.PVFrontLeft;
 import frc.robot.subsystems.PVFrontMiddle;
-import frc.robot.subsystems.PVFrontRight;
-import frc.robot.subsystems.PhotonVision;
 import frc.robot.subsystems.Superstructure;
 import frc.robot.utils.Constants;
 
-class IDVectorPair {
-    public int id;
-    public Translation2d vector;
-    public IDVectorPair(int id, Translation2d vector) {
-        this.id = id;
-        this.vector = vector;
-    }
-    public String toString() {
-        return id + ": " + vector.getNorm();
-    }
-}
-
-public class AlignToReefEstimatedPose extends Command {
+public class AlignAndScore extends Command {
     private Drivetrain drivetrain;
-    private PhotonVision[] cameras;
-
+    private PVFrontMiddle pvFrontMiddle;
     private PIDController translatePIDController, rotationPIDController;
 
     private double translateP, translateI, translateD, translateFF, translateThreshold, translateSetpoint;
     private double rotationP, rotationI, rotationD, rotationFF, rotationThreshold;
     private double rotationLowerP, rotationUseLowerPThreshold;
-    private double maxSpeed;
 
     private Pose2d desiredPose;
     private double tagBackMagnitude, tagLeftMagnitude;
 
     private double desiredAngle;
 
-    public AlignToReefEstimatedPose() {
+    public AlignAndScore(boolean rightAlign) {
         drivetrain = Drivetrain.getInstance();
-        cameras = new PhotonVision[] {
-            PVFrontLeft.getInstance(),
-            PVFrontMiddle.getInstance(),
-            PVFrontRight.getInstance(),
-        };
+        pvFrontMiddle = PVFrontMiddle.getInstance();
 
         translatePIDController = new PIDController(translateP, translateI, translateD);
         rotationPIDController = new PIDController(rotationP, rotationI, rotationD);
         
-        translateP = 2.0;
+        translateP = 2;
         translateI = 0;
         translateD = 0;
         translateFF = 0;
-        translateThreshold = 0.015;
+        translateThreshold = 0.0254;
         translateSetpoint = 0;
 
-        rotationP = 0.04;
+        rotationP = 0.05;
         rotationI = 0;
         rotationD = 0;
         rotationFF = 0;
-        rotationThreshold = 1;
+        rotationThreshold = 0.8;
         rotationLowerP = 0.03;
         rotationUseLowerPThreshold = 1.5;
         
         // center of robot distance to tag -- back (+ = back, - = forwards)
-        tagBackMagnitude = 0.3;
+        tagBackMagnitude = 0.8;
         // center of robot distance to tag -- left (+ = left, - = right)
-        tagLeftMagnitude = 0.1651;
         
-        maxSpeed = 2.0;
+        if (rightAlign) {
+            tagLeftMagnitude = -0.1;
+        } else {
+            tagLeftMagnitude = 0.1;
+        }
 
         addRequirements(drivetrain);
         
@@ -99,66 +78,18 @@ public class AlignToReefEstimatedPose extends Command {
 
             SmartDashboard.putNumber("align tagBackMagnitude", tagBackMagnitude);
             SmartDashboard.putNumber("align tagLeftMagnitude", tagLeftMagnitude);
-
-            SmartDashboard.putNumber("align maxSpeed", maxSpeed);
         }
-    }
-    
-    private double cosineSimilarity(Translation2d a, Translation2d b) {
-        return (a.getX() * b.getX() + a.getY() * b.getY()) / (a.getNorm() * b.getNorm());
     }
 
     @Override
     public void initialize() {
-        /*
-         * desired target algorithm
-         * 1. calculate distance from current odometry to each tag and order list
-         * 2. if lowest is "significantly lower" than second lowest, use lowest (END)
-         * 3. find the robot's current movement vector
-         * 4. find cosine similarity between robot movement vector and vector
-         *      from robot to each of the top 2 tags
-         * 5. use tag with lower cosine similarity
-         */
+        // must see tag!
 
-        // calculate current odometry poes
-        Translation2d odometryPose = drivetrain.getPose().getTranslation();
-        List<IDVectorPair> robotToTag = new ArrayList<>();
-        
-        // BLUE:
-        for (int i = 17; i <= 22; i++) {
-            Translation2d tagPose = PhotonVision.getAprilTagPose(i).getTranslation();
-
-            // TODO: should be tagPose - odometryPose on real robots
-            robotToTag.add(new IDVectorPair(i, odometryPose.minus(tagPose)));
-        }
-        // RED:
-        // for (int i = 6; i <= 11; i++) {
-        //     Translation2d tagPose = PhotonVision.getAprilTagPose(i).getTranslation();
-        //     robotToTag.add(new Pair<>(i, tagPose.minus(odometryPose)));
-        // }
-        
-        Collections.sort(robotToTag, (o1, o2) -> (
-            ((Double) o1.vector.getNorm()).compareTo(o2.vector.getNorm())
-        ));
-        
-        int desiredTarget;
-        if (robotToTag.get(0).vector.getNorm() - robotToTag.get(1).vector.getNorm() >= 0.35)
-            desiredTarget = robotToTag.get(0).id;
-        else {
-            Translation2d robotMovement = drivetrain.getCurrentMovement();
-            if (robotMovement.getNorm() == 0)
-                desiredTarget = robotToTag.get(0).id;
-            else {
-                double similar0 = cosineSimilarity(robotToTag.get(0).vector, robotMovement);
-                double similar1 = cosineSimilarity(robotToTag.get(1).vector, robotMovement);
-                desiredTarget = similar0 > similar1 ? robotToTag.get(0).id : robotToTag.get(1).id;
-            }
-        }
-
+        int desiredTarget = (int) pvFrontMiddle.getTargetID();
         if (Constants.kReefDesiredAngle.containsKey(desiredTarget))
             desiredAngle = Constants.kReefDesiredAngle.get(desiredTarget);
-        
-        Pose2d tagPose = PhotonVision.getAprilTagPose(desiredTarget);
+
+        Pose2d tagPose = pvFrontMiddle.getAprilTagPose(); 
         double tagAngle = tagPose.getRotation().getRadians();
 
         tagBackMagnitude = SmartDashboard.getNumber("align tagBackMagnitude", tagBackMagnitude);
@@ -170,23 +101,6 @@ public class AlignToReefEstimatedPose extends Command {
             tagPose.getY() + tagBackMagnitude * Math.sin(tagAngle) - tagLeftMagnitude * Math.cos(tagAngle),
             new Rotation2d(0)
         );
-        
-        SmartDashboard.putNumber("align desired tag", desiredTarget);
-    }
-    
-    // TODO: find camera with lowest reprojection error
-    private Pose2d getBestEstimatedPose() {
-        // double bestReprojErr = Integer.MAX_VALUE;
-        // Pose2d bestPose = drivetrain.getPose();
-        // for (PhotonVision camera : cameras) {
-        //     if (!camera.hasTarget())
-        //         continue;
-        //     if (camera.getReprojectionError() < bestReprojErr) {
-        //         bestReprojErr = camera.getReprojectionError();
-        //         bestPose = camera.getEstimatedPose();
-        //     }
-        // }
-        return PVFrontRight.getInstance().getEstimatedPose();
     }
 
     @Override
@@ -206,12 +120,7 @@ public class AlignToReefEstimatedPose extends Command {
             rotationThreshold = SmartDashboard.getNumber("align rotationThreshold", rotationThreshold);
             rotationLowerP = SmartDashboard.getNumber("align rotationLowerP", rotationLowerP);
             rotationUseLowerPThreshold = SmartDashboard.getNumber("align rotationUseLowerPThreshold", rotationUseLowerPThreshold);
-
-            maxSpeed = SmartDashboard.getNumber("align maxSpeed", maxSpeed);
         }
-        
-        if (desiredPose == null)
-            return;
 
         double rotationError = desiredAngle + drivetrain.getHeading();
 
@@ -227,12 +136,12 @@ public class AlignToReefEstimatedPose extends Command {
         if (Math.abs(rotationError) > rotationThreshold)
           rotation = rotationPIDController.calculate(rotationError) + Math.signum(rotationError) * rotationFF;
         
-        // if (!pvFrontMiddle.hasTarget()) {
-        //     drivetrain.drive(new Translation2d(), rotation, false, null);
-        //     return;
-        // }
+        if (!pvFrontMiddle.hasTarget()) {
+            drivetrain.drive(new Translation2d(), rotation, false, null);
+            return;
+        }
 
-        Pose2d estimatedPose = getBestEstimatedPose();
+        Pose2d estimatedPose = pvFrontMiddle.getEstimatedPose();
 
         double xError = estimatedPose.getX() - desiredPose.getX();
         double yError = estimatedPose.getY() - desiredPose.getY();
@@ -247,23 +156,21 @@ public class AlignToReefEstimatedPose extends Command {
             yTranslate = translatePIDController.calculate(yError) + Math.signum(yError) * translateFF;
 
         Translation2d translation = new Translation2d(xTranslate, yTranslate);
-        double translateX = translation.getX();
-        double translateY = translation.getY();
-        double translateX_sgn = Math.signum(translateX);
-        double translateY_sgn = Math.signum(translateY);
-        double desaturatedX = Math.min(Math.abs(translateX), maxSpeed);
-        double desaturatedY = Math.min(Math.abs(translateY), maxSpeed);
-        translation = new Translation2d(translateX_sgn * desaturatedX, translateY_sgn * desaturatedY);
-
         drivetrain.drive(translation, rotation, true, null);
+
+        //for L4: if it meets the translation threshold + a little bit, then were sending it to L4 PREP. AND we got command to L4 it.
     }
 
     @Override
     public void end(boolean interrupted) {
+        Superstructure.getInstance().sendToScore();
     }
 
     @Override
     public boolean isFinished() {
-        return desiredPose == null;
+         return (Math.abs(pvFrontMiddle.getEstimatedPose().getX() - desiredPose.getX()) < translateThreshold) 
+                    && (Math.abs(pvFrontMiddle.getEstimatedPose().getY() - desiredPose.getY()) < translateThreshold)
+                    && (Math.abs(desiredAngle + drivetrain.getHeading()) < rotationThreshold);
+
     }
 }

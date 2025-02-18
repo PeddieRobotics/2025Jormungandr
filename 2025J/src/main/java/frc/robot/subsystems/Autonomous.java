@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.commands.AutoCommands.*;
+import frc.robot.utils.Constants.AutoConstants;
 
 public class Autonomous extends SubsystemBase {
 
@@ -53,8 +54,8 @@ public class Autonomous extends SubsystemBase {
                 new PPHolonomicDriveController( // PPHolonomicController is the built in path following controller for
                                                 // holonomic drive trains
                         // TODO: update these constants for AUTO
-                        new PIDConstants(5.0, 0.0, 0.0), // Translation PID constants
-                        new PIDConstants(5.0, 0.0, 0.0) // Rotation PID constants
+                        new PIDConstants(AutoConstants.kTranslationP, AutoConstants.kTranslationI, AutoConstants.kTranslationD), // Translation PID constants
+                        new PIDConstants(AutoConstants.kThetaP, AutoConstants.kThetaI, AutoConstants.kThetaD) // Rotation PID constants
                 ),
                 config,
                 () -> {

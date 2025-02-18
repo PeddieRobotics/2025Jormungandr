@@ -46,6 +46,8 @@ public class Drivetrain extends SubsystemBase {
   
   private Translation2d currentMovement;
 
+  private static int pipelineNumber;
+
   public Drivetrain() {
     frontLeftModule = new SwerveModule(RobotMap.CANIVORE_NAME, RobotMap.FRONT_LEFT_MODULE_DRIVE_ID,
         RobotMap.FRONT_LEFT_MODULE_TURN_ID, RobotMap.FRONT_LEFT_MODULE_CANCODER_ID,
@@ -63,13 +65,14 @@ public class Drivetrain extends SubsystemBase {
     swerveModules = new SwerveModule[] { frontLeftModule, frontRightModule, backLeftModule, backRightModule };
     swerveModulePositions = new SwerveModulePosition[] { frontLeftModule.getPosition(), frontRightModule.getPosition(),
         backLeftModule.getPosition(), backRightModule.getPosition() };
-    swerveModuleStates = DriveConstants.kinematics.toSwerveModuleStates(new ChassisSpeeds(0, 0, 0));
+    swerveModuleStates = DriveConstants.kKinematics.toSwerveModuleStates(new ChassisSpeeds(0, 0, 0));
 
     gyro = new Pigeon2(RobotMap.GYRO_ID, RobotMap.CANIVORE_NAME);
     gyro.setYaw(0);
 
-    odometry = new SwerveDrivePoseEstimator(DriveConstants.kinematics, getHeadingAsRotation2d(), swerveModulePositions, new Pose2d());
-    pureOdometry = new SwerveDrivePoseEstimator(DriveConstants.kinematics, getHeadingAsRotation2d(), swerveModulePositions, new Pose2d());
+    odometry = new SwerveDrivePoseEstimator(DriveConstants.kKinematics, getHeadingAsRotation2d(), swerveModulePositions, new Pose2d());
+    pureOdometry = new SwerveDrivePoseEstimator(DriveConstants.kKinematics, getHeadingAsRotation2d(), swerveModulePositions, new Pose2d());
+    pipelineNumber = 0;
 
     SmartDashboard.putData("Swerve Drive", new Sendable() {
       @Override
@@ -111,6 +114,13 @@ public class Drivetrain extends SubsystemBase {
   }
 
   /**
+   * @return pipeline number for limelight
+   */
+  public static int getPipelineNumber(){
+    return pipelineNumber;
+  }
+
+  /**
    * commands the robot to drive
    * 
    * @param translation - translation input (x,y meters/sec in field space)
@@ -134,34 +144,52 @@ public class Drivetrain extends SubsystemBase {
     currentDrivetrainSpeed = Math.sqrt(Math.pow(robotRelativeSpeeds.vxMetersPerSecond, 2)
                 + Math.pow(robotRelativeSpeeds.vyMetersPerSecond, 2));
 
-    swerveModuleStates = DriveConstants.kinematics.toSwerveModuleStates(robotRelativeSpeeds);
+    swerveModuleStates = DriveConstants.kKinematics.toSwerveModuleStates(robotRelativeSpeeds);
     // TODO: desaturate later!
     SwerveDriveKinematics.desaturateWheelSpeeds(swerveModuleStates, DriveConstants.kMaxModuleSpeed);
     optimizeModuleStates();
     setSwerveModuleStates(swerveModuleStates);
   }
 
+  /**
+   * Only used during autonomous, sets driving strictly to robot relative
+   * 
+   * @param robotRelativeSpeeds
+   */
   public void driveRobotRelative(ChassisSpeeds robotRelativeSpeeds) {
-    swerveModuleStates = DriveConstants.kinematics.toSwerveModuleStates(robotRelativeSpeeds);
+    swerveModuleStates = DriveConstants.kKinematics.toSwerveModuleStates(robotRelativeSpeeds);
     setSwerveModuleStates(swerveModuleStates);
   }
 
+  /**
+   * @return returns swerveModuleStates, which contain speed and angle of a 
+   * swerve module that tell you how to get to desired position
+   */
   public SwerveModuleState[] getSwerveModuleStates(){
     return swerveModuleStates;
   }
 
+  /**
+   * optimizes the angle in each module state, will turn the closer direction
+   */
   public void optimizeModuleStates() {
     for (int i = 0; i < swerveModuleStates.length; i++) {
       swerveModuleStates[i].optimize(new Rotation2d(swerveModules[i].getCANCoderReading()));
     }
   }
 
+  /**
+   * gets the module position from each swerveModule
+   */
   public void updateModulePositions() {
     for (int i = 0; i < swerveModulePositions.length; i++) {
       swerveModulePositions[i] = swerveModules[i].getPosition();
     }
   }
 
+  /**
+   * updates odometry, where the robot thinks it is, using cameras and our current odometry
+   */
   public void updateOdometry() {
     // PVBack.getInstance().fuseEstimatedPose(odometry);
     PVFrontLeft.getInstance().fuseEstimatedPose(odometry);
@@ -171,37 +199,63 @@ public class Drivetrain extends SubsystemBase {
     pureOdometry.update(getHeadingAsRotation2d(), swerveModulePositions);
     // PVLeft.getInstance().fuseEstimatedPose(odometry);
   }
+
+  /**
+   *
+   * @param desiredModuleStates
+   */
   public void setSwerveModuleStates(SwerveModuleState[] desiredModuleStates) {
     for (int i = 0; i < desiredModuleStates.length; i++) {
       swerveModules[i].setDesiredState(desiredModuleStates[i]);
     }
   }
 
+  /**
+   * @return returns heading in degrees 
+   */
   public double getHeading() {
     heading = gyro.getYaw().getValueAsDouble();
     return Math.IEEEremainder(heading, 360);
   }
 
+  /**
+   * resets gyro
+   */
   public void resetGyro() {
     gyro.reset();
   }
 
+  /**
+   * @return returns gyro heading in terms of rotation2d
+   */
   public Rotation2d getHeadingAsRotation2d() {
     return gyro.getRotation2d();
   }
 
+  /**
+   * @return returns rotational velocity in DPS
+   */
   public double getRotationalVelocity(){
     return -gyro.getAngularVelocityZWorld().getValueAsDouble();
   }
 
+  /**
+   * @return returns X acceleration of gyro
+   */
   public double getGyroAccX(){
     return gyro.getAccelerationX().getValueAsDouble();
   }
 
+  /**
+   * @return returns Y acceleration of gyro
+   */
   public double getGyroAccY(){
     return gyro.getAccelerationY().getValueAsDouble();
   }
 
+  /**
+   * @return returns Z acceleration of gyro
+   */
   public double getGyroAccZ(){
     return gyro.getAccelerationZ().getValueAsDouble();
   }
@@ -210,19 +264,35 @@ public class Drivetrain extends SubsystemBase {
     return currentMovement;
   }
 
+  /**
+   * @return returns current speed
+   */
   public double getSpeed() {
     return currentDrivetrainSpeed;
   }
 
+  /**
+   * @return returns current pose as a pose2d, which containts both translational and rotational
+   */
   public Pose2d getPose() {
     return odometry.getEstimatedPosition();
   }
 
+  /**
+   * Resets gyro and sets robot's position to said pose including both rotation and translation
+   * 
+   * @param pose - Pose 2D
+   */
   public void setPose(Pose2d pose) {
     gyro.reset();
     odometry.resetPosition(getHeadingAsRotation2d(), swerveModulePositions, pose);
   }
 
+  /**
+   * Does not reset gyro, only changes where you are on the field
+   * 
+   * @param translation - Translation 2D
+   */
   public void resetTranslation(Translation2d translation) {
     odometry.resetTranslation(translation);
   }
@@ -230,8 +300,12 @@ public class Drivetrain extends SubsystemBase {
     pureOdometry.resetTranslation(translation);
   }
 
+  /**
+   * @return returns current robot relative chassis speeds by getting the state of each module and 
+   * then converting to chassis speeds
+   */
   public ChassisSpeeds getRobotRelativeSpeeds() {
-    return DriveConstants.kinematics.toChassisSpeeds(
+    return DriveConstants.kKinematics.toChassisSpeeds(
         frontLeftModule.getState(),
         frontRightModule.getState(),
         backLeftModule.getState(),
@@ -254,7 +328,7 @@ public class Drivetrain extends SubsystemBase {
 
     //gets rotational velocity of each module
     ChassisSpeeds rotationalVelocity = new ChassisSpeeds(0,0, currentRotationalVelocity);
-    SwerveModuleState pureRotationalStates[] = DriveConstants.skidKinematics.toSwerveModuleStates(rotationalVelocity);
+    SwerveModuleState pureRotationalStates[] = DriveConstants.kSkidKinematics.toSwerveModuleStates(rotationalVelocity);
    
     //gets rotational and translational velocity of each module
     SwerveModuleState[] moduleStates = Arrays.copyOf(swerveModuleStates, 4);

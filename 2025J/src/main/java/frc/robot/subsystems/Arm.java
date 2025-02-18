@@ -21,7 +21,7 @@ public class Arm extends SubsystemBase{
         kArmMaxCruiseVelocity, kArmMaxCruiseAcceleration, kArmMaxCruiseJerk, kArmReverseTorqueCurrentLimit, kArmForwardTorqueCurrentLimit,
         L1Setpoint, L2Setpoint, L3Setpoint, L4Setpoint, HPIntakeSetpoint, stowSetpoint, bargeSetpoint, algaeL1Setpoint, algaeL2Setpoint, processorSetpoint;
 
-    private LiveData armAngle, armSetpoint, motorTemp, motorCurrent;
+    private LiveData armSetpoint;
 
     public Arm() {
         armCANcoder = new CANcoder(RobotMap.ARM_CANCODER_ID, RobotMap.CANIVORE_NAME);
@@ -66,24 +66,18 @@ public class Arm extends SubsystemBase{
         kArmMaxCruiseJerk = new TunableConstant(ArmConstants.kArmMaxCruiseJerk, "Arm kArmMaxCruiseJerk");
         kArmReverseTorqueCurrentLimit = new TunableConstant(ArmConstants.kArmReverseTorqueCurrentLimit, "Arm kArmReverseTorqueCurrentLimit");
         kArmForwardTorqueCurrentLimit = new TunableConstant(ArmConstants.kArmForwardTorqueCurrentLimit, "Arm kArmForwardTorqueCurrentLimit");
-        L1Setpoint = new TunableConstant(ArmConstants.L1Setpoint, "Arm L1Setpoint");
-        L2Setpoint = new TunableConstant(ArmConstants.L2Setpoint, "Arm L2Setpoint");
-        L3Setpoint = new TunableConstant(ArmConstants.L3Setpoint, "Arm L3Setpoint");
-        L4Setpoint = new TunableConstant(ArmConstants.L4Setpoint, "Arm L4Setpoint");
-        HPIntakeSetpoint = new TunableConstant(ArmConstants.HPIntakeSetpoint, "Arm HPIntakeSetpoint");
-        stowSetpoint = new TunableConstant(ArmConstants.stowSetpoint, "Arm stowSetpoint");
-        bargeSetpoint = new TunableConstant(ArmConstants.bargeSetpoint, "Arm bargeSetpoint");
-        algaeL1Setpoint = new TunableConstant(ArmConstants.algaeL1Setpoint, "Arm algaeL1Setpoint");
-        algaeL2Setpoint = new TunableConstant(ArmConstants.algaeL2Setpoint, "Arm algaeL2Setpoint");
-        processorSetpoint = new TunableConstant(ArmConstants.processorSetpoint, "Arm processorSetpoint");
+        L1Setpoint = new TunableConstant(ArmConstants.kL1Setpoint, "Arm L1Setpoint");
+        L2Setpoint = new TunableConstant(ArmConstants.kL2Setpoint, "Arm L2Setpoint");
+        L3Setpoint = new TunableConstant(ArmConstants.kL3Setpoint, "Arm L3Setpoint");
+        L4Setpoint = new TunableConstant(ArmConstants.kL4Setpoint, "Arm L4Setpoint");
+        HPIntakeSetpoint = new TunableConstant(ArmConstants.kHPIntakeSetpoint, "Arm HPIntakeSetpoint");
+        stowSetpoint = new TunableConstant(ArmConstants.kStowSetpoint, "Arm stowSetpoint");
+        bargeSetpoint = new TunableConstant(ArmConstants.kBargeSetpoint, "Arm bargeSetpoint");
+        algaeL1Setpoint = new TunableConstant(ArmConstants.kAlgaeL1Setpoint, "Arm algaeL1Setpoint");
+        algaeL2Setpoint = new TunableConstant(ArmConstants.kAlgaeL2Setpoint, "Arm algaeL2Setpoint");
+        processorSetpoint = new TunableConstant(ArmConstants.kProcessorSetpoint, "Arm processorSetpoint");
 
-        armSetpoint = new LiveData(stowSetpoint.get(), "Arm Current Setpoint"); 
-        armAngle = new LiveData(getAbsoluteCANcoderPosition(), "Arm Current Angle"); 
-
-        motorTemp = new LiveData(armMotor.getMotorTemperature(), "Arm Motor Temp"); 
-        motorCurrent = new LiveData(armMotor.getSupplyCurrent(), "Arm Motor Current");
-
-        
+        armSetpoint = new LiveData(stowSetpoint.get(), "Arm Current Setpoint");  
     }
 
     /**
@@ -108,27 +102,30 @@ public class Arm extends SubsystemBase{
     /**
      * Commands armMotor to a designated position with position voltage PID (closed loop control)
      * 
-     * @param position - commanded motor position (motor encoder units)
+     * @param position - commanded motor position (cancoder units)
      */
     public void setArmPositionVoltage(double position){
+        armSetpoint.set(position);
         armMotor.setPositionVoltage(position);
     }
 
     /**
      * Commands armMotor to a designated position with MotionMagic voltage (closed loop control)
      * 
-     * @param position - commanded motor position (motor encoder units)
+     * @param position - commanded motor position (cancoder units)
      */
     public void setArmPositionMotionMagicVoltage(double position){
+        armSetpoint.set(position);
         armMotor.setPositionMotionMagicVoltage(position);
     }
 
     /**
      * Commands armMotor to a designated position with MotionMagic TorqueCurrentFOC (closed loop control)
      * 
-     * @param position - commanded motor position (motor encoder units)
+     * @param position - commanded motor position (cancoder units)
      */
     public void setArmPositionMotionMagicTorqueCurrentFOC(double position){
+        armSetpoint.set(position);
         armMotor.setPositionMotionMagicTorqueCurrentFOC(position);
     }
 
@@ -148,6 +145,9 @@ public class Arm extends SubsystemBase{
         return armMotor.getPosition();
     }
 
+    /**
+     * @return velocity of armMotor encoder (rotor rotations per second)
+     */
     public double getArmVelocity(){
         return armMotor.getRPS();
     }
@@ -173,13 +173,30 @@ public class Arm extends SubsystemBase{
         return armMotor.getSupplyCurrent();
     }
 
+    /**
+     * @return angle of arm in degrees
+     */
     public double getArmAngleDegrees() {
-        //TODO: implement this code
-        return 0;
+        return getAbsoluteCANcoderPosition() * 360.0;
     }
 
+    /**
+     * @return setpoint angle of arm in degrees
+     */
+    public double getArmSetpoint() {
+        return armSetpoint.get();
+    }
+    
+    /**
+     * @param targetAngle - In degrees
+     * @return returns if the difference between current and target angle is within threshold
+     */
     public boolean isAtAngle(double targetAngle) {
         return Math.abs(getArmAngleDegrees() - targetAngle) < ArmConstants.kArmPositionEpsilon;
+    }
+
+    public double getArmMotorTemperature(){
+        return armMotor.getMotorTemperature();
     }
 
     @Override
@@ -193,10 +210,6 @@ public class Arm extends SubsystemBase{
         armMotor.setReverseTorqueCurrentLimit(kArmReverseTorqueCurrentLimit.get());
 
         armMotor.setMotionMagicParameters(kArmMaxCruiseVelocity.get(), kArmMaxCruiseAcceleration.get(), kArmMaxCruiseJerk.get());
-        armAngle.set(getAbsoluteCANcoderPosition());
-
-        motorTemp.set(armMotor.getMotorTemperature()); 
-        motorCurrent.set(armMotor.getSupplyCurrent()); 
     }
 
     @Override

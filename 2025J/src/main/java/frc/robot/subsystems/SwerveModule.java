@@ -17,6 +17,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.utils.Constants.ModuleConstants;
 import frc.robot.utils.Kraken;
+import frc.robot.utils.LiveData;
 
 public class SwerveModule extends SubsystemBase {
   
@@ -72,9 +73,11 @@ public class SwerveModule extends SubsystemBase {
                                     ModuleConstants.kDriveP, ModuleConstants.kDriveI, ModuleConstants.kDriveD, ModuleConstants.kDriveFF);
     steerMotor.setPIDValues(ModuleConstants.kSteerS, ModuleConstants.kSteerV, ModuleConstants.kSteerA, 
                                     ModuleConstants.kSteerP, ModuleConstants.kSteerI, ModuleConstants.kSteerD, ModuleConstants.kSteerFF, StaticFeedforwardSignValue.UseClosedLoopSign);
-
   }
 
+  /**
+   * configures cancoder to all our settings
+   */
   public void configureCANCoder(){
     CANcoderConfiguration config = new CANcoderConfiguration();
     config.MagnetSensor.AbsoluteSensorDiscontinuityPoint = 0.5; // Setting this to 1 makes the absolute position unsigned [0, 1)
@@ -85,26 +88,45 @@ public class SwerveModule extends SubsystemBase {
     canCoder.getConfigurator().apply(config);
   }
 
+  /**
+   * @return returns current cancoder reading from number of rotations to radians
+   */
   public double getCANCoderReading(){
     return  2 * Math.PI * canCoder.getAbsolutePosition().getValueAsDouble();
   }
 
+  /**
+   * @return returns state of swervemodule
+   */
   public SwerveModuleState getState(){
     return new SwerveModuleState(driveMotor.getMPS(), new Rotation2d(getCANCoderReading()));
   }
 
+  /**
+   * @return returns angle from cancoder reading in radians
+   */
   public double getAngle() {
     return getCANCoderReading();
   }
 
+  /**
+   * @return returns velocity from driveMotor encoder in meters per second
+   */
   public double getVelocity() {
     return driveMotor.getMPS();
   }
 
+  /**
+   * @return returns position of swerve module
+   */
   public SwerveModulePosition getPosition(){
     return new SwerveModulePosition(driveMotor.getPosition() * ModuleConstants.kDriveEncoderPositionFactor, new Rotation2d(getCANCoderReading()));
   }
 
+  /**
+   * sets desired state for the swervemodule state, optimizes it, and sets desired velocity and angle
+   * @param desiredModuleState
+   */
   public void setDesiredState(SwerveModuleState desiredModuleState){
     desiredState = desiredModuleState;
     desiredState.optimize(new Rotation2d(getCANCoderReading()));
@@ -120,6 +142,13 @@ public class SwerveModule extends SubsystemBase {
     steerMotor.setPositionVoltageWithFeedForward(desiredAngle);
   }
 
+  public double getDriveMotorTemperature(){
+    return driveMotor.getMotorTemperature();
+  }
+
+  public double getSteerMotorTemperature(){
+    return steerMotor.getMotorTemperature();
+  }
 
   @Override
   public void periodic() {

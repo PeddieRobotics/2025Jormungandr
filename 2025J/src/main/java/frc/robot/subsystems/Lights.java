@@ -118,9 +118,9 @@ public class Lights extends SubsystemBase {
                 candle.animate(new RainbowAnimation(), 0);
                 break;
 
-            case HAS_TARGET:
-                candle.setLEDs(0, 0, 255);
-                break;
+            // case HAS_TARGET:
+            //     candle.setLEDs(0, 0, 255);
+            //     break;
 
             case ALIGNED:
                 candle.animate(new RainbowAnimation(), 0);
@@ -141,9 +141,9 @@ public class Lights extends SubsystemBase {
     
     private void setBlinking(boolean blinking) {
         pvBack.setBlinking(blinking);
-        pvFrontLeft.setBlinking(blinking);
-        pvFrontMiddle.setBlinking(blinking);
-        pvFrontRight.setBlinking(blinking);
+        // pvFrontLeft.setBlinking(blinking);
+        // pvFrontMiddle.setBlinking(blinking);
+        // pvFrontRight.setBlinking(blinking);
         pvLeft.setBlinking(blinking);
     }
 }

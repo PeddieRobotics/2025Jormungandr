@@ -27,17 +27,18 @@ import edu.wpi.first.math.util.Units;
 public final class Constants {
   public static class AutoConstants {
     // TODO: update or real values (Default was TranslationP = ThetaP = 5.0)
-    public static final double kTranslationP = 0.0;
+    public static final double kTranslationP = 5.0;
     public static final double kTranslationI = 0.0;
     public static final double kTranslationD = 0.0;
 
-    public static final double kThetaP = 0.0;
+    public static final double kThetaP = 5.0;
     public static final double kThetaI = 0.0;
     public static final double kThetaD = 0.0;
   }
 
-  public static class OperatorConstants {
+  public static class OIConstants {
     public static final int kDriverControllerPort = 0;
+    public static final int kOperatorControllerPort = 1;
   }
 
   public static class ModuleConstants {
@@ -82,28 +83,34 @@ public final class Constants {
     public static final double kDriveRadius = Math.sqrt(Math.pow(kTrackWidth, 2) + Math.pow(kWheelBase, 2));
 
     public static final double kMaxFloorSpeed = 4;
-    public static final double kMaxRotationSpeed = 3.14;
+    public static final double kMaxRotationSpeed = (3 / 2) * Math.PI;
     public static final double kMaxModuleSpeed = 4.4;
     
-    public static final Translation2d[] swerveModuleLocations = {
+    public static final Translation2d[] kSwerveModuleLocations = {
         new Translation2d(kWheelBase / 2.0, kTrackWidth / 2.0),
         new Translation2d(kWheelBase / 2.0, -kTrackWidth / 2.0),
         new Translation2d(-kWheelBase / 2.0, kTrackWidth / 2.0),
         new Translation2d(-kWheelBase / 2.0, -kTrackWidth / 2.0),
     };
 
-    public static final SwerveDriveKinematics kinematics = new SwerveDriveKinematics(
-        swerveModuleLocations[0],
-        swerveModuleLocations[1],
-        swerveModuleLocations[2],
-        swerveModuleLocations[3]);
+    public static final SwerveDriveKinematics kKinematics = new SwerveDriveKinematics(
+        kSwerveModuleLocations[0],
+        kSwerveModuleLocations[1],
+        kSwerveModuleLocations[2],
+        kSwerveModuleLocations[3]);
 
-    public static final SwerveDriveKinematics skidKinematics = new SwerveDriveKinematics(
-      swerveModuleLocations[0],
-      swerveModuleLocations[1],
-      swerveModuleLocations[2],
-      swerveModuleLocations[3]);
+    public static final SwerveDriveKinematics kSkidKinematics = new SwerveDriveKinematics(
+      kSwerveModuleLocations[0],
+      kSwerveModuleLocations[1],
+      kSwerveModuleLocations[2],
+      kSwerveModuleLocations[3]);
 
+    // Steps to doing offsets for swerves:
+    // 1. remove offsets (set all to 0) and then deploy code
+    // 2. spin all modules so that bevel gears face left relative to robot (shooter
+    // in front)
+    // 3. read the cancoder values from dashboard, and put those values for these
+    // offsets (check robotmap for ids)
     // TODO: Update Real Values
     public static final double kFrontLeftCancoderOffset = 0.3684;
     public static final double kFrontRightCancoderOffset = 0.00293;
@@ -111,6 +118,7 @@ public final class Constants {
     public static final double kBackRightCancoderOffset = 0.2586;
 
     public static final double kSkidThreshold = 0.2;
+    public static final double kDrivingDeadband = 0.05;
 
   }
 
@@ -119,14 +127,6 @@ public final class Constants {
     public static final double kHPIntakeRollerSupplyCurrentLimit = 0.0;
     public static final double kHPIntakePivotSupplyCurrentLimit = 0.0;
     public static final double kHPIntakeSpeed = 0.0;
-
-    public static final double kS = 0.0;
-    public static final double kV = 0.0;
-    public static final double kA = 0.0;
-    public static final double kP = 0.0;
-    public static final double kI = 0.0;
-    public static final double kD = 0.0;
-    public static final double kFF = 0.0;
   }
 
   public static class ElevatorConstants {
@@ -139,6 +139,12 @@ public final class Constants {
 
     public static final double kElevatorForwardSoftLimit = 0.0;
     public static final double kElevatorReverseSoftLimit = 0.0;
+
+    public static final double kElevatorReduction = 0.0;
+    public static final double kElevatorRotorToSensorRatio = 0.0;
+    public static final double kElevatorSensortoMechanismRatio = 0.0;
+
+    public static final double kElevatorMagnetOffset = 0.0;
 
     // Motion Magic Parameters
     public static final double kElevatorMaxCruiseVelocity = 0.0;
@@ -153,35 +159,35 @@ public final class Constants {
     public static final double kD = 0.0; 
     public static final double kFF = 0.0; 
 
-    public static final double kElevatorHeightEpsilon = 0.0;
+    public static final double kElevatorPositionEpsilon = 0.0;
     public static final double kElevatorL1Height = 0.0;
     public static final double kElevatorL2Height = 0.0;
     public static final double kElevatorL3Height = 0.0;
     public static final double kElevatorL4Height = 0.0;
     
-    public static final double L1Setpoint = 0.0;
-    public static final double L2Setpoint = 0.0;
-    public static final double L3Setpoint = 0.0;
-    public static final double L4Setpoint = 0.0;
+    public static final double kL1Setpoint = 0.0;
+    public static final double kL2Setpoint = 0.0;
+    public static final double kL3Setpoint = 0.0;
+    public static final double kL4Setpoint = 0.0;
 
-    public static final double HPIntakeSetpoint = 0.0;
-    public static final double stowSetpoint = 0.0;
+    public static final double kHPIntakeSetpoint = 0.0;
+    public static final double kStowSetpoint = 0.0;
 
-    public static final double bargeSetpoint = 0.0;
-    public static final double algaeL1Setpoint = 0.0;
-    public static final double algaeL2Setpoint = 0.0;
-    public static final double processorSetpoint = 0.0;
+    public static final double kBargeSetpoint = 0.0;
+    public static final double kAlgaeL1Setpoint = 0.0;
+    public static final double kAlgaeL2Setpoint = 0.0;
+    public static final double kProcessorSetpoint = 0.0;
   }
 
 
   public static final class ScoreConstants {
     //TODO: NOT DEFINED YET!!!!
-    public static final double L1ScoreTimeout = 10.0; 
-    public static final double L2ScoreTimeout = 10.0; //NOT DEFINED YET!!!!
-    public static final double L3ScoreTimeout = 10.0; //NOT DEFINED YET!!!!
-    public static final double L4ScoreTimeout = 10.0; //NOT DEFINED YET!!!!
-    public static final double ProcessorTimeout = 10.0; //NOT DEFINED YET!!!!
-    public static final double BargeTimeout = 10.0; //NOT DEFINED YET!!!!
+    public static final double kL1ScoreTimeout = 10.0; 
+    public static final double kL2ScoreTimeout = 10.0; //NOT DEFINED YET!!!!
+    public static final double kL3ScoreTimeout = 10.0; //NOT DEFINED YET!!!!
+    public static final double kL4ScoreTimeout = 10.0; //NOT DEFINED YET!!!!
+    public static final double kProcessorTimeout = 10.0; //NOT DEFINED YET!!!!
+    public static final double kBargeTimeout = 10.0; //NOT DEFINED YET!!!!
 
     public static final double kElevatorStowPosition = 0.0;
     public static final double kElevatorHPIntakePosition = 0.0;
@@ -189,7 +195,9 @@ public final class Constants {
     public static final double kElevatorL1ScorePosition = 0.0;
     public static final double kElevatorL2ScorePosition = 0.0;
     public static final double kElevatorL3ScorePosition = 0.0;
+    public static final double kElevatorL4PrestagePosition = 0.0;
     public static final double kElevatorL4ScorePosition = 0.0;
+    public static final double kElevatorBargePrestagePosition = 0.0;
     public static final double kElevatorBargeScorePosition = 0.0;
     public static final double kElevatorProcessorScorePosition = 0.0;
     public static final double kElevatorReef1IntakePosition = 0.0;
@@ -217,9 +225,9 @@ public final class Constants {
 
     public static final double kArmMagnetOffset = 0.0;
 
-    public static final double kArmReduction = 0.0;
-    public static final double kArmRotorToSensorRatio = 0.0;
-    public static final double kArmSensortoMechanismRatio = 0.0;
+    public static final double kArmReduction = 120.0/1.0;
+    public static final double kArmRotorToSensorRatio = kArmReduction/2.0;
+    public static final double kArmSensortoMechanismRatio = 2.0;
 
     public static final double kS = 0.0;
     public static final double kV = 0.0;
@@ -248,18 +256,18 @@ public final class Constants {
     public static final double kArmL4ScoreAngle = 0.0;
 
     public static final double kArmL4PrepAngle = 0.0; //only l4
-    public static final double L1Setpoint = 0.0;
-    public static final double L2Setpoint = 0.0;
-    public static final double L3Setpoint = 0.0;
-    public static final double L4Setpoint = 0.0;
+    public static final double kL1Setpoint = 0.0;
+    public static final double kL2Setpoint = 0.0;
+    public static final double kL3Setpoint = 0.0;
+    public static final double kL4Setpoint = 0.0;
 
-    public static final double HPIntakeSetpoint = 0.0;
-    public static final double stowSetpoint = 0.0;
+    public static final double kHPIntakeSetpoint = 0.0;
+    public static final double kStowSetpoint = 0.0;
 
-    public static final double bargeSetpoint = 0.0;
-    public static final double algaeL1Setpoint = 0.0;
-    public static final double algaeL2Setpoint = 0.0;
-    public static final double processorSetpoint = 0.0;
+    public static final double kBargeSetpoint = 0.0;
+    public static final double kAlgaeL1Setpoint = 0.0;
+    public static final double kAlgaeL2Setpoint = 0.0;
+    public static final double kProcessorSetpoint = 0.0;
   }
   public static final class AutoAlign{
     public static final InterpolatingDoubleTreeMap k1TagStdDevs = new InterpolatingDoubleTreeMap() {{
@@ -287,6 +295,10 @@ public final class Constants {
         // put(2.5, 0.3);
         // put(3.0, 0.5);
     }};
+    
+    public static final double rotationErrorEpsilon = 0.0;    
+    public static final double xErrorEpsilon = 0.0; 
+    public static final double yErrorEpsilon = 0.0;
   }
 
   public static final Map<Integer, Double> kReefDesiredAngle = new HashMap<>() {{
@@ -311,6 +323,11 @@ public final class Constants {
     // TODO: update real values
     public static final double kClawStatorCurrentLimit = 20.0;
 
+    public static final double kP = 0.0;
+    public static final double kI = 0.0;
+    public static final double kD = 0.0;
+    public static final double kFF = 0.0;
+
     public static final double kCoralSensor1ProximityThreshold = 0.0;
     public static final double kCoralSensor2ProximityThreshold = 0.0;
     public static final double kAlgaeSensorProximityThreshold = 0.0;
@@ -323,14 +340,25 @@ public final class Constants {
     public static final double kCoralSensor2SignalStrength = 0.0;
     public static final double kAlgaeSensorSignalStrength = 0.0;
 
-    public static final double kClawIntakeSpeed = 0.0;
-    public static final double kClawOuttakeSpeed = 0.0;
+    public static final double kCoralIntakeSpeed = 0.0;
+    public static final double kCoralOuttakeSpeed = 0.0;
+    public static final double kCoralSlowIntake = 0.0;
+
+    public static final double kAlgaeIntakeSpeed = 0.0;
+    public static final double kAlgaeOuttakeSpeed = 0.0;
+
+    public static final double kAlgaeHoldSpeed = 0.0;
+
+    public static final double kCoralPositionIncrement = 0.0;
   }
 
   public static final class ClimberConstants {
 
     public static final double kClimberStatorCurrentLimit = 0;
     public static final double kClimberSupplyCurrentLimit = 0;
+
+    public static final double kClimberReduction = 120.0/1.0;
+
 
   }
 
@@ -387,8 +415,10 @@ public final class Constants {
   }
   
   public static final class FieldConstants {
-    public static final double reefCenterX = 4.5;
-    public static final double reefCenterY = 4.0;
+    public static final double kReefCenterXBlue = 4.5;
+    public static final double kReefCenterYBlue = 4.0;
+    public static final double kReefCenterXRed = 13.063;
+    public static final double kReefCenterYRed = 4.0;
     public static final Map<Integer, Double> kAprilTagHeights = new HashMap<>() {{
       put(1, 58.5);
       put(2, 58.5);
@@ -417,5 +447,7 @@ public final class Constants {
       put(21, 12.125);
       put(22, 12.125);
     }};
+
+    public static final double kCageDesiredAngle = 0;
   }
 }

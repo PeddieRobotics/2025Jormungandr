@@ -3,6 +3,8 @@ package frc.robot.commands.ReefCommands;
 //import frc.robot.utils.Logger;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Drivetrain;
@@ -22,6 +24,9 @@ public class OrbitReef extends Command {
 
     private double setpoint;
 
+    private double reefCenterX;
+    private double reefCenterY;
+
     public OrbitReef() { //center of the reef is (4.5, 4)!!!
         drivetrain = Drivetrain.getInstance();
         
@@ -40,6 +45,15 @@ public class OrbitReef extends Command {
     @Override
     public void initialize() {
         oi = DriverOI.getInstance();
+
+        if (DriverStation.getAlliance().get() == Alliance.Red){
+            reefCenterX = FieldConstants.kReefCenterXRed;
+            reefCenterY = FieldConstants.kReefCenterYRed;
+        }
+        else {
+            reefCenterX = FieldConstants.kReefCenterXBlue;
+            reefCenterY = FieldConstants.kReefCenterYBlue;
+        }
     }
 
     @Override
@@ -56,7 +70,7 @@ public class OrbitReef extends Command {
         double currentHeading = drivetrain.getHeading();
         double poseX = drivetrain.getPose().getX();
         double poseY = drivetrain.getPose().getY();
-        setpoint = Math.atan2(FieldConstants.reefCenterY - poseY, FieldConstants.reefCenterX - poseX);
+        setpoint = Math.atan2(reefCenterY - poseY, reefCenterX - poseX);
         setpoint = Math.toDegrees(setpoint);
 
         double turnToReef = turnPIDController.calculate(currentHeading, setpoint);
