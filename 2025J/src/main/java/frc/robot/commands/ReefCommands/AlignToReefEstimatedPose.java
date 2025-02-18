@@ -126,6 +126,8 @@ public class AlignToReefEstimatedPose extends Command {
         // BLUE:
         for (int i = 17; i <= 22; i++) {
             Translation2d tagPose = PhotonVision.getAprilTagPose(i).getTranslation();
+
+            // TODO: should be tagPose - odometryPose on real robots
             robotToTag.add(new IDVectorPair(i, odometryPose.minus(tagPose)));
         }
         // RED:
@@ -137,7 +139,6 @@ public class AlignToReefEstimatedPose extends Command {
         Collections.sort(robotToTag, (o1, o2) -> (
             ((Double) o1.vector.getNorm()).compareTo(o2.vector.getNorm())
         ));
-        SmartDashboard.putString("thingy thingy", robotToTag.toString());
         
         int desiredTarget;
         if (robotToTag.get(0).vector.getNorm() - robotToTag.get(1).vector.getNorm() >= 0.35)
@@ -154,7 +155,7 @@ public class AlignToReefEstimatedPose extends Command {
         }
 
         if (Constants.kReefDesiredAngle.containsKey(desiredTarget))
-            desiredAngle = Constants.kReefDesiredAngle.get(desiredTarget) + 180;
+            desiredAngle = Constants.kReefDesiredAngle.get(desiredTarget);
         
         Pose2d tagPose = PhotonVision.getAprilTagPose(desiredTarget);
         double tagAngle = tagPose.getRotation().getRadians();
