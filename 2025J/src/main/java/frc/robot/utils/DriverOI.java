@@ -46,10 +46,10 @@ public class DriverOI {
         controller = new PS4Controller(0);
 
         Trigger xButton = new JoystickButton(controller, PS4Controller.Button.kCross.value);
-        //xButton.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.STOW)));
+        xButton.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.STOW)));
 
         Trigger circleButton = new JoystickButton(controller, PS4Controller.Button.kCircle.value);
-        //circleButton.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.HP_INTAKE)));
+        circleButton.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.HP_INTAKE)));
 
         Trigger triangleButton = new JoystickButton(controller, PS4Controller.Button.kTriangle.value);
         triangleButton.onTrue(new AlignAndScore(true)); //right align
@@ -67,9 +67,8 @@ public class DriverOI {
         Trigger PSButton = new JoystickButton(controller, PS4Controller.Button.kPS.value);
         PSButton.onTrue(new InstantCommand(() -> Drivetrain.getInstance().resetGyro()));
 
-        // Set to STOW state
+        // Set to climb
         // Trigger touchpadButton = new JoystickButton(controller, PS4Controller.Button.kTouchpad.value);
-        // touchpadButton.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.STOW)));
 
         // Trigger muteButton = new JoystickButton(controller, 15);
         // muteButton.onTrue(new InstantCommand(() -> {
@@ -81,20 +80,8 @@ public class DriverOI {
         // }));
 
 
-        // Set to GROUND_INTAKE (Coral or Algae)
         Trigger L1Bumper = new JoystickButton(controller, PS4Controller.Button.kL1.value);
-        // TODO: align left if coral, else align algae
-
-        
-        // L1Bumper.whileTrue(new InstantCommand(() ->
-        // superstructure.requestState(SuperstructureState.CORAL_GROUND_INTAKE)));
-        // L1Bumper.onTrue(new InstantCommand(() -> {
-        //     if (OperatorOI.getInstance().R3Held()) {
-        //         superstructure.requestState(SuperstructureState.ALGAE_GROUND_INTAKE);
-        //     } else {
-        //         superstructure.requestState(SuperstructureState.CORAL_GROUND_INTAKE);
-        //     }
-        // }));
+        // TODO: align left if coral, else align HP
 
         Trigger R1Bumper = new JoystickButton(controller, PS4Controller.Button.kR1.value);
         // TODO: align right if coral, else align HP
@@ -106,13 +93,13 @@ public class DriverOI {
         Trigger L3Trigger = new JoystickButton(controller, PS4Controller.Button.kL3.value);
 
         Trigger R3Trigger = new JoystickButton(controller, PS4Controller.Button.kR3.value);
-        // R3Trigger.onTrue(new InstantCommand(() ->
-        // superstructure.requestState(SuperstructureState.CLIMB)));
 
         Trigger optionButton = new JoystickButton(controller, PS4Controller.Button.kOptions.value);
         optionButton.onTrue(new InstantCommand(() -> Drivetrain.getInstance().resetTranslation(PVFrontMiddle.getInstance().getEstimatedPose().getTranslation())));
         
         Trigger shareButton = new JoystickButton(controller, PS4Controller.Button.kShare.value);
+        
+        //TODO: right back button: orbit reef command
     }
 
     public boolean bothBumpersHeld() {
@@ -155,25 +142,6 @@ public class DriverOI {
         return controller.getPOV() == 180;
     }
 
-    // public double getLeftForward() {
-    // double input = -controller.getRawAxis(PS4Controller.Axis.kLeftY.value);
-    // if (Math.abs(input) < OIConstants.kDrivingDeadband) {
-    // input = 0;
-    // } else {
-    // input *= 0.7777;
-    // }
-    // return input;
-    // }
-
-    // public double getRightForward() {
-    // double input = -controller.getRawAxis(PS4Controller.Axis.kRightY.value);
-    // if (Math.abs(input) < OIConstants.kDrivingDeadband) {
-    // input = 0;
-    // } else {
-    // input *= 0.7777;
-    // }
-    // return input;
-    // }
     public double getForward() {
         double val = -controller.getRawAxis(PS4Controller.Axis.kLeftY.value);
         return Math.abs(val) < 0.1 ? 0 : val;
