@@ -382,8 +382,10 @@ public final class Constants {
   }
   
   public static final class FieldConstants {
-    public static final double reefCenterX = 4.5;
-    public static final double reefCenterY = 4.0;
+    public static final double reefCenterXBlue = 4.5;
+    public static final double reefCenterYBlue = 4.0;
+    public static final double reefCenterXRed = 13.063;
+    public static final double reefCenterYRed = 4.0;
     public static final Map<Integer, Double> kAprilTagHeights = new HashMap<>() {{
       put(1, 58.5);
       put(2, 58.5);
