@@ -281,6 +281,10 @@ public final class Constants {
         put(2.21, 4.9);
         put(2.38, 7.0);
     }};
+    
+    public static final double rotationErrorEpsilon = 0.0;    
+    public static final double xErrorEpsilon = 0.0; 
+    public static final double yErrorEpsilon = 0.0;
   }
 
   public static final Map<Integer, Double> kReefDesiredAngle = new HashMap<>() {{
