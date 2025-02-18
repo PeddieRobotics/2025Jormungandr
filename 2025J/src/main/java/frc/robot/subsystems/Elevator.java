@@ -173,6 +173,9 @@ public class Elevator extends SubsystemBase {
 
     // Accessor methods
 
+    /**
+     * @return returns cancoder reading from elevator in rotations, more accurate than just encoder
+     */
     public double getElevatorCANcoderReading() {
         return elevatorCANcoder.getPosition().getValueAsDouble();
     }
@@ -189,6 +192,9 @@ public class Elevator extends SubsystemBase {
         return elevatorMainMotor.getPosition();
     }
 
+    /**
+     * resets encoder on elevatorMotor
+     */
     public void resetElevatorPosition() {
         elevatorMainMotor.resetEncoder();
     }

@@ -112,6 +112,7 @@ public final class Constants {
     public static final double kBackRightCancoderOffset = 0.2586;
 
     public static final double kSkidThreshold = 0.2;
+    public static final double kDrivingDeadband = 0.05;
 
   }
 
@@ -226,9 +227,9 @@ public final class Constants {
 
     public static final double kArmMagnetOffset = 0.0;
 
-    public static final double kArmReduction = 0.0;
-    public static final double kArmRotorToSensorRatio = 0.0;
-    public static final double kArmSensortoMechanismRatio = 0.0;
+    public static final double kArmReduction = 120.0/1.0;
+    public static final double kArmRotorToSensorRatio = kArmReduction/2.0;
+    public static final double kArmSensortoMechanismRatio = 2.0;
 
     public static final double kS = 0.0;
     public static final double kV = 0.0;
@@ -281,6 +282,10 @@ public final class Constants {
         put(2.21, 4.9);
         put(2.38, 7.0);
     }};
+    
+    public static final double rotationErrorEpsilon = 0.0;    
+    public static final double xErrorEpsilon = 0.0; 
+    public static final double yErrorEpsilon = 0.0;
   }
 
   public static final Map<Integer, Double> kReefDesiredAngle = new HashMap<>() {{
@@ -338,6 +343,9 @@ public final class Constants {
 
     public static final double kClimberStatorCurrentLimit = 0;
     public static final double kClimberSupplyCurrentLimit = 0;
+
+    public static final double kClimberReduction = 120.0/1.0;
+
 
   }
 

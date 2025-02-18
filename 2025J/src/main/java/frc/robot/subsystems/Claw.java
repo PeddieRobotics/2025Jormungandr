@@ -149,22 +149,37 @@ public class Claw extends SubsystemBase {
         return clawMotor.getSupplyCurrent();
     }
 
+    /**
+     * @return position of clawMotor encoder (mechanism rotations)
+     */
     public double getPosition(){
         return clawMotor.getPosition();
     }
 
+    /**
+     * @return velocity of clawMotor encoder (rotor rotations per minute)
+     */
     public double getVelocity(){
         return clawMotor.getRPM();
     }
 
+    /**
+     * @return returns if either sensor has a coral
+     */
     public boolean hasCoral(){
         return getCoralSensor1() || getCoralSensor2();
     }
 
+    /**
+     * @return returns if ready to shoot, sensor 2 detects the coral but not sensor 1
+     */
     public boolean coralIndexed(){
         return getCoralSensor2() && !getCoralSensor1();
     }
 
+    /**
+     * @return returns if sensor detects algae
+     */
     public boolean hasAlgae(){
         return getAlgaeSensor();
     }

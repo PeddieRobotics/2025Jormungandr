@@ -148,6 +148,9 @@ public class Arm extends SubsystemBase{
         return armMotor.getPosition();
     }
 
+    /**
+     * @return velocity of armMotor encoder (rotor rotations per second)
+     */
     public double getArmVelocity(){
         return armMotor.getRPS();
     }
@@ -174,16 +177,23 @@ public class Arm extends SubsystemBase{
     }
 
     /**
-     * @return arm motor angle
+     * @return angle of arm in degrees
      */
     public double getArmAngleDegrees() {
         return getAbsoluteCANcoderPosition() * 360.0;
     }
 
+    /**
+     * @return setpoint angle of arm in degrees
+     */
     public double getArmSetpoint() {
         return armSetpoint.get();
     }
     
+    /**
+     * @param targetAngle - In degrees
+     * @return returns if the difference between current and target angle is within threshold
+     */
     public boolean isAtAngle(double targetAngle) {
         return Math.abs(getArmAngleDegrees() - targetAngle) < ArmConstants.kArmPositionEpsilon;
     }
