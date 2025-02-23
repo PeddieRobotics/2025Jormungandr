@@ -127,8 +127,8 @@ public final class Constants {
 
     public static class ElevatorConstants {
         // TODO: Update real values
-        public static final double kElevatorMotorSupplyCurrentLimit = 0.0;
-        public static final double kElevatorMotorStatorCurrentLimit = 0.0;
+        public static final double kElevatorMotorSupplyCurrentLimit = 40.0;
+        public static final double kElevatorMotorStatorCurrentLimit = 40.0;
 
         public static final double kElevatorForwardTorqueCurrentLimit = 40;
         public static final double kElevatorReverseTorqueCurrentLimit = -40;
