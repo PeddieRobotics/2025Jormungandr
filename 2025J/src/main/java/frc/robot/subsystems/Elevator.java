@@ -233,7 +233,7 @@ public class Elevator extends SubsystemBase {
     @Override
     public void periodic() {
         if(SmartDashboard.getBoolean("Elevator: Open Loop Control", false)){
-            setElevatorPercentOutput(DriverOI.getInstance().getForward());
+            setElevatorPercentOutput(DriverOI.getInstance().getForward() * 0.3);
         }
         SmartDashboard.putNumber("Elevator: Motor Encoder Position", getElevatorPosition());
         SmartDashboard.putNumber("Elevator: CanCoder Position", getElevatorCANcoderReading());
