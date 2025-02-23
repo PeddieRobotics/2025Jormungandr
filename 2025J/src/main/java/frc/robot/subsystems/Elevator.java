@@ -5,9 +5,11 @@ import com.ctre.phoenix6.hardware.CANcoder;
 import com.ctre.phoenix6.signals.FeedbackSensorSourceValue;
 import com.ctre.phoenix6.signals.SensorDirectionValue;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.utils.Constants.ArmConstants;
 import frc.robot.utils.Constants.ElevatorConstants;
+import frc.robot.utils.DriverOI;
 import frc.robot.utils.Kraken;
 import frc.robot.utils.RobotMap;
 import frc.robot.utils.TunableConstant;
@@ -91,6 +93,9 @@ public class Elevator extends SubsystemBase {
         processorSetpoint = new TunableConstant(ElevatorConstants.kProcessorSetpoint, "Elevator processorSetpoint");
 
         elevatorSetpoint = new LiveData(ElevatorConstants.kStowSetpoint, "Elevator Current Setpoint");
+
+        SmartDashboard.putBoolean("Elevator: Open Loop Control", false);
+
     }
 
     /**
@@ -226,7 +231,13 @@ public class Elevator extends SubsystemBase {
 
     @Override
     public void periodic() {
-
+        if(SmartDashboard.getBoolean("Elevator: Open Loop Control", false)){
+            setElevatorPercentOutput(DriverOI.getInstance().getForward());
+        }
+        SmartDashboard.putNumber("Elevator: Motor Encoder Position", getElevatorPosition());
+        SmartDashboard.putNumber("Elevator: CanCoder Position", getElevatorCANcoderReading());
+        SmartDashboard.putNumber("Elevator: Main Motor Supply Current", getMotorSupplyCurrent());
+        SmartDashboard.putNumber("Elevator: Main Motor Stator Current", getMotorStatorCurrent());
     }
 
     @Override
