@@ -19,7 +19,6 @@ public class Superstructure extends SubsystemBase {
 
     private final Arm arm;
     private final Claw claw;
-    private final Drivetrain drivetrain;
     private final Elevator elevator;
     private final HPIntake hpIntake;
 
@@ -60,7 +59,6 @@ public class Superstructure extends SubsystemBase {
 
         arm = Arm.getInstance();
         claw = Claw.getInstance();
-        drivetrain = Drivetrain.getInstance();
         elevator = Elevator.getInstance();
         hpIntake = HPIntake.getInstance();
 

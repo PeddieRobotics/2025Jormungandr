@@ -17,7 +17,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.utils.Constants.ModuleConstants;
 import frc.robot.utils.Kraken;
-import frc.robot.utils.LiveData;
 
 public class SwerveModule extends SubsystemBase {
     
