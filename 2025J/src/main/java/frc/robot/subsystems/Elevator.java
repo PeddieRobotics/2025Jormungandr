@@ -59,11 +59,6 @@ public class Elevator extends SubsystemBase {
         elevatorFollowerMotor.setMotionMagicParameters(ElevatorConstants.kElevatorMaxCruiseVelocity,
                 ElevatorConstants.kElevatorMaxCruiseAcceleration, ElevatorConstants.kElevatorMaxCruiseJerk);
 
-        elevatorMainMotor.setSoftLimits(true, ElevatorConstants.kElevatorForwardSoftLimit,
-                ElevatorConstants.kElevatorReverseSoftLimit);
-        elevatorFollowerMotor.setSoftLimits(true, ElevatorConstants.kElevatorForwardSoftLimit,
-                ElevatorConstants.kElevatorReverseSoftLimit);
-
         elevatorCANcoder = new CANcoder(RobotMap.ELEVATOR_CANCODER_ID);
         CANcoderConfiguration config = new CANcoderConfiguration();
         config.MagnetSensor.AbsoluteSensorDiscontinuityPoint = 1; // Setting this to 1 makes the absolute position
@@ -79,6 +74,12 @@ public class Elevator extends SubsystemBase {
         elevatorMainMotor.setFeedbackDevice(RobotMap.ELEVATOR_CANCODER_ID, FeedbackSensorSourceValue.FusedCANcoder);
         elevatorMainMotor.setRotorToSensorRatio(ElevatorConstants.kElevatorRotorToSensorRatio);
         elevatorMainMotor.setSensorToMechanismRatio(ElevatorConstants.kElevatorSensortoMechanismRatio);
+
+        // TODO: TURN ON SOFT LIMITS
+        elevatorMainMotor.setSoftLimits(false, ElevatorConstants.kElevatorForwardSoftLimit,
+        ElevatorConstants.kElevatorReverseSoftLimit);
+        elevatorFollowerMotor.setSoftLimits(false, ElevatorConstants.kElevatorForwardSoftLimit,
+        ElevatorConstants.kElevatorReverseSoftLimit);
 
         L1Setpoint = new TunableConstant(ElevatorConstants.kL1Setpoint, "Elevator L1Setpoint");
         L2Setpoint = new TunableConstant(ElevatorConstants.kL2Setpoint, "Elevator L2Setpoint");
