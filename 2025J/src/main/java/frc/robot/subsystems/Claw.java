@@ -8,9 +8,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.utils.Constants;
 import frc.robot.utils.Constants.ClawConstants;
 import frc.robot.utils.Kraken;
-import frc.robot.utils.LiveData;
 import frc.robot.utils.RobotMap;
-import frc.robot.utils.TunableConstant;
 
 public class Claw extends SubsystemBase {
 
@@ -22,8 +20,6 @@ public class Claw extends SubsystemBase {
     private CANrangeConfiguration coralSensor1Config;
     private CANrangeConfiguration coralSensor2Config;
     private CANrangeConfiguration algaeSensorConfig;
-
-    private TunableConstant kP, kI, kD;
 
     public Claw() {
         clawMotor = new Kraken(RobotMap.CLAW_MOTOR_ID, RobotMap.CANIVORE_NAME);

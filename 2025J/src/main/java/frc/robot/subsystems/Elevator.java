@@ -18,10 +18,7 @@ public class Elevator extends SubsystemBase {
     private static Elevator elevator;
     private Kraken elevatorMainMotor, elevatorFollowerMotor;
     private CANcoder elevatorCANcoder;
-    private TunableConstant kP, kS, kV, kI, kD, kFF, kA,
-            kElevatorMaxCruiseVelocity, kElevatorMaxCruiseAcceleration, kElevatorMaxCruiseJerk,
-            kElevatorForwardSoftLimit, kElevatorReverseSoftLimit,
-            L1Setpoint, L2Setpoint, L3Setpoint, L4Setpoint, HPIntakeSetpoint, stowSetpoint, bargeSetpoint,
+    private TunableConstant L1Setpoint, L2Setpoint, L3Setpoint, L4Setpoint, HPIntakeSetpoint, stowSetpoint, bargeSetpoint,
             algaeL1Setpoint, algaeL2Setpoint, processorSetpoint;
 
     private LiveData elevatorSetpoint;
@@ -82,23 +79,6 @@ public class Elevator extends SubsystemBase {
         elevatorMainMotor.setRotorToSensorRatio(ElevatorConstants.kElevatorRotorToSensorRatio);
         elevatorMainMotor.setSensorToMechanismRatio(ElevatorConstants.kElevatorSensortoMechanismRatio);
 
-        kP = new TunableConstant(ElevatorConstants.kP, "Elevator kP");
-        kI = new TunableConstant(ElevatorConstants.kI, "Elevator kI");
-        kD = new TunableConstant(ElevatorConstants.kD, "Elevator kD");
-        kA = new TunableConstant(ElevatorConstants.kA, "Elevator A");
-        kS = new TunableConstant(ElevatorConstants.kS, "Elevator kS");
-        kV = new TunableConstant(ElevatorConstants.kV, "Elevator kV");
-        kFF = new TunableConstant(ElevatorConstants.kFF, "Elevator kFF");
-        kElevatorMaxCruiseVelocity = new TunableConstant(ElevatorConstants.kElevatorMaxCruiseVelocity,
-                "Elevator kElevatorMaxCruiseVelocity");
-        kElevatorReverseSoftLimit = new TunableConstant(ElevatorConstants.kElevatorReverseSoftLimit,
-                "Elevator kElevatorReverseSoftLimit");
-        kElevatorForwardSoftLimit = new TunableConstant(ElevatorConstants.kElevatorForwardSoftLimit,
-                "Elevator kElevatorForwardSoftLimit");
-        kElevatorMaxCruiseJerk = new TunableConstant(ElevatorConstants.kElevatorMaxCruiseJerk,
-                "Elevator kElevatorMaxCruiseJerk");
-        kElevatorMaxCruiseAcceleration = new TunableConstant(ElevatorConstants.kElevatorMaxCruiseAcceleration,
-                "Elevator kElevatorMaxCruiseAcceleration");
         L1Setpoint = new TunableConstant(ElevatorConstants.kL1Setpoint, "Elevator L1Setpoint");
         L2Setpoint = new TunableConstant(ElevatorConstants.kL2Setpoint, "Elevator L2Setpoint");
         L3Setpoint = new TunableConstant(ElevatorConstants.kL3Setpoint, "Elevator L3Setpoint");
@@ -247,22 +227,7 @@ public class Elevator extends SubsystemBase {
 
     @Override
     public void periodic() {
-        elevatorMainMotor.setPIDValues(kS.get(), kV.get(),
-                kA.get(),
-                kP.get(), kI.get(), kD.get(),
-                kFF.get());
-        elevatorFollowerMotor.setPIDValues(kS.get(), kV.get(),
-                kA.get(),
-                kP.get(), kI.get(), kD.get(),
-                kFF.get());
 
-        elevatorMainMotor.setMotionMagicParameters(kElevatorMaxCruiseVelocity.get(),
-                kElevatorMaxCruiseAcceleration.get(), kElevatorMaxCruiseJerk.get());
-        elevatorFollowerMotor.setMotionMagicParameters(kElevatorMaxCruiseVelocity.get(),
-                kElevatorMaxCruiseAcceleration.get(), kElevatorMaxCruiseJerk.get());
-
-        elevatorMainMotor.setSoftLimits(true, kElevatorForwardSoftLimit.get(), kElevatorReverseSoftLimit.get());
-        elevatorFollowerMotor.setSoftLimits(true, kElevatorForwardSoftLimit.get(), kElevatorReverseSoftLimit.get());
     }
 
     @Override
