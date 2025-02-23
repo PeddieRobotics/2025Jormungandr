@@ -55,7 +55,6 @@ public final class Constants {
         public static final double kDriveEncoderVelocityFactor = (Math.PI * Units.inchesToMeters(kWheelDiameterInches))
                 / kDriveMotorReduction;
 
-        // TODO: Update Real Values
         public static final double kSteerMotorReduction = 18.75;
 
         public static final double kDriveS = 0.2;
@@ -111,7 +110,6 @@ public final class Constants {
         // in front)
         // 3. read the cancoder values from dashboard, and put those values for these
         // offsets (check robotmap for ids)
-        // TODO: Update Real Values
         public static final double kFrontLeftCancoderOffset = 0.3684;
         public static final double kFrontRightCancoderOffset = 0.00293;
         public static final double kBackLeftCancoderOffset = 0.10083;
@@ -123,10 +121,8 @@ public final class Constants {
     }
 
     public static class IntakeConstants {
-        // TODO: Update real values
-        public static final double kHPIntakeRollerSupplyCurrentLimit = 0.0;
-        public static final double kHPIntakePivotSupplyCurrentLimit = 0.0;
-        public static final double kHPIntakeSpeed = 0.0;
+        public static final double kHPIntakeActuatorExtendedPostion = 1.0;
+        public static final double kHPIntakeActuatorRetractedPostion = 0.0;
     }
 
     public static class ElevatorConstants {
@@ -217,7 +213,6 @@ public final class Constants {
 
     }
     public static final class ArmConstants {
-        // TODO: Update real values
         public static final double kArmSupplyCurrentLimit = 40;
         public static final double kArmStatorCurrentLimit = 40;
         public static final double kArmForwardTorqueCurrentLimit = 40;

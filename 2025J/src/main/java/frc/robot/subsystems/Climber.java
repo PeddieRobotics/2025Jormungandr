@@ -10,11 +10,11 @@ public class Climber extends SubsystemBase {
     private Kraken leftClimberMotor, rightClimberMotor;
 
     public Climber() {
-        leftClimberMotor = new Kraken(RobotMap.LEFT_CLIMBER_MOTOR_ID, RobotMap.CANIVORE_NAME);
-        rightClimberMotor = new Kraken(RobotMap.RIGHT_CLIMBER_MOTOR_ID, RobotMap.CANIVORE_NAME);
+        leftClimberMotor = new Kraken(RobotMap.CLIMBER_MAIN_MOTOR_ID, RobotMap.CANIVORE_NAME);
+        rightClimberMotor = new Kraken(RobotMap.CLIMBER_SECONDARY_MOTOR_ID, RobotMap.CANIVORE_NAME);
 
         leftClimberMotor.setInverted(false);
-        rightClimberMotor.setFollower(RobotMap.LEFT_CLIMBER_MOTOR_ID, true);
+        rightClimberMotor.setFollower(RobotMap.CLIMBER_MAIN_MOTOR_ID, true);
 
         leftClimberMotor.setBrake();
         rightClimberMotor.setBrake();

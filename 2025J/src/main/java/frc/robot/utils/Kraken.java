@@ -287,7 +287,6 @@ public class Kraken {
         talon.getConfigurator().setPosition(0);
     }
 
-    // TODO: should we rename this to proportion output???
     /**
      * Set motor in open loop control to percent output. This control mode will output a given proportion of supply voltage.
      * @param percentOutput - Proportion of supply voltage to apply to motor [-1.0,1.0]

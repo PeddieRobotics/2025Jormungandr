@@ -1,10 +1,23 @@
 package frc.robot.utils;
 
 public class RobotMap {
-    // TODO: update with real values
+    // MISCELLANEOUS
     public static final String CANIVORE_NAME = "canivore";
     public static final int GYRO_ID = 1;
+    public static final int HP_INTAKE_SERVO_ID = 2;
+    public static final int CANDLE_ID = 3;
 
+    // ARM
+    public static final int ARM_MOTOR_ID = 4;
+    public static final int ARM_CANCODER_ID = 5;
+
+    // CLAW
+    public static final int CLAW_MOTOR_ID = 6;
+    public static final int CLAW_CORAL_SENSOR1_ID = 7;
+    public static final int CLAW_CORAL_SENSOR2_ID = 8;
+    public static final int CLAW_ALGAE_SENSOR_ID = 9;
+
+    // SWERVE
     public static final int FRONT_LEFT_MODULE_DRIVE_ID = 10;
     public static final int FRONT_RIGHT_MODULE_DRIVE_ID = 20;
     public static final int BACK_LEFT_MODULE_DRIVE_ID = 30;
@@ -20,22 +33,14 @@ public class RobotMap {
     public static final int BACK_LEFT_MODULE_CANCODER_ID = 32;
     public static final int BACK_RIGHT_MODULE_CANCODER_ID = 42;
 
-    public static final int ELEVATOR_MAIN_ID = 0;
-    public static final int ELEVATOR_SECONDARY_ID = 0;
-    public static final int ELEVATOR_CANCODER_ID = 0;
+    // ELEVATOR
+    public static final int ELEVATOR_MAIN_ID = 50;
+    public static final int ELEVATOR_SECONDARY_ID = 51;
+    public static final int ELEVATOR_CANCODER_ID = 52;
+
+    // CLIMBER
+    public static final int CLIMBER_MAIN_MOTOR_ID = 60;
+    public static final int CLIMBER_SECONDARY_MOTOR_ID = 61;
     
-    public static final int HP_INTAKE_SERVO_ID = 0;
 
-    public static final int ARM_MOTOR_ID = 0;
-    public static final int ARM_CANCODER_ID = 0;
-
-    public static final int CLAW_MOTOR_ID = 0;
-    public static final int CLAW_CORAL_SENSOR1_ID = 0;
-    public static final int CLAW_CORAL_SENSOR2_ID = 0;
-    public static final int CLAW_ALGAE_SENSOR_ID = 0;
-
-    public static final int RIGHT_CLIMBER_MOTOR_ID = 0;
-    public static final int LEFT_CLIMBER_MOTOR_ID = 0;
-    
-    public static final int CANDLE_ID = 0;
 }
