@@ -7,7 +7,6 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.subsystems.Superstructure;
 import edu.wpi.first.math.geometry.Translation2d;
-import frc.robot.commands.ReefCommands.AlignToReefEstimatedPose;
 import frc.robot.subsystems.Superstructure.SuperstructureState;
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -55,7 +54,7 @@ public class DriverOI {
         triangleButton.onTrue(new AlignAndScore(true)); //right align
         
         Trigger squareButton = new JoystickButton(controller, PS4Controller.Button.kSquare.value);
-        squareButton.whileTrue(new AlignToReefEstimatedPose());
+        // squareButton.whileTrue(new AlignToReefEstimatedPose());
         //squareButton.onTrue(new AlignToReefOdometry());
         
         

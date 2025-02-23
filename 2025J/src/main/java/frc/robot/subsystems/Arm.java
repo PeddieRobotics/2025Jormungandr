@@ -5,8 +5,10 @@ import com.ctre.phoenix6.hardware.CANcoder;
 import com.ctre.phoenix6.signals.FeedbackSensorSourceValue;
 import com.ctre.phoenix6.signals.SensorDirectionValue;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.utils.Constants.ArmConstants;
+import frc.robot.utils.DriverOI;
 import frc.robot.utils.Kraken;
 import frc.robot.utils.LiveData;
 import frc.robot.utils.RobotMap;
@@ -17,9 +19,7 @@ public class Arm extends SubsystemBase{
     private static Arm arm;
     private Kraken armMotor;
     private CANcoder armCANcoder;
-    private TunableConstant kP, kS, kV, kI, kD, kFF, kA, 
-        kArmMaxCruiseVelocity, kArmMaxCruiseAcceleration, kArmMaxCruiseJerk, kArmReverseTorqueCurrentLimit, kArmForwardTorqueCurrentLimit,
-        L1Setpoint, L2Setpoint, L3Setpoint, L4Setpoint, HPIntakeSetpoint, stowSetpoint, bargeSetpoint, algaeL1Setpoint, algaeL2Setpoint, processorSetpoint;
+    private TunableConstant L1Setpoint, L2Setpoint, L3Setpoint, L4Setpoint, HPIntakeSetpoint, stowSetpoint, bargeSetpoint, algaeL1Setpoint, algaeL2Setpoint, processorSetpoint;
 
     private LiveData armSetpoint;
 
@@ -54,18 +54,6 @@ public class Arm extends SubsystemBase{
         armMotor.setMotionMagicParameters(ArmConstants.kArmMaxCruiseVelocity, ArmConstants.kArmMaxCruiseAcceleration, ArmConstants.kArmMaxCruiseJerk);
 
         armMotor.setSoftLimits(true, ArmConstants.kArmForwardSoftLimit, ArmConstants.kArmReverseSoftLimit);
-        kP = new TunableConstant(ArmConstants.kP, "Arm kP");
-        kI = new TunableConstant(ArmConstants.kI, "Arm kI");
-        kD = new TunableConstant(ArmConstants.kD, "Arm kD");
-        kA = new TunableConstant(ArmConstants.kA, "Arm A"); 
-        kS = new TunableConstant(ArmConstants.kS, "Arm kS");
-        kV = new TunableConstant(ArmConstants.kV, "Arm kV");
-        kFF = new TunableConstant(ArmConstants.kFF, "Arm kFF");
-        kArmMaxCruiseVelocity = new TunableConstant(ArmConstants.kArmMaxCruiseVelocity, "Arm kArmMaxCruiseVelocity");
-        kArmMaxCruiseAcceleration = new TunableConstant(ArmConstants.kArmMaxCruiseAcceleration, "Arm kArmMaxCruiseAcceleration");
-        kArmMaxCruiseJerk = new TunableConstant(ArmConstants.kArmMaxCruiseJerk, "Arm kArmMaxCruiseJerk");
-        kArmReverseTorqueCurrentLimit = new TunableConstant(ArmConstants.kArmReverseTorqueCurrentLimit, "Arm kArmReverseTorqueCurrentLimit");
-        kArmForwardTorqueCurrentLimit = new TunableConstant(ArmConstants.kArmForwardTorqueCurrentLimit, "Arm kArmForwardTorqueCurrentLimit");
         L1Setpoint = new TunableConstant(ArmConstants.kL1Setpoint, "Arm L1Setpoint");
         L2Setpoint = new TunableConstant(ArmConstants.kL2Setpoint, "Arm L2Setpoint");
         L3Setpoint = new TunableConstant(ArmConstants.kL3Setpoint, "Arm L3Setpoint");
@@ -77,7 +65,9 @@ public class Arm extends SubsystemBase{
         algaeL2Setpoint = new TunableConstant(ArmConstants.kAlgaeL2Setpoint, "Arm algaeL2Setpoint");
         processorSetpoint = new TunableConstant(ArmConstants.kProcessorSetpoint, "Arm processorSetpoint");
 
-        armSetpoint = new LiveData(stowSetpoint.get(), "Arm Current Setpoint");  
+        armSetpoint = new LiveData(stowSetpoint.get(), "Arm Current Setpoint"); 
+
+        SmartDashboard.putBoolean("Arm: Open Loop Control", false);
     }
 
     /**
@@ -201,15 +191,11 @@ public class Arm extends SubsystemBase{
 
     @Override
     public void periodic() {
-        armMotor.setPIDValues(kS.get(), kV.get(),
-            kA.get(),
-            kP.get(), kI.get(), kD.get(),
-            kFF.get());
+        // percent output on stick
+        if (SmartDashboard.getBoolean("Arm: Open Loop Control", false)){
+            setArmPercentOutput(DriverOI.getInstance().getForward());
+        }
 
-        armMotor.setForwardTorqueCurrentLimit(kArmForwardTorqueCurrentLimit.get());
-        armMotor.setReverseTorqueCurrentLimit(kArmReverseTorqueCurrentLimit.get());
-
-        armMotor.setMotionMagicParameters(kArmMaxCruiseVelocity.get(), kArmMaxCruiseAcceleration.get(), kArmMaxCruiseJerk.get());
     }
 
     @Override
