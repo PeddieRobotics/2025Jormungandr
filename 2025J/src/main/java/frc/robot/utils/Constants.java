@@ -137,7 +137,7 @@ public final class Constants {
         public static final double kElevatorReverseSoftLimit = 0.0;
 
         public static final double kElevatorReduction = 7.0 / 1.0;
-        public static final double kElevatorRotorToSensorRatio = 1.0;
+        public static final double kElevatorRotorToSensorRatio = kElevatorReduction;
         public static final double kElevatorSensortoMechanismRatio = 1.0;
 
         public static final double kElevatorMagnetOffset = 0.0;
