@@ -42,7 +42,7 @@ public class RobotContainer {
     private OperatorOI operatorOI;
     private Elevator elevator;
     private HPIntake hpIntake;
-    private PVBack pvBack;    
+    private PVBack pvBack;
     private PVFrontLeft pvFrontLeft;
     private PVFrontMiddle pvFrontMiddle;
     private PVFrontRight pvFrontRight;
@@ -50,11 +50,11 @@ public class RobotContainer {
     private Lights lights;
 
     public RobotContainer() {
-        // arm = Arm.getInstance();
+        arm = Arm.getInstance();
         claw = Claw.getInstance();
         autonomous = Autonomous.getInstance();
         drivetrain = Drivetrain.getInstance();
-        // elevator = Elevator.getInstance();
+        elevator = Elevator.getInstance();
         // hpIntake = HPIntake.getInstance();
         // superstructure = Superstructure.getInstance();
         driverOI = DriverOI.getInstance();

@@ -14,12 +14,13 @@ import frc.robot.utils.LiveData;
 import frc.robot.utils.RobotMap;
 import frc.robot.utils.TunableConstant;
 
-public class Arm extends SubsystemBase{
+public class Arm extends SubsystemBase {
 
     private static Arm arm;
     private Kraken armMotor;
     private CANcoder armCANcoder;
-    private TunableConstant L1Setpoint, L2Setpoint, L3Setpoint, L4Setpoint, HPIntakeSetpoint, stowSetpoint, bargeSetpoint, algaeL1Setpoint, algaeL2Setpoint, processorSetpoint;
+    private TunableConstant L1Setpoint, L2Setpoint, L3Setpoint, L4Setpoint, HPIntakeSetpoint, stowSetpoint,
+            bargeSetpoint, algaeL1Setpoint, algaeL2Setpoint, processorSetpoint;
 
     private LiveData armSetpoint;
 
@@ -51,9 +52,9 @@ public class Arm extends SubsystemBase{
                 ArmConstants.kA,
                 ArmConstants.kP, ArmConstants.kI, ArmConstants.kD,
                 ArmConstants.kFF);
-        armMotor.setMotionMagicParameters(ArmConstants.kArmMaxCruiseVelocity, ArmConstants.kArmMaxCruiseAcceleration, ArmConstants.kArmMaxCruiseJerk);
+        armMotor.setMotionMagicParameters(ArmConstants.kArmMaxCruiseVelocity, ArmConstants.kArmMaxCruiseAcceleration,
+                ArmConstants.kArmMaxCruiseJerk);
 
-        // TODO: SET SOFT LIMITS
         armMotor.setSoftLimits(true, ArmConstants.kArmForwardSoftLimit / 2, ArmConstants.kArmReverseSoftLimit / 2);
 
         L1Setpoint = new TunableConstant(ArmConstants.kL1Setpoint, "Arm L1Setpoint");
@@ -67,7 +68,7 @@ public class Arm extends SubsystemBase{
         algaeL2Setpoint = new TunableConstant(ArmConstants.kAlgaeL2Setpoint, "Arm algaeL2Setpoint");
         processorSetpoint = new TunableConstant(ArmConstants.kProcessorSetpoint, "Arm processorSetpoint");
 
-        armSetpoint = new LiveData(stowSetpoint.get(), "Arm Current Setpoint"); 
+        armSetpoint = new LiveData(stowSetpoint.get(), "Arm Current Setpoint");
 
         SmartDashboard.putBoolean("Arm: Open Loop Control", false);
     }
@@ -75,8 +76,8 @@ public class Arm extends SubsystemBase{
     /**
      * @return the existing arm instance or creates it if it doesn't exist
      */
-    public static Arm getInstance(){
-        if (arm == null){
+    public static Arm getInstance() {
+        if (arm == null) {
             arm = new Arm();
         }
         return arm;
@@ -87,81 +88,86 @@ public class Arm extends SubsystemBase{
      * 
      * @param speed - Percent of armMotor's speed (-1.0 to 1.0)
      */
-    public void setArmPercentOutput(double percentOutput){
+    public void setArmPercentOutput(double percentOutput) {
         armMotor.setPercentOutput(percentOutput);
     }
 
     /**
-     * Commands armMotor to a designated position with position voltage PID (closed loop control)
+     * Commands armMotor to a designated position with position voltage PID (closed
+     * loop control)
      * 
      * @param position - commanded motor position (cancoder units)
      */
-    public void setArmPositionVoltage(double position){
+    public void setArmPositionVoltage(double position) {
         armSetpoint.set(position);
         armMotor.setPositionVoltage(position);
     }
 
     /**
-     * Commands armMotor to a designated position with MotionMagic voltage (closed loop control)
+     * Commands armMotor to a designated position with MotionMagic voltage (closed
+     * loop control)
      * 
      * @param position - commanded motor position (cancoder units)
      */
-    public void setArmPositionMotionMagicVoltage(double position){
+    public void setArmPositionMotionMagicVoltage(double position) {
         armSetpoint.set(position);
         armMotor.setPositionMotionMagicVoltage(position);
     }
 
     /**
-     * Commands armMotor to a designated position with MotionMagic TorqueCurrentFOC (closed loop control)
+     * Commands armMotor to a designated position with MotionMagic TorqueCurrentFOC
+     * (closed loop control)
      * 
      * @param position - commanded motor position (cancoder units)
      */
-    public void setArmPositionMotionMagicTorqueCurrentFOC(double position){
+    public void setArmPositionMotionMagicTorqueCurrentFOC(double position) {
         armSetpoint.set(position);
         armMotor.setPositionMotionMagicTorqueCurrentFOC(position);
     }
 
-    //Accessor methods
+    // Accessor methods
 
     /**
      * CANcoder reads 0 to 1
+     * 
      * @return absolute CANcoder reading (rotations of CANcoder)
      */
     public double getAbsoluteCANcoderPosition() {
         return armCANcoder.getPosition().getValueAsDouble();
     }
+
     /**
      * @return position reading of the armMotor encoder (motor encoder units)
      */
-    public double getArmPosition(){
+    public double getArmPosition() {
         return armMotor.getPosition();
     }
 
     /**
      * @return velocity of armMotor encoder (rotor rotations per second)
      */
-    public double getArmVelocity(){
+    public double getArmVelocity() {
         return armMotor.getRPS();
     }
 
     /**
      * @return arm motor TorqueCurrent draw (amps)
      */
-    public double getMotorTorqueCurrent(){
+    public double getMotorTorqueCurrent() {
         return armMotor.getTorqueCurrent();
     }
 
     /**
      * @return arm motor stator current draw (amps)
      */
-    public double getMotorStatorCurrent(){
+    public double getMotorStatorCurrent() {
         return armMotor.getStatorCurrent();
     }
-    
+
     /**
      * @return arm motor supply current draw (amps)
      */
-    public double getMotorSupplyCurrent(){
+    public double getMotorSupplyCurrent() {
         return armMotor.getSupplyCurrent();
     }
 
@@ -178,16 +184,17 @@ public class Arm extends SubsystemBase{
     public double getArmSetpoint() {
         return armSetpoint.get();
     }
-    
+
     /**
      * @param targetAngle - In degrees
-     * @return returns if the difference between current and target angle is within threshold
+     * @return returns if the difference between current and target angle is within
+     *         threshold
      */
     public boolean isAtAngle(double targetAngle) {
         return Math.abs(getArmAngleDegrees() - targetAngle) < ArmConstants.kArmPositionEpsilon;
     }
 
-    public double getArmMotorTemperature(){
+    public double getArmMotorTemperature() {
         return armMotor.getMotorTemperature();
     }
 
@@ -196,7 +203,7 @@ public class Arm extends SubsystemBase{
         SmartDashboard.putNumber("Arm: Motor Encoder Position", getArmPosition());
         SmartDashboard.putNumber("Arm: CanCoder Position", getAbsoluteCANcoderPosition());
         // percent output on stick
-        if (SmartDashboard.getBoolean("Arm: Open Loop Control", false)){
+        if (SmartDashboard.getBoolean("Arm: Open Loop Control", false)) {
             setArmPercentOutput(DriverOI.getInstance().getRightForward() * 0.3);
             SmartDashboard.putNumber("Arm: Open Loop Input", DriverOI.getInstance().getRightForward() * 0.3);
         }
