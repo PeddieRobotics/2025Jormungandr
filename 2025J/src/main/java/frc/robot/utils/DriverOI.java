@@ -23,7 +23,7 @@ public class DriverOI {
     public DriverOI() {
         controller = new PS4Controller(0);
 
-        // superstructure = Superstructure.getInstance();
+        superstructure = Superstructure.getInstance();
         configureController();
 
     }
@@ -50,7 +50,7 @@ public class DriverOI {
 
         Trigger triangleButton = new JoystickButton(controller, PS4Controller.Button.kTriangle.value);
         // triangleButton.onTrue(new AlignAndScore(true)); //right align
-        // triangleButton.onTrue(new InstantCommand(() ->
+        triangleButton.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.ALGAE_GROUND_INTAKE)));
         // Claw.getInstance().stopClaw()));
 
         Trigger squareButton = new JoystickButton(controller, PS4Controller.Button.kSquare.value);

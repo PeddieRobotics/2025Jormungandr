@@ -164,13 +164,14 @@ public class Superstructure extends SubsystemBase {
 
             case ALGAE_GROUND_INTAKE -> {
                 // run intake
-                elevator.setElevatorPositionMotionMagicTorqueCurrentFOC(ScoreConstants.kElevatorGroundIntakePosition);
-                arm.setArmPositionMotionMagicTorqueCurrentFOC(ScoreConstants.kArmGroundIntakePosition);
+                // elevator.setElevatorPositionMotionMagicTorqueCurrentFOC(ScoreConstants.kElevatorGroundIntakePosition);
+                // arm.setArmPositionMotionMagicTorqueCurrentFOC(ScoreConstants.kArmGroundIntakePosition);
+                claw.intakePiece(ClawConstants.kCoralIntakeSpeed);
 
-                if (algaeIndex) {
-                    claw.holdAlgae();
-                    requestState(HP_INTAKE);
-                }
+                // if (algaeIndex) {
+                //     claw.holdAlgae();
+                //     requestState(HP_INTAKE);
+                // }
 
                 if (Arrays.asList(
                         STOW,

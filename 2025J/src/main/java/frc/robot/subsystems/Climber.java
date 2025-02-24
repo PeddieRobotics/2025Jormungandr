@@ -1,7 +1,9 @@
 package frc.robot.subsystems;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.utils.Constants.ClimberConstants;
+import frc.robot.utils.DriverOI;
 import frc.robot.utils.Kraken;
 import frc.robot.utils.RobotMap;
 
@@ -11,18 +13,20 @@ public class Climber extends SubsystemBase {
 
     public Climber() {
         leftClimberMotor = new Kraken(RobotMap.CLIMBER_MAIN_MOTOR_ID, RobotMap.CANIVORE_NAME);
-        rightClimberMotor = new Kraken(RobotMap.CLIMBER_SECONDARY_MOTOR_ID, RobotMap.CANIVORE_NAME);
+        // rightClimberMotor = new Kraken(RobotMap.CLIMBER_SECONDARY_MOTOR_ID, RobotMap.CANIVORE_NAME);
 
         leftClimberMotor.setInverted(false);
-        rightClimberMotor.setFollower(RobotMap.CLIMBER_MAIN_MOTOR_ID, true);
+        // rightClimberMotor.setFollower(RobotMap.CLIMBER_MAIN_MOTOR_ID, true);
 
         leftClimberMotor.setBrake();
-        rightClimberMotor.setBrake();
+        // rightClimberMotor.setBrake();
 
         leftClimberMotor.setStatorCurrentLimit(ClimberConstants.kClimberStatorCurrentLimit);
-        rightClimberMotor.setStatorCurrentLimit(ClimberConstants.kClimberStatorCurrentLimit);
+        // rightClimberMotor.setStatorCurrentLimit(ClimberConstants.kClimberStatorCurrentLimit);
         leftClimberMotor.setSupplyCurrentLimit(ClimberConstants.kClimberSupplyCurrentLimit);
-        rightClimberMotor.setSupplyCurrentLimit(ClimberConstants.kClimberSupplyCurrentLimit);
+        // rightClimberMotor.setSupplyCurrentLimit(ClimberConstants.kClimberSupplyCurrentLimit);
+
+        SmartDashboard.putBoolean("Climber: Close Loop Control", false);
     }
 
     public static Climber getInstance() {
@@ -52,9 +56,9 @@ public class Climber extends SubsystemBase {
     /**
      * @return returns right climber supply current draw (amps)
      */
-    public double getRightClimberSupplyCurrent() {
-        return rightClimberMotor.getSupplyCurrent();
-    }
+    // public double getRightClimberSupplyCurrent() {
+    //     return rightClimberMotor.getSupplyCurrent();
+    // }
 
     /**
      * @return returns left climber stator current draw (amps)
@@ -66,9 +70,9 @@ public class Climber extends SubsystemBase {
     /**
      * @return returns right climber stator current draw (amps)
      */
-    public double getRightClimberStatorCurrent() {
-        return rightClimberMotor.getStatorCurrent();
-    }
+    // public double getRightClimberStatorCurrent() {
+    //     return rightClimberMotor.getStatorCurrent();
+    // }
 
     /**
      * @return returns temperature of leftClimberMotor in celcius
@@ -80,9 +84,9 @@ public class Climber extends SubsystemBase {
     /**
      * @return returns temperature of rightClimberMotor in celcius
      */
-    public double getRightClimberTemperature() {
-        return rightClimberMotor.getMotorTemperature();
-    }
+    // public double getRightClimberTemperature() {
+    //     return rightClimberMotor.getMotorTemperature();
+    // }
 
     /**
      * @return returns position reading of leftClimberMotor encoder (mechanism rotations)
@@ -94,7 +98,20 @@ public class Climber extends SubsystemBase {
     /**
      * @return returns position reading of rightClimberMotor encoder (mechanism rotations)
      */
-    public double getRightClimberPosition() {
-        return rightClimberMotor.getPosition();
+    // public double getRightClimberPosition() {
+    //     return rightClimberMotor.getPosition();
+    // }
+
+    @Override
+    public void periodic() {
+        if(SmartDashboard.getBoolean("Climber: Run Close Loop Control", false)){
+            leftClimberMotor.setPercentOutput(DriverOI.getInstance().getRightForward());
+        }
+        SmartDashboard.putNumber("Climber Motor Supple Current", leftClimberMotor.getSupplyCurrent());
+        SmartDashboard.putNumber("Climber Motor Stator Current", leftClimberMotor.getStatorCurrent());
+    }
+
+    @Override
+    public void simulationPeriodic() {
     }
 }
