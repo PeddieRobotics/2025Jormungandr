@@ -34,13 +34,16 @@ public class Claw extends SubsystemBase {
         clawMotor.setBrake();
         clawMotor.setPIDValues(ClawConstants.kP, ClawConstants.kI, ClawConstants.kD, ClawConstants.kFF);
 
-        configureCANrange(topSensor, clawTopSensorConfig, Constants.ClawConstants.kTopSensorSignalStrength, 
-                            Constants.ClawConstants.kTopSensorProximityThreshold, Constants.ClawConstants.kTopSensorProximityHysteresis);
-        configureCANrange(bottomSensor, clawBottomSensorConfig, Constants.ClawConstants.kBottomSensorSignalStrength, 
-                            Constants.ClawConstants.kBottomSensorProximityThreshold, Constants.ClawConstants.kBottomSensorProximityHysteresis);
-        }
+        configureCANrange(topSensor, clawTopSensorConfig, Constants.ClawConstants.kTopSensorSignalStrength,
+                Constants.ClawConstants.kTopSensorProximityThreshold,
+                Constants.ClawConstants.kTopSensorProximityHysteresis);
+        configureCANrange(bottomSensor, clawBottomSensorConfig, Constants.ClawConstants.kBottomSensorSignalStrength,
+                Constants.ClawConstants.kBottomSensorProximityThreshold,
+                Constants.ClawConstants.kBottomSensorProximityHysteresis);
+    }
 
-    public void configureCANrange(CANrange sensor, CANrangeConfiguration config, double signalStrengthThreshold, double proximityThreshold, double proximityHysteresis){
+    public void configureCANrange(CANrange sensor, CANrangeConfiguration config, double signalStrengthThreshold,
+            double proximityThreshold, double proximityHysteresis) {
         config.ProximityParams.ProximityThreshold = proximityThreshold;
         config.ProximityParams.MinSignalStrengthForValidMeasurement = signalStrengthThreshold;
         config.ProximityParams.ProximityHysteresis = proximityHysteresis;
@@ -66,7 +69,7 @@ public class Claw extends SubsystemBase {
         clawMotor.setPercentOutput(speed);
     }
 
-    public void stopClaw(){
+    public void stopClaw() {
         setClaw(0);
     }
 
@@ -86,11 +89,11 @@ public class Claw extends SubsystemBase {
         setClaw(ClawConstants.kCoralOuttakeSpeed);
     }
 
-    public void holdAlgae(){
+    public void holdAlgae() {
         setClaw(ClawConstants.kAlgaeHoldSpeed);
     }
 
-    public void incrementClaw(){
+    public void incrementClaw() {
         clawMotor.setPositionVoltage(clawMotor.getPosition() + ClawConstants.kCoralPositionIncrement);
     }
 
@@ -100,11 +103,11 @@ public class Claw extends SubsystemBase {
      * @return claw coral algae sensor reading (digital sensor) as boolean
      */
     public boolean getTopSensor() {
-        return topSensor.getIsDetected().getValue();  //true if detected
+        return topSensor.getIsDetected().getValue(); // true if detected
     }
 
     public boolean getBottomSensor() {
-        return bottomSensor.getIsDetected().getValue();  //true if detected
+        return bottomSensor.getIsDetected().getValue(); // true if detected
     }
 
     /**
@@ -135,40 +138,41 @@ public class Claw extends SubsystemBase {
     /**
      * @return position of clawMotor encoder (mechanism rotations)
      */
-    public double getPosition(){
+    public double getPosition() {
         return clawMotor.getPosition();
     }
 
     /**
      * @return velocity of clawMotor encoder (rotor rotations per minute)
      */
-    public double getVelocity(){
+    public double getVelocity() {
         return clawMotor.getRPM();
     }
 
     /**
      * @return returns if either sensor has a coral
      */
-    public boolean hasCoral(){
+    public boolean hasCoral() {
         return getTopSensor() || getBottomSensor();
     }
 
     /**
-     * @return returns if ready to shoot, sensor 2 detects the coral but not sensor 1
+     * @return returns if ready to shoot, sensor 2 detects the coral but not sensor
+     *         1
      */
-    public boolean coralIndexed(){
-        return getBottomSensor() && !getTopSensor();
+    public boolean coralIndexed() {
+        return getBottomSensor() && getTopSensor();
     }
 
     /**
      * @return returns if sensor detects algae
      */
     // TODO: Reimplement
-    public boolean hasAlgae(){
+    public boolean hasAlgae() {
         return false;
     }
 
-    public double getClawMotorTemperature(){
+    public double getClawMotorTemperature() {
         return clawMotor.getMotorTemperature();
     }
 
