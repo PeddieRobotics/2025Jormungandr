@@ -57,7 +57,7 @@ public class Arm extends SubsystemBase {
         armMotor.setMotionMagicParameters(ArmConstants.kArmMaxCruiseVelocity, ArmConstants.kArmMaxCruiseAcceleration,
                 ArmConstants.kArmMaxCruiseJerk);
 
-        armMotor.setSoftLimits(true, ArmConstants.kArmForwardSoftLimit / 2, ArmConstants.kArmReverseSoftLimit / 2);
+        armMotor.setSoftLimits(true, ArmConstants.kArmForwardSoftLimit, ArmConstants.kArmReverseSoftLimit);
 
         L1Setpoint = new TunableConstant(ArmConstants.kL1Setpoint, "Arm L1Setpoint");
         L2Setpoint = new TunableConstant(ArmConstants.kL2Setpoint, "Arm L2Setpoint");

@@ -236,8 +236,8 @@ public final class Constants {
         public static final double kG = 0.13;
 
         // these are on the CAN CODER!
-        public static final double kArmForwardSoftLimit = 0.5;
-        public static final double kArmReverseSoftLimit = 0.26;
+        public static final double kArmForwardSoftLimit = 0.25;
+        public static final double kArmReverseSoftLimit = 0.13;
 
         // Motion Magic Parameters
         public static final double kArmMaxCruiseVelocity = 0.0;
