@@ -20,7 +20,7 @@ public class Superstructure extends SubsystemBase {
     private final Arm arm;
     private final Claw claw;
     private final Elevator elevator;
-    private final HPIntake hpIntake;
+    // private final HPIntake hpIntake;
 
     private SuperstructureState systemState;
     private SuperstructureState requestedSystemState;
@@ -60,7 +60,7 @@ public class Superstructure extends SubsystemBase {
         arm = Arm.getInstance();
         claw = Claw.getInstance();
         elevator = Elevator.getInstance();
-        hpIntake = HPIntake.getInstance();
+        // hpIntake = HPIntake.getInstance();
 
         timer = new Timer();
         // timer.start();
