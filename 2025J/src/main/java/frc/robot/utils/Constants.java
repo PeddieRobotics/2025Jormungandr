@@ -350,7 +350,7 @@ public final class Constants {
 
         public static final double kAlgaeHoldSpeed = 0.0;
 
-        public static final double kCoralPositionIncrement = 5.0;
+        public static final double kCoralPositionIncrement = 3.5;
     }
 
     public static final class ClimberConstants {
