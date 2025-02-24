@@ -83,7 +83,7 @@ public class SwerveModule extends SubsystemBase {
                                                                                                                                 // Setting this to 0.5 makes the absolute position signed [-0.5, 0.5)
                                                                                                                                 // Setting this to 0 makes the absolute position always negative [-1, 0)
         config.MagnetSensor.SensorDirection = SensorDirectionValue.CounterClockwise_Positive;
-        config.MagnetSensor.MagnetOffset = -moduleAngularOffset;
+        config.MagnetSensor.MagnetOffset = moduleAngularOffset;
         canCoder.getConfigurator().apply(config);
     }
 

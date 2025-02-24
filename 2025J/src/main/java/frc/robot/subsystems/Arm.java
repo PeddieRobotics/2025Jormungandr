@@ -54,7 +54,7 @@ public class Arm extends SubsystemBase{
         armMotor.setMotionMagicParameters(ArmConstants.kArmMaxCruiseVelocity, ArmConstants.kArmMaxCruiseAcceleration, ArmConstants.kArmMaxCruiseJerk);
 
         // TODO: SET SOFT LIMITS
-        armMotor.setSoftLimits(false, ArmConstants.kArmForwardSoftLimit, ArmConstants.kArmReverseSoftLimit);
+        armMotor.setSoftLimits(true, ArmConstants.kArmForwardSoftLimit / 2, ArmConstants.kArmReverseSoftLimit / 2);
 
         L1Setpoint = new TunableConstant(ArmConstants.kL1Setpoint, "Arm L1Setpoint");
         L2Setpoint = new TunableConstant(ArmConstants.kL2Setpoint, "Arm L2Setpoint");
@@ -197,7 +197,8 @@ public class Arm extends SubsystemBase{
         SmartDashboard.putNumber("Arm: CanCoder Position", getAbsoluteCANcoderPosition());
         // percent output on stick
         if (SmartDashboard.getBoolean("Arm: Open Loop Control", false)){
-            setArmPercentOutput(DriverOI.getInstance().getForward() * 0.3);
+            setArmPercentOutput(DriverOI.getInstance().getRightForward() * 0.3);
+            SmartDashboard.putNumber("Arm: Open Loop Input", DriverOI.getInstance().getRightForward() * 0.3);
         }
 
     }

@@ -7,6 +7,7 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.ManualArmControl;
 import frc.robot.commands.ManualElevatorControl;
+import frc.robot.subsystems.Claw;
 import frc.robot.subsystems.Superstructure;
 import frc.robot.subsystems.Superstructure.SuperstructureState;
 
@@ -37,22 +38,25 @@ public class OperatorOI {
         controller = new PS4Controller(1);
 
         Trigger xButton = new JoystickButton(controller, PS4Controller.Button.kCross.value);
-        xButton.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.L1_PREP)));
+        xButton.onTrue(new InstantCommand(() -> Claw.getInstance().intakePiece(-0.50)));
+        // xButton.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.L1_PREP)));
 
         Trigger circleButton = new JoystickButton(controller, PS4Controller.Button.kCircle.value);
-        circleButton.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.L2_PREP)));
+        // circleButton.onTrue(new InstantCommand(() -> Claw.getInstance().intakePiece(-0.50)));
+        // circleButton.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.L2_PREP)));
 
         Trigger squareButton = new JoystickButton(controller, PS4Controller.Button.kSquare.value);
-        squareButton.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.L3_PREP)));
+        // squareButton.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.L3_PREP)));
 
         Trigger triangleButton = new JoystickButton(controller, PS4Controller.Button.kTriangle.value);
-        triangleButton.onTrue(new InstantCommand(() -> {
-            if (superstructure.getCurrentState() == SuperstructureState.L4_PRESTAGE) {
-                superstructure.requestState(SuperstructureState.L4_PREP);
-            } else {
-                superstructure.requestState(SuperstructureState.L4_PRESTAGE);
-            }
-        }));
+        // triangleButton.onTrue(new InstantCommand(() -> Claw.getInstance().stopClaw()));
+        // triangleButton.onTrue(new InstantCommand(() -> {
+        //     if (superstructure.getCurrentState() == SuperstructureState.L4_PRESTAGE) {
+        //         superstructure.requestState(SuperstructureState.L4_PREP);
+        //     } else {
+        //         superstructure.requestState(SuperstructureState.L4_PRESTAGE);
+        //     }
+        // }));
 
         Trigger touchpadButton = new JoystickButton(controller, PS4Controller.Button.kTouchpad.value);
         touchpadButton.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.STOW)));

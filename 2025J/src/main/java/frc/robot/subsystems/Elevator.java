@@ -25,10 +25,22 @@ public class Elevator extends SubsystemBase {
     private LiveData elevatorSetpoint;
 
     public Elevator() {
+        elevatorCANcoder = new CANcoder(RobotMap.ELEVATOR_CANCODER_ID, RobotMap.CANIVORE_NAME);
+        CANcoderConfiguration config = new CANcoderConfiguration();
+        config.MagnetSensor.AbsoluteSensorDiscontinuityPoint = 1; // Setting this to 1 makes the absolute position
+                                                                  // unsigned [0, 1)
+                                                                  // Setting this to 0.5 makes the absolute position
+                                                                  // signed [-0.5, 0.5)
+                                                                  // Setting this to 0 makes the absolute position
+                                                                  // always negative [-1, 0)
+        config.MagnetSensor.SensorDirection = SensorDirectionValue.CounterClockwise_Positive;
+        config.MagnetSensor.MagnetOffset = ElevatorConstants.kElevatorMagnetOffset;
+        elevatorCANcoder.getConfigurator().apply(config); 
+
         elevatorMainMotor = new Kraken(RobotMap.ELEVATOR_MAIN_ID, RobotMap.CANIVORE_NAME);
         elevatorFollowerMotor = new Kraken(RobotMap.ELEVATOR_SECONDARY_ID, RobotMap.CANIVORE_NAME);
 
-        elevatorMainMotor.setInverted(false); // TODO: confirm direction
+        elevatorMainMotor.setInverted(true);
         elevatorFollowerMotor.setFollower(RobotMap.ELEVATOR_MAIN_ID, true);
 
         elevatorMainMotor.setSupplyCurrentLimit(ElevatorConstants.kElevatorMotorSupplyCurrentLimit);
@@ -44,41 +56,21 @@ public class Elevator extends SubsystemBase {
 
         elevatorMainMotor.setBrake();
         elevatorFollowerMotor.setBrake();
+        
+        elevatorMainMotor.setEncoder(0);
+        elevatorMainMotor.setFeedbackDevice(RobotMap.ELEVATOR_CANCODER_ID, FeedbackSensorSourceValue.FusedCANcoder);
+        elevatorMainMotor.setRotorToSensorRatio(ElevatorConstants.kElevatorRotorToSensorRatio);
+        elevatorMainMotor.setSensorToMechanismRatio(ElevatorConstants.kElevatorSensortoMechanismRatio);
 
         elevatorMainMotor.setPIDValues(ElevatorConstants.kS, ElevatorConstants.kV,
-                ElevatorConstants.kA,
-                ElevatorConstants.kP, ElevatorConstants.kI, ElevatorConstants.kD,
-                ElevatorConstants.kFF);
-        elevatorFollowerMotor.setPIDValues(ElevatorConstants.kS, ElevatorConstants.kV,
                 ElevatorConstants.kA,
                 ElevatorConstants.kP, ElevatorConstants.kI, ElevatorConstants.kD,
                 ElevatorConstants.kFF);
 
         elevatorMainMotor.setMotionMagicParameters(ElevatorConstants.kElevatorMaxCruiseVelocity,
                 ElevatorConstants.kElevatorMaxCruiseAcceleration, ElevatorConstants.kElevatorMaxCruiseJerk);
-        elevatorFollowerMotor.setMotionMagicParameters(ElevatorConstants.kElevatorMaxCruiseVelocity,
-                ElevatorConstants.kElevatorMaxCruiseAcceleration, ElevatorConstants.kElevatorMaxCruiseJerk);
 
-        elevatorCANcoder = new CANcoder(RobotMap.ELEVATOR_CANCODER_ID);
-        CANcoderConfiguration config = new CANcoderConfiguration();
-        config.MagnetSensor.AbsoluteSensorDiscontinuityPoint = 1; // Setting this to 1 makes the absolute position
-                                                                  // unsigned [0, 1)
-                                                                  // Setting this to 0.5 makes the absolute position
-                                                                  // signed [-0.5, 0.5)
-                                                                  // Setting this to 0 makes the absolute position
-                                                                  // always negative [-1, 0)
-        config.MagnetSensor.SensorDirection = SensorDirectionValue.CounterClockwise_Positive;
-        config.MagnetSensor.MagnetOffset = ElevatorConstants.kElevatorMagnetOffset;
-        elevatorCANcoder.getConfigurator().apply(config); 
-
-        elevatorMainMotor.setFeedbackDevice(RobotMap.ELEVATOR_CANCODER_ID, FeedbackSensorSourceValue.FusedCANcoder);
-        elevatorMainMotor.setRotorToSensorRatio(ElevatorConstants.kElevatorRotorToSensorRatio);
-        elevatorMainMotor.setSensorToMechanismRatio(ElevatorConstants.kElevatorSensortoMechanismRatio);
-
-        // TODO: TURN ON SOFT LIMITS
-        elevatorMainMotor.setSoftLimits(false, ElevatorConstants.kElevatorForwardSoftLimit,
-        ElevatorConstants.kElevatorReverseSoftLimit);
-        elevatorFollowerMotor.setSoftLimits(false, ElevatorConstants.kElevatorForwardSoftLimit,
+        elevatorMainMotor.setSoftLimits(true, ElevatorConstants.kElevatorForwardSoftLimit,
         ElevatorConstants.kElevatorReverseSoftLimit);
 
         L1Setpoint = new TunableConstant(ElevatorConstants.kL1Setpoint, "Elevator L1Setpoint");
@@ -233,8 +225,9 @@ public class Elevator extends SubsystemBase {
     @Override
     public void periodic() {
         if(SmartDashboard.getBoolean("Elevator: Open Loop Control", false)){
-            setElevatorPercentOutput(DriverOI.getInstance().getForward() * 0.3);
+            setElevatorPercentOutput(DriverOI.getInstance().getRightForward() * 0.3);
         }
+        SmartDashboard.putNumber("Elevator: Commanded Percent Output", DriverOI.getInstance().getForward() * 0.3);
         SmartDashboard.putNumber("Elevator: Motor Encoder Position", getElevatorPosition());
         SmartDashboard.putNumber("Elevator: CanCoder Position", getElevatorCANcoderReading());
         SmartDashboard.putNumber("Elevator: Main Motor Supply Current", getMotorSupplyCurrent());

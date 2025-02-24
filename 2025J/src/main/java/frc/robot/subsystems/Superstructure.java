@@ -136,7 +136,7 @@ public class Superstructure extends SubsystemBase {
                 // add gate to check elevator height and arm angle ?
                 claw.intakePiece(ClawConstants.kCoralIntakeSpeed);
 
-                if (claw.getCoralSensor1()){
+                if (claw.getTopSensor()){
                     claw.intakePiece(ClawConstants.kCoralSlowIntake);
                 }
                 if (coralIndex){

@@ -51,7 +51,7 @@ public class RobotContainer {
 
     public RobotContainer() {
         // arm = Arm.getInstance();
-        // claw = Claw.getInstance();
+        claw = Claw.getInstance();
         autonomous = Autonomous.getInstance();
         drivetrain = Drivetrain.getInstance();
         // elevator = Elevator.getInstance();
@@ -67,7 +67,7 @@ public class RobotContainer {
         // lights = Lights.getInstance();
 
         SmartDashboard.putData("Auto Routines", autonomous.getAutoChooser());
-        // drivetrain.setDefaultCommand(new SwerveDriveCommand());
+        drivetrain.setDefaultCommand(new SwerveDriveCommand());
     }
 
     public Command getAutonomousCommand() {

@@ -14,37 +14,31 @@ public class Claw extends SubsystemBase {
 
     private static Claw claw;
     private Kraken clawMotor;
-    private CANrange coralSensor1;
-    private CANrange coralSensor2;
-    private CANrange algaeSensor;
-    private CANrangeConfiguration coralSensor1Config;
-    private CANrangeConfiguration coralSensor2Config;
-    private CANrangeConfiguration algaeSensorConfig;
+    private CANrange topSensor;
+    private CANrange bottomSensor;
+    private CANrangeConfiguration clawTopSensorConfig;
+    private CANrangeConfiguration clawBottomSensorConfig;
 
     public Claw() {
         clawMotor = new Kraken(RobotMap.CLAW_MOTOR_ID, RobotMap.CANIVORE_NAME);
 
-        coralSensor1 = new CANrange(RobotMap.CLAW_CORAL_SENSOR1_ID, RobotMap.CANIVORE_NAME);
-        coralSensor1Config = new CANrangeConfiguration();
+        topSensor = new CANrange(RobotMap.CLAW_TOP_SENSOR_ID, RobotMap.CANIVORE_NAME);
+        clawTopSensorConfig = new CANrangeConfiguration();
 
-        coralSensor2 = new CANrange(RobotMap.CLAW_CORAL_SENSOR2_ID, RobotMap.CANIVORE_NAME);
-        coralSensor2Config = new CANrangeConfiguration();
-
-        algaeSensor = new CANrange(RobotMap.CLAW_ALGAE_SENSOR_ID, RobotMap.CANIVORE_NAME);
-        algaeSensorConfig = new CANrangeConfiguration();
+        bottomSensor = new CANrange(RobotMap.CLAW_BOTTOM_SENSOR_ID, RobotMap.CANIVORE_NAME);
+        clawBottomSensorConfig = new CANrangeConfiguration();
 
         clawMotor.setInverted(false);
+        clawMotor.setSupplyCurrentLimit(ClawConstants.kClawSupplyCurrentLimit);
         clawMotor.setStatorCurrentLimit(ClawConstants.kClawStatorCurrentLimit);
         clawMotor.setBrake();
         clawMotor.setPIDValues(ClawConstants.kP, ClawConstants.kI, ClawConstants.kD, ClawConstants.kFF);
 
-        configureCANrange(coralSensor1, coralSensor1Config, Constants.ClawConstants.kCoralSensor1SignalStrength, 
-                            Constants.ClawConstants.kCoralSensor1ProximityThreshold, Constants.ClawConstants.kCoralSensor1ProximityHysteresis);
-        configureCANrange(coralSensor2, coralSensor2Config, Constants.ClawConstants.kCoralSensor2SignalStrength, 
-                            Constants.ClawConstants.kCoralSensor2ProximityThreshold, Constants.ClawConstants.kCoralSensor2ProximityHysteresis);
-        configureCANrange(algaeSensor, algaeSensorConfig, Constants.ClawConstants.kAlgaeSensorSignalStrength, 
-                            Constants.ClawConstants.kAlgaeSensorProximityThreshold, Constants.ClawConstants.kAlgaeSensorProximityHysteresis);
-    }
+        configureCANrange(topSensor, clawTopSensorConfig, Constants.ClawConstants.kTopSensorSignalStrength, 
+                            Constants.ClawConstants.kTopSensorProximityThreshold, Constants.ClawConstants.kTopSensorProximityHysteresis);
+        configureCANrange(bottomSensor, clawBottomSensorConfig, Constants.ClawConstants.kBottomSensorSignalStrength, 
+                            Constants.ClawConstants.kBottomSensorProximityThreshold, Constants.ClawConstants.kBottomSensorProximityHysteresis);
+        }
 
     public void configureCANrange(CANrange sensor, CANrangeConfiguration config, double signalStrengthThreshold, double proximityThreshold, double proximityHysteresis){
         config.ProximityParams.ProximityThreshold = proximityThreshold;
@@ -105,31 +99,23 @@ public class Claw extends SubsystemBase {
     /**
      * @return claw coral algae sensor reading (digital sensor) as boolean
      */
-    public boolean getCoralSensor1() {
-        return coralSensor1.getIsDetected().getValue();  //true if detected
+    public boolean getTopSensor() {
+        return topSensor.getIsDetected().getValue();  //true if detected
     }
 
-    public boolean getCoralSensor2() {
-        return coralSensor2.getIsDetected().getValue();  //true if detected
-    }
-
-    public boolean getAlgaeSensor() {
-        return algaeSensor.getIsDetected().getValue();  //true if detected
+    public boolean getBottomSensor() {
+        return bottomSensor.getIsDetected().getValue();  //true if detected
     }
 
     /**
      * @return claw algae coral distance sensor reading (distance sensor units)
      */
-    public double getCoralSensor1Distance() {
-        return coralSensor1.getDistance().getValueAsDouble();
+    public double getTopSensorDistance() {
+        return topSensor.getDistance().getValueAsDouble();
     }
 
-    public double getCoralSensor2Distance() {
-        return coralSensor2.getDistance().getValueAsDouble();
-    }
-    
-    public double getAlgaeSensorDistance() {
-        return algaeSensor.getDistance().getValueAsDouble();
+    public double getBottomSensorDistance() {
+        return bottomSensor.getDistance().getValueAsDouble();
     }
 
     /**
@@ -164,21 +150,22 @@ public class Claw extends SubsystemBase {
      * @return returns if either sensor has a coral
      */
     public boolean hasCoral(){
-        return getCoralSensor1() || getCoralSensor2();
+        return getTopSensor() || getBottomSensor();
     }
 
     /**
      * @return returns if ready to shoot, sensor 2 detects the coral but not sensor 1
      */
     public boolean coralIndexed(){
-        return getCoralSensor2() && !getCoralSensor1();
+        return getBottomSensor() && !getTopSensor();
     }
 
     /**
      * @return returns if sensor detects algae
      */
+    // TODO: Reimplement
     public boolean hasAlgae(){
-        return getAlgaeSensor();
+        return false;
     }
 
     public double getClawMotorTemperature(){
@@ -187,9 +174,11 @@ public class Claw extends SubsystemBase {
 
     @Override
     public void periodic() {
-        SmartDashboard.putBoolean("Coral Sensor 1", getCoralSensor1());
-        SmartDashboard.putBoolean("Coral Sensor 2", getCoralSensor2());
-        SmartDashboard.putNumber("Algae Sensor", getAlgaeSensorDistance());
+        SmartDashboard.putBoolean("Claw Top Sensor", getTopSensor());
+        SmartDashboard.putBoolean("Claw Bottom Sensor", getBottomSensor());
+
+        SmartDashboard.putNumber("Claw Top Sensor Distance", getTopSensorDistance());
+        SmartDashboard.putNumber("Claw Bottom Sensor Distance", getBottomSensorDistance());
     }
 
     @Override

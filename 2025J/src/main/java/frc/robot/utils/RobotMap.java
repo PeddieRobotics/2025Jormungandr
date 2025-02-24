@@ -13,9 +13,8 @@ public class RobotMap {
 
     // CLAW
     public static final int CLAW_MOTOR_ID = 6;
-    public static final int CLAW_CORAL_SENSOR1_ID = 7;
-    public static final int CLAW_CORAL_SENSOR2_ID = 8;
-    public static final int CLAW_ALGAE_SENSOR_ID = 9;
+    public static final int CLAW_TOP_SENSOR_ID = 7;
+    public static final int CLAW_BOTTOM_SENSOR_ID = 8;
 
     // SWERVE
     public static final int FRONT_LEFT_MODULE_DRIVE_ID = 10;

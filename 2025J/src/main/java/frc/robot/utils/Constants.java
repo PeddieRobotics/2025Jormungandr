@@ -108,13 +108,14 @@ public final class Constants {
         // 1. remove offsets (set all to 0) and then deploy code
         // 2. spin all modules so that bevel gears face left relative to robot (shooter
         // in front)
-        // 3. read the cancoder values from dashboard, and put those values for these
-        // offsets (check robotmap for ids)
-        public static final double kFrontLeftCancoderOffset = 0.3684;
-        public static final double kFrontRightCancoderOffset = 0.00293;
-        public static final double kBackLeftCancoderOffset = 0.10083;
-        public static final double kBackRightCancoderOffset = 0.2586;
+        // 3. read the cancoder values from dashboard, and negate those values
+        // // offsets (check robotmap for ids) and put them here
 
+        public static final double kFrontLeftMagnetOffset = 0.238525;
+        public static final double kFrontRightMagnetOffset = 0.384521;
+        public static final double kBackLeftMagnetOffset = 0.496094;
+        public static final double kBackRightMagnetOffset = 0.130127;
+        
         public static final double kSkidThreshold = 0.2;
         public static final double kDrivingDeadband = 0.05;
 
@@ -133,14 +134,14 @@ public final class Constants {
         public static final double kElevatorForwardTorqueCurrentLimit = 40;
         public static final double kElevatorReverseTorqueCurrentLimit = -40;
 
-        public static final double kElevatorForwardSoftLimit = 0.0;
+        public static final double kElevatorForwardSoftLimit = 12.9;
         public static final double kElevatorReverseSoftLimit = 0.0;
 
         public static final double kElevatorReduction = 7.0 / 1.0;
         public static final double kElevatorRotorToSensorRatio = kElevatorReduction;
         public static final double kElevatorSensortoMechanismRatio = 1.0;
 
-        public static final double kElevatorMagnetOffset = 0.0;
+        public static final double kElevatorMagnetOffset = -0.685871;
 
         // Motion Magic Parameters
         public static final double kElevatorMaxCruiseVelocity = 0.0;
@@ -218,7 +219,7 @@ public final class Constants {
         public static final double kArmForwardTorqueCurrentLimit = 40;
         public static final double kArmReverseTorqueCurrentLimit = -40;
 
-        public static final double kArmMagnetOffset = 0.0;
+        public static final double kArmMagnetOffset = -0.380;
 
         public static final double kArmReduction = 120.0/1.0;
         public static final double kArmRotorToSensorRatio = kArmReduction/2.0;
@@ -234,8 +235,9 @@ public final class Constants {
         public static final double kIZone = 0.0;
         public static final double kG = 0.0;
 
-        public static final double kArmForwardSoftLimit = 0.0;
-        public static final double kArmReverseSoftLimit = 0.0;
+        // these are on the CAN CODER!
+        public static final double kArmForwardSoftLimit = 0.5;
+        public static final double kArmReverseSoftLimit = 0.222;
 
         // Motion Magic Parameters
         public static final double kArmMaxCruiseVelocity = 0.0;
@@ -316,24 +318,22 @@ public final class Constants {
 
     public static final class ClawConstants {
         // TODO: update real values
-        public static final double kClawStatorCurrentLimit = 20.0;
+        public static final double kClawSupplyCurrentLimit = 40.0;
+        public static final double kClawStatorCurrentLimit = 40.0;
 
         public static final double kP = 0.0;
         public static final double kI = 0.0;
         public static final double kD = 0.0;
         public static final double kFF = 0.0;
 
-        public static final double kCoralSensor1ProximityThreshold = 0.0;
-        public static final double kCoralSensor2ProximityThreshold = 0.0;
-        public static final double kAlgaeSensorProximityThreshold = 0.0;
+        public static final double kTopSensorProximityThreshold = 0.0;
+        public static final double kBottomSensorProximityThreshold = 0.0;
 
-        public static final double kCoralSensor1ProximityHysteresis = 0.0;
-        public static final double kCoralSensor2ProximityHysteresis = 0.0;
-        public static final double kAlgaeSensorProximityHysteresis = 0.0;
+        public static final double kTopSensorProximityHysteresis = 0.0;
+        public static final double kBottomSensorProximityHysteresis = 0.0;
 
-        public static final double kCoralSensor1SignalStrength = 0.0;
-        public static final double kCoralSensor2SignalStrength = 0.0;
-        public static final double kAlgaeSensorSignalStrength = 0.0;
+        public static final double kTopSensorSignalStrength = 0.0;
+        public static final double kBottomSensorSignalStrength = 0.0;
 
         public static final double kCoralIntakeSpeed = 0.0;
         public static final double kCoralOuttakeSpeed = 0.0;

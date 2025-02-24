@@ -9,6 +9,7 @@ import edu.wpi.first.math.geometry.Translation2d;
 import frc.robot.subsystems.Superstructure.SuperstructureState;
 import edu.wpi.first.math.geometry.Rotation2d;
 import frc.robot.commands.ScoreCommands.AlignAndScore;
+import frc.robot.subsystems.Claw;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.PVFrontMiddle;
 import frc.robot.utils.Constants.DriveConstants;
@@ -42,13 +43,15 @@ public class DriverOI {
         controller = new PS4Controller(0);
 
         Trigger xButton = new JoystickButton(controller, PS4Controller.Button.kCross.value);
-        xButton.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.STOW)));
+        // xButton.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.STOW)));
 
         Trigger circleButton = new JoystickButton(controller, PS4Controller.Button.kCircle.value);
-        circleButton.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.HP_INTAKE)));
+        // circleButton.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.HP_INTAKE)));
 
         Trigger triangleButton = new JoystickButton(controller, PS4Controller.Button.kTriangle.value);
-        triangleButton.onTrue(new AlignAndScore(true)); //right align
+        // triangleButton.onTrue(new AlignAndScore(true)); //right align
+        // triangleButton.onTrue(new InstantCommand(() -> Claw.getInstance().stopClaw()));
+
         
         Trigger squareButton = new JoystickButton(controller, PS4Controller.Button.kSquare.value);
         // squareButton.whileTrue(new AlignToReefEstimatedPose());
@@ -78,9 +81,12 @@ public class DriverOI {
 
         Trigger L1Bumper = new JoystickButton(controller, PS4Controller.Button.kL1.value);
         // TODO: align left if coral, else align HP
+        L1Bumper.onTrue(new InstantCommand(() -> Claw.getInstance().intakePiece(0.50)));
 
         Trigger R1Bumper = new JoystickButton(controller, PS4Controller.Button.kR1.value);
         // TODO: align right if coral, else align HP
+        R1Bumper.onTrue(new InstantCommand(() -> Claw.getInstance().stopClaw()));
+
 
         Trigger L2Trigger = new JoystickButton(controller, PS4Controller.Button.kL2.value);
 
@@ -139,6 +145,11 @@ public class DriverOI {
 
     public double getForward() {
         double val = -controller.getRawAxis(PS4Controller.Axis.kLeftY.value);
+        return Math.abs(val) < 0.1 ? 0 : val;
+    }
+
+    public double getRightForward() {
+        double val = -controller.getRawAxis(PS4Controller.Axis.kRightY.value);
         return Math.abs(val) < 0.1 ? 0 : val;
     }
 
