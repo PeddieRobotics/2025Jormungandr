@@ -25,7 +25,7 @@ public class Superstructure extends SubsystemBase {
     private SuperstructureState systemState;
     private SuperstructureState requestedSystemState;
 
-    private boolean algaeIndex, coralIndex; // get from intakes :) - not yet set up... :/
+    private boolean algaeIndex, bothCoralSensorsTriggered; // get from intakes :) - not yet set up... :/
 
     private Timer timer;
 
@@ -53,6 +53,8 @@ public class Superstructure extends SubsystemBase {
         EJECT_CORAL
     }
 
+    private boolean clawIncremented = false;
+
     public Superstructure() {
         systemState = STOW;
         requestedSystemState = STOW;
@@ -65,7 +67,7 @@ public class Superstructure extends SubsystemBase {
         timer = new Timer();
         // timer.start();
         algaeIndex = false;
-        coralIndex = false;
+        bothCoralSensorsTriggered = false;
         SmartDashboard.putBoolean("algaeIndex", false);
         SmartDashboard.putBoolean("coralIndex", false);
     }
@@ -94,7 +96,7 @@ public class Superstructure extends SubsystemBase {
         SmartDashboard.putString("current superstructure state", systemState.toString());
         SmartDashboard.putString("requested superstructure state", requestedSystemState.toString());
 
-        coralIndex = claw.coralIndexed();
+        bothCoralSensorsTriggered = claw.bothCoralSensorsTriggered();
         algaeIndex = claw.hasAlgae();
 
         switch (systemState) {
@@ -106,7 +108,7 @@ public class Superstructure extends SubsystemBase {
                 if (algaeIndex) {
                     claw.holdAlgae();
                 } else {
-                    claw.stopClaw();
+                    //claw.stopClaw();
                 }
 
                 if (Arrays.asList(
@@ -134,14 +136,17 @@ public class Superstructure extends SubsystemBase {
                 // elevator.setElevatorPositionMotionMagicTorqueCurrentFOC(ScoreConstants.kElevatorHPIntakePosition);
                 // arm.setArmPositionMotionMagicTorqueCurrentFOC(ScoreConstants.kArmHPIntakePosition);
                 // add gate to check elevator height and arm angle ?
-                claw.intakePiece(ClawConstants.kCoralIntakeSpeed);
 
-                if (claw.getTopSensor()) {
+                if (claw.getTopSensor() && !claw.getBottomSensor()) {
                     claw.intakePiece(ClawConstants.kCoralSlowIntake);
-                }
-                if (coralIndex) {
-                    claw.stopClaw();
+                } 
+                else if (bothCoralSensorsTriggered && !clawIncremented) {
+                    clawIncremented = true;
+                    claw.incrementClaw();
                     requestState(STOW);
+                } 
+                else {
+                    claw.intakePiece(ClawConstants.kCoralIntakeSpeed);
                 }
 
                 if (Arrays.asList(
@@ -158,6 +163,7 @@ public class Superstructure extends SubsystemBase {
                         EJECT_ALGAE,
                         EJECT_CORAL)
                         .contains(requestedSystemState)) {
+                    clawIncremented = false;
                     systemState = requestedSystemState;
                 }
             }

@@ -40,6 +40,9 @@ public class Claw extends SubsystemBase {
         configureCANrange(bottomSensor, clawBottomSensorConfig, Constants.ClawConstants.kBottomSensorSignalStrength,
                 Constants.ClawConstants.kBottomSensorProximityThreshold,
                 Constants.ClawConstants.kBottomSensorProximityHysteresis);
+
+        // TODO: DELETE THIS OR ELSE
+        SmartDashboard.putNumber("Claw Increment", 5);
     }
 
     public void configureCANrange(CANrange sensor, CANrangeConfiguration config, double signalStrengthThreshold,
@@ -94,7 +97,8 @@ public class Claw extends SubsystemBase {
     }
 
     public void incrementClaw() {
-        clawMotor.setPositionVoltage(clawMotor.getPosition() + ClawConstants.kCoralPositionIncrement);
+        // clawMotor.setPositionVoltage(clawMotor.getPosition() + ClawConstants.kCoralPositionIncrement);
+        clawMotor.setPositionVoltage(clawMotor.getPosition() + SmartDashboard.getNumber("Claw Increment", 5));
     }
 
     // Accessor methods
@@ -156,11 +160,12 @@ public class Claw extends SubsystemBase {
         return getTopSensor() || getBottomSensor();
     }
 
+    // TODO: we need to fix the logic of this :/
     /**
      * @return returns if ready to shoot, sensor 2 detects the coral but not sensor
      *         1
      */
-    public boolean coralIndexed() {
+    public boolean bothCoralSensorsTriggered() {
         return getBottomSensor() && getTopSensor();
     }
 
