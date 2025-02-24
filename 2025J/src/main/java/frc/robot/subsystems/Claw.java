@@ -156,11 +156,10 @@ public class Claw extends SubsystemBase {
     /**
      * @return returns if either sensor has a coral
      */
-    public boolean hasCoral() {
+    public boolean eitherCoralSensorTriggered() {
         return getTopSensor() || getBottomSensor();
     }
 
-    // TODO: we need to fix the logic of this :/
     /**
      * @return returns if ready to shoot, sensor 2 detects the coral but not sensor
      *         1

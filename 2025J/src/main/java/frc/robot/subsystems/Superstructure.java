@@ -342,7 +342,7 @@ public class Superstructure extends SubsystemBase {
                     // KEEP RUNNING
                     timer.start();
                     claw.outtakePiece();
-                } else if (timer.hasElapsed(ScoreConstants.kL1ScoreTimeout) && !claw.hasCoral()) {
+                } else if (timer.hasElapsed(ScoreConstants.kL1ScoreTimeout) && !claw.eitherCoralSensorTriggered()) {
                     timer.reset();
 
                     // stop everything
@@ -376,7 +376,7 @@ public class Superstructure extends SubsystemBase {
                      * eject piece
                      */
 
-                } else if (timer.hasElapsed(ScoreConstants.kL2ScoreTimeout) && !claw.hasCoral()) {
+                } else if (timer.hasElapsed(ScoreConstants.kL2ScoreTimeout) && !claw.eitherCoralSensorTriggered()) {
                     timer.reset();
 
                     // stop everything
@@ -409,7 +409,7 @@ public class Superstructure extends SubsystemBase {
                      * eject piece
                      */
 
-                } else if (timer.hasElapsed(ScoreConstants.kL3ScoreTimeout) && !claw.hasCoral()) {
+                } else if (timer.hasElapsed(ScoreConstants.kL3ScoreTimeout) && !claw.eitherCoralSensorTriggered()) {
                     timer.reset();
 
                     // stop everything
@@ -443,7 +443,7 @@ public class Superstructure extends SubsystemBase {
                     timer.start();
                     claw.outtakePiece();
 
-                } else if (timer.hasElapsed(ScoreConstants.kL4ScoreTimeout) && !claw.hasCoral()) {
+                } else if (timer.hasElapsed(ScoreConstants.kL4ScoreTimeout) && !claw.eitherCoralSensorTriggered()) {
                     timer.reset();
 
                     // stop everything
@@ -668,7 +668,7 @@ public class Superstructure extends SubsystemBase {
             case EJECT_CORAL -> {
                 claw.outtakePiece();
 
-                if (!claw.hasCoral()) {
+                if (!claw.eitherCoralSensorTriggered()) {
                     claw.stopClaw();
                     requestState(HP_INTAKE);
                 }

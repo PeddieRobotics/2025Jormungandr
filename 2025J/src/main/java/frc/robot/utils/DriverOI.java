@@ -7,6 +7,9 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.subsystems.Superstructure;
 import edu.wpi.first.math.geometry.Translation2d;
 import frc.robot.subsystems.Superstructure.SuperstructureState;
+
+import static frc.robot.subsystems.Superstructure.SuperstructureState.HP_INTAKE;
+
 import edu.wpi.first.math.geometry.Rotation2d;
 import frc.robot.commands.ScoreCommands.AlignAndScore;
 import frc.robot.subsystems.Claw;
@@ -44,7 +47,7 @@ public class DriverOI {
 
         Trigger xButton = new JoystickButton(controller, PS4Controller.Button.kCross.value);
         // xButton.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.STOW)));
-        xButton.onTrue(new InstantCommand(() -> Claw.getInstance().incrementClaw()));
+        xButton.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.HP_INTAKE)));
 
         Trigger circleButton = new JoystickButton(controller, PS4Controller.Button.kCircle.value);
         circleButton.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.HP_INTAKE)));
