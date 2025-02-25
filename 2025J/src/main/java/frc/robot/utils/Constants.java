@@ -199,8 +199,8 @@ public final class Constants {
         public static final double kElevatorReef1IntakePosition = 0.0;
         public static final double kElevatorReef2IntakePosition = 0.0;
 
-        public static final double kArmStowPosition = 0.0;
-        public static final double kArmHPIntakePosition = 0.0;
+        public static final double kArmStowPosition = 0.25;
+        public static final double kArmHPIntakePosition = 0.25;
         public static final double kArmGroundIntakePosition = 0.0;
         public static final double kArmL1ScorePosition = 0.0;
         public static final double kArmL2ScorePosition = 0.0;

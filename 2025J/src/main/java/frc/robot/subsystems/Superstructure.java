@@ -105,6 +105,7 @@ public class Superstructure extends SubsystemBase {
                 // bring elevator down
                 // elevator.setElevatorPositionMotionMagicTorqueCurrentFOC(ScoreConstants.kElevatorStowPosition);
                 // arm.setArmPositionMotionMagicTorqueCurrentFOC(ScoreConstants.kArmStowPosition);
+                arm.setArmPositionVoltage(ScoreConstants.kArmStowPosition);
                 if (algaeIndex) {
                     claw.holdAlgae();
                 } else {
@@ -135,6 +136,8 @@ public class Superstructure extends SubsystemBase {
                 // run intake motor
                 // elevator.setElevatorPositionMotionMagicTorqueCurrentFOC(ScoreConstants.kElevatorHPIntakePosition);
                 // arm.setArmPositionMotionMagicTorqueCurrentFOC(ScoreConstants.kArmHPIntakePosition);
+                arm.setArmPositionVoltage(ScoreConstants.kArmHPIntakePosition);
+
                 // add gate to check elevator height and arm angle ?
 
                 if (claw.getTopSensor() && !claw.getBottomSensor()) {
@@ -173,6 +176,8 @@ public class Superstructure extends SubsystemBase {
                 // elevator.setElevatorPositionMotionMagicTorqueCurrentFOC(ScoreConstants.kElevatorGroundIntakePosition);
                 // arm.setArmPositionMotionMagicTorqueCurrentFOC(ScoreConstants.kArmGroundIntakePosition);
                 claw.intakePiece(ClawConstants.kCoralIntakeSpeed);
+                arm.setArmPositionVoltage(0.18);
+
 
                 // if (algaeIndex) {
                 //     claw.holdAlgae();
