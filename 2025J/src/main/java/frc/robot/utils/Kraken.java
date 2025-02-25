@@ -410,6 +410,21 @@ public class Kraken {
         config.Slot0.kD = kD;
         talon.getConfigurator().apply(config);
     }
+
+    public void setPIDValues(double kS, double kV, double kA, double kP, double kI, double kD, double kF, double kG, GravityTypeValue gravityType, StaticFeedforwardSignValue feedforwardSign) {
+        config.Slot0.StaticFeedforwardSign = feedforwardSign;
+        config.Slot0.GravityType = gravityType;
+
+        feedForward = kF;
+        config.Slot0.kS = kS;
+        config.Slot0.kV = kV;
+        config.Slot0.kA = kA;
+        config.Slot0.kP = kP;
+        config.Slot0.kI = kI;
+        config.Slot0.kD = kD;
+        config.Slot0.kG = kG;
+        talon.getConfigurator().apply(config);
+    }
     
     //DO NOT AUTOFORMAT
     /**

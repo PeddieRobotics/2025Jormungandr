@@ -3,7 +3,9 @@ package frc.robot.subsystems;
 import com.ctre.phoenix6.configs.CANcoderConfiguration;
 import com.ctre.phoenix6.hardware.CANcoder;
 import com.ctre.phoenix6.signals.FeedbackSensorSourceValue;
+import com.ctre.phoenix6.signals.GravityTypeValue;
 import com.ctre.phoenix6.signals.SensorDirectionValue;
+import com.ctre.phoenix6.signals.StaticFeedforwardSignValue;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -51,11 +53,11 @@ public class Arm extends SubsystemBase {
         armMotor.setPIDValues(ArmConstants.kS, ArmConstants.kV,
                 ArmConstants.kA,
                 ArmConstants.kP, ArmConstants.kI, ArmConstants.kD,
-                ArmConstants.kFF);
+                ArmConstants.kFF, ArmConstants.kG, GravityTypeValue.Arm_Cosine, StaticFeedforwardSignValue.UseClosedLoopSign);
         armMotor.setMotionMagicParameters(ArmConstants.kArmMaxCruiseVelocity, ArmConstants.kArmMaxCruiseAcceleration,
                 ArmConstants.kArmMaxCruiseJerk);
 
-        armMotor.setSoftLimits(true, ArmConstants.kArmForwardSoftLimit / 2, ArmConstants.kArmReverseSoftLimit / 2);
+        armMotor.setSoftLimits(true, ArmConstants.kArmForwardSoftLimit, ArmConstants.kArmReverseSoftLimit);
 
         L1Setpoint = new TunableConstant(ArmConstants.kL1Setpoint, "Arm L1Setpoint");
         L2Setpoint = new TunableConstant(ArmConstants.kL2Setpoint, "Arm L2Setpoint");

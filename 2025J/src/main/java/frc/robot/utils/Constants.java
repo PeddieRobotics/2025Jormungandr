@@ -225,19 +225,19 @@ public final class Constants {
         public static final double kArmRotorToSensorRatio = kArmReduction / 2.0;
         public static final double kArmSensortoMechanismRatio = 2.0;
 
-        public static final double kS = 0.0;
+        public static final double kS = 0.2;
         public static final double kV = 0.0;
         public static final double kA = 0.0;
-        public static final double kP = 0.0;
+        public static final double kP = 100.0;
         public static final double kI = 0.0;
-        public static final double kD = 0.0;
+        public static final double kD = 5.0;
         public static final double kFF = 0.0;
         public static final double kIZone = 0.0;
-        public static final double kG = 0.0;
+        public static final double kG = 0.13;
 
         // these are on the CAN CODER!
-        public static final double kArmForwardSoftLimit = 0.5;
-        public static final double kArmReverseSoftLimit = 0.222;
+        public static final double kArmForwardSoftLimit = 0.25;
+        public static final double kArmReverseSoftLimit = 0.13;
 
         // Motion Magic Parameters
         public static final double kArmMaxCruiseVelocity = 0.0;
