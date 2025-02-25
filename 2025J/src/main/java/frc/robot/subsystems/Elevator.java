@@ -3,6 +3,7 @@ package frc.robot.subsystems;
 import com.ctre.phoenix6.configs.CANcoderConfiguration;
 import com.ctre.phoenix6.hardware.CANcoder;
 import com.ctre.phoenix6.signals.FeedbackSensorSourceValue;
+import com.ctre.phoenix6.signals.GravityTypeValue;
 import com.ctre.phoenix6.signals.SensorDirectionValue;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -65,7 +66,7 @@ public class Elevator extends SubsystemBase {
         elevatorMainMotor.setPIDValues(ElevatorConstants.kS, ElevatorConstants.kV,
                 ElevatorConstants.kA,
                 ElevatorConstants.kP, ElevatorConstants.kI, ElevatorConstants.kD,
-                ElevatorConstants.kFF);
+                ElevatorConstants.kFF, ElevatorConstants.kG, GravityTypeValue.Elevator_Static);
 
         elevatorMainMotor.setMotionMagicParameters(ElevatorConstants.kElevatorMaxCruiseVelocity,
                 ElevatorConstants.kElevatorMaxCruiseAcceleration, ElevatorConstants.kElevatorMaxCruiseJerk);

@@ -148,12 +148,13 @@ public final class Constants {
         public static final double kElevatorMaxCruiseAcceleration = 0.0;
         public static final double kElevatorMaxCruiseJerk = 0.0;
 
-        public static final double kS = 0.0;
+        public static final double kS = 0.09;
         public static final double kV = 0.0;
         public static final double kA = 0.0;
-        public static final double kP = 0.0;
+        public static final double kP = 10.0;
         public static final double kI = 0.0;
-        public static final double kD = 0.0;
+        public static final double kD = 1.0;
+        public static final double kG = 0.31;
         public static final double kFF = 0.0;
 
         public static final double kElevatorPositionEpsilon = 0.0;
@@ -201,7 +202,7 @@ public final class Constants {
 
         public static final double kArmStowPosition = 0.25;
         public static final double kArmHPIntakePosition = 0.25;
-        public static final double kArmGroundIntakePosition = 0.0;
+        public static final double kArmGroundIntakePosition = 0.15;
         public static final double kArmL1ScorePosition = 0.0;
         public static final double kArmL2ScorePosition = 0.0;
         public static final double kArmL3ScorePosition = 0.0;
@@ -219,7 +220,7 @@ public final class Constants {
         public static final double kArmForwardTorqueCurrentLimit = 40;
         public static final double kArmReverseTorqueCurrentLimit = -40;
 
-        public static final double kArmMagnetOffset = 0.0;
+        public static final double kArmMagnetOffset = -0.477439 * 2.0 + 0.50;
 
         public static final double kArmReduction = 120.0 / 1.0;
         public static final double kArmRotorToSensorRatio = kArmReduction / 2.0;

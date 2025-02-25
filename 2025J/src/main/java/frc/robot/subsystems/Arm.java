@@ -204,11 +204,6 @@ public class Arm extends SubsystemBase {
     public void periodic() {
         SmartDashboard.putNumber("Arm: Motor Encoder Position", getArmPosition());
         SmartDashboard.putNumber("Arm: CanCoder Position", getAbsoluteCANcoderPosition());
-        // percent output on stick
-        if (SmartDashboard.getBoolean("Arm: Open Loop Control", false)) {
-            setArmPercentOutput(DriverOI.getInstance().getRightForward() * 0.3);
-            SmartDashboard.putNumber("Arm: Open Loop Input", DriverOI.getInstance().getRightForward() * 0.3);
-        }
 
     }
 

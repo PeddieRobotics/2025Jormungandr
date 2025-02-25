@@ -59,7 +59,7 @@ public class RobotContainer {
         drivetrain = Drivetrain.getInstance();
         elevator = Elevator.getInstance();
         // hpIntake = HPIntake.getInstance();
-        // superstructure = Superstructure.getInstance();
+        superstructure = Superstructure.getInstance();
         driverOI = DriverOI.getInstance();
         operatorOI = OperatorOI.getInstance();
         // llBack = LimelightBack.getInstance();
