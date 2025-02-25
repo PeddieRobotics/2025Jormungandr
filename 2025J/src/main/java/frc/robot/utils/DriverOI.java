@@ -11,10 +11,10 @@ import frc.robot.subsystems.Superstructure.SuperstructureState;
 import static frc.robot.subsystems.Superstructure.SuperstructureState.HP_INTAKE;
 
 import edu.wpi.first.math.geometry.Rotation2d;
-import frc.robot.commands.ScoreCommands.AlignAndScore;
+// import frc.robot.commands.ScoreCommands.AlignAndScore;
 import frc.robot.subsystems.Claw;
 import frc.robot.subsystems.Drivetrain;
-import frc.robot.subsystems.LimelightFrontMiddle;
+// import frc.robot.subsystems.LimelightFrontMiddle;
 import frc.robot.utils.Constants.DriveConstants;
 
 public class DriverOI {
@@ -46,17 +46,18 @@ public class DriverOI {
         controller = new PS4Controller(0);
 
         Trigger xButton = new JoystickButton(controller, PS4Controller.Button.kCross.value);
-        xButton.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.STOW)));
+        xButton.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.HP_INTAKE)));
 
         Trigger circleButton = new JoystickButton(controller, PS4Controller.Button.kCircle.value);
-        circleButton.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.HP_INTAKE)));
+        //circleButton.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.HP_INTAKE)));
 
         Trigger triangleButton = new JoystickButton(controller, PS4Controller.Button.kTriangle.value);
         // triangleButton.onTrue(new AlignAndScore(true)); //right align
-        triangleButton.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.ALGAE_GROUND_INTAKE)));
+        triangleButton.onTrue(new InstantCommand(() -> superstructure.sendToScore()));
         // Claw.getInstance().stopClaw()));
 
         Trigger squareButton = new JoystickButton(controller, PS4Controller.Button.kSquare.value);
+        //squareButton.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.L2_PREP)));
         // squareButton.whileTrue(new AlignToReefEstimatedPose());
         // squareButton.onTrue(new AlignToReefOdometry());
 
@@ -99,13 +100,13 @@ public class DriverOI {
 
         Trigger R3Trigger = new JoystickButton(controller, PS4Controller.Button.kR3.value);
 
-        Trigger optionButton = new JoystickButton(controller, PS4Controller.Button.kOptions.value);
-        optionButton.onTrue(new InstantCommand(() -> Drivetrain.getInstance()
-                .resetTranslation(LimelightFrontMiddle.getInstance().getEstimatedPose().pose.getTranslation())));
+        // Trigger optionButton = new JoystickButton(controller, PS4Controller.Button.kOptions.value);
+        // optionButton.onTrue(new InstantCommand(() -> Drivetrain.getInstance()
+        //         .resetTranslation(LimelightFrontMiddle.getInstance().getEstimatedPose().pose.getTranslation())));
 
-        Trigger shareButton = new JoystickButton(controller, PS4Controller.Button.kShare.value);
-        shareButton.onTrue(new InstantCommand(() -> Drivetrain.getInstance()
-                .resetPureOdometryTranslation(LimelightFrontMiddle.getInstance().getEstimatedPose().pose.getTranslation())));
+        // Trigger shareButton = new JoystickButton(controller, PS4Controller.Button.kShare.value);
+        // shareButton.onTrue(new InstantCommand(() -> Drivetrain.getInstance()
+        //         .resetPureOdometryTranslation(LimelightFrontMiddle.getInstance().getEstimatedPose().pose.getTranslation())));
     }
 
     public boolean bothBumpersHeld() {

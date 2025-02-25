@@ -106,6 +106,7 @@ public class Superstructure extends SubsystemBase {
                 // elevator.setElevatorPositionMotionMagicTorqueCurrentFOC(ScoreConstants.kElevatorStowPosition);
                 // arm.setArmPositionMotionMagicTorqueCurrentFOC(ScoreConstants.kArmStowPosition);
                 arm.setArmPositionVoltage(ScoreConstants.kArmStowPosition);
+                elevator.setElevatorPositionVoltage(ScoreConstants.kElevatorStowPosition);
                 if (algaeIndex) {
                     claw.holdAlgae();
                 } else {
@@ -136,6 +137,8 @@ public class Superstructure extends SubsystemBase {
                 // run intake motor
                 // elevator.setElevatorPositionMotionMagicTorqueCurrentFOC(ScoreConstants.kElevatorHPIntakePosition);
                 // arm.setArmPositionMotionMagicTorqueCurrentFOC(ScoreConstants.kArmHPIntakePosition);
+
+                elevator.setElevatorPositionVoltage(ScoreConstants.kElevatorHPIntakePosition);
                 arm.setArmPositionVoltage(ScoreConstants.kArmHPIntakePosition);
 
                 // add gate to check elevator height and arm angle ?
@@ -146,9 +149,8 @@ public class Superstructure extends SubsystemBase {
                 else if (bothCoralSensorsTriggered && !clawIncremented) {
                     clawIncremented = true;
                     claw.incrementClaw();
-                    requestState(STOW);
                 } 
-                else {
+                else if (!claw.getTopSensor()){
                     claw.intakePiece(ClawConstants.kCoralIntakeSpeed);
                 }
 
@@ -159,6 +161,7 @@ public class Superstructure extends SubsystemBase {
                         L2_PREP,
                         L3_PREP,
                         L4_PRESTAGE,
+                        L4_PREP,
                         BARGE_PRESTAGE,
                         PROCESSOR_PREP,
                         REEF1_ALGAE_INTAKE,
@@ -175,9 +178,6 @@ public class Superstructure extends SubsystemBase {
                 // run intake
                 // elevator.setElevatorPositionMotionMagicTorqueCurrentFOC(ScoreConstants.kElevatorGroundIntakePosition);
                 // arm.setArmPositionMotionMagicTorqueCurrentFOC(ScoreConstants.kArmGroundIntakePosition);
-                claw.intakePiece(ClawConstants.kCoralIntakeSpeed);
-                arm.setArmPositionVoltage(0.18);
-
 
                 // if (algaeIndex) {
                 //     claw.holdAlgae();
@@ -204,8 +204,11 @@ public class Superstructure extends SubsystemBase {
 
             case L1_PREP -> {
                 // set prep angle
-                elevator.setElevatorPositionMotionMagicTorqueCurrentFOC(ScoreConstants.kElevatorL1ScorePosition);
-                arm.setArmPositionMotionMagicTorqueCurrentFOC(ScoreConstants.kArmL1ScorePosition);
+                // elevator.setElevatorPositionMotionMagicTorqueCurrentFOC(ScoreConstants.kElevatorL1ScorePosition);
+                // arm.setArmPositionMotionMagicTorqueCurrentFOC(ScoreConstants.kArmL1ScorePosition);
+
+                elevator.setElevatorPositionVoltage(ScoreConstants.kElevatorL1ScorePosition);
+                arm.setArmPositionVoltage(ScoreConstants.kArmL1ScorePosition);
 
                 if (Arrays.asList(
                         STOW,
@@ -235,8 +238,11 @@ public class Superstructure extends SubsystemBase {
                  * - shoot case
                  * move to scoring angle
                  */
-                elevator.setElevatorPositionMotionMagicTorqueCurrentFOC(ScoreConstants.kElevatorL2ScorePosition);
-                arm.setArmPositionMotionMagicTorqueCurrentFOC(ScoreConstants.kArmL2ScorePosition);
+                // elevator.setElevatorPositionMotionMagicTorqueCurrentFOC(ScoreConstants.kElevatorL2ScorePosition);
+                // arm.setArmPositionMotionMagicTorqueCurrentFOC(ScoreConstants.kArmL2ScorePosition);
+
+                elevator.setElevatorPositionVoltage(ScoreConstants.kElevatorL2ScorePosition);
+                arm.setArmPositionVoltage(ScoreConstants.kArmL2ScorePosition);
 
                 if (Arrays.asList(
                         STOW,
@@ -266,8 +272,11 @@ public class Superstructure extends SubsystemBase {
                  * - shoot case
                  * move to scoring angle
                  */
-                elevator.setElevatorPositionMotionMagicTorqueCurrentFOC(ScoreConstants.kElevatorL3ScorePosition);
-                arm.setArmPositionMotionMagicTorqueCurrentFOC(ScoreConstants.kArmL3ScorePosition);
+                // elevator.setElevatorPositionMotionMagicTorqueCurrentFOC(ScoreConstants.kElevatorL3ScorePosition);
+                // arm.setArmPositionMotionMagicTorqueCurrentFOC(ScoreConstants.kArmL3ScorePosition);
+                elevator.setElevatorPositionVoltage(ScoreConstants.kElevatorL3ScorePosition);
+                arm.setArmPositionVoltage(ScoreConstants.kArmL3ScorePosition);
+
 
                 if (Arrays.asList(
                         STOW,
@@ -277,6 +286,7 @@ public class Superstructure extends SubsystemBase {
                         L2_PREP,
                         L3_SCORE,
                         L4_PRESTAGE,
+                        L4_PREP,
                         BARGE_PRESTAGE,
                         PROCESSOR_PREP,
                         REEF1_ALGAE_INTAKE,
@@ -319,8 +329,10 @@ public class Superstructure extends SubsystemBase {
                  * - dunk/score case
                  * move to angle close to scoring angle (vertical)
                  */
-                elevator.setElevatorPositionMotionMagicTorqueCurrentFOC(ScoreConstants.kElevatorL4ScorePosition);
-                arm.setArmPositionMotionMagicTorqueCurrentFOC(ScoreConstants.kArmL4ScorePosition);
+                // elevator.setElevatorPositionMotionMagicTorqueCurrentFOC(ScoreConstants.kElevatorL4ScorePosition);
+                // arm.setArmPositionMotionMagicTorqueCurrentFOC(ScoreConstants.kArmL4ScorePosition);
+                elevator.setElevatorPositionVoltage(ScoreConstants.kElevatorL4ScorePosition);
+                arm.setArmPositionVoltage(ScoreConstants.kArmL4ScorePosition);
 
                 if (Arrays.asList(
                         STOW,
@@ -347,7 +359,7 @@ public class Superstructure extends SubsystemBase {
                     // KEEP RUNNING
                     timer.start();
                     claw.outtakePiece();
-                } else if (timer.hasElapsed(ScoreConstants.kL1ScoreTimeout) && !claw.eitherCoralSensorTriggered()) {
+                } else if (timer.hasElapsed(ScoreConstants.kL1ScoreTimeout) || !claw.eitherCoralSensorTriggered()) {
                     timer.reset();
 
                     // stop everything
@@ -381,7 +393,7 @@ public class Superstructure extends SubsystemBase {
                      * eject piece
                      */
 
-                } else if (timer.hasElapsed(ScoreConstants.kL2ScoreTimeout) && !claw.eitherCoralSensorTriggered()) {
+                } else if (timer.hasElapsed(ScoreConstants.kL2ScoreTimeout) || !claw.eitherCoralSensorTriggered()) {
                     timer.reset();
 
                     // stop everything
@@ -414,7 +426,7 @@ public class Superstructure extends SubsystemBase {
                      * eject piece
                      */
 
-                } else if (timer.hasElapsed(ScoreConstants.kL3ScoreTimeout) && !claw.eitherCoralSensorTriggered()) {
+                } else if (timer.hasElapsed(ScoreConstants.kL3ScoreTimeout) || !claw.eitherCoralSensorTriggered()) {
                     timer.reset();
 
                     // stop everything
@@ -448,7 +460,7 @@ public class Superstructure extends SubsystemBase {
                     timer.start();
                     claw.outtakePiece();
 
-                } else if (timer.hasElapsed(ScoreConstants.kL4ScoreTimeout) && !claw.eitherCoralSensorTriggered()) {
+                } else if (timer.hasElapsed(ScoreConstants.kL4ScoreTimeout) || !claw.eitherCoralSensorTriggered()) {
                     timer.reset();
 
                     // stop everything
@@ -523,7 +535,7 @@ public class Superstructure extends SubsystemBase {
                     timer.start();
                     claw.outtakePiece();
 
-                } else if (timer.hasElapsed(ScoreConstants.kBargeTimeout) && !algaeIndex) {
+                } else if (timer.hasElapsed(ScoreConstants.kBargeTimeout) || !algaeIndex) {
                     timer.reset();
 
                     // stop everything
@@ -571,7 +583,7 @@ public class Superstructure extends SubsystemBase {
                     timer.start();
                     claw.outtakePiece();
 
-                } else if (timer.hasElapsed(ScoreConstants.kProcessorTimeout) && !algaeIndex) {
+                } else if (timer.hasElapsed(ScoreConstants.kProcessorTimeout) || !algaeIndex) {
                     timer.reset();
 
                     // stop everything
@@ -702,7 +714,7 @@ public class Superstructure extends SubsystemBase {
     public void sendToScore() {
         switch (systemState) {
             case L1_PREP -> {
-                if (arm.isAtAngle(ScoreConstants.kArmL1ScorePosition)
+                if (arm.isAtPosition(ScoreConstants.kArmL1ScorePosition)
                         && elevator.isAtPosition(ScoreConstants.kElevatorL1ScorePosition)) {
                     requestState(L1_SCORE);
                     timer.reset();
@@ -710,7 +722,7 @@ public class Superstructure extends SubsystemBase {
             }
 
             case L2_PREP -> {
-                if (arm.isAtAngle(ScoreConstants.kArmL2ScorePosition)
+                if (arm.isAtPosition(ScoreConstants.kArmL2ScorePosition)
                         && elevator.isAtPosition(ScoreConstants.kElevatorL2ScorePosition)) {
                     requestState(L2_SCORE);
                     timer.reset();
@@ -718,7 +730,7 @@ public class Superstructure extends SubsystemBase {
             }
 
             case L3_PREP -> {
-                if (arm.isAtAngle(ScoreConstants.kArmL3ScorePosition)
+                if (arm.isAtPosition(ScoreConstants.kArmL3ScorePosition)
                         && elevator.isAtPosition(ScoreConstants.kElevatorL3ScorePosition)) {
                     requestState(L3_SCORE);
                     timer.reset();
@@ -726,7 +738,7 @@ public class Superstructure extends SubsystemBase {
             }
 
             case L4_PREP -> {
-                if (arm.isAtAngle(ScoreConstants.kArmL4ScorePosition)
+                if (arm.isAtPosition(ScoreConstants.kArmL4ScorePosition)
                         && elevator.isAtPosition(ScoreConstants.kElevatorL4ScorePosition)) {
                     requestState(L4_SCORE);
                     timer.reset();
@@ -734,7 +746,7 @@ public class Superstructure extends SubsystemBase {
             }
 
             case PROCESSOR_PREP -> {
-                if (arm.isAtAngle(ScoreConstants.kArmProcessorScorePosition)
+                if (arm.isAtPosition(ScoreConstants.kArmProcessorScorePosition)
                         && elevator.isAtPosition(ScoreConstants.kElevatorProcessorScorePosition)) {
                     requestState(PROCESSOR_SCORE);
                     timer.reset();
@@ -742,7 +754,7 @@ public class Superstructure extends SubsystemBase {
             }
 
             case BARGE_PREP -> {
-                if (arm.isAtAngle(ScoreConstants.kArmBargeScorePosition)
+                if (arm.isAtPosition(ScoreConstants.kArmBargeScorePosition)
                         && elevator.isAtPosition(ScoreConstants.kElevatorBargeScorePosition)) {
                     requestState(BARGE_SCORE);
                     timer.reset();

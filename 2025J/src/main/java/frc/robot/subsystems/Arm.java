@@ -177,7 +177,7 @@ public class Arm extends SubsystemBase {
      * @return angle of arm in degrees
      */
     public double getArmAngleDegrees() {
-        return getAbsoluteCANcoderPosition() * 360.0;
+        return getAbsoluteCANcoderPosition() * 360.0 / 2.0;
     }
 
     /**
@@ -193,7 +193,16 @@ public class Arm extends SubsystemBase {
      *         threshold
      */
     public boolean isAtAngle(double targetAngle) {
-        return Math.abs(getArmAngleDegrees() - targetAngle) < ArmConstants.kArmPositionEpsilon;
+        return Math.abs(getArmAngleDegrees() - targetAngle) < ArmConstants.kArmAngleEpsilon;
+    }
+
+    /**
+     * @param targetPosition - In mechanism rotations
+     * @return returns if the difference between current and target positions is within
+     *         threshold
+     */
+    public boolean isAtPosition(double targetPosition) {
+        return Math.abs(getArmPosition() - targetPosition) < ArmConstants.kArmPositionEpsilon;
     }
 
     public double getArmMotorTemperature() {

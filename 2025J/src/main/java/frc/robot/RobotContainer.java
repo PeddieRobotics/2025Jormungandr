@@ -16,9 +16,6 @@ import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.HPIntake;
 import frc.robot.subsystems.Lights;
 import frc.robot.subsystems.LimelightBack;
-import frc.robot.subsystems.LimelightFrontLeft;
-import frc.robot.subsystems.LimelightFrontMiddle;
-import frc.robot.subsystems.LimelightFrontRight;
 import frc.robot.subsystems.LimelightLeft;
 import frc.robot.subsystems.Superstructure;
 import frc.robot.utils.DriverOI;
@@ -45,9 +42,9 @@ public class RobotContainer {
     private Elevator elevator;
     private HPIntake hpIntake;
     // private LimelightBack llBack;
-    private LimelightFrontLeft llFrontLeft;
-    private LimelightFrontMiddle llFrontMiddle;
-    private LimelightFrontRight llFrontRight;
+    // private LimelightFrontLeft llFrontLeft;
+    // private LimelightFrontMiddle llFrontMiddle;
+    // private LimelightFrontRight llFrontRight;
     // private LimelightLeft llLeft;
     private Lights lights;
 

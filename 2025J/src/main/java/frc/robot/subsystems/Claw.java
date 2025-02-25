@@ -97,8 +97,7 @@ public class Claw extends SubsystemBase {
     }
 
     public void incrementClaw() {
-        // clawMotor.setPositionVoltage(clawMotor.getPosition() + ClawConstants.kCoralPositionIncrement);
-        clawMotor.setPositionVoltage(clawMotor.getPosition() + SmartDashboard.getNumber("Claw Increment", 5));
+        clawMotor.setPositionVoltage(clawMotor.getPosition() + ClawConstants.kCoralPositionIncrement);
     }
 
     // Accessor methods

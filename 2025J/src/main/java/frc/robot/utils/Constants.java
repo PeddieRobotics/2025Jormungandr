@@ -157,7 +157,7 @@ public final class Constants {
         public static final double kG = 0.31;
         public static final double kFF = 0.0;
 
-        public static final double kElevatorPositionEpsilon = 0.0;
+        public static final double kElevatorPositionEpsilon = 0.5;
         public static final double kElevatorL1Height = 0.0;
         public static final double kElevatorL2Height = 0.0;
         public static final double kElevatorL3Height = 0.0;
@@ -179,21 +179,21 @@ public final class Constants {
 
     public static final class ScoreConstants {
         // TODO: NOT DEFINED YET!!!!
-        public static final double kL1ScoreTimeout = 10.0;
-        public static final double kL2ScoreTimeout = 10.0; // NOT DEFINED YET!!!!
-        public static final double kL3ScoreTimeout = 10.0; // NOT DEFINED YET!!!!
-        public static final double kL4ScoreTimeout = 10.0; // NOT DEFINED YET!!!!
+        public static final double kL1ScoreTimeout = 1.0;
+        public static final double kL2ScoreTimeout = 1.0; // NOT DEFINED YET!!!!
+        public static final double kL3ScoreTimeout = 1.0; // NOT DEFINED YET!!!!
+        public static final double kL4ScoreTimeout = 1.0; // NOT DEFINED YET!!!!
         public static final double kProcessorTimeout = 10.0; // NOT DEFINED YET!!!!
         public static final double kBargeTimeout = 10.0; // NOT DEFINED YET!!!!
 
         public static final double kElevatorStowPosition = 0.0;
         public static final double kElevatorHPIntakePosition = 0.0;
         public static final double kElevatorGroundIntakePosition = 0.0;
-        public static final double kElevatorL1ScorePosition = 0.0;
-        public static final double kElevatorL2ScorePosition = 0.0;
-        public static final double kElevatorL3ScorePosition = 0.0;
+        public static final double kElevatorL1ScorePosition = 2.6;
+        public static final double kElevatorL2ScorePosition = 3.9;
+        public static final double kElevatorL3ScorePosition = 6.9;
         public static final double kElevatorL4PrestagePosition = 0.0;
-        public static final double kElevatorL4ScorePosition = 0.0;
+        public static final double kElevatorL4ScorePosition = 12.5; 
         public static final double kElevatorBargePrestagePosition = 0.0;
         public static final double kElevatorBargeScorePosition = 0.0;
         public static final double kElevatorProcessorScorePosition = 0.0;
@@ -202,11 +202,11 @@ public final class Constants {
 
         public static final double kArmStowPosition = 0.25;
         public static final double kArmHPIntakePosition = 0.25;
-        public static final double kArmGroundIntakePosition = 0.15;
-        public static final double kArmL1ScorePosition = 0.0;
-        public static final double kArmL2ScorePosition = 0.0;
-        public static final double kArmL3ScorePosition = 0.0;
-        public static final double kArmL4ScorePosition = 0.0;
+        public static final double kArmGroundIntakePosition = 0.0;
+        public static final double kArmL1ScorePosition = 0.25;
+        public static final double kArmL2ScorePosition = 0.25;
+        public static final double kArmL3ScorePosition = 0.25;
+        public static final double kArmL4ScorePosition = 0.25;
         public static final double kArmBargeScorePosition = 0.0;
         public static final double kArmProcessorScorePosition = 0.0;
         public static final double kArmReef1IntakePosition = 0.0;
@@ -220,7 +220,8 @@ public final class Constants {
         public static final double kArmForwardTorqueCurrentLimit = 40;
         public static final double kArmReverseTorqueCurrentLimit = -40;
 
-        public static final double kArmMagnetOffset = -0.477439 * 2.0 + 0.50;
+        // public static final double kArmMagnetOffset = -0.477439 * 2.0 + 0.50;
+        public static final double kArmMagnetOffset = -0.652588 * 2.0 + 0.5;
 
         public static final double kArmReduction = 120.0 / 1.0;
         public static final double kArmRotorToSensorRatio = kArmReduction / 2.0;
@@ -245,7 +246,8 @@ public final class Constants {
         public static final double kArmMaxCruiseAcceleration = 0.0;
         public static final double kArmMaxCruiseJerk = 0.0;
 
-        public static final double kArmPositionEpsilon = 0.0; // TODO: define
+        public static final double kArmAngleEpsilon = 0.0; // TODO: define
+        public static final double kArmPositionEpsilon = 0.05; // TODO: define
 
         public static final double kArmHPIntakeAngle = 0.0; // TODO: define
         public static final double kArmL1ScoreAngle = 0.0;
@@ -351,7 +353,7 @@ public final class Constants {
 
         public static final double kAlgaeHoldSpeed = 0.0;
 
-        public static final double kCoralPositionIncrement = 3.5;
+        public static final double kCoralPositionIncrement = 3.0;
     }
 
     public static final class ClimberConstants {

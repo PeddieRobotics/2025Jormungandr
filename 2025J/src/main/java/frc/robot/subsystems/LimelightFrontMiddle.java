@@ -1,26 +1,26 @@
-package frc.robot.subsystems;
+// package frc.robot.subsystems;
 
-import frc.robot.utils.Constants.CameraConstants;
+// import frc.robot.utils.Constants.CameraConstants;
 
-public class LimelightFrontMiddle extends Limelight {
-    private static LimelightFrontMiddle llFrontMiddle;
+// public class LimelightFrontMiddle extends Limelight {
+//     private static LimelightFrontMiddle llFrontMiddle;
 
-    private LimelightFrontMiddle() {
-        super(
-            CameraConstants.kFrontMiddleCamName,
-            CameraConstants.kFrontMiddleCamUpOffset,
-            CameraConstants.kFrontMiddleCamPitchDeg
-        );
-    }
+//     private LimelightFrontMiddle() {
+//         super(
+//             CameraConstants.kFrontMiddleCamName,
+//             CameraConstants.kFrontMiddleCamUpOffset,
+//             CameraConstants.kFrontMiddleCamPitchDeg
+//         );
+//     }
 
-    public static LimelightFrontMiddle getInstance() {
-        if (llFrontMiddle == null)
-            llFrontMiddle = new LimelightFrontMiddle();
-        return llFrontMiddle;
-    }
+//     public static LimelightFrontMiddle getInstance() {
+//         if (llFrontMiddle == null)
+//             llFrontMiddle = new LimelightFrontMiddle();
+//         return llFrontMiddle;
+//     }
 
-    @Override
-    public void periodic() {
-        super.periodic();
-    }
-}
+//     @Override
+//     public void periodic() {
+//         super.periodic();
+//     }
+// }
