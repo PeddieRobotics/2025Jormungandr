@@ -59,6 +59,9 @@ public abstract class Limelight extends SubsystemBase {
     private double cameraUpOffset;
     private double cameraPitchRadians;
     
+    private final DoubleArrayPublisher orientationPublisher;
+    private PoseObservations[] poseObservations;
+    
     private Field2d field;
     private StructPublisher<Pose2d> publisher;
 
@@ -68,6 +71,8 @@ public abstract class Limelight extends SubsystemBase {
         this.limelightName = limelightName;
         this.cameraUpOffset = cameraUpOffset;
         this.cameraPitchRadians = Math.toRadians(cameraPitchDegrees);
+
+        orientationPublisher = table.getDoubleArrayTopic("robot_orientation_set").publish();
 
         txAverage = new RollingAverage();
         tyAverage = new RollingAverage();
@@ -98,6 +103,46 @@ public abstract class Limelight extends SubsystemBase {
         SmartDashboard.putNumber(limelightName + " number of tags seen", getNumberOfTagsSeen());
         SmartDashboard.putNumber(limelightName + " target ID", getTargetID());
         SmartDashboard.putBoolean(limelightName + " has target", hasTarget());
+
+        orientationPublisher.accept(new double[] { drivetrain.getHeading(), 0.0, 0.0, 0.0, 0.0, 0.0 });
+        NetworkTableInstance.getDefault().flush();
+        
+        List<PoseObservation> poseObservations = new LinkedList<>();
+        for (var rawSample : megatag2Subscriber.readQueue()) {
+            if (rawSample.value.length == 0)
+                continue;
+            for (int i = 11; i < rawSample.value.length; i += 7)
+                tagIds.add((int) rawSample.value[i]);
+            poseObservations.add(
+                new PoseObservation(
+                    // Timestamp, based on server timestamp of publish and latency
+                    rawSample.timestamp * 1.0e-6 - rawSample.value[6] * 1.0e-3,
+
+                    // 3D pose estimate
+                    parsePose(rawSample.value),
+
+                    // Ambiguity, zeroed because the pose is already disambiguated
+                    0.0,
+
+                    // Tag count
+                    (int) rawSample.value[7],
+
+                    // Average tag distance
+                    rawSample.value[9],
+
+                    // Observation type
+                    PoseObservationType.MEGATAG_2
+                )
+            );
+        }
+    }
+
+    public Optional<PoseObservation> getNewestPoseObservation() {
+        PoseObservation[] observations = inputs[cameraIndex].poseObservations;
+        if (observations.length != 0)
+            return Optional.of(observations[0]);
+        else
+            return Optional.empty();
     }
 
     // ========================================================
