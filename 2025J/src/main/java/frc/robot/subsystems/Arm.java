@@ -43,7 +43,7 @@ public class Arm extends SubsystemBase {
         armMotor.setForwardTorqueCurrentLimit(ArmConstants.kArmForwardTorqueCurrentLimit);
         armMotor.setReverseTorqueCurrentLimit(ArmConstants.kArmReverseTorqueCurrentLimit);
 
-        armMotor.setBrake();
+        armMotor.setCoast();
 
         armMotor.setEncoder(0);
         armMotor.setFeedbackDevice(RobotMap.ARM_CANCODER_ID, FeedbackSensorSourceValue.FusedCANcoder);

@@ -54,8 +54,8 @@ public class Elevator extends SubsystemBase {
         elevatorFollowerMotor.setForwardTorqueCurrentLimit(ArmConstants.kArmForwardTorqueCurrentLimit);
         elevatorFollowerMotor.setReverseTorqueCurrentLimit(ArmConstants.kArmReverseTorqueCurrentLimit);
 
-        elevatorMainMotor.setBrake();
-        elevatorFollowerMotor.setBrake();
+        elevatorMainMotor.setCoast();
+        elevatorFollowerMotor.setCoast();
         
         elevatorMainMotor.setEncoder(0);
         elevatorMainMotor.setFeedbackDevice(RobotMap.ELEVATOR_CANCODER_ID, FeedbackSensorSourceValue.FusedCANcoder);
