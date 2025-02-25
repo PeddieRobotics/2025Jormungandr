@@ -383,7 +383,7 @@ public final class Constants {
         public static final double kFrontLeftCamForward = 7.7188 * 0.0254;
         public static final double kFrontLeftCamLeftOffset = 6.625 * 0.0254;
         public static final double kFrontLeftCamUpOffset = 6.9909 * 0.0254;
-        public static final double kFrontLeftCamPitchDeg = 16;
+        public static final double kFrontLeftCamPitchDeg = 6;
         public static final double kFrontLeftCamYawDeg = 0;
         public static final int kFrontLeftCamPipeline = 0;
 
@@ -392,7 +392,7 @@ public final class Constants {
         public static final double kFrontMiddleCamForward = 7.7188 * 0.0254;
         public static final double kFrontMiddleCamLeftOffset = 0;
         public static final double kFrontMiddleCamUpOffset = 6.9909 * 0.0254;
-        public static final double kFrontMiddleCamPitchDeg = 16;
+        public static final double kFrontMiddleCamPitchDeg = 6;
         public static final double kFrontMiddleCamYawDeg = 0;
         public static final int kFrontMiddleCamPipeline = 0;
 
@@ -401,7 +401,7 @@ public final class Constants {
         public static final double kFrontRightCamForward = 7.7188 * 0.0254;
         public static final double kFrontRightCamLeftOffset = -6.5 * 0.0254;
         public static final double kFrontRightCamUpOffset = 6.9909 * 0.0254;
-        public static final double kFrontRightCamPitchDeg = 16;
+        public static final double kFrontRightCamPitchDeg = 6;
         public static final double kFrontRightCamYawDeg = 0;
         public static final int kFrontRightCamPipeline = 0;
 

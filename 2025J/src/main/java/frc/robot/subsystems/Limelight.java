@@ -184,7 +184,7 @@ public abstract class Limelight extends SubsystemBase {
     // distance to CAMERA LENS
     public double getDistanceTy() {
         // TODO: is the logic correct?
-        if (hasTarget())
+        if (!hasTarget())
             return 0;
 
         int tagNum = getTargetID();
