@@ -108,7 +108,7 @@ public class Superstructure extends SubsystemBase {
                 if (algaeIndex) {
                     claw.holdAlgae();
                 } else {
-                    //claw.stopClaw();
+                    claw.stopClaw();
                 }
 
                 if (Arrays.asList(
