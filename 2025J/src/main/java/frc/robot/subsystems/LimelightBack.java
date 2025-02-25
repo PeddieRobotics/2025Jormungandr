@@ -8,11 +8,8 @@ public class LimelightBack extends Limelight {
     private LimelightBack() {
         super(
             CameraConstants.kBackCamName,
-            CameraConstants.kBackCamForward,
-            CameraConstants.kBackCamLeftOffset,
             CameraConstants.kBackCamUpOffset,
-            CameraConstants.kBackCamPitchDeg,
-            CameraConstants.kBackCamYawDeg
+            CameraConstants.kBackCamPitchDeg
         );
     }
 

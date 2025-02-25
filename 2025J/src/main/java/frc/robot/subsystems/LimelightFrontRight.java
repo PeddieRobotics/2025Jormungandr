@@ -8,11 +8,8 @@ public class LimelightFrontRight extends Limelight {
     private LimelightFrontRight() {
         super(
             CameraConstants.kFrontRightCamName,
-            CameraConstants.kFrontRightCamForward,
-            CameraConstants.kFrontRightCamLeftOffset,
             CameraConstants.kFrontRightCamUpOffset,
-            CameraConstants.kFrontRightCamPitchDeg,
-            CameraConstants.kFrontRightCamYawDeg
+            CameraConstants.kFrontRightCamPitchDeg
         );
     }
 

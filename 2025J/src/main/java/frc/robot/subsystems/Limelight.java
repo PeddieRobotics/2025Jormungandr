@@ -1,7 +1,5 @@
 package frc.robot.subsystems;
 
-import java.util.Collections;
-import java.util.List;
 import java.util.Optional;
 
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
@@ -11,12 +9,8 @@ import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.filter.LinearFilter;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
-import edu.wpi.first.math.geometry.Rotation3d;
-import edu.wpi.first.math.geometry.Transform3d;
-import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.networktables.StructPublisher;
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -62,25 +56,18 @@ public abstract class Limelight extends SubsystemBase {
     
     private String limelightName; 
     
-    private double cameraForwardOffset, cameraLeftOffset, cameraUpOffset;
-    private double cameraPitchRadians, cameraYawRadians;
+    private double cameraUpOffset;
+    private double cameraPitchRadians;
     
     private Field2d field;
     private StructPublisher<Pose2d> publisher;
 
-    // TODO: check if directions are right (specifically if cameraPitchRadians positive means up or down)
-    protected Limelight(String limelightName, double cameraForwardOffset,
-                        double cameraLeftOffset, double cameraUpOffset,
-                        double cameraPitchDegrees, double cameraYawDegrees) {
-
+    protected Limelight(String limelightName, double cameraUpOffset, double cameraPitchDegrees) {
         aprilTagFieldLayout = AprilTagFieldLayout.loadField(AprilTagFields.kDefaultField);
         
         this.limelightName = limelightName;
-        this.cameraForwardOffset = cameraForwardOffset;
-        this.cameraLeftOffset = cameraLeftOffset;
         this.cameraUpOffset = cameraUpOffset;
         this.cameraPitchRadians = Math.toRadians(cameraPitchDegrees);
-        this.cameraYawRadians = Math.toRadians(cameraYawDegrees);
 
         txAverage = new RollingAverage();
         tyAverage = new RollingAverage();
@@ -117,7 +104,6 @@ public abstract class Limelight extends SubsystemBase {
     //                 Pose/Translation Getters
     // ========================================================
         
-    // you should use this for estimated pose
     public PoseEstimate getEstimatedPose() {
         return LimelightHelpers.getBotPoseEstimate_wpiBlue(limelightName);
     }
