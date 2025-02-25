@@ -53,8 +53,8 @@ public class AlignToReef2D extends Command {
         }
 
         desiredAngle = 0;
-        desiredDistance = 0.72;
-        desiredTranslation = 0.07;
+        desiredDistance = 0.49;
+        desiredTranslation = 0.0;
 
         SmartDashboard.putNumber("Desired Distance", desiredDistance);
         SmartDashboard.putNumber("Desired Translation", desiredTranslation);
@@ -74,7 +74,7 @@ public class AlignToReef2D extends Command {
         translationP = 1.75;
         translationI = 0;
         translationD = 0;
-        translationFF = 0.001;
+        translationFF = 0.0;
         translationPidController = new PIDController(translationP, translationI , translationD);
 
         SmartDashboard.putNumber("PhilipAlign P", translationP);
@@ -96,7 +96,7 @@ public class AlignToReef2D extends Command {
         SmartDashboard.putNumber("Rotation FF", rotationFF);
 
         distanceThreshold = 0.0254;
-        rotationThreshold = 1;
+        rotationThreshold = 0.5;
         translationThreshold = 0.0254;
         rotationUseLowerPThreshold = 1.5;
         
@@ -117,7 +117,8 @@ public class AlignToReef2D extends Command {
         int desiredTarget = (int) limelight.getTargetID();
         if (!Constants.kReefDesiredAngle.containsKey(desiredTarget))
             return;
-            
+        
+        limelight.setPriorityTag(LimelightFrontMiddle.getInstance().getTargetID());
         desiredAngle = Constants.kReefDesiredAngle.get(desiredTarget);
 
         translation = new Translation2d(0, 0);
@@ -153,8 +154,7 @@ public class AlignToReef2D extends Command {
         desiredDistance = SmartDashboard.getNumber("Desired Distance", desiredDistance);
         desiredTranslation = SmartDashboard.getNumber("Desired Translation", desiredTranslation);
 
-        //TODO: getHeading is in clockwise positive, should be counterclockwise on 2025j
-        rotationError = desiredAngle - drivetrain.getHeading();
+        rotationError = drivetrain.getHeading() - desiredAngle;
         double desiredTx = drivetrain.getHeading() - desiredAngle; // = gyro - desiredAngle
         
         SmartDashboard.putNumber("desired Tx", desiredTx);

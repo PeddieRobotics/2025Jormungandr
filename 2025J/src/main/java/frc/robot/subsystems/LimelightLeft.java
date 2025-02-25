@@ -9,7 +9,8 @@ public class LimelightLeft extends Limelight {
         super(
             CameraConstants.kLeftCamName,
             CameraConstants.kLeftCamUpOffset,
-            CameraConstants.kLeftCamPitchDeg
+            CameraConstants.kLeftCamPitchDeg,
+            false
         );
     }
 

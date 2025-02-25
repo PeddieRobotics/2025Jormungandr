@@ -9,7 +9,8 @@ public class LimelightFrontMiddle extends Limelight {
         super(
             CameraConstants.kFrontMiddleCamName,
             CameraConstants.kFrontMiddleCamUpOffset,
-            CameraConstants.kFrontMiddleCamPitchDeg
+            CameraConstants.kFrontMiddleCamPitchDeg,
+            false
         );
     }
 

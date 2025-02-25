@@ -77,6 +77,7 @@ public abstract class Limelight extends SubsystemBase {
     
     private double cameraUpOffset;
     private double cameraPitchRadians;
+    private boolean isInverted;
     
     // private DoubleArrayPublisher orientationPublisher;
     // private DoubleArraySubscriber megatag1Subscriber, megatag2Subscriber;
@@ -85,12 +86,13 @@ public abstract class Limelight extends SubsystemBase {
     private Field2d fieldMT1, fieldMT2;
     private StructPublisher<Pose2d> publisherMT1, publisherMT2;
 
-    protected Limelight(String limelightName, double cameraUpOffset, double cameraPitchDegrees) {
+    protected Limelight(String limelightName, double cameraUpOffset, double cameraPitchDegrees, boolean isInverted) {
         aprilTagFieldLayout = AprilTagFieldLayout.loadField(AprilTagFields.kDefaultField);
         
         this.limelightName = limelightName;
         this.cameraUpOffset = cameraUpOffset;
         this.cameraPitchRadians = Math.toRadians(cameraPitchDegrees);
+        this.isInverted = isInverted;
 
         // var table = NetworkTableInstance.getDefault().getTable(limelightName);
         // orientationPublisher = table.getDoubleArrayTopic("robot_orientation_set").publish();
@@ -114,6 +116,10 @@ public abstract class Limelight extends SubsystemBase {
         // publisherMT2 = NetworkTableInstance.getDefault().getStructTopic(
         //     limelightName + " estimated pose for advantagescope (MT2)", Pose2d.struct
         // ).publish();
+    }
+
+    public void setPriorityTag(int tagNum) {
+        LimelightHelpers.setPriorityTagID(limelightName, tagNum);
     }
     
     @Override 
@@ -281,12 +287,13 @@ public abstract class Limelight extends SubsystemBase {
     //                 T-Something Raw Getters
     // =======================================================
     
+    // so, uh, Limelight doesn't invert the Tx and Ty automatically on upside down Limelights
     public double getTx() {
-        return LimelightHelpers.getTX(limelightName);
+        return (isInverted ? -1 : 1) * LimelightHelpers.getTX(limelightName);
     }
 
     public double getTy() {
-        return LimelightHelpers.getTY(limelightName);
+        return (isInverted ? -1 : 1) * LimelightHelpers.getTY(limelightName);
     }
 
     // ================================================
