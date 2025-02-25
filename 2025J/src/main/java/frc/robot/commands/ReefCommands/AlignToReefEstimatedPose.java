@@ -186,7 +186,7 @@ public class AlignToReefEstimatedPose extends Command {
         //         bestPose = camera.getEstimatedPose();
         //     }
         // }
-        return LimelightFrontRight.getInstance().getEstimatedPose().pose;
+        return LimelightFrontRight.getInstance().getEstimatedPoseMT1().pose;
     }
 
     @Override

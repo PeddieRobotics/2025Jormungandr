@@ -102,11 +102,11 @@ public class DriverOI {
 
         Trigger optionButton = new JoystickButton(controller, PS4Controller.Button.kOptions.value);
         optionButton.onTrue(new InstantCommand(() -> Drivetrain.getInstance()
-                .resetTranslation(LimelightFrontMiddle.getInstance().getEstimatedPose().pose.getTranslation())));
+                .resetTranslation(LimelightFrontMiddle.getInstance().getEstimatedPoseMT1().pose.getTranslation())));
 
         Trigger shareButton = new JoystickButton(controller, PS4Controller.Button.kShare.value);
         shareButton.onTrue(new InstantCommand(() -> Drivetrain.getInstance()
-                .resetPureOdometryTranslation(LimelightFrontMiddle.getInstance().getEstimatedPose().pose.getTranslation())));
+                .resetPureOdometryTranslation(LimelightFrontMiddle.getInstance().getEstimatedPoseMT1().pose.getTranslation())));
     }
 
     public boolean bothBumpersHeld() {
