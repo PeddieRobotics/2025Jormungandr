@@ -117,6 +117,7 @@ public class AlignToReef2D extends Command {
         int desiredTarget = (int) limelight.getTargetID();
         if (!Constants.kReefDesiredAngle.containsKey(desiredTarget))
             return;
+            
         desiredAngle = Constants.kReefDesiredAngle.get(desiredTarget);
 
         translation = new Translation2d(0, 0);
@@ -153,7 +154,7 @@ public class AlignToReef2D extends Command {
         desiredTranslation = SmartDashboard.getNumber("Desired Translation", desiredTranslation);
 
         //TODO: getHeading is in clockwise positive, should be counterclockwise on 2025j
-        rotationError = desiredAngle + drivetrain.getHeading();
+        rotationError = desiredAngle - drivetrain.getHeading();
         double desiredTx = drivetrain.getHeading() - desiredAngle; // = gyro - desiredAngle
         
         SmartDashboard.putNumber("desired Tx", desiredTx);
@@ -177,7 +178,7 @@ public class AlignToReef2D extends Command {
         if (limelight.hasTarget()) {
             txValue = limelight.getTx();
             
-            double translationError = distance * Math.sin((txValue-desiredTx)*(Math.PI/180));
+            double translationError = distance * Math.sin((txValue - desiredTx) * (Math.PI/180));
             
             SmartDashboard.putNumber("Translation Error", translationError);
             SmartDashboard.putNumber("Distance Error", distanceError);

@@ -142,7 +142,7 @@ public class AlignAndScore extends Command {
         }
 
         // TODO: deal with getEstimatedPose not being present
-        Pose2d estimatedPose = llFrontMiddle.getEstimatedPoseMT1().get().pose;
+        Pose2d estimatedPose = llFrontMiddle.getEstimatedPoseMT1().get();
 
         double xError = estimatedPose.getX() - desiredPose.getX();
         double yError = estimatedPose.getY() - desiredPose.getY();

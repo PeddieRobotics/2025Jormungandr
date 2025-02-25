@@ -3,6 +3,7 @@ package frc.robot.commands.ReefCommands;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -175,7 +176,7 @@ public class AlignToReefEstimatedPose extends Command {
     }
     
     // TODO: find camera with lowest reprojection error
-    private Pose2d getBestEstimatedPose() {
+    private Optional<Pose2d> getBestEstimatedPose() {
         // double bestReprojErr = Integer.MAX_VALUE;
         // Pose2d bestPose = drivetrain.getPose();
         // for (PhotonVision camera : cameras) {
@@ -187,7 +188,7 @@ public class AlignToReefEstimatedPose extends Command {
         //     }
         // }
         // TODO: fix
-        return LimelightFrontRight.getInstance().getEstimatedPoseMT1().get().pose;
+        return LimelightFrontRight.getInstance().getEstimatedPoseMT1();
     }
 
     @Override
@@ -233,7 +234,14 @@ public class AlignToReefEstimatedPose extends Command {
         //     return;
         // }
 
-        Pose2d estimatedPose = getBestEstimatedPose();
+        Optional<Pose2d> estimatedPoseOptional = getBestEstimatedPose();
+
+        if (!estimatedPoseOptional.isPresent()) {
+            // TODO
+            return;
+        }
+
+        Pose2d estimatedPose = estimatedPoseOptional.get();
 
         double xError = estimatedPose.getX() - desiredPose.getX();
         double yError = estimatedPose.getY() - desiredPose.getY();

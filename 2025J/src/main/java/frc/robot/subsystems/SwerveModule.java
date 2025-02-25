@@ -153,6 +153,8 @@ public class SwerveModule extends SubsystemBase {
     public void periodic() {
         // This method will be called once per scheduler run
         SmartDashboard.putNumber(CANCoderId + " CANCoder Reading", getCANCoderReading());
+        SmartDashboard.putNumber(CANCoderId + "Swerve Drive Motor Current", driveMotor.getSupplyCurrent()); 
+        SmartDashboard.putNumber(CANCoderId + "Swerved Steer Motor Current", steerMotor.getSupplyCurrent());
     }
 
     @Override
