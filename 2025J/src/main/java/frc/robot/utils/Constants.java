@@ -370,7 +370,7 @@ public final class Constants {
          * - Front(Left/Middle/Right) (Left/Up)Offset: remove "* -1"
          */
 
-        public static final String kBackCamName = "back-cam";
+        public static final String kBackCamName = "limelight-back";
         public static final double kBackCamForward = 0;
         public static final double kBackCamLeftOffset = 0;
         public static final double kBackCamUpOffset = 0;
@@ -378,34 +378,34 @@ public final class Constants {
         public static final double kBackCamYawDeg = 0;
         public static final int kBackCamPipeline = 0;
 
-        // 3G: 10.58.95.90
-        public static final String kFrontLeftCamName = "front-left-cam";
-        public static final double kFrontLeftCamForward = 7.7188 * 0.0254 * -1;
-        public static final double kFrontLeftCamLeftOffset = 6.625 * 0.0254 * -1;
+        // 3G: 10.58.95.11
+        public static final String kFrontLeftCamName = "limelight-left";
+        public static final double kFrontLeftCamForward = 7.7188 * 0.0254;
+        public static final double kFrontLeftCamLeftOffset = 6.625 * 0.0254;
         public static final double kFrontLeftCamUpOffset = 6.9909 * 0.0254;
         public static final double kFrontLeftCamPitchDeg = 16;
-        public static final double kFrontLeftCamYawDeg = 180;
+        public static final double kFrontLeftCamYawDeg = 0;
         public static final int kFrontLeftCamPipeline = 0;
 
-        // 3: 10.58.95.81
-        public static final String kFrontMiddleCamName = "front-middle-cam";
-        public static final double kFrontMiddleCamForward = 7.7188 * 0.0254 * -1;
+        // 3: 10.58.95.12
+        public static final String kFrontMiddleCamName = "limelight-middle";
+        public static final double kFrontMiddleCamForward = 7.7188 * 0.0254;
         public static final double kFrontMiddleCamLeftOffset = 0;
         public static final double kFrontMiddleCamUpOffset = 6.9909 * 0.0254;
         public static final double kFrontMiddleCamPitchDeg = 16;
-        public static final double kFrontMiddleCamYawDeg = 180;
+        public static final double kFrontMiddleCamYawDeg = 0;
         public static final int kFrontMiddleCamPipeline = 0;
 
-        // 3G: 10.58.95.91
-        public static final String kFrontRightCamName = "front-right-cam";
-        public static final double kFrontRightCamForward = 7.7188 * 0.0254 * -1;
-        public static final double kFrontRightCamLeftOffset = -6.5 * 0.0254 * -1;
+        // 3G: 10.58.95.13
+        public static final String kFrontRightCamName = "limelight-right";
+        public static final double kFrontRightCamForward = 7.7188 * 0.0254;
+        public static final double kFrontRightCamLeftOffset = -6.5 * 0.0254;
         public static final double kFrontRightCamUpOffset = 6.9909 * 0.0254;
         public static final double kFrontRightCamPitchDeg = 16;
-        public static final double kFrontRightCamYawDeg = 180;
+        public static final double kFrontRightCamYawDeg = 0;
         public static final int kFrontRightCamPipeline = 0;
 
-        public static final String kLeftCamName = "left-cam";
+        public static final String kLeftCamName = "limelight-climber";
         public static final double kLeftCamForward = 0;
         public static final double kLeftCamLeftOffset = 0;
         public static final double kLeftCamUpOffset = 0;
