@@ -37,7 +37,7 @@ public class RobotContainer {
     private Arm arm;
     private Autonomous autonomous;
     private Claw claw;
-    private Climber climber;
+    // private Climber climber;
     private Drivetrain drivetrain;
     private Superstructure superstructure;
     private DriverOI driverOI;
@@ -54,7 +54,7 @@ public class RobotContainer {
     public RobotContainer() {
         arm = Arm.getInstance();
         claw = Claw.getInstance();
-        climber = Climber.getInstance();
+        // climber = Climber.getInstance();
         autonomous = Autonomous.getInstance();
         drivetrain = Drivetrain.getInstance();
         elevator = Elevator.getInstance();
