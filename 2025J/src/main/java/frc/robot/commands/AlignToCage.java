@@ -5,7 +5,8 @@
 package frc.robot.commands;
 
 import frc.robot.subsystems.Drivetrain;
-import frc.robot.subsystems.PVFrontMiddle;
+import frc.robot.subsystems.Limelight;
+import frc.robot.subsystems.LimelightFrontMiddle;
 import frc.robot.subsystems.SwerveModule;
 import frc.robot.utils.Constants;
 import frc.robot.utils.Constants.FieldConstants;
@@ -25,7 +26,7 @@ public class AlignToCage extends Command {
     private Drivetrain drivetrain;
     private DriverOI oi;
     //TODO: not right camera
-    private PVFrontMiddle shooterCam;
+    private LimelightFrontMiddle shooterCam;
 
     private PIDController rotationPidController, translationPidController, distancePidController;
     private double rotationUseLowerPThreshold, rotationThresholdP;
@@ -52,7 +53,7 @@ public class AlignToCage extends Command {
         this.isAuto = isAuto;
 
         drivetrain = Drivetrain.getInstance();
-        shooterCam = PVFrontMiddle.getInstance();
+        shooterCam = LimelightFrontMiddle.getInstance();
         //logger = Logger.getInstance();
 
         desiredAngle = 0;

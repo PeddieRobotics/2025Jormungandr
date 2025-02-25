@@ -31,11 +31,11 @@ public class Lights extends SubsystemBase {
     private boolean isClimbing;
     private LightState systemState, requestedSystemState;
     
-    private PVBack pvBack;
-    private PVFrontLeft pvFrontLeft;
-    private PVFrontMiddle pvFrontMiddle;
-    private PVFrontRight pvFrontRight;
-    private PVLeft pvLeft;
+    private LimelightBack llBack;
+    private LimelightFrontLeft llFrontLeft;
+    private LimelightFrontMiddle llFrontMiddle;
+    private LimelightFrontRight llFrontRight;
+    private LimelightLeft llLeft;
 
     public static Lights getInstance() {
         if (lights == null)
@@ -46,11 +46,11 @@ public class Lights extends SubsystemBase {
     public Lights() {
         candle = new CANdle(RobotMap.CANDLE_ID);
         
-        // pvBack = PVBack.getInstance();
-        pvFrontLeft = PVFrontLeft.getInstance();
-        pvFrontMiddle = PVFrontMiddle.getInstance();
-        pvFrontRight = PVFrontRight.getInstance();
-        // pvLeft = PVLeft.getInstance();
+        // llBack = LimelightBack.getInstance();
+        llFrontLeft = LimelightFrontLeft.getInstance();
+        llFrontMiddle = LimelightFrontMiddle.getInstance();
+        llFrontRight = LimelightFrontRight.getInstance();
+        // llLeft = LimelightLeft.getInstance();
     }
 
     public void requestState(LightState request) {
@@ -140,10 +140,10 @@ public class Lights extends SubsystemBase {
     }
     
     private void setBlinking(boolean blinking) {
-        pvBack.setBlinking(blinking);
-        // pvFrontLeft.setBlinking(blinking);
-        // pvFrontMiddle.setBlinking(blinking);
-        // pvFrontRight.setBlinking(blinking);
-        pvLeft.setBlinking(blinking);
+        llBack.setBlinking(blinking);
+        // llFrontLeft.setBlinking(blinking);
+        // llFrontMiddle.setBlinking(blinking);
+        // llFrontRight.setBlinking(blinking);
+        llLeft.setBlinking(blinking);
     }
 }

@@ -2,10 +2,10 @@ package frc.robot.subsystems;
 
 import frc.robot.utils.Constants.CameraConstants;
 
-public class PVFrontLeft extends PhotonVision {
-    private static PVFrontLeft pvFrontLeft;
+public class LimelightFrontLeft extends Limelight {
+    private static LimelightFrontLeft llFrontLeft;
 
-    private PVFrontLeft() {
+    private LimelightFrontLeft() {
         super(
             CameraConstants.kFrontLeftCamName,
             CameraConstants.kFrontLeftCamForward,
@@ -16,10 +16,10 @@ public class PVFrontLeft extends PhotonVision {
         );
     }
 
-    public static PVFrontLeft getInstance() {
-        if (pvFrontLeft == null)
-            pvFrontLeft = new PVFrontLeft();
-        return pvFrontLeft;
+    public static LimelightFrontLeft getInstance() {
+        if (llFrontLeft == null)
+            llFrontLeft = new LimelightFrontLeft();
+        return llFrontLeft;
     }
 
     @Override

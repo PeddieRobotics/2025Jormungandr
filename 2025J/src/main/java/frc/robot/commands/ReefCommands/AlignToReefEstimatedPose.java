@@ -11,10 +11,10 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Drivetrain;
-import frc.robot.subsystems.PVFrontLeft;
-import frc.robot.subsystems.PVFrontMiddle;
-import frc.robot.subsystems.PVFrontRight;
-import frc.robot.subsystems.PhotonVision;
+import frc.robot.subsystems.LimelightFrontLeft;
+import frc.robot.subsystems.LimelightFrontMiddle;
+import frc.robot.subsystems.LimelightFrontRight;
+import frc.robot.subsystems.Limelight;
 import frc.robot.subsystems.Superstructure;
 import frc.robot.utils.Constants;
 
@@ -32,7 +32,7 @@ class IDVectorPair {
 
 public class AlignToReefEstimatedPose extends Command {
     private Drivetrain drivetrain;
-    private PhotonVision[] cameras;
+    private Limelight[] cameras;
 
     private PIDController translatePIDController, rotationPIDController;
 
@@ -48,10 +48,10 @@ public class AlignToReefEstimatedPose extends Command {
 
     public AlignToReefEstimatedPose() {
         drivetrain = Drivetrain.getInstance();
-        cameras = new PhotonVision[] {
-            PVFrontLeft.getInstance(),
-            PVFrontMiddle.getInstance(),
-            PVFrontRight.getInstance(),
+        cameras = new Limelight[] {
+            LimelightFrontLeft.getInstance(),
+            LimelightFrontMiddle.getInstance(),
+            LimelightFrontRight.getInstance(),
         };
 
         translatePIDController = new PIDController(translateP, translateI, translateD);
@@ -126,15 +126,15 @@ public class AlignToReefEstimatedPose extends Command {
         
         // BLUE:
         for (int i = 17; i <= 22; i++) {
-            Translation2d tagPose = PhotonVision.getAprilTagPose(i).getTranslation();
+            Translation2d tagPose = Limelight.getAprilTagPose(i).getTranslation();
 
             // TODO: should be tagPose - odometryPose on real robots
             robotToTag.add(new IDVectorPair(i, odometryPose.minus(tagPose)));
         }
         // RED:
         // for (int i = 6; i <= 11; i++) {
-        //     Translation2d tagPose = PhotonVision.getAprilTagPose(i).getTranslation();
-        //     robotToTag.add(new Pair<>(i, tagPose.minus(odometryPose)));
+        //     Translation2d tagPose = Limelight.getAprilTagPose(i).getTranslation();
+        //     robotToTag.add(new IDVectorPair(i, odometryPose.minus(tagPose)));
         // }
         
         Collections.sort(robotToTag, (o1, o2) -> (
@@ -158,7 +158,7 @@ public class AlignToReefEstimatedPose extends Command {
         if (Constants.kReefDesiredAngle.containsKey(desiredTarget))
             desiredAngle = Constants.kReefDesiredAngle.get(desiredTarget);
         
-        Pose2d tagPose = PhotonVision.getAprilTagPose(desiredTarget);
+        Pose2d tagPose = Limelight.getAprilTagPose(desiredTarget);
         double tagAngle = tagPose.getRotation().getRadians();
 
         tagBackMagnitude = SmartDashboard.getNumber("align tagBackMagnitude", tagBackMagnitude);
@@ -186,7 +186,7 @@ public class AlignToReefEstimatedPose extends Command {
         //         bestPose = camera.getEstimatedPose();
         //     }
         // }
-        return PVFrontRight.getInstance().getEstimatedPose();
+        return LimelightFrontRight.getInstance().getEstimatedPose().pose;
     }
 
     @Override
@@ -227,7 +227,7 @@ public class AlignToReefEstimatedPose extends Command {
         if (Math.abs(rotationError) > rotationThreshold)
           rotation = rotationPIDController.calculate(rotationError) + Math.signum(rotationError) * rotationFF;
         
-        // if (!pvFrontMiddle.hasTarget()) {
+        // if (!llFrontMiddle.hasTarget()) {
         //     drivetrain.drive(new Translation2d(), rotation, false, null);
         //     return;
         // }

@@ -5,7 +5,7 @@
 package frc.robot.commands.ReefCommands;
 
 import frc.robot.subsystems.Drivetrain;
-import frc.robot.subsystems.PVFrontMiddle;
+import frc.robot.subsystems.LimelightFrontMiddle;
 import frc.robot.utils.Constants;
 import frc.robot.utils.DriverOI;
 import edu.wpi.first.math.controller.PIDController;
@@ -17,7 +17,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 public class AlignToReef2D extends Command {
     private Drivetrain drivetrain;
     private DriverOI oi;
-    private PVFrontMiddle pvFrontMiddle;
+    private LimelightFrontMiddle llFrontMiddle;
 
     private PIDController rotationPidController, translationPidController, distancePidController;
     private double rotationUseLowerPThreshold, rotationThresholdP;
@@ -41,7 +41,7 @@ public class AlignToReef2D extends Command {
      */
     public AlignToReef2D() {
         drivetrain = Drivetrain.getInstance();
-        pvFrontMiddle = PVFrontMiddle.getInstance();
+        llFrontMiddle = LimelightFrontMiddle.getInstance();
 
         desiredAngle = 0;
         desiredDistance = 0.72;
@@ -107,7 +107,7 @@ public class AlignToReef2D extends Command {
     public void initialize() {
         oi = DriverOI.getInstance();
 
-        int desiredTarget = (int) pvFrontMiddle.getTargetID();
+        int desiredTarget = (int) llFrontMiddle.getTargetID();
         if (!Constants.kReefDesiredAngle.containsKey(desiredTarget))
             return;
         desiredAngle = Constants.kReefDesiredAngle.get(desiredTarget);
@@ -163,12 +163,12 @@ public class AlignToReef2D extends Command {
         translationPidController.setPID(translationP, translationI, translationD);
         distancePidController.setPID(distanceP, distanceI, distanceD);
 
-        double distance = pvFrontMiddle.getDistanceEstimatedPose();
+        double distance = llFrontMiddle.getDistanceEstimatedPose();
         
         double horizontalTranslation = 0;
         double forBackTranslation = 0;
-        if (pvFrontMiddle.hasTarget()) {
-            txValue = pvFrontMiddle.getTx();
+        if (llFrontMiddle.hasTarget()) {
+            txValue = llFrontMiddle.getTx();
             
             double translationError = distance * Math.sin((txValue-desiredTx)*(Math.PI/180));
             

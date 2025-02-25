@@ -15,11 +15,11 @@ import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.HPIntake;
 import frc.robot.subsystems.Lights;
-import frc.robot.subsystems.PVBack;
-import frc.robot.subsystems.PVFrontLeft;
-import frc.robot.subsystems.PVFrontMiddle;
-import frc.robot.subsystems.PVFrontRight;
-import frc.robot.subsystems.PVLeft;
+import frc.robot.subsystems.LimelightBack;
+import frc.robot.subsystems.LimelightFrontLeft;
+import frc.robot.subsystems.LimelightFrontMiddle;
+import frc.robot.subsystems.LimelightFrontRight;
+import frc.robot.subsystems.LimelightLeft;
 import frc.robot.subsystems.Superstructure;
 import frc.robot.utils.DriverOI;
 import frc.robot.utils.OperatorOI;
@@ -44,11 +44,11 @@ public class RobotContainer {
     private OperatorOI operatorOI;
     private Elevator elevator;
     private HPIntake hpIntake;
-    private PVBack pvBack;
-    private PVFrontLeft pvFrontLeft;
-    private PVFrontMiddle pvFrontMiddle;
-    private PVFrontRight pvFrontRight;
-    private PVLeft pvLeft;
+    private LimelightBack llBack;
+    private LimelightFrontLeft llFrontLeft;
+    private LimelightFrontMiddle llFrontMiddle;
+    private LimelightFrontRight llFrontRight;
+    private LimelightLeft llLeft;
     private Lights lights;
 
     public RobotContainer() {
@@ -62,11 +62,11 @@ public class RobotContainer {
         // superstructure = Superstructure.getInstance();
         driverOI = DriverOI.getInstance();
         operatorOI = OperatorOI.getInstance();
-        // pvBack = PVBack.getInstance();
-        pvFrontLeft = PVFrontLeft.getInstance();
-        pvFrontMiddle = PVFrontMiddle.getInstance();
-        pvFrontRight = PVFrontRight.getInstance();
-        // pvLeft = PVLeft.getInstance();
+        // llBack = LimelightBack.getInstance();
+        llFrontLeft = LimelightFrontLeft.getInstance();
+        llFrontMiddle = LimelightFrontMiddle.getInstance();
+        llFrontRight = LimelightFrontRight.getInstance();
+        // llLeft = LimelightLeft.getInstance();
         // lights = Lights.getInstance();
 
         SmartDashboard.putData("Auto Routines", autonomous.getAutoChooser());

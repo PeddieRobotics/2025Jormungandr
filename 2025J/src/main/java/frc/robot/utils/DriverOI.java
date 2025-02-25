@@ -14,7 +14,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import frc.robot.commands.ScoreCommands.AlignAndScore;
 import frc.robot.subsystems.Claw;
 import frc.robot.subsystems.Drivetrain;
-import frc.robot.subsystems.PVFrontMiddle;
+import frc.robot.subsystems.LimelightFrontMiddle;
 import frc.robot.utils.Constants.DriveConstants;
 
 public class DriverOI {
@@ -102,11 +102,11 @@ public class DriverOI {
 
         Trigger optionButton = new JoystickButton(controller, PS4Controller.Button.kOptions.value);
         optionButton.onTrue(new InstantCommand(() -> Drivetrain.getInstance()
-                .resetTranslation(PVFrontMiddle.getInstance().getEstimatedPose().getTranslation())));
+                .resetTranslation(LimelightFrontMiddle.getInstance().getEstimatedPose().pose.getTranslation())));
 
         Trigger shareButton = new JoystickButton(controller, PS4Controller.Button.kShare.value);
         shareButton.onTrue(new InstantCommand(() -> Drivetrain.getInstance()
-                .resetPureOdometryTranslation(PVFrontMiddle.getInstance().getEstimatedPose().getTranslation())));
+                .resetPureOdometryTranslation(LimelightFrontMiddle.getInstance().getEstimatedPose().pose.getTranslation())));
     }
 
     public boolean bothBumpersHeld() {

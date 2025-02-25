@@ -4,16 +4,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
-import org.photonvision.EstimatedRobotPose;
-import org.photonvision.PhotonCamera;
-import org.photonvision.PhotonPoseEstimator;
-import org.photonvision.PhotonPoseEstimator.PoseStrategy;
-import org.photonvision.PhotonUtils;
-import org.photonvision.common.hardware.VisionLEDMode;
-import org.photonvision.targeting.MultiTargetPNPResult;
-import org.photonvision.targeting.PhotonPipelineResult;
-import org.photonvision.targeting.PhotonTrackedTarget;
-
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.VecBuilder;
@@ -31,22 +21,46 @@ import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.utils.Constants;
+import frc.robot.utils.LimelightHelpers;
+import frc.robot.utils.LimelightHelpers.PoseEstimate;
 import frc.robot.utils.RollingAverage;
 
-public abstract class PhotonVision extends SubsystemBase {
+public abstract class Limelight extends SubsystemBase {
+    /**
+     * Algorithm from https://docs.limelightvision.io/en/latest/cs_estimating_distance.html Estimates
+     * range to a target using the target's elevation. This method can produce more stable results
+     * than SolvePNP when well tuned, if the full 6d robot pose is not required. Note that this method
+     * requires the camera to have 0 roll (not be skewed clockwise or CCW relative to the floor), and
+     * for there to exist a height differential between goal and camera. The larger this differential,
+     * the more accurate the distance estimate will be.
+     *
+     * <p>Units can be converted using the {@link edu.wpi.first.math.util.Units} class.
+     *
+     * @param cameraHeightMeters The physical height of the camera off the floor in meters.
+     * @param targetHeightMeters The physical height of the target off the floor in meters. This
+     *     should be the height of whatever is being targeted (i.e. if the targeting region is set to
+     *     top, this should be the height of the top of the target).
+     * @param cameraPitchRadians The pitch of the camera from the horizontal plane in radians.
+     *     Positive values up.
+     * @param targetPitchRadians The pitch of the target in the camera's lens in radians. Positive
+     *     values up.
+     * @return The estimated distance to the target in meters.
+     */
+    public static double calculateDistanceToTargetMeters(
+            double cameraHeightMeters,
+            double targetHeightMeters,
+            double cameraPitchRadians,
+            double targetPitchRadians) {
+        return (targetHeightMeters - cameraHeightMeters)
+                / Math.tan(cameraPitchRadians + targetPitchRadians);
+    }
+
     private static AprilTagFieldLayout aprilTagFieldLayout;
 
-    private PhotonCamera camera;
-    private PhotonPoseEstimator ppe;
-    private PhotonPipelineResult result;
-    private List<PhotonTrackedTarget> targets;
-    private PhotonTrackedTarget bestTarget;
     private RollingAverage txAverage, tyAverage;
     private LinearFilter distTyFilter, distEstimatedPoseFilter;
-    private Pose3d estimatedPose;
-    private double reprojectionError;
     
-    private String cameraName; 
+    private String limelightName; 
     
     private double cameraForwardOffset, cameraLeftOffset, cameraUpOffset;
     private double cameraPitchRadians, cameraYawRadians;
@@ -55,37 +69,18 @@ public abstract class PhotonVision extends SubsystemBase {
     private StructPublisher<Pose2d> publisher;
 
     // TODO: check if directions are right (specifically if cameraPitchRadians positive means up or down)
-    protected PhotonVision(String cameraName, double cameraForwardOffset,
+    protected Limelight(String limelightName, double cameraForwardOffset,
                         double cameraLeftOffset, double cameraUpOffset,
                         double cameraPitchDegrees, double cameraYawDegrees) {
+
+        aprilTagFieldLayout = AprilTagFieldLayout.loadField(AprilTagFields.kDefaultField);
         
-        this.cameraName = cameraName;
+        this.limelightName = limelightName;
         this.cameraForwardOffset = cameraForwardOffset;
         this.cameraLeftOffset = cameraLeftOffset;
         this.cameraUpOffset = cameraUpOffset;
         this.cameraPitchRadians = Math.toRadians(cameraPitchDegrees);
         this.cameraYawRadians = Math.toRadians(cameraYawDegrees);
-
-        camera = new PhotonCamera(cameraName);
-        Transform3d robotToCam = new Transform3d(new Translation3d(
-            cameraForwardOffset, cameraLeftOffset, cameraUpOffset
-        ), new Rotation3d(
-            0, cameraPitchRadians, cameraYawRadians
-        ));
-
-        aprilTagFieldLayout = AprilTagFieldLayout.loadField(AprilTagFields.kDefaultField);
-        ppe = new PhotonPoseEstimator(
-            aprilTagFieldLayout,
-            PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR,
-            robotToCam
-        );
-        // TODO: maybe try this out??
-        // ppe.setMultiTagFallbackStrategy(PoseStrategy.XXX);
-
-        estimatedPose = new Pose3d();
-        reprojectionError = Integer.MAX_VALUE;
-
-        result = new PhotonPipelineResult();
 
         txAverage = new RollingAverage();
         tyAverage = new RollingAverage();
@@ -94,75 +89,47 @@ public abstract class PhotonVision extends SubsystemBase {
         distEstimatedPoseFilter = LinearFilter.singlePoleIIR(0.24, 0.02);
 
         field = new Field2d();
-        SmartDashboard.putData(cameraName + " estimated pose", field);
+        SmartDashboard.putData(limelightName + " estimated pose", field);
 
-        publisher = NetworkTableInstance.getDefault().getStructTopic(cameraName + " estimated pose for advantagescope", Pose2d.struct).publish();
+        publisher = NetworkTableInstance.getDefault().getStructTopic(limelightName + " estimated pose for advantagescope", Pose2d.struct).publish();
     }
     
     @Override 
     public void periodic() {
-        List<PhotonPipelineResult> pipelineResults = camera.getAllUnreadResults();
-
-        if (pipelineResults.isEmpty())
-            return;
-
-        result = pipelineResults.get(0);
-        if (!result.hasTargets())
-            return;
-        
-        targets = result.getTargets();
-        // sort the list by area / get largest area
-        Collections.sort(targets, (o1, o2) -> (
-            ((Double) o2.getArea()).compareTo(o1.getArea())
-        ));
-        bestTarget = targets.get(0);
-
         updateRollingAverages();
-        getEstimatedPoseInternal();
 
-        field.setRobotPose(estimatedPose.toPose2d());
-        publisher.set(estimatedPose.toPose2d());
+        Pose2d estimatedPose = getEstimatedPose().pose;
+        field.setRobotPose(estimatedPose);
+        publisher.set(estimatedPose);
 
-        Optional<MultiTargetPNPResult> thing = result.getMultiTagResult();
-        SmartDashboard.putBoolean(cameraName + " has reproj error?", thing.isPresent());
-        if (thing.isPresent())
-            reprojectionError = thing.get().estimatedPose.bestReprojErr;
-
-        SmartDashboard.putNumber(cameraName + " distance estimated pose", getDistanceEstimatedPose());
-        SmartDashboard.putNumber(cameraName + " reprojection error", reprojectionError);
-        SmartDashboard.putNumber(cameraName + " number of targets", getNumberOfTagsSeen());
+        SmartDashboard.putNumber(limelightName + " Tx", getTx());
+        SmartDashboard.putNumber(limelightName + " Ty", getTy());
+        SmartDashboard.putNumber(limelightName + " distance (estimated pose)", getDistanceEstimatedPose());
+        SmartDashboard.putNumber(limelightName + " distance (Ty)", getDistanceTy());
+        SmartDashboard.putNumber(limelightName + " filtered distance (estimated pose)", getFilteredDistanceEstimatedPose());
+        SmartDashboard.putNumber(limelightName + " filtered distance (Ty)", getFilteredDistanceTy());
+        SmartDashboard.putNumber(limelightName + " number of tags seen", getNumberOfTagsSeen());
+        SmartDashboard.putNumber(limelightName + " target ID", getTargetID());
+        SmartDashboard.putBoolean(limelightName + " has target", hasTarget());
     }
 
     // ========================================================
     //                 Pose/Translation Getters
     // ========================================================
-    
-    // PLEASE PLEASE do not call this function yourself
-    // the PhotonPoseEstimator only occasionally has updates
-    // the public getEstimatedPose returns the latest update
-    private void getEstimatedPoseInternal() {
-        if (!hasTarget())
-            return;
-
-        Optional<EstimatedRobotPose> update = ppe.update(result);
-        if (update.isPresent())
-            estimatedPose = update.get().estimatedPose;
-    }
-    
+        
     // you should use this for estimated pose
-    public Pose2d getEstimatedPose() {
-        return estimatedPose.toPose2d();
-    }
-    
-    public double getReprojectionError() {
-        return reprojectionError;
+    public PoseEstimate getEstimatedPose() {
+        return LimelightHelpers.getBotPoseEstimate_wpiBlue(limelightName);
     }
     
     public void fuseEstimatedPose(SwerveDrivePoseEstimator odometry) {
         if (!hasTarget())
             return;
-        if (Math.abs(estimatedPose.getZ()) > 0.4)
-            return;
+        
+        PoseEstimate estimatedPoseEstimate = getEstimatedPose();
+        Pose2d estimatedPose = estimatedPoseEstimate.pose;
+        // if (Math.abs(estimatedPose.getZ()) > 0.4)
+        //     return;
 
         int numTagsSeen = getNumberOfTagsSeen();
         double distance = getDistanceEstimatedPose();
@@ -175,10 +142,9 @@ public abstract class PhotonVision extends SubsystemBase {
             return;    
             
         Pose2d odoCurrent = odometry.getEstimatedPosition();
-        Pose2d estimatedPose2d = estimatedPose.toPose2d();
 
-        double distX = estimatedPose2d.getX() - odoCurrent.getX();
-        double distY = estimatedPose2d.getY() - odoCurrent.getY();
+        double distX = estimatedPose.getX() - odoCurrent.getX();
+        double distY = estimatedPose.getY() - odoCurrent.getY();
         if (Math.sqrt((distX * distX) + (distY * distY)) > 3)
             return;
 
@@ -192,10 +158,7 @@ public abstract class PhotonVision extends SubsystemBase {
             deviation, deviation, 30
         ));
 
-        double latency = getTotalLatencyInMS();
-        double timestampLatencyComp = Timer.getFPGATimestamp() - latency / 1000.0;
-        odometry.addVisionMeasurement(estimatedPose2d, timestampLatencyComp);
-
+        odometry.addVisionMeasurement(estimatedPose, estimatedPoseEstimate.timestampSeconds);
     }
 
     // =======================================================
@@ -203,11 +166,11 @@ public abstract class PhotonVision extends SubsystemBase {
     // =======================================================
     
     public double getTx() {
-        return hasTarget() ? bestTarget.getYaw() : 0;
+        return LimelightHelpers.getTX(limelightName);
     }
 
     public double getTy() {
-        return hasTarget() ? bestTarget.getPitch() : 0;
+        return LimelightHelpers.getTY(limelightName);
     }
 
     // ================================================
@@ -224,7 +187,7 @@ public abstract class PhotonVision extends SubsystemBase {
             return 0;
 
         Pose2d tag = aprilTagPose.get().toPose2d();
-        Pose2d robotPose = getEstimatedPose();
+        Pose2d robotPose = getEstimatedPose().pose;
 
         double dx = tag.getX() - robotPose.getX();
         double dy = tag.getY() - robotPose.getY();
@@ -244,33 +207,34 @@ public abstract class PhotonVision extends SubsystemBase {
             return 0;
         
         double tagHeight = tagPose.get().getZ();
-        return PhotonUtils.calculateDistanceToTargetMeters(
+        return calculateDistanceToTargetMeters(
             cameraUpOffset, tagHeight, cameraPitchRadians, Math.toRadians(getTy())
         );
-    }
-
-    public double getFilteredDistanceTy(){
-        return distTyFilter.lastValue();
     }
 
     public double getFilteredDistanceEstimatedPose(){
         return distEstimatedPoseFilter.lastValue();
     }
 
+    public double getFilteredDistanceTy(){
+        return distTyFilter.lastValue();
+    }
+
     // ======================================================
     //                 Other AprilTag Getters
     // ======================================================
     
+    // TODO: test
     public int getNumberOfTagsSeen() {
-        return hasTarget() ? targets.size() : 0;
+        return LimelightHelpers.getTargetCount(limelightName);
     }
 
     public int getTargetID() {
-        return hasTarget() ? (int) bestTarget.getFiducialId() : 0;
+        return (int) LimelightHelpers.getFiducialID(limelightName);
     }
 
     public boolean hasTarget() {
-        return result.hasTargets();
+        return LimelightHelpers.getTV(limelightName);
     }
 
     public static Pose2d getAprilTagPose(int tag) {
@@ -292,11 +256,11 @@ public abstract class PhotonVision extends SubsystemBase {
     // ====================================================
 
     public int getPipeline() {
-        return camera.getPipelineIndex(); 
+        return (int) LimelightHelpers.getCurrentPipelineIndex(limelightName);
     }
 
     public void setPipeline(int pipelineIndex) {
-        camera.setPipelineIndex(pipelineIndex);
+        LimelightHelpers.setPipelineIndex(limelightName, pipelineIndex);
     }
 
     // ===============================================
@@ -340,15 +304,17 @@ public abstract class PhotonVision extends SubsystemBase {
     //                 Others
    // ======================================
 
-    public double getTotalLatencyInMS(){
-        return result.metadata.getLatencyMillis();
+    public double getTotalLatencyInMS() {
+        return LimelightHelpers.getLatency_Capture(limelightName) + LimelightHelpers.getLatency_Pipeline(limelightName);
     }
     
     public String getName() {
-        return cameraName;
+        return limelightName;
     }
     
+    // TODO
     public void setBlinking(boolean blinking) {
-        camera.setLED(blinking ? VisionLEDMode.kBlink : VisionLEDMode.kOff);
+        // LimelightHelpers.
+        // camera.setLED(blinking ? VisionLEDMode.kBlink : VisionLEDMode.kOff);
     }
 }

@@ -8,13 +8,13 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Drivetrain;
-import frc.robot.subsystems.PVFrontMiddle;
+import frc.robot.subsystems.LimelightFrontMiddle;
 import frc.robot.subsystems.Superstructure;
 import frc.robot.utils.Constants;
 
 public class AlignAndScore extends Command {
     private Drivetrain drivetrain;
-    private PVFrontMiddle pvFrontMiddle;
+    private LimelightFrontMiddle llFrontMiddle;
     private PIDController translatePIDController, rotationPIDController;
 
     private double translateP, translateI, translateD, translateFF, translateThreshold, translateSetpoint;
@@ -28,7 +28,7 @@ public class AlignAndScore extends Command {
 
     public AlignAndScore(boolean rightAlign) {
         drivetrain = Drivetrain.getInstance();
-        pvFrontMiddle = PVFrontMiddle.getInstance();
+        llFrontMiddle = LimelightFrontMiddle.getInstance();
 
         translatePIDController = new PIDController(translateP, translateI, translateD);
         rotationPIDController = new PIDController(rotationP, rotationI, rotationD);
@@ -85,11 +85,11 @@ public class AlignAndScore extends Command {
     public void initialize() {
         // must see tag!
 
-        int desiredTarget = (int) pvFrontMiddle.getTargetID();
+        int desiredTarget = (int) llFrontMiddle.getTargetID();
         if (Constants.kReefDesiredAngle.containsKey(desiredTarget))
             desiredAngle = Constants.kReefDesiredAngle.get(desiredTarget);
 
-        Pose2d tagPose = pvFrontMiddle.getAprilTagPose(); 
+        Pose2d tagPose = llFrontMiddle.getAprilTagPose(); 
         double tagAngle = tagPose.getRotation().getRadians();
 
         tagBackMagnitude = SmartDashboard.getNumber("align tagBackMagnitude", tagBackMagnitude);
@@ -136,12 +136,12 @@ public class AlignAndScore extends Command {
         if (Math.abs(rotationError) > rotationThreshold)
           rotation = rotationPIDController.calculate(rotationError) + Math.signum(rotationError) * rotationFF;
         
-        if (!pvFrontMiddle.hasTarget()) {
+        if (!llFrontMiddle.hasTarget()) {
             drivetrain.drive(new Translation2d(), rotation, false, null);
             return;
         }
 
-        Pose2d estimatedPose = pvFrontMiddle.getEstimatedPose();
+        Pose2d estimatedPose = llFrontMiddle.getEstimatedPose().pose;
 
         double xError = estimatedPose.getX() - desiredPose.getX();
         double yError = estimatedPose.getY() - desiredPose.getY();
@@ -168,8 +168,8 @@ public class AlignAndScore extends Command {
 
     @Override
     public boolean isFinished() {
-         return (Math.abs(pvFrontMiddle.getEstimatedPose().getX() - desiredPose.getX()) < translateThreshold) 
-                    && (Math.abs(pvFrontMiddle.getEstimatedPose().getY() - desiredPose.getY()) < translateThreshold)
+         return (Math.abs(llFrontMiddle.getEstimatedPose().pose.getX() - desiredPose.getX()) < translateThreshold) 
+                    && (Math.abs(llFrontMiddle.getEstimatedPose().pose.getY() - desiredPose.getY()) < translateThreshold)
                     && (Math.abs(desiredAngle + drivetrain.getHeading()) < rotationThreshold);
 
     }
