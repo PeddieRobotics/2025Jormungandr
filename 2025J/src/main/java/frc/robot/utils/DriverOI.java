@@ -11,6 +11,8 @@ import frc.robot.subsystems.Superstructure.SuperstructureState;
 import static frc.robot.subsystems.Superstructure.SuperstructureState.HP_INTAKE;
 
 import edu.wpi.first.math.geometry.Rotation2d;
+import frc.robot.commands.ReefCommands.AlignToReef2D;
+import frc.robot.commands.ReefCommands.AlignToReef2D.AlignmentDestination;
 import frc.robot.commands.ScoreCommands.AlignAndScore;
 import frc.robot.subsystems.Claw;
 import frc.robot.subsystems.Drivetrain;
@@ -86,11 +88,13 @@ public class DriverOI {
 
         Trigger L1Bumper = new JoystickButton(controller, PS4Controller.Button.kL1.value);
         // TODO: align left if coral, else align HP
-        L1Bumper.onTrue(new InstantCommand(() -> Claw.getInstance().intakePiece(0.50)));
+        // L1Bumper.onTrue(new InstantCommand(() -> Claw.getInstance().intakePiece(0.50)));
+        L1Bumper.whileTrue(new AlignToReef2D(AlignmentDestination.LEFT));
 
         Trigger R1Bumper = new JoystickButton(controller, PS4Controller.Button.kR1.value);
         // TODO: align right if coral, else align HP
-        R1Bumper.onTrue(new InstantCommand(() -> Claw.getInstance().stopClaw()));
+        // R1Bumper.onTrue(new InstantCommand(() -> Claw.getInstance().stopClaw()));
+        R1Bumper.whileTrue(new AlignToReef2D(AlignmentDestination.RIGHT));
 
         Trigger L2Trigger = new JoystickButton(controller, PS4Controller.Button.kL2.value);
 
@@ -102,11 +106,11 @@ public class DriverOI {
 
         Trigger optionButton = new JoystickButton(controller, PS4Controller.Button.kOptions.value);
         optionButton.onTrue(new InstantCommand(() -> Drivetrain.getInstance()
-                .resetTranslation(LimelightFrontMiddle.getInstance().getEstimatedPoseMT1().pose.getTranslation())));
+                .resetTranslation(LimelightFrontMiddle.getInstance().getEstimatedPoseMT1().get().pose.getTranslation())));
 
         Trigger shareButton = new JoystickButton(controller, PS4Controller.Button.kShare.value);
         shareButton.onTrue(new InstantCommand(() -> Drivetrain.getInstance()
-                .resetPureOdometryTranslation(LimelightFrontMiddle.getInstance().getEstimatedPoseMT1().pose.getTranslation())));
+                .resetPureOdometryTranslation(LimelightFrontMiddle.getInstance().getEstimatedPoseMT1().get().pose.getTranslation())));
     }
 
     public boolean bothBumpersHeld() {

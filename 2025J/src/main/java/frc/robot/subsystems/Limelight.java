@@ -82,8 +82,8 @@ public abstract class Limelight extends SubsystemBase {
     private DoubleArraySubscriber megatag1Subscriber, megatag2Subscriber;
     private PoseObservation[] poseObservationsMT2;
     
-    private Field2d field;
-    private StructPublisher<Pose2d> publisher;
+    private Field2d fieldMT1, fieldMT2;
+    private StructPublisher<Pose2d> publisherMT1, publisherMT2;
 
     protected Limelight(String limelightName, double cameraUpOffset, double cameraPitchDegrees) {
         aprilTagFieldLayout = AprilTagFieldLayout.loadField(AprilTagFields.kDefaultField);
@@ -103,19 +103,35 @@ public abstract class Limelight extends SubsystemBase {
         distTyFilter = LinearFilter.singlePoleIIR(0.24, 0.02);
         distEstimatedPoseFilter = LinearFilter.singlePoleIIR(0.24, 0.02);
 
-        field = new Field2d();
-        SmartDashboard.putData(limelightName + " estimated pose", field);
+        fieldMT1 = new Field2d();
+        fieldMT2 = new Field2d();
+        SmartDashboard.putData(limelightName + " estimated pose (MT1)", fieldMT1);
+        SmartDashboard.putData(limelightName + " estimated pose (MT2)", fieldMT1);
 
-        publisher = NetworkTableInstance.getDefault().getStructTopic(limelightName + " estimated pose for advantagescope", Pose2d.struct).publish();
+        publisherMT1 = NetworkTableInstance.getDefault().getStructTopic(
+            limelightName + " estimated pose for advantagescope (MT1)", Pose2d.struct
+        ).publish();
+        publisherMT1 = NetworkTableInstance.getDefault().getStructTopic(
+            limelightName + " estimated pose for advantagescope (MT2)", Pose2d.struct
+        ).publish();
     }
     
     @Override 
     public void periodic() {
         updateRollingAverages();
 
-        Pose2d estimatedPose = getEstimatedPoseMT1().pose;
-        field.setRobotPose(estimatedPose);
-        publisher.set(estimatedPose);
+        Optional<PoseEstimate> estimatedPoseMT1 = getEstimatedPoseMT1();
+        if (estimatedPoseMT1.isPresent()) {
+            fieldMT1.setRobotPose(estimatedPoseMT1.get().pose);
+            publisherMT1.set(estimatedPoseMT1.get().pose);
+        }
+
+        Optional<PoseObservation> poseObservationMT2 = getEstimatedPoseMT2();
+        if (poseObservationMT2.isPresent()) {
+            Pose2d estimatedPoseMT2 = poseObservationMT2.get().pose.toPose2d();
+            fieldMT2.setRobotPose(estimatedPoseMT2);
+            publisherMT2.set(estimatedPoseMT2);
+        }
 
         SmartDashboard.putNumber(limelightName + " Tx", getTx());
         SmartDashboard.putNumber(limelightName + " Ty", getTy());
@@ -193,8 +209,9 @@ public abstract class Limelight extends SubsystemBase {
     //                 Pose/Translation Getters
     // ========================================================
         
-    public PoseEstimate getEstimatedPoseMT1() {
-        return LimelightHelpers.getBotPoseEstimate_wpiBlue(limelightName);
+    public Optional<PoseEstimate> getEstimatedPoseMT1() {
+        PoseEstimate poseEstimate = LimelightHelpers.getBotPoseEstimate_wpiBlue(limelightName);
+        return poseEstimate == null ? Optional.empty() : Optional.of(poseEstimate);
     }
 
     // public PoseEstimate getEstimatedPoseMT2() {
@@ -209,7 +226,7 @@ public abstract class Limelight extends SubsystemBase {
 
     // public Optional<PoseObservation> getEstimatedPoseMT2() {
     //     if (poseObservations.length != 0)
-    //         return Optional.of(poseObservations[0]);
+    //         return Optional.of(poseObservations[0]
     //     else
     //         return Optional.empty();
     // }
@@ -218,8 +235,10 @@ public abstract class Limelight extends SubsystemBase {
         if (!hasTarget())
             return;
         
-        PoseEstimate estimatedPoseEstimate = getEstimatedPoseMT1();
-        Pose2d estimatedPose = estimatedPoseEstimate.pose;
+        Optional<PoseEstimate> estimatedPoseEstimate = getEstimatedPoseMT1();
+        if (!estimatedPoseEstimate.isPresent())
+            return;
+        Pose2d estimatedPose = estimatedPoseEstimate.get().pose;
         // if (Math.abs(estimatedPose.getZ()) > 0.4)
         //     return;
 
@@ -250,7 +269,7 @@ public abstract class Limelight extends SubsystemBase {
             deviation, deviation, 30
         ));
 
-        odometry.addVisionMeasurement(estimatedPose, estimatedPoseEstimate.timestampSeconds);
+        odometry.addVisionMeasurement(estimatedPose, estimatedPoseEstimate.get().timestampSeconds);
     }
 
     // =======================================================
@@ -279,7 +298,11 @@ public abstract class Limelight extends SubsystemBase {
             return 0;
 
         Pose2d tag = aprilTagPose.get().toPose2d();
-        Pose2d robotPose = getEstimatedPoseMT1().pose;
+
+        Optional<PoseEstimate> estimatedPoseEstimate = getEstimatedPoseMT1();
+        if (!estimatedPoseEstimate.isPresent())
+            return 0;
+        Pose2d robotPose = estimatedPoseEstimate.get().pose;
 
         double dx = tag.getX() - robotPose.getX();
         double dy = tag.getY() - robotPose.getY();

@@ -141,7 +141,8 @@ public class AlignAndScore extends Command {
             return;
         }
 
-        Pose2d estimatedPose = llFrontMiddle.getEstimatedPoseMT1().pose;
+        // TODO: deal with getEstimatedPose not being present
+        Pose2d estimatedPose = llFrontMiddle.getEstimatedPoseMT1().get().pose;
 
         double xError = estimatedPose.getX() - desiredPose.getX();
         double yError = estimatedPose.getY() - desiredPose.getY();
@@ -168,9 +169,10 @@ public class AlignAndScore extends Command {
 
     @Override
     public boolean isFinished() {
-         return (Math.abs(llFrontMiddle.getEstimatedPoseMT1().pose.getX() - desiredPose.getX()) < translateThreshold) 
-                    && (Math.abs(llFrontMiddle.getEstimatedPoseMT1().pose.getY() - desiredPose.getY()) < translateThreshold)
-                    && (Math.abs(desiredAngle + drivetrain.getHeading()) < rotationThreshold);
+        return false;
+        //  return (Math.abs(llFrontMiddle.getEstimatedPoseMT1().pose.getX() - desiredPose.getX()) < translateThreshold) 
+        //             && (Math.abs(llFrontMiddle.getEstimatedPoseMT1().pose.getY() - desiredPose.getY()) < translateThreshold)
+        //             && (Math.abs(desiredAngle + drivetrain.getHeading()) < rotationThreshold);
 
     }
 }

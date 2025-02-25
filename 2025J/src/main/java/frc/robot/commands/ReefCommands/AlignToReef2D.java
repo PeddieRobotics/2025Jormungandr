@@ -5,9 +5,11 @@
 package frc.robot.commands.ReefCommands;
 
 import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.Limelight;
+import frc.robot.subsystems.LimelightFrontLeft;
 import frc.robot.subsystems.LimelightFrontMiddle;
+import frc.robot.subsystems.LimelightFrontRight;
 import frc.robot.utils.Constants;
-import frc.robot.utils.DriverOI;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.Timer;
@@ -15,9 +17,12 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 
 public class AlignToReef2D extends Command {
+    public enum AlignmentDestination {
+        LEFT, CENTER, RIGHT
+    }
+
     private Drivetrain drivetrain;
-    private DriverOI oi;
-    private LimelightFrontMiddle llFrontMiddle;
+    private Limelight limelight;
 
     private PIDController rotationPidController, translationPidController, distancePidController;
     private double rotationUseLowerPThreshold, rotationThresholdP;
@@ -32,16 +37,20 @@ public class AlignToReef2D extends Command {
     private double desiredTranslation;
     private Translation2d translation;
     
-    //private double constantSpeedAuto;
-
-    /**
-     * Creates a new ExampleCommand.
-     *
-     * @param subsystem The subsystem used by this command.
-     */
-    public AlignToReef2D() {
+    public AlignToReef2D(AlignmentDestination destination) {
         drivetrain = Drivetrain.getInstance();
-        llFrontMiddle = LimelightFrontMiddle.getInstance();
+        
+        switch (destination) {
+            case LEFT:
+                limelight = LimelightFrontRight.getInstance();
+                break;
+            case CENTER:
+                limelight = LimelightFrontMiddle.getInstance();
+                break;
+            case RIGHT:
+                limelight = LimelightFrontLeft.getInstance();
+                break;
+        }
 
         desiredAngle = 0;
         desiredDistance = 0.72;
@@ -105,9 +114,7 @@ public class AlignToReef2D extends Command {
     // Called when the command is initially scheduled.
     @Override
     public void initialize() {
-        oi = DriverOI.getInstance();
-
-        int desiredTarget = (int) llFrontMiddle.getTargetID();
+        int desiredTarget = (int) limelight.getTargetID();
         if (!Constants.kReefDesiredAngle.containsKey(desiredTarget))
             return;
         desiredAngle = Constants.kReefDesiredAngle.get(desiredTarget);
@@ -163,12 +170,12 @@ public class AlignToReef2D extends Command {
         translationPidController.setPID(translationP, translationI, translationD);
         distancePidController.setPID(distanceP, distanceI, distanceD);
 
-        double distance = llFrontMiddle.getDistanceEstimatedPose();
+        double distance = limelight.getDistanceEstimatedPose();
         
         double horizontalTranslation = 0;
         double forBackTranslation = 0;
-        if (llFrontMiddle.hasTarget()) {
-            txValue = llFrontMiddle.getTx();
+        if (limelight.hasTarget()) {
+            txValue = limelight.getTx();
             
             double translationError = distance * Math.sin((txValue-desiredTx)*(Math.PI/180));
             
