@@ -5,8 +5,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-import frc.robot.commands.ManualArmControl;
-import frc.robot.commands.ManualElevatorControl;
+// import frc.robot.commands.ManualArmControl;
+// import frc.robot.commands.ManualElevatorControl;
 import frc.robot.subsystems.Claw;
 import frc.robot.subsystems.Superstructure;
 import frc.robot.subsystems.Superstructure.SuperstructureState;
@@ -69,11 +69,11 @@ public class OperatorOI {
         Trigger R1Bumper = new JoystickButton(controller, PS4Controller.Button.kR1.value);
         R1Bumper.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.L4_PREP)));
 
-        Trigger L2Trigger = new JoystickButton(controller, PS4Controller.Button.kL2.value);
-        L2Trigger.whileTrue(new ManualElevatorControl());
+        // Trigger L2Trigger = new JoystickButton(controller, PS4Controller.Button.kL2.value);
+        // L2Trigger.whileTrue(new ManualElevatorControl());
 
-        Trigger R2Trigger = new JoystickButton(controller, PS4Controller.Button.kR2.value);
-        R2Trigger.whileTrue(new ManualArmControl());
+        // Trigger R2Trigger = new JoystickButton(controller, PS4Controller.Button.kR2.value);
+        // R2Trigger.whileTrue(new ManualArmControl());
 
         Trigger L3Trigger = new JoystickButton(controller, PS4Controller.Button.kL3.value);
 

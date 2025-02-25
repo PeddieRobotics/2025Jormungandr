@@ -115,6 +115,10 @@ public abstract class Limelight extends SubsystemBase {
         //     limelightName + " estimated pose for advantagescope (MT2)", Pose2d.struct
         // ).publish();
     }
+
+    public void setPriorityTag(int tagNum) {
+        LimelightHelpers.setPriorityTagID(limelightName, tagNum);
+    }
     
     @Override 
     public void periodic() {
