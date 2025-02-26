@@ -28,7 +28,7 @@ public class Lights extends SubsystemBase {
 
     private final CANdle candle;
     private double lastIntaked;
-    private boolean isClimbing;
+    // private boolean isClimbing;
     private LightState systemState, requestedSystemState;
     
     private LimelightBack llBack;

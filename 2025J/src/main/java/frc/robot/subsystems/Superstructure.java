@@ -25,8 +25,6 @@ public class Superstructure extends SubsystemBase {
     private SuperstructureState systemState;
     private SuperstructureState requestedSystemState;
 
-    private boolean algaeIndex, bothCoralSensorsTriggered;
-
     private Timer timer;
 
     public enum SuperstructureState {
@@ -53,8 +51,6 @@ public class Superstructure extends SubsystemBase {
         EJECT_CORAL
     }
 
-    private boolean clawIncremented = false;
-
     public Superstructure() {
         systemState = STOW;
         requestedSystemState = STOW;
@@ -65,9 +61,6 @@ public class Superstructure extends SubsystemBase {
         // hpIntake = HPIntake.getInstance();
 
         timer = new Timer();
-        // timer.start();
-        algaeIndex = false;
-        bothCoralSensorsTriggered = false;
         SmartDashboard.putBoolean("algaeIndex", false);
         SmartDashboard.putBoolean("coralIndex", false);
     }
@@ -96,9 +89,6 @@ public class Superstructure extends SubsystemBase {
         SmartDashboard.putString("current superstructure state", systemState.toString());
         SmartDashboard.putString("requested superstructure state", requestedSystemState.toString());
 
-        bothCoralSensorsTriggered = claw.bothCoralSensorsTriggered();
-        algaeIndex = claw.hasAlgae();
-
         switch (systemState) {
             case STOW -> {
                 // stop intake
@@ -107,7 +97,7 @@ public class Superstructure extends SubsystemBase {
                 // arm.setArmPositionMotionMagicTorqueCurrentFOC(ScoreConstants.kArmStowPosition);
                 arm.setArmPositionVoltage(ScoreConstants.kArmStowPosition);
                 elevator.setElevatorPositionVoltage(ScoreConstants.kElevatorStowPosition);
-                if (algaeIndex) {
+                if (claw.hasAlgae()) {
                     claw.holdAlgae();
                 } else {
                     claw.stopClaw();
@@ -143,7 +133,7 @@ public class Superstructure extends SubsystemBase {
 
                 // add gate to check elevator height and arm angle ?
 
-                if(claw.getTopSensor() && claw.getBottomSensor()) {
+                if(claw.bothCoralSensorsTriggered()) {
                     claw.stopClaw();
                     requestState(STOW);
                 } else if (claw.getTopSensor() && !claw.getBottomSensor()){
@@ -167,7 +157,6 @@ public class Superstructure extends SubsystemBase {
                         EJECT_ALGAE,
                         EJECT_CORAL)
                         .contains(requestedSystemState)) {
-                    clawIncremented = false;
                     systemState = requestedSystemState;
                 }
             }
@@ -526,7 +515,7 @@ public class Superstructure extends SubsystemBase {
                     timer.start();
                     claw.outtakePiece();
 
-                } else if (timer.hasElapsed(ScoreConstants.kBargeTimeout) || !algaeIndex) {
+                } else if (timer.hasElapsed(ScoreConstants.kBargeTimeout) || !claw.hasAlgae()) {
                     timer.reset();
 
                     // stop everything
@@ -574,7 +563,7 @@ public class Superstructure extends SubsystemBase {
                     timer.start();
                     claw.outtakePiece();
 
-                } else if (timer.hasElapsed(ScoreConstants.kProcessorTimeout) || !algaeIndex) {
+                } else if (timer.hasElapsed(ScoreConstants.kProcessorTimeout) || !claw.hasAlgae()) {
                     timer.reset();
 
                     // stop everything
@@ -598,7 +587,7 @@ public class Superstructure extends SubsystemBase {
                 arm.setArmPositionMotionMagicTorqueCurrentFOC(ScoreConstants.kArmReef1IntakePosition);
                 claw.intakePiece(ClawConstants.kAlgaeIntakeSpeed);
 
-                if (algaeIndex) {
+                if (claw.hasAlgae()) {
                     claw.holdAlgae();
                 }
 
@@ -625,7 +614,7 @@ public class Superstructure extends SubsystemBase {
                 arm.setArmPositionMotionMagicTorqueCurrentFOC(ScoreConstants.kArmReef2IntakePosition);
                 claw.intakePiece(ClawConstants.kAlgaeIntakeSpeed);
 
-                if (algaeIndex) {
+                if (claw.hasAlgae()) {
                     claw.holdAlgae();
                 }
 
@@ -650,7 +639,7 @@ public class Superstructure extends SubsystemBase {
             case EJECT_ALGAE -> {
                 claw.outtakePiece();
 
-                if (!algaeIndex) {
+                if (!claw.hasAlgae()) {
                     claw.stopClaw();
                     requestState(HP_INTAKE);
                 }
