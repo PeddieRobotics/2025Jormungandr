@@ -192,7 +192,7 @@ public final class Constants {
         public static final double kElevatorL1ScorePosition = 2.6;
         public static final double kElevatorL2ScorePosition = 3.9;
         public static final double kElevatorL3ScorePosition = 6.9;
-        public static final double kElevatorL4PrestagePosition = 0.0;
+        public static final double kElevatorL4PrestagePosition = 6.0;
         public static final double kElevatorL4ScorePosition = 12.5; 
         public static final double kElevatorBargePrestagePosition = 0.0;
         public static final double kElevatorBargeScorePosition = 0.0;
