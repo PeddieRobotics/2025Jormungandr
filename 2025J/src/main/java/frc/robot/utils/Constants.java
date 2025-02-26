@@ -347,10 +347,10 @@ public final class Constants {
         public static final double kCoralOuttakeSpeed = 1.0;
         public static final double kCoralSlowIntake = 0.5;
 
-        public static final double kAlgaeIntakeSpeed = 0.0;
-        public static final double kAlgaeOuttakeSpeed = 0.0;
+        public static final double kAlgaeIntakeSpeed = 0.5;
+        public static final double kAlgaeOuttakeSpeed = -0.5;
 
-        public static final double kAlgaeHoldSpeed = 0.0;
+        public static final double kAlgaeHoldSpeed = 0.1;
 
         public static final double kCoralPositionIncrement = 3.0;
     }
