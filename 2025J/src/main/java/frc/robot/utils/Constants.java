@@ -180,11 +180,11 @@ public final class Constants {
     public static final class ScoreConstants {
         // TODO: NOT DEFINED YET!!!!
         public static final double kL1ScoreTimeout = 1.0;
-        public static final double kL2ScoreTimeout = 1.0; // NOT DEFINED YET!!!!
-        public static final double kL3ScoreTimeout = 1.0; // NOT DEFINED YET!!!!
-        public static final double kL4ScoreTimeout = 1.0; // NOT DEFINED YET!!!!
-        public static final double kProcessorTimeout = 10.0; // NOT DEFINED YET!!!!
-        public static final double kBargeTimeout = 10.0; // NOT DEFINED YET!!!!
+        public static final double kL2ScoreTimeout = 1.0; 
+        public static final double kL3ScoreTimeout = 1.0; 
+        public static final double kL4ScoreTimeout = 1.0; 
+        public static final double kProcessorTimeout = 2.0; 
+        public static final double kBargeTimeout = 2.0;
 
         public static final double kElevatorStowPosition = 0.0;
         public static final double kElevatorHPIntakePosition = 0.0;
@@ -202,15 +202,15 @@ public final class Constants {
 
         public static final double kArmStowPosition = 0.25;
         public static final double kArmHPIntakePosition = 0.25;
-        public static final double kArmGroundIntakePosition = 0.0;
+        public static final double kArmGroundIntakePosition = 0.25;
         public static final double kArmL1ScorePosition = 0.25;
         public static final double kArmL2ScorePosition = 0.25;
         public static final double kArmL3ScorePosition = 0.25;
         public static final double kArmL4ScorePosition = 0.25;
-        public static final double kArmBargeScorePosition = 0.0;
-        public static final double kArmProcessorScorePosition = 0.0;
-        public static final double kArmReef1IntakePosition = 0.0;
-        public static final double kArmReef2IntakePosition = 0.0;
+        public static final double kArmBargeScorePosition = 0.25;
+        public static final double kArmProcessorScorePosition = 0.25;
+        public static final double kArmReef1IntakePosition = 0.25;
+        public static final double kArmReef2IntakePosition = 0.25;
 
     }
 
@@ -220,7 +220,6 @@ public final class Constants {
         public static final double kArmForwardTorqueCurrentLimit = 40;
         public static final double kArmReverseTorqueCurrentLimit = -40;
 
-        // public static final double kArmMagnetOffset = -0.477439 * 2.0 + 0.50;
         public static final double kArmMagnetOffset = -0.652588 * 2.0 + 0.5;
 
         public static final double kArmReduction = 120.0 / 1.0;
