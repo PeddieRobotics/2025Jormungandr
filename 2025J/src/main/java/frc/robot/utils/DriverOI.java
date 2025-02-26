@@ -86,11 +86,9 @@ public class DriverOI {
 
         Trigger L1Bumper = new JoystickButton(controller, PS4Controller.Button.kL1.value);
         // TODO: align left if coral, else align HP
-        L1Bumper.onTrue(new InstantCommand(() -> Claw.getInstance().intakePiece(0.50)));
 
         Trigger R1Bumper = new JoystickButton(controller, PS4Controller.Button.kR1.value);
         // TODO: align right if coral, else align HP
-        R1Bumper.onTrue(new InstantCommand(() -> Claw.getInstance().stopClaw()));
 
         Trigger L2Trigger = new JoystickButton(controller, PS4Controller.Button.kL2.value);
 

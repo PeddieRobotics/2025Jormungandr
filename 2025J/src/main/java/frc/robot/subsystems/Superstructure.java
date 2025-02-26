@@ -160,7 +160,6 @@ public class Superstructure extends SubsystemBase {
                         L2_PREP,
                         L3_PREP,
                         L4_PRESTAGE,
-                        L4_PREP,
                         BARGE_PRESTAGE,
                         PROCESSOR_PREP,
                         REEF1_ALGAE_INTAKE,
@@ -321,13 +320,6 @@ public class Superstructure extends SubsystemBase {
             }
 
             case L4_PREP -> {
-                // set prep angle
-                /*
-                 * move elevator to scoring height
-                 * one case:
-                 * - dunk/score case
-                 * move to angle close to scoring angle (vertical)
-                 */
                 // elevator.setElevatorPositionMotionMagicTorqueCurrentFOC(ScoreConstants.kElevatorL4ScorePosition);
                 // arm.setArmPositionMotionMagicTorqueCurrentFOC(ScoreConstants.kArmL4ScorePosition);
                 elevator.setElevatorPositionVoltage(ScoreConstants.kElevatorL4ScorePosition);

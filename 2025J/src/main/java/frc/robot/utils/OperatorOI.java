@@ -38,26 +38,22 @@ public class OperatorOI {
         controller = new PS4Controller(1);
 
         Trigger xButton = new JoystickButton(controller, PS4Controller.Button.kCross.value);
-        //xButton.onTrue(new InstantCommand(() -> Claw.getInstance().intakePiece(-0.50)));
         xButton.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.L1_PREP)));
 
         Trigger circleButton = new JoystickButton(controller, PS4Controller.Button.kCircle.value);
-        // circleButton.onTrue(new InstantCommand(() -> Claw.getInstance().intakePiece(-0.50)));
         circleButton.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.L2_PREP)));
 
         Trigger squareButton = new JoystickButton(controller, PS4Controller.Button.kSquare.value);
         squareButton.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.L3_PREP)));
 
         Trigger triangleButton = new JoystickButton(controller, PS4Controller.Button.kTriangle.value);
-        // triangleButton.onTrue(new InstantCommand(() -> Claw.getInstance().stopClaw()));
-        // triangleButton.onTrue(new InstantCommand(() -> {
-        //     if (superstructure.getCurrentState() == SuperstructureState.L4_PRESTAGE) {
-        //         superstructure.requestState(SuperstructureState.L4_PREP);
-        //     } else {
-        //         superstructure.requestState(SuperstructureState.L4_PRESTAGE);
-        //     }
-        // }));
-        triangleButton.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.L4_PREP)));
+        triangleButton.onTrue(new InstantCommand(() -> {
+            if (superstructure.getCurrentState() == SuperstructureState.L4_PRESTAGE) {
+                superstructure.requestState(SuperstructureState.L4_PREP);
+            } else {
+                superstructure.requestState(SuperstructureState.L4_PRESTAGE);
+            }
+        }));
 
         Trigger touchpadButton = new JoystickButton(controller, PS4Controller.Button.kTouchpad.value);
         touchpadButton.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.STOW)));
@@ -65,16 +61,16 @@ public class OperatorOI {
         Trigger muteButton = new JoystickButton(controller, 15);
 
         Trigger L1Bumper = new JoystickButton(controller, PS4Controller.Button.kL1.value);
-        L1Bumper.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.BARGE_PREP)));
+        // L1Bumper.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.BARGE_PREP)));
 
         Trigger R1Bumper = new JoystickButton(controller, PS4Controller.Button.kR1.value);
-        R1Bumper.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.L4_PREP)));
+        // R1Bumper.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.L4_PREP)));
 
         Trigger L2Trigger = new JoystickButton(controller, PS4Controller.Button.kL2.value);
-        L2Trigger.whileTrue(new ManualElevatorControl());
+        // L2Trigger.whileTrue(new ManualElevatorControl());
 
         Trigger R2Trigger = new JoystickButton(controller, PS4Controller.Button.kR2.value);
-        R2Trigger.whileTrue(new ManualArmControl());
+        // R2Trigger.whileTrue(new ManualArmControl());
 
         Trigger L3Trigger = new JoystickButton(controller, PS4Controller.Button.kL3.value);
 
@@ -83,22 +79,22 @@ public class OperatorOI {
         Trigger ps5Button = new JoystickButton(controller, PS4Controller.Button.kPS.value);
 
         Trigger dpadUpTrigger = new Trigger(() -> controller.getPOV() == 0);
-        dpadUpTrigger.onTrue(new InstantCommand(() -> {
-            if (superstructure.getCurrentState() == SuperstructureState.BARGE_PRESTAGE) {
-                superstructure.requestState(SuperstructureState.BARGE_PREP);
-            } else {
-                superstructure.requestState(SuperstructureState.BARGE_PRESTAGE);
-            }
-        }));
+        // dpadUpTrigger.onTrue(new InstantCommand(() -> {
+        //     if (superstructure.getCurrentState() == SuperstructureState.BARGE_PRESTAGE) {
+        //         superstructure.requestState(SuperstructureState.BARGE_PREP);
+        //     } else {
+        //         superstructure.requestState(SuperstructureState.BARGE_PRESTAGE);
+        //     }
+        // }));
 
         Trigger dpadLeftTrigger = new Trigger(() -> controller.getPOV() == 270);
-        dpadLeftTrigger.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.REEF1_ALGAE_INTAKE)));
+        // dpadLeftTrigger.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.REEF1_ALGAE_INTAKE)));
 
         Trigger dpadRightTrigger = new Trigger(() -> controller.getPOV() == 90);
-        dpadRightTrigger.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.REEF2_ALGAE_INTAKE)));
+        // dpadRightTrigger.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.REEF2_ALGAE_INTAKE)));
 
         Trigger dpadDownTrigger = new Trigger(() -> controller.getPOV() == 180);
-        dpadDownTrigger.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.PROCESSOR_PREP)));
+        // dpadDownTrigger.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.PROCESSOR_PREP)));
 
         Trigger optionButton = new JoystickButton(controller, PS4Controller.Button.kOptions.value);
         // TODO: home elevator
