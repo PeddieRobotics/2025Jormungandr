@@ -20,10 +20,10 @@ import edu.wpi.first.networktables.StructPublisher;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.utils.Constants;
-import frc.robot.utils.LimelightHelpers;
-import frc.robot.utils.LimelightHelpers.PoseEstimate;
-import frc.robot.utils.RollingAverage;
+import frc.robot.util.Constants;
+import frc.robot.util.LimelightHelpers;
+import frc.robot.util.LimelightHelpers.PoseEstimate;
+import frc.robot.util.RollingAverage;
 
 public abstract class Limelight extends SubsystemBase {
     /**
@@ -55,19 +55,6 @@ public abstract class Limelight extends SubsystemBase {
                 / Math.tan(cameraPitchRadians + targetPitchRadians);
     }
 
-    public static enum PoseObservationType {
-        MEGATAG_1,
-        MEGATAG_2
-    }
-    public static record PoseObservation (
-        double timestamp,
-        Pose3d pose,
-        double ambiguity,
-        int tagCount,
-        double averageTagDistance,
-        PoseObservationType type
-    ) {}
-
     private static AprilTagFieldLayout aprilTagFieldLayout;
 
     private RollingAverage txAverage, tyAverage;
@@ -78,11 +65,7 @@ public abstract class Limelight extends SubsystemBase {
     private double cameraUpOffset;
     private double cameraPitchRadians;
     private boolean isInverted;
-    
-    private DoubleArrayPublisher orientationPublisher;
-    private DoubleArraySubscriber megatag1Subscriber, megatag2Subscriber;
-    private PoseObservation[] poseObservationsMT2;
-    
+        
     private Field2d fieldMT1, fieldMT2;
     private StructPublisher<Pose2d> publisherMT1, publisherMT2;
 
@@ -93,11 +76,6 @@ public abstract class Limelight extends SubsystemBase {
         this.cameraUpOffset = cameraUpOffset;
         this.cameraPitchRadians = Math.toRadians(cameraPitchDegrees);
         this.isInverted = isInverted;
-
-        var table = NetworkTableInstance.getDefault().getTable(limelightName);
-        orientationPublisher = table.getDoubleArrayTopic("robot_orientation_set").publish();
-        // megatag1Subscriber = table.getDoubleArrayTopic("botpose_wpiblue").subscribe(new double[] {});
-        megatag2Subscriber = table.getDoubleArrayTopic("botpose_orb_wpiblue").subscribe(new double[] {});
 
         txAverage = new RollingAverage();
         tyAverage = new RollingAverage();
@@ -125,6 +103,7 @@ public abstract class Limelight extends SubsystemBase {
     @Override 
     public void periodic() {
         updateRollingAverages();
+        LimelightHelpers.SetRobotOrientation(limelightName, Drivetrain.getInstance().getHeading(), 0, 0, 0, 0, 0);
 
         Optional<Pose2d> estimatedPoseMT1 = getEstimatedPoseMT1();
         if (estimatedPoseMT1.isPresent()) {
@@ -132,11 +111,10 @@ public abstract class Limelight extends SubsystemBase {
             publisherMT1.set(estimatedPoseMT1.get());
         }
 
-        Optional<PoseObservation> poseObservationMT2 = getEstimatedPoseMT2();
-        if (poseObservationMT2.isPresent()) {
-            Pose2d estimatedPoseMT2 = poseObservationMT2.get().pose.toPose2d();
-            fieldMT2.setRobotPose(estimatedPoseMT2);
-            publisherMT2.set(estimatedPoseMT2);
+        Optional<Pose2d> estimatedPoseMT2 = getEstimatedPoseMT2();
+        if (estimatedPoseMT2.isPresent()) {
+            fieldMT2.setRobotPose(estimatedPoseMT2.get());
+            publisherMT2.set(estimatedPoseMT2.get());
         }
 
         SmartDashboard.putNumber(limelightName + " Tx", getTx());
@@ -150,66 +128,6 @@ public abstract class Limelight extends SubsystemBase {
         SmartDashboard.putBoolean(limelightName + " has target", hasTarget());
 
         SmartDashboard.putNumber(limelightName + " current priority", LimelightHelpers.getLimelightNTDouble(limelightName, "priorityid"));
-
-        orientationPublisher.accept(new double[] { Drivetrain.getInstance().getHeading(), 0.0, 0.0, 0.0, 0.0, 0.0 });
-        NetworkTableInstance.getDefault().flush();
-        
-        List<PoseObservation> poseObservations = new LinkedList<>();
-        // for (var rawSample : megatag1Subscriber.readQueue()) {
-        //     if (rawSample.value.length == 0)
-        //         continue;
-        //     poseObservations.add(
-        //         new PoseObservation(
-        //             // Timestamp, based on server timestamp of publish and latency
-        //             rawSample.timestamp * 1.0e-6 - rawSample.value[6] * 1.0e-3,
-
-        //             // 3D pose estimate
-        //             parsePose(rawSample.value),
-
-        //             // Ambiguity, using only the first tag because ambiguity isn't
-        //             // applicable for multitag
-        //             rawSample.value.length >= 18 ? rawSample.value[17] : 0.0,
-
-        //             // Tag count
-        //             (int) rawSample.value[7],
-
-        //             // Average tag distance
-        //             rawSample.value[9],
-
-        //             // Observation type
-        //             PoseObservationType.MEGATAG_1
-        //         )
-        //     );
-        // }
-        for (var rawSample : megatag2Subscriber.readQueue()) {
-            if (rawSample.value.length == 0)
-                continue;
-            poseObservations.add(
-                new PoseObservation(
-                    // Timestamp, based on server timestamp of publish and latency
-                    rawSample.timestamp * 1.0e-6 - rawSample.value[6] * 1.0e-3,
-
-                    // 3D pose estimate
-                    parsePose(rawSample.value),
-
-                    // Ambiguity, zeroed because the pose is already disambiguated
-                    0.0,
-
-                    // Tag count
-                    (int) rawSample.value[7],
-
-                    // Average tag distance
-                    rawSample.value[9],
-
-                    // Observation type
-                    PoseObservationType.MEGATAG_2
-                )
-            );
-        }
-        
-        poseObservationsMT2 = new PoseObservation[poseObservations.size()];
-        for (int i = 0; i < poseObservations.size(); i++)
-            poseObservationsMT2[i] = poseObservations.get(i);
     }
 
 
@@ -227,22 +145,10 @@ public abstract class Limelight extends SubsystemBase {
         return poseEstimate == null ? Optional.empty() : Optional.of(poseEstimate.pose);
     }
 
-    // public PoseEstimate getEstimatedPoseMT2() {
-    public Optional<PoseObservation> getEstimatedPoseMT2() {
-        // LimelightHelpers.SetRobotOrientation("limelight", m_poseEstimator.getEstimatedPosition().getRotation().getDegrees(), 0, 0, 0, 0, 0);
-        // return LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2(limelightName);
-        if (poseObservationsMT2 == null || poseObservationsMT2.length == 0)
-            return Optional.empty();
-        else
-            return Optional.of(poseObservationsMT2[0]);
+    public Optional<Pose2d> getEstimatedPoseMT2() {
+        PoseEstimate poseEstimate = LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2(limelightName);
+        return poseEstimate == null ? Optional.empty() : Optional.of(poseEstimate.pose);
     }
-
-    // public Optional<PoseObservation> getEstimatedPoseMT2() {
-    //     if (poseObservations.length != 0)
-    //         return Optional.of(poseObservations[0]
-    //     else
-    //         return Optional.empty();
-    // }
     
     public void fuseEstimatedPose(SwerveDrivePoseEstimator odometry) {
         if (!hasTarget())
@@ -445,18 +351,5 @@ public abstract class Limelight extends SubsystemBase {
     public void setBlinking(boolean blinking) {
         // LimelightHelpers.
         // camera.setLED(blinking ? VisionLEDMode.kBlink : VisionLEDMode.kOff);
-    }
-    
-    private static Pose3d parsePose(double[] rawLLArray) {
-        return new Pose3d(
-            rawLLArray[0],
-            rawLLArray[1],
-            rawLLArray[2],
-            new Rotation3d(
-                Units.degreesToRadians(rawLLArray[3]),
-                Units.degreesToRadians(rawLLArray[4]),
-                Units.degreesToRadians(rawLLArray[5])
-            )
-        );
     }
 }
