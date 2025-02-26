@@ -25,7 +25,7 @@ public class Superstructure extends SubsystemBase {
     private SuperstructureState systemState;
     private SuperstructureState requestedSystemState;
 
-    private boolean algaeIndex, bothCoralSensorsTriggered; // get from intakes :) - not yet set up... :/
+    private boolean algaeIndex, bothCoralSensorsTriggered;
 
     private Timer timer;
 
@@ -143,16 +143,15 @@ public class Superstructure extends SubsystemBase {
 
                 // add gate to check elevator height and arm angle ?
 
-                if (claw.getTopSensor() && !claw.getBottomSensor()) {
+                if(claw.getTopSensor() && claw.getBottomSensor()) {
+                    claw.stopClaw();
+                    requestState(STOW);
+                } else if (claw.getTopSensor() && !claw.getBottomSensor()){
                     claw.intakePiece(ClawConstants.kCoralSlowIntake);
-                } 
-                else if (bothCoralSensorsTriggered && !clawIncremented) {
-                    clawIncremented = true;
-                    claw.incrementClaw();
-                } 
-                else if (!claw.getTopSensor()){
+                } else {
                     claw.intakePiece(ClawConstants.kCoralIntakeSpeed);
                 }
+
 
                 if (Arrays.asList(
                         STOW,
