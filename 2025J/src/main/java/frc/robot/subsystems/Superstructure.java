@@ -89,6 +89,8 @@ public class Superstructure extends SubsystemBase {
         SmartDashboard.putString("current superstructure state", systemState.toString());
         SmartDashboard.putString("requested superstructure state", requestedSystemState.toString());
 
+        SmartDashboard.putBoolean("algaeIndex", claw.hasAlgae());
+
         switch (systemState) {
             case STOW -> {
                 // stop intake
@@ -669,10 +671,10 @@ public class Superstructure extends SubsystemBase {
             case EJECT_ALGAE -> {
                 claw.outtakePiece();
 
-                if (!claw.hasAlgae()) {
-                    claw.stopClaw();
-                    requestState(HP_INTAKE);
-                }
+                // if (!claw.hasAlgae()) {
+                //     claw.stopClaw();
+                //     requestState(HP_INTAKE);
+                // }
 
                 if (Arrays.asList(
                         STOW,
@@ -695,10 +697,10 @@ public class Superstructure extends SubsystemBase {
             case EJECT_CORAL -> {
                 claw.outtakePiece();
 
-                if (!claw.eitherCoralSensorTriggered()) {
-                    claw.stopClaw();
-                    requestState(HP_INTAKE);
-                }
+                // if (!claw.eitherCoralSensorTriggered()) {
+                //     claw.stopClaw();
+                //     requestState(HP_INTAKE);
+                // }
 
                 if (Arrays.asList(
                         STOW,

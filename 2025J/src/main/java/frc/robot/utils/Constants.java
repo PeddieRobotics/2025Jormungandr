@@ -209,8 +209,8 @@ public final class Constants {
         public static final double kArmL4ScorePosition = 0.25;
         public static final double kArmBargeScorePosition = 0.25;
         public static final double kArmProcessorScorePosition = 0.25;
-        public static final double kArmReef1IntakePosition = 0.17;
-        public static final double kArmReef2IntakePosition = 0.17;
+        public static final double kArmReef1IntakePosition = 0.21;
+        public static final double kArmReef2IntakePosition = 0.21;
 
     }
 
@@ -345,12 +345,12 @@ public final class Constants {
 
         public static final double kCoralIntakeSpeed = 0.75;
         public static final double kCoralOuttakeSpeed = 1.0;
-        public static final double kCoralSlowIntake = 0.5;
+        public static final double kCoralSlowIntake = 0.675;
 
         public static final double kAlgaeIntakeSpeed = 0.5;
         public static final double kAlgaeOuttakeSpeed = -0.5;
 
-        public static final double kAlgaeHoldSpeed = 0.1;
+        public static final double kAlgaeHoldSpeed = 0.5;
 
         public static final double kCoralPositionIncrement = 3.0;
     }

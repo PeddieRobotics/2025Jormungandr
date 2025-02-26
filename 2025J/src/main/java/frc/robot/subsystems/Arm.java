@@ -69,7 +69,7 @@ public class Arm extends SubsystemBase {
         // algaeL2Setpoint = new TunableConstant(ArmConstants.kAlgaeL2Setpoint, "Arm algaeL2Setpoint");
         // processorSetpoint = new TunableConstant(ArmConstants.kProcessorSetpoint, "Arm processorSetpoint");
 
-        // armSetpoint = new LiveData(stowSetpoint.get(), "Arm Current Setpoint");
+        armSetpoint = new LiveData(ArmConstants.kStowSetpoint, "Arm Current Setpoint");
 
         SmartDashboard.putBoolean("Arm: Open Loop Control", false);
     }

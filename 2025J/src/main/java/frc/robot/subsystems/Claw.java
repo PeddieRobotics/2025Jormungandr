@@ -186,6 +186,8 @@ public class Claw extends SubsystemBase {
 
         SmartDashboard.putNumber("Claw Top Sensor Distance", getTopSensorDistance());
         SmartDashboard.putNumber("Claw Bottom Sensor Distance", getBottomSensorDistance());
+
+        SmartDashboard.putBoolean("Claw Either Sensor Triggered", eitherCoralSensorTriggered());
     }
 
     @Override
