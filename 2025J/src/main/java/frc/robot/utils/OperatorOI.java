@@ -5,9 +5,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-import frc.robot.commands.ManualArmControl;
-import frc.robot.commands.ManualElevatorControl;
-import frc.robot.subsystems.Claw;
 import frc.robot.subsystems.Superstructure;
 import frc.robot.subsystems.Superstructure.SuperstructureState;
 
@@ -58,6 +55,8 @@ public class OperatorOI {
         Trigger touchpadButton = new JoystickButton(controller, PS4Controller.Button.kTouchpad.value);
         touchpadButton.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.STOW)));
 
+        /* Unused buttons
+
         Trigger muteButton = new JoystickButton(controller, 15);
 
         Trigger L1Bumper = new JoystickButton(controller, PS4Controller.Button.kL1.value);
@@ -101,6 +100,8 @@ public class OperatorOI {
         
         Trigger shareButton = new JoystickButton(controller, PS4Controller.Button.kShare.value);
         // TODO: home arm
+
+        */
     }
 
     public double getForward() {
