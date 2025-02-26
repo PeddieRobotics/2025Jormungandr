@@ -13,6 +13,7 @@ import static frc.robot.subsystems.Superstructure.SuperstructureState.HP_INTAKE;
 import edu.wpi.first.math.geometry.Rotation2d;
 import frc.robot.commands.ReefCommands.AlignToReef2D;
 import frc.robot.commands.ReefCommands.AlignToReef2D.AlignmentDestination;
+import frc.robot.commands.ReefCommands.AlignToReefEstimatedPose;
 import frc.robot.commands.ScoreCommands.AlignAndScore;
 import frc.robot.subsystems.Claw;
 import frc.robot.subsystems.Drivetrain;
@@ -60,7 +61,7 @@ public class DriverOI {
         // Claw.getInstance().stopClaw()));
 
         Trigger squareButton = new JoystickButton(controller, PS4Controller.Button.kSquare.value);
-        // squareButton.whileTrue(new AlignToReefEstimatedPose());
+        squareButton.whileTrue(new AlignToReefEstimatedPose());
         // squareButton.onTrue(new AlignToReefOdometry());
 
         Trigger muteButton = new JoystickButton(controller, 15);
