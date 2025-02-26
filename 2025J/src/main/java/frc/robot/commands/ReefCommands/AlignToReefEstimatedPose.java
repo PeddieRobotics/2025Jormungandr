@@ -17,19 +17,8 @@ import frc.robot.subsystems.LimelightFrontMiddle;
 import frc.robot.subsystems.LimelightFrontRight;
 import frc.robot.subsystems.Limelight;
 import frc.robot.subsystems.Superstructure;
+import frc.robot.utils.CalculateReefTarget;
 import frc.robot.utils.Constants;
-
-class IDVectorPair {
-    public int id;
-    public Translation2d vector;
-    public IDVectorPair(int id, Translation2d vector) {
-        this.id = id;
-        this.vector = vector;
-    }
-    public String toString() {
-        return id + ": " + vector.getNorm();
-    }
-}
 
 public class AlignToReefEstimatedPose extends Command {
     private Drivetrain drivetrain;
@@ -104,57 +93,10 @@ public class AlignToReefEstimatedPose extends Command {
             SmartDashboard.putNumber("align maxSpeed", maxSpeed);
         }
     }
-    
-    private double cosineSimilarity(Translation2d a, Translation2d b) {
-        return (a.getX() * b.getX() + a.getY() * b.getY()) / (a.getNorm() * b.getNorm());
-    }
 
     @Override
     public void initialize() {
-        /*
-         * desired target algorithm
-         * 1. calculate distance from current odometry to each tag and order list
-         * 2. if lowest is "significantly lower" than second lowest, use lowest (END)
-         * 3. find the robot's current movement vector
-         * 4. find cosine similarity between robot movement vector and vector
-         *      from robot to each of the top 2 tags
-         * 5. use tag with lower cosine similarity
-         */
-
-        // calculate current odometry poes
-        Translation2d odometryPose = drivetrain.getPose().getTranslation();
-        List<IDVectorPair> robotToTag = new ArrayList<>();
-        
-        // BLUE:
-        for (int i = 17; i <= 22; i++) {
-            Translation2d tagPose = Limelight.getAprilTagPose(i).getTranslation();
-
-            // TODO: should be tagPose - odometryPose on real robots
-            robotToTag.add(new IDVectorPair(i, odometryPose.minus(tagPose)));
-        }
-        // RED:
-        // for (int i = 6; i <= 11; i++) {
-        //     Translation2d tagPose = Limelight.getAprilTagPose(i).getTranslation();
-        //     robotToTag.add(new IDVectorPair(i, odometryPose.minus(tagPose)));
-        // }
-        
-        Collections.sort(robotToTag, (o1, o2) -> (
-            ((Double) o1.vector.getNorm()).compareTo(o2.vector.getNorm())
-        ));
-        
-        int desiredTarget;
-        if (robotToTag.get(0).vector.getNorm() - robotToTag.get(1).vector.getNorm() >= 0.35)
-            desiredTarget = robotToTag.get(0).id;
-        else {
-            Translation2d robotMovement = drivetrain.getCurrentMovement();
-            if (robotMovement.getNorm() == 0)
-                desiredTarget = robotToTag.get(0).id;
-            else {
-                double similar0 = cosineSimilarity(robotToTag.get(0).vector, robotMovement);
-                double similar1 = cosineSimilarity(robotToTag.get(1).vector, robotMovement);
-                desiredTarget = similar0 > similar1 ? robotToTag.get(0).id : robotToTag.get(1).id;
-            }
-        }
+        int desiredTarget = CalculateReefTarget.calculateTargetID();
 
         if (Constants.kReefDesiredAngle.containsKey(desiredTarget))
             desiredAngle = Constants.kReefDesiredAngle.get(desiredTarget);

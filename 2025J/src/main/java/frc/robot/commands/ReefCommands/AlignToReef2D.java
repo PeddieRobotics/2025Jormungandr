@@ -9,6 +9,7 @@ import frc.robot.subsystems.Limelight;
 import frc.robot.subsystems.LimelightFrontLeft;
 import frc.robot.subsystems.LimelightFrontMiddle;
 import frc.robot.subsystems.LimelightFrontRight;
+import frc.robot.utils.CalculateReefTarget;
 import frc.robot.utils.Constants;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -36,7 +37,8 @@ public class AlignToReef2D extends Command {
     private double startTime;
     private double desiredTranslation;
     private Translation2d translation;
-    
+    private boolean shouldEnd;
+
     public AlignToReef2D(AlignmentDestination destination) {
         drivetrain = Drivetrain.getInstance();
         
@@ -82,11 +84,11 @@ public class AlignToReef2D extends Command {
         SmartDashboard.putNumber("PhilipAlign D", translationD);
         SmartDashboard.putNumber("PhilipAlign FF", translationFF);
 
-        rotationP = 0.05;
+        rotationP = 0.09;
         rotationI = 0.0;
         rotationD = 0.0;
         rotationFF = 0.0;
-        rotationThresholdP = 0.04;
+        rotationThresholdP = 0.07;
         rotationPidController = new PIDController(rotationP, rotationI, rotationD);
 
         SmartDashboard.putNumber("Rotation P", rotationP);
@@ -106,6 +108,8 @@ public class AlignToReef2D extends Command {
         SmartDashboard.putNumber("rotationUseLowerPThreshold", rotationUseLowerPThreshold);
 
         translation = new Translation2d(0, 0);
+        
+        shouldEnd = false;
 
         // Use addRequirements() here to declare subsystem dependencies.
         addRequirements(drivetrain);
@@ -114,22 +118,40 @@ public class AlignToReef2D extends Command {
     // Called when the command is initially scheduled.
     @Override
     public void initialize() {
-        int desiredTarget = (int) limelight.getTargetID();
-        if (!Constants.kReefDesiredAngle.containsKey(desiredTarget))
+        Limelight middle = LimelightFrontMiddle.getInstance();
+        // TODO: temporary as middle limelight got smashed by L1 coral
+        // Limelight middle = limelight;
+
+        if (!middle.hasTarget()){
+            shouldEnd = true;
             return;
+        }
+
+        int desiredTarget;
+        if (middle.getNumberOfTagsSeen() == 1)
+            desiredTarget = (int) middle.getTargetID();
+        else 
+            desiredTarget = CalculateReefTarget.calculateTargetID();
+
+        if (!Constants.kReefDesiredAngle.containsKey(desiredTarget)){
+            shouldEnd = true;
+            return;
+        }
         
-        limelight.setPriorityTag(LimelightFrontMiddle.getInstance().getTargetID());
+        limelight.setPriorityTag(desiredTarget);
         desiredAngle = Constants.kReefDesiredAngle.get(desiredTarget);
 
         translation = new Translation2d(0, 0);
-
-        startTime = Timer.getFPGATimestamp();
+        shouldEnd = false;
     }
 
 
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
+        if (shouldEnd)
+            return;
+
         translationP = SmartDashboard.getNumber("PhilipAlign P", translationP);
         translationI = SmartDashboard.getNumber("PhilipAlign I", translationI);
         translationD = SmartDashboard.getNumber("PhilipAlign D", translationD);
@@ -218,8 +240,10 @@ public class AlignToReef2D extends Command {
     // Called once the command ends or is interrupted.
     @Override
     public void end(boolean interrupted) {
-        double elapsedTime = Timer.getFPGATimestamp() - SmartDashboard.getNumber("Forward start", startTime);
-        SmartDashboard.putNumber("time elapsed since start", elapsedTime);
+        // double elapsedTime = Timer.getFPGATimestamp() - SmartDashboard.getNumber("Forward start", startTime);
+        // SmartDashboard.putNumber("time elapsed since start", elapsedTime);
+
+        limelight.setPriorityTag(0);
 
         drivetrain.drive(new Translation2d(0,0), 0, false, null);
     }
@@ -227,6 +251,6 @@ public class AlignToReef2D extends Command {
     // Returns true when the command should end.
     @Override
     public boolean isFinished() {
-        return false;
+        return shouldEnd;
     }
 }
