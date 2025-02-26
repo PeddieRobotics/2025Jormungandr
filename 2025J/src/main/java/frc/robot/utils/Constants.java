@@ -194,11 +194,11 @@ public final class Constants {
         public static final double kElevatorL3ScorePosition = 6.9;
         public static final double kElevatorL4PrestagePosition = 6.0;
         public static final double kElevatorL4ScorePosition = 12.5; 
-        public static final double kElevatorBargePrestagePosition = 0.0;
-        public static final double kElevatorBargeScorePosition = 0.0;
+        public static final double kElevatorBargePrestagePosition = 6.0;
+        public static final double kElevatorBargeScorePosition = 12.5;
         public static final double kElevatorProcessorScorePosition = 0.0;
-        public static final double kElevatorReef1IntakePosition = 0.0;
-        public static final double kElevatorReef2IntakePosition = 0.0;
+        public static final double kElevatorReef1IntakePosition = 3.0;
+        public static final double kElevatorReef2IntakePosition = 6.0;
 
         public static final double kArmStowPosition = 0.25;
         public static final double kArmHPIntakePosition = 0.25;
@@ -209,8 +209,8 @@ public final class Constants {
         public static final double kArmL4ScorePosition = 0.25;
         public static final double kArmBargeScorePosition = 0.25;
         public static final double kArmProcessorScorePosition = 0.25;
-        public static final double kArmReef1IntakePosition = 0.25;
-        public static final double kArmReef2IntakePosition = 0.25;
+        public static final double kArmReef1IntakePosition = 0.17;
+        public static final double kArmReef2IntakePosition = 0.17;
 
     }
 
