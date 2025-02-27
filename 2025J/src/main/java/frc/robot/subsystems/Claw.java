@@ -88,25 +88,6 @@ public class Claw extends SubsystemBase {
         setClaw(speed);
     }
 
-    // public void intakeCoralFast() {
-    //     setClaw(ClawConstants.kCoralIntakeSpeed);
-    // }
-
-    // public void intakeCoralSlow() {
-    //     setClaw(ClawConstants.kCoralSlowIntake);
-    // }
-
-    // public void intakeAlgae() {
-    //     setClaw(ClawConstants.kAlgaeIntakeSpeed);
-    // }
-    // public void outtakeCoral() {
-    //     setClaw(ClawConstants.kCoralOuttakeSpeed);
-    // }
-
-    // public void outtakeAlgae() {
-    //     setClaw(ClawConstants.kAlgaeOuttakeSpeed);
-    // }
-
     public void holdAlgae() {
         setClaw(ClawConstants.kAlgaeHoldSpeed);
     }
