@@ -80,17 +80,32 @@ public class Claw extends SubsystemBase {
      * Sets clawMotor speed to the designated percent output listed in the
      * ClawConstants class
      */
-    public void intakePiece(double speed) {
+    public void outtakePiece(double speed){
         setClaw(speed);
     }
 
-    /**
-     * Sets clawMotor speed to the designated percent output listed in the
-     * ClawConstants class
-     */
-    public void outtakePiece() {
-        setClaw(ClawConstants.kCoralOuttakeSpeed);
+    public void intakePiece(double speed){
+        setClaw(speed);
     }
+
+    // public void intakeCoralFast() {
+    //     setClaw(ClawConstants.kCoralIntakeSpeed);
+    // }
+
+    // public void intakeCoralSlow() {
+    //     setClaw(ClawConstants.kCoralSlowIntake);
+    // }
+
+    // public void intakeAlgae() {
+    //     setClaw(ClawConstants.kAlgaeIntakeSpeed);
+    // }
+    // public void outtakeCoral() {
+    //     setClaw(ClawConstants.kCoralOuttakeSpeed);
+    // }
+
+    // public void outtakeAlgae() {
+    //     setClaw(ClawConstants.kAlgaeOuttakeSpeed);
+    // }
 
     public void holdAlgae() {
         setClaw(ClawConstants.kAlgaeHoldSpeed);

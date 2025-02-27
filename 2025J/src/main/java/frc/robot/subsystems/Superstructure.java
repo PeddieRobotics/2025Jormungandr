@@ -347,7 +347,7 @@ public class Superstructure extends SubsystemBase {
                     claw.stopClaw();
                     requestState(HP_INTAKE);
                 } else {
-                    claw.outtakePiece();
+                    claw.outtakePiece(ClawConstants.kCoralOuttakeSpeed);
                 }
 
                 if (Arrays.asList(
@@ -368,7 +368,7 @@ public class Superstructure extends SubsystemBase {
                     claw.stopClaw();
                     requestState(HP_INTAKE);
                 } else {
-                    claw.outtakePiece();
+                    claw.outtakePiece(ClawConstants.kCoralOuttakeSpeed);
                 }
 
                 if (Arrays.asList(
@@ -388,7 +388,7 @@ public class Superstructure extends SubsystemBase {
                     claw.stopClaw();
                     requestState(HP_INTAKE);
                 } else {
-                    claw.outtakePiece();
+                    claw.outtakePiece(ClawConstants.kCoralOuttakeSpeed);
                 }
 
                 if (Arrays.asList(
@@ -409,7 +409,7 @@ public class Superstructure extends SubsystemBase {
                     claw.stopClaw();
                     requestState(HP_INTAKE);
                 } else {
-                    claw.outtakePiece();
+                    claw.outtakePiece(ClawConstants.kCoralOuttakeSpeed);
                 }
 
                 if (Arrays.asList(
@@ -492,7 +492,7 @@ public class Superstructure extends SubsystemBase {
                     claw.stopClaw();
                     requestState(HP_INTAKE);
                 } else {
-                    claw.outtakePiece();
+                    claw.outtakePiece(ClawConstants.kAlgaeOuttakeSpeed);
                 }
 
                 if (Arrays.asList(
@@ -542,7 +542,7 @@ public class Superstructure extends SubsystemBase {
                     claw.stopClaw();
                     requestState(HP_INTAKE);
                 } else {
-                    claw.outtakePiece();
+                    claw.outtakePiece(ClawConstants.kAlgaeOuttakeSpeed);
                 }
 
                 if (Arrays.asList(
@@ -615,8 +615,8 @@ public class Superstructure extends SubsystemBase {
             }
 
             case EJECT_ALGAE -> {
-                claw.outtakePiece();
-
+                claw.outtakePiece(ClawConstants.kAlgaeOuttakeSpeed);
+                
                 // if (!claw.hasAlgae()) {
                 //     claw.stopClaw();
                 //     requestState(HP_INTAKE);
@@ -641,7 +641,7 @@ public class Superstructure extends SubsystemBase {
             }
 
             case EJECT_CORAL -> {
-                claw.outtakePiece();
+                claw.outtakePiece(ClawConstants.kCoralOuttakeSpeed);
 
                 // if (!claw.eitherCoralSensorTriggered()) {
                 //     claw.stopClaw();
