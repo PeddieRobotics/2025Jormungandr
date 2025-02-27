@@ -191,9 +191,9 @@ public class Drivetrain extends SubsystemBase {
      */
     public void updateOdometry() {
         // LimelightBack.getInstance().fuseEstimatedPose(odometry);
-        LimelightFrontLeft.getInstance().fuseEstimatedPose(odometry);
-        LimelightFrontMiddle.getInstance().fuseEstimatedPose(odometry);
-        LimelightFrontRight.getInstance().fuseEstimatedPose(odometry);
+        // LimelightFrontLeft.getInstance().fuseEstimatedPose(odometry);
+        // LimelightFrontMiddle.getInstance().fuseEstimatedPose(odometry);
+        // LimelightFrontRight.getInstance().fuseEstimatedPose(odometry);
         odometry.update(getHeadingAsRotation2d(), swerveModulePositions);
         pureOdometry.update(getHeadingAsRotation2d(), swerveModulePositions);
         // LimelightLeft.getInstance().fuseEstimatedPose(odometry);

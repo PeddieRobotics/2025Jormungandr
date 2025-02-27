@@ -10,16 +10,10 @@ import frc.robot.commands.SwerveDriveCommand;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Autonomous;
 import frc.robot.subsystems.Claw;
-import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.HPIntake;
 import frc.robot.subsystems.Lights;
-import frc.robot.subsystems.LimelightBack;
-import frc.robot.subsystems.LimelightFrontLeft;
-import frc.robot.subsystems.LimelightFrontMiddle;
-import frc.robot.subsystems.LimelightFrontRight;
-import frc.robot.subsystems.LimelightLeft;
 import frc.robot.subsystems.Superstructure;
 import frc.robot.utils.DriverOI;
 import frc.robot.utils.OperatorOI;
@@ -45,9 +39,9 @@ public class RobotContainer {
     private Elevator elevator;
     private HPIntake hpIntake;
     // private LimelightBack llBack;
-    private LimelightFrontLeft llFrontLeft;
-    private LimelightFrontMiddle llFrontMiddle;
-    private LimelightFrontRight llFrontRight;
+    // private LimelightFrontLeft llFrontLeft;
+    // private LimelightFrontMiddle llFrontMiddle;
+    // private LimelightFrontRight llFrontRight;
     // private LimelightLeft llLeft;
     private Lights lights;
 
@@ -59,13 +53,13 @@ public class RobotContainer {
         drivetrain = Drivetrain.getInstance();
         elevator = Elevator.getInstance();
         // hpIntake = HPIntake.getInstance();
-        // superstructure = Superstructure.getInstance();
+        superstructure = Superstructure.getInstance();
         driverOI = DriverOI.getInstance();
         operatorOI = OperatorOI.getInstance();
         // llBack = LimelightBack.getInstance();
-        llFrontLeft = LimelightFrontLeft.getInstance();
-        llFrontMiddle = LimelightFrontMiddle.getInstance();
-        llFrontRight = LimelightFrontRight.getInstance();
+        // llFrontLeft = LimelightFrontLeft.getInstance();
+        // llFrontMiddle = LimelightFrontMiddle.getInstance();
+        // llFrontRight = LimelightFrontRight.getInstance();
         // llLeft = LimelightLeft.getInstance();
         // lights = Lights.getInstance();
 

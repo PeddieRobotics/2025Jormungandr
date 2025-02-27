@@ -3,6 +3,7 @@ package frc.robot.subsystems;
 import com.ctre.phoenix6.configs.CANcoderConfiguration;
 import com.ctre.phoenix6.hardware.CANcoder;
 import com.ctre.phoenix6.signals.FeedbackSensorSourceValue;
+import com.ctre.phoenix6.signals.GravityTypeValue;
 import com.ctre.phoenix6.signals.SensorDirectionValue;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -12,15 +13,15 @@ import frc.robot.utils.Constants.ElevatorConstants;
 import frc.robot.utils.DriverOI;
 import frc.robot.utils.Kraken;
 import frc.robot.utils.RobotMap;
-import frc.robot.utils.TunableConstant;
+// import frc.robot.utils.TunableConstant;
 import frc.robot.utils.LiveData;
 
 public class Elevator extends SubsystemBase {
     private static Elevator elevator;
     private Kraken elevatorMainMotor, elevatorFollowerMotor;
     private CANcoder elevatorCANcoder;
-    private TunableConstant L1Setpoint, L2Setpoint, L3Setpoint, L4Setpoint, HPIntakeSetpoint, stowSetpoint, bargeSetpoint,
-            algaeL1Setpoint, algaeL2Setpoint, processorSetpoint;
+    // private TunableConstant L1Setpoint, L2Setpoint, L3Setpoint, L4Setpoint, HPIntakeSetpoint, stowSetpoint, bargeSetpoint,
+    //         algaeL1Setpoint, algaeL2Setpoint, processorSetpoint;
 
     private LiveData elevatorSetpoint;
 
@@ -65,7 +66,7 @@ public class Elevator extends SubsystemBase {
         elevatorMainMotor.setPIDValues(ElevatorConstants.kS, ElevatorConstants.kV,
                 ElevatorConstants.kA,
                 ElevatorConstants.kP, ElevatorConstants.kI, ElevatorConstants.kD,
-                ElevatorConstants.kFF);
+                ElevatorConstants.kFF, ElevatorConstants.kG, GravityTypeValue.Elevator_Static);
 
         elevatorMainMotor.setMotionMagicParameters(ElevatorConstants.kElevatorMaxCruiseVelocity,
                 ElevatorConstants.kElevatorMaxCruiseAcceleration, ElevatorConstants.kElevatorMaxCruiseJerk);
@@ -73,17 +74,17 @@ public class Elevator extends SubsystemBase {
         elevatorMainMotor.setSoftLimits(true, ElevatorConstants.kElevatorForwardSoftLimit,
         ElevatorConstants.kElevatorReverseSoftLimit);
 
-        L1Setpoint = new TunableConstant(ElevatorConstants.kL1Setpoint, "Elevator L1Setpoint");
-        L2Setpoint = new TunableConstant(ElevatorConstants.kL2Setpoint, "Elevator L2Setpoint");
-        L3Setpoint = new TunableConstant(ElevatorConstants.kL3Setpoint, "Elevator L3Setpoint");
-        L4Setpoint = new TunableConstant(ElevatorConstants.kL4Setpoint, "Elevator L4Setpoint");
-        HPIntakeSetpoint = new TunableConstant(ElevatorConstants.kHPIntakeSetpoint, "Elevator HPIntakeSetpoint");
-        stowSetpoint = new TunableConstant(ElevatorConstants.kStowSetpoint, "Elevator stowSetpoint");
+        // L1Setpoint = new TunableConstant(ElevatorConstants.kL1Setpoint, "Elevator L1Setpoint");
+        // L2Setpoint = new TunableConstant(ElevatorConstants.kL2Setpoint, "Elevator L2Setpoint");
+        // L3Setpoint = new TunableConstant(ElevatorConstants.kL3Setpoint, "Elevator L3Setpoint");
+        // L4Setpoint = new TunableConstant(ElevatorConstants.kL4Setpoint, "Elevator L4Setpoint");
+        // HPIntakeSetpoint = new TunableConstant(ElevatorConstants.kHPIntakeSetpoint, "Elevator HPIntakeSetpoint");
+        // stowSetpoint = new TunableConstant(ElevatorConstants.kStowSetpoint, "Elevator stowSetpoint");
 
-        bargeSetpoint = new TunableConstant(ElevatorConstants.kBargeSetpoint, "Elevator bargeSetpoint");
-        algaeL1Setpoint = new TunableConstant(ElevatorConstants.kAlgaeL1Setpoint, "Elevator algaeL1Setpoint");
-        algaeL2Setpoint = new TunableConstant(ElevatorConstants.kAlgaeL2Setpoint, "Elevator algaeL2Setpoint");
-        processorSetpoint = new TunableConstant(ElevatorConstants.kProcessorSetpoint, "Elevator processorSetpoint");
+        // bargeSetpoint = new TunableConstant(ElevatorConstants.kBargeSetpoint, "Elevator bargeSetpoint");
+        // algaeL1Setpoint = new TunableConstant(ElevatorConstants.kAlgaeL1Setpoint, "Elevator algaeL1Setpoint");
+        // algaeL2Setpoint = new TunableConstant(ElevatorConstants.kAlgaeL2Setpoint, "Elevator algaeL2Setpoint");
+        // processorSetpoint = new TunableConstant(ElevatorConstants.kProcessorSetpoint, "Elevator processorSetpoint");
 
         elevatorSetpoint = new LiveData(ElevatorConstants.kStowSetpoint, "Elevator Current Setpoint");
 

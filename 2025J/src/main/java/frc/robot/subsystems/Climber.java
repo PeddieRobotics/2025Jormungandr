@@ -9,7 +9,8 @@ import frc.robot.utils.RobotMap;
 
 public class Climber extends SubsystemBase {
     private static Climber instance;
-    private Kraken leftClimberMotor, rightClimberMotor;
+    private Kraken leftClimberMotor;
+    // private Kraken rightClimberMotor;
 
     public Climber() {
         leftClimberMotor = new Kraken(RobotMap.CLIMBER_MAIN_MOTOR_ID, RobotMap.CANIVORE_NAME);

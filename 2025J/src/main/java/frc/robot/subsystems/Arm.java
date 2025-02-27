@@ -10,19 +10,18 @@ import com.ctre.phoenix6.signals.StaticFeedforwardSignValue;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.utils.Constants.ArmConstants;
-import frc.robot.utils.DriverOI;
 import frc.robot.utils.Kraken;
 import frc.robot.utils.LiveData;
 import frc.robot.utils.RobotMap;
-import frc.robot.utils.TunableConstant;
+// import frc.robot.utils.TunableConstant;
 
 public class Arm extends SubsystemBase {
 
     private static Arm arm;
     private Kraken armMotor;
     private CANcoder armCANcoder;
-    private TunableConstant L1Setpoint, L2Setpoint, L3Setpoint, L4Setpoint, HPIntakeSetpoint, stowSetpoint,
-            bargeSetpoint, algaeL1Setpoint, algaeL2Setpoint, processorSetpoint;
+    // private TunableConstant L1Setpoint, L2Setpoint, L3Setpoint, L4Setpoint, HPIntakeSetpoint, stowSetpoint,
+    //         bargeSetpoint, algaeL1Setpoint, algaeL2Setpoint, processorSetpoint;
 
     private LiveData armSetpoint;
 
@@ -43,7 +42,7 @@ public class Arm extends SubsystemBase {
         armMotor.setForwardTorqueCurrentLimit(ArmConstants.kArmForwardTorqueCurrentLimit);
         armMotor.setReverseTorqueCurrentLimit(ArmConstants.kArmReverseTorqueCurrentLimit);
 
-        armMotor.setBrake();
+        armMotor.setCoast();
 
         armMotor.setEncoder(0);
         armMotor.setFeedbackDevice(RobotMap.ARM_CANCODER_ID, FeedbackSensorSourceValue.FusedCANcoder);
@@ -59,18 +58,18 @@ public class Arm extends SubsystemBase {
 
         armMotor.setSoftLimits(true, ArmConstants.kArmForwardSoftLimit, ArmConstants.kArmReverseSoftLimit);
 
-        L1Setpoint = new TunableConstant(ArmConstants.kL1Setpoint, "Arm L1Setpoint");
-        L2Setpoint = new TunableConstant(ArmConstants.kL2Setpoint, "Arm L2Setpoint");
-        L3Setpoint = new TunableConstant(ArmConstants.kL3Setpoint, "Arm L3Setpoint");
-        L4Setpoint = new TunableConstant(ArmConstants.kL4Setpoint, "Arm L4Setpoint");
-        HPIntakeSetpoint = new TunableConstant(ArmConstants.kHPIntakeSetpoint, "Arm HPIntakeSetpoint");
-        stowSetpoint = new TunableConstant(ArmConstants.kStowSetpoint, "Arm stowSetpoint");
-        bargeSetpoint = new TunableConstant(ArmConstants.kBargeSetpoint, "Arm bargeSetpoint");
-        algaeL1Setpoint = new TunableConstant(ArmConstants.kAlgaeL1Setpoint, "Arm algaeL1Setpoint");
-        algaeL2Setpoint = new TunableConstant(ArmConstants.kAlgaeL2Setpoint, "Arm algaeL2Setpoint");
-        processorSetpoint = new TunableConstant(ArmConstants.kProcessorSetpoint, "Arm processorSetpoint");
+        // L1Setpoint = new TunableConstant(ArmConstants.kL1Setpoint, "Arm L1Setpoint");
+        // L2Setpoint = new TunableConstant(ArmConstants.kL2Setpoint, "Arm L2Setpoint");
+        // L3Setpoint = new TunableConstant(ArmConstants.kL3Setpoint, "Arm L3Setpoint");
+        // L4Setpoint = new TunableConstant(ArmConstants.kL4Setpoint, "Arm L4Setpoint");
+        // HPIntakeSetpoint = new TunableConstant(ArmConstants.kHPIntakeSetpoint, "Arm HPIntakeSetpoint");
+        // stowSetpoint = new TunableConstant(ArmConstants.kStowSetpoint, "Arm stowSetpoint");
+        // bargeSetpoint = new TunableConstant(ArmConstants.kBargeSetpoint, "Arm bargeSetpoint");
+        // algaeL1Setpoint = new TunableConstant(ArmConstants.kAlgaeL1Setpoint, "Arm algaeL1Setpoint");
+        // algaeL2Setpoint = new TunableConstant(ArmConstants.kAlgaeL2Setpoint, "Arm algaeL2Setpoint");
+        // processorSetpoint = new TunableConstant(ArmConstants.kProcessorSetpoint, "Arm processorSetpoint");
 
-        armSetpoint = new LiveData(stowSetpoint.get(), "Arm Current Setpoint");
+        armSetpoint = new LiveData(ArmConstants.kStowSetpoint, "Arm Current Setpoint");
 
         SmartDashboard.putBoolean("Arm: Open Loop Control", false);
     }
@@ -177,7 +176,7 @@ public class Arm extends SubsystemBase {
      * @return angle of arm in degrees
      */
     public double getArmAngleDegrees() {
-        return getAbsoluteCANcoderPosition() * 360.0;
+        return getAbsoluteCANcoderPosition() * 360.0 / 2.0;
     }
 
     /**
@@ -193,7 +192,16 @@ public class Arm extends SubsystemBase {
      *         threshold
      */
     public boolean isAtAngle(double targetAngle) {
-        return Math.abs(getArmAngleDegrees() - targetAngle) < ArmConstants.kArmPositionEpsilon;
+        return Math.abs(getArmAngleDegrees() - targetAngle) < ArmConstants.kArmAngleEpsilon;
+    }
+
+    /**
+     * @param targetPosition - In mechanism rotations
+     * @return returns if the difference between current and target positions is within
+     *         threshold
+     */
+    public boolean isAtPosition(double targetPosition) {
+        return Math.abs(getArmPosition() - targetPosition) < ArmConstants.kArmPositionEpsilon;
     }
 
     public double getArmMotorTemperature() {
@@ -204,11 +212,6 @@ public class Arm extends SubsystemBase {
     public void periodic() {
         SmartDashboard.putNumber("Arm: Motor Encoder Position", getArmPosition());
         SmartDashboard.putNumber("Arm: CanCoder Position", getAbsoluteCANcoderPosition());
-        // percent output on stick
-        if (SmartDashboard.getBoolean("Arm: Open Loop Control", false)) {
-            setArmPercentOutput(DriverOI.getInstance().getRightForward() * 0.3);
-            SmartDashboard.putNumber("Arm: Open Loop Input", DriverOI.getInstance().getRightForward() * 0.3);
-        }
 
     }
 

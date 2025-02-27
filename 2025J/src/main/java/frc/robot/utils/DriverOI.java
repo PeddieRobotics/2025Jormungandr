@@ -8,8 +8,6 @@ import frc.robot.subsystems.Superstructure;
 import edu.wpi.first.math.geometry.Translation2d;
 import frc.robot.subsystems.Superstructure.SuperstructureState;
 
-import static frc.robot.subsystems.Superstructure.SuperstructureState.HP_INTAKE;
-
 import edu.wpi.first.math.geometry.Rotation2d;
 import frc.robot.commands.ReefCommands.AlignToReef2D;
 import frc.robot.commands.ReefCommands.AlignToReef2D.AlignmentDestination;
@@ -17,7 +15,6 @@ import frc.robot.commands.ReefCommands.AlignToReefEstimatedPose;
 import frc.robot.commands.ScoreCommands.AlignAndScore;
 import frc.robot.subsystems.Claw;
 import frc.robot.subsystems.Drivetrain;
-import frc.robot.subsystems.LimelightFrontMiddle;
 import frc.robot.utils.Constants.DriveConstants;
 
 public class DriverOI {
@@ -48,53 +45,33 @@ public class DriverOI {
 
         controller = new PS4Controller(0);
 
+        Trigger PSButton = new JoystickButton(controller, PS4Controller.Button.kPS.value);
+        PSButton.onTrue(new InstantCommand(() -> Drivetrain.getInstance().resetGyro()));
+
         Trigger xButton = new JoystickButton(controller, PS4Controller.Button.kCross.value);
-        // xButton.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.STOW)));
-        xButton.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.HP_INTAKE)));
+        xButton.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.STOW)));
 
         Trigger circleButton = new JoystickButton(controller, PS4Controller.Button.kCircle.value);
         circleButton.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.HP_INTAKE)));
 
+        Trigger squareButton = new JoystickButton(controller, PS4Controller.Button.kSquare.value);
+
         Trigger triangleButton = new JoystickButton(controller, PS4Controller.Button.kTriangle.value);
         // triangleButton.onTrue(new AlignAndScore(true)); //right align
-        triangleButton.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.ALGAE_GROUND_INTAKE)));
+        triangleButton.onTrue(new InstantCommand(() -> superstructure.sendToScore()));
         // Claw.getInstance().stopClaw()));
 
-        Trigger squareButton = new JoystickButton(controller, PS4Controller.Button.kSquare.value);
-        squareButton.whileTrue(new AlignToReefEstimatedPose());
-        // squareButton.onTrue(new AlignToReefOdometry());
-
         Trigger muteButton = new JoystickButton(controller, 15);
-        // TODO: add sensor condition
-        // muteButton.onTrue(new InstantCommand(() ->
-        // superstructure.requestState(SuperstructureState.EJECT_CORAL)));
-        // muteButton.onTrue(new InstantCommand(() ->
-        // superstructure.requestState(SuperstructureState.EJECT_ALGAE)));
-
-        Trigger PSButton = new JoystickButton(controller, PS4Controller.Button.kPS.value);
-        PSButton.onTrue(new InstantCommand(() -> Drivetrain.getInstance().resetGyro()));
-
         // Set to climb
-        // Trigger touchpadButton = new JoystickButton(controller,
-        // PS4Controller.Button.kTouchpad.value);
 
-        // Trigger muteButton = new JoystickButton(controller, 15);
-        // muteButton.onTrue(new InstantCommand(() -> {
-        // if (OperatorOI.getInstance().L3Held()) {
-        // superstructure.requestState(SuperstructureState.EJECT_ALGAE);
-        // } else {
-        // superstructure.requestState(SuperstructureState.EJECT_CORAL);
-        // }
-        // }));
+        Trigger touchpadButton = new JoystickButton(controller, PS4Controller.Button.kTouchpad.value);
 
         Trigger L1Bumper = new JoystickButton(controller, PS4Controller.Button.kL1.value);
         // TODO: align left if coral, else align HP
-        // L1Bumper.onTrue(new InstantCommand(() -> Claw.getInstance().intakePiece(0.50)));
         L1Bumper.whileTrue(new AlignToReef2D(AlignmentDestination.LEFT));
 
         Trigger R1Bumper = new JoystickButton(controller, PS4Controller.Button.kR1.value);
         // TODO: align right if coral, else align HP
-        // R1Bumper.onTrue(new InstantCommand(() -> Claw.getInstance().stopClaw()));
         R1Bumper.whileTrue(new AlignToReef2D(AlignmentDestination.RIGHT));
 
         Trigger L2Trigger = new JoystickButton(controller, PS4Controller.Button.kL2.value);
@@ -103,15 +80,17 @@ public class DriverOI {
 
         Trigger L3Trigger = new JoystickButton(controller, PS4Controller.Button.kL3.value);
 
+
         Trigger R3Trigger = new JoystickButton(controller, PS4Controller.Button.kR3.value);
+        //R3Trigger.onTrue(new OrbitReef());
+  
 
         Trigger optionButton = new JoystickButton(controller, PS4Controller.Button.kOptions.value);
-        optionButton.onTrue(new InstantCommand(() -> Drivetrain.getInstance()
-                .resetTranslation(LimelightFrontMiddle.getInstance().getEstimatedPoseMT1().get().getTranslation())));
+        optionButton.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.EJECT_CORAL)));
 
         Trigger shareButton = new JoystickButton(controller, PS4Controller.Button.kShare.value);
-        shareButton.onTrue(new InstantCommand(() -> Drivetrain.getInstance()
-                .resetPureOdometryTranslation(LimelightFrontMiddle.getInstance().getEstimatedPoseMT1().get().getTranslation())));
+        shareButton.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.EJECT_ALGAE)));
+    
     }
 
     public boolean bothBumpersHeld() {

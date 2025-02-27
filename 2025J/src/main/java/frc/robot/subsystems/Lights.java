@@ -28,13 +28,13 @@ public class Lights extends SubsystemBase {
 
     private final CANdle candle;
     private double lastIntaked;
-    private boolean isClimbing;
+    // private boolean isClimbing;
     private LightState systemState, requestedSystemState;
     
     private LimelightBack llBack;
-    private LimelightFrontLeft llFrontLeft;
-    private LimelightFrontMiddle llFrontMiddle;
-    private LimelightFrontRight llFrontRight;
+    // private LimelightFrontLeft llFrontLeft;
+    // private LimelightFrontMiddle llFrontMiddle;
+    // private LimelightFrontRight llFrontRight;
     private LimelightLeft llLeft;
 
     public static Lights getInstance() {
@@ -47,9 +47,9 @@ public class Lights extends SubsystemBase {
         candle = new CANdle(RobotMap.CANDLE_ID);
         
         // llBack = LimelightBack.getInstance();
-        llFrontLeft = LimelightFrontLeft.getInstance();
-        llFrontMiddle = LimelightFrontMiddle.getInstance();
-        llFrontRight = LimelightFrontRight.getInstance();
+        // llFrontLeft = LimelightFrontLeft.getInstance();
+        // llFrontMiddle = LimelightFrontMiddle.getInstance();
+        // llFrontRight = LimelightFrontRight.getInstance();
         // llLeft = LimelightLeft.getInstance();
     }
 
