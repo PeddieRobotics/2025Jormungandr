@@ -5,12 +5,18 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.utils.Constants.ClimberConstants;
 import frc.robot.utils.DriverOI;
 import frc.robot.utils.Kraken;
+import frc.robot.utils.LiveData;
 import frc.robot.utils.RobotMap;
+
+
 
 public class Climber extends SubsystemBase {
     private static Climber instance;
     private Kraken leftClimberMotor;
     // private Kraken rightClimberMotor;
+    private LiveData leftClimberSupplyCurrent, leftClimberStatorCurrent, rightClimberSupplyCurrent, rightClimberStatorCurrent,
+        leftClimberMotorTemperature, rightClimberMotorTemperture, rightMotorPopsition, leftMotorPosition; 
+
 
     public Climber() {
         leftClimberMotor = new Kraken(RobotMap.CLIMBER_MAIN_MOTOR_ID, RobotMap.CANIVORE_NAME);
@@ -28,6 +34,11 @@ public class Climber extends SubsystemBase {
         // rightClimberMotor.setSupplyCurrentLimit(ClimberConstants.kClimberSupplyCurrentLimit);
 
         SmartDashboard.putBoolean("Climber: Close Loop Control", false);
+
+        leftClimberSupplyCurrent = new LiveData(getLeftClimberSupplyCurrent(), "Climber: Left Motor Supply Current");
+        leftClimberStatorCurrent = new LiveData(getLeftClimberSupplyCurrent(), "Climber: Left Motor Stator Current");
+        leftClimberMotorTemperature = new LiveData(getLeftClimberTemperature(), "Climber: Left Motor Temp");
+        leftMotorPosition = new LiveData(getLeftClimberPosition(), "Climber: Left Motor Position"); 
     }
 
     public static Climber getInstance() {
@@ -108,8 +119,10 @@ public class Climber extends SubsystemBase {
         if(SmartDashboard.getBoolean("Climber: Run Close Loop Control", false)){
             leftClimberMotor.setPercentOutput(DriverOI.getInstance().getRightForward());
         }
-        SmartDashboard.putNumber("Climber Motor Supple Current", leftClimberMotor.getSupplyCurrent());
-        SmartDashboard.putNumber("Climber Motor Stator Current", leftClimberMotor.getStatorCurrent());
+        leftClimberSupplyCurrent.setNumber(getLeftClimberSupplyCurrent());
+        leftClimberStatorCurrent.setNumber(getLeftClimberStatorCurrent());
+        leftClimberMotorTemperature.setNumber(getLeftClimberTemperature());
+        leftMotorPosition.setNumber(getLeftClimberPosition());
     }
 
     @Override

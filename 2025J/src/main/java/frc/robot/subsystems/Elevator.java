@@ -23,7 +23,9 @@ public class Elevator extends SubsystemBase {
     // private TunableConstant L1Setpoint, L2Setpoint, L3Setpoint, L4Setpoint, HPIntakeSetpoint, stowSetpoint, bargeSetpoint,
     //         algaeL1Setpoint, algaeL2Setpoint, processorSetpoint;
 
-    private LiveData elevatorSetpoint;
+
+    private LiveData elevatorEncoderPosition, elevatorCanCoderPosition, elevatorSetpoint, mainMotorTemp, mainMotorStatorCurrent, mainMotorSupplyCurrent,
+            followerMotorTemp, bottomSensorData, elevatorHeight;
 
     public Elevator() {
         elevatorCANcoder = new CANcoder(RobotMap.ELEVATOR_CANCODER_ID, RobotMap.CANIVORE_NAME);
@@ -86,7 +88,19 @@ public class Elevator extends SubsystemBase {
         // algaeL2Setpoint = new TunableConstant(ElevatorConstants.kAlgaeL2Setpoint, "Elevator algaeL2Setpoint");
         // processorSetpoint = new TunableConstant(ElevatorConstants.kProcessorSetpoint, "Elevator processorSetpoint");
 
-        elevatorSetpoint = new LiveData(ElevatorConstants.kStowSetpoint, "Elevator Current Setpoint");
+        elevatorSetpoint = new LiveData(ElevatorConstants.kStowSetpoint, "Elevator: Current Setpoint");
+        elevatorEncoderPosition = new LiveData(elevatorMainMotor.getPosition(), "Elevator: Current Encoder Position");
+        elevatorCanCoderPosition = new LiveData(getElevatorCANcoderReading(), "Elevator: Current Cancoder Position"); 
+
+        mainMotorTemp = new LiveData(elevatorMainMotor.getMotorTemperature(), "Elevator: Main Motor Temp");
+        followerMotorTemp = new LiveData(elevatorFollowerMotor.getMotorTemperature(), "Elevator: Follower Motor Temp");
+
+        mainMotorSupplyCurrent = new LiveData(elevatorMainMotor.getSupplyCurrent(), "Elevator: Main Motor Supply Current");
+        mainMotorStatorCurrent = new LiveData(elevatorMainMotor.getStatorCurrent(), "Elevator: Main Motor Stator Current");
+        
+
+        // bottomSensorData = new LiveData(getBottomLimitSwitch(), "Elevator Bottom Limit Switch");
+        // elevatorHeight = new LiveData(getElevatorHeight(), "Get Elevator Height"); 
 
         SmartDashboard.putBoolean("Elevator: Open Loop Control", false);
 
@@ -126,7 +140,7 @@ public class Elevator extends SubsystemBase {
      * @param position - commanded motor position (motor encoder units)
      */
     public void setElevatorPositionVoltage(double position) {
-        elevatorSetpoint.set(position);
+        elevatorSetpoint.setNumber(position);
         elevatorMainMotor.setPositionVoltage(position);
     }
 
@@ -137,7 +151,7 @@ public class Elevator extends SubsystemBase {
      * @param position - commanded motor position (motor encoder units)
      */
     public void setElevatorPositionMotionMagicVoltage(double position) {
-        elevatorSetpoint.set(position);
+        elevatorSetpoint.setNumber(position);
         elevatorMainMotor.setPositionMotionMagicVoltage(position);
     }
 
@@ -148,7 +162,7 @@ public class Elevator extends SubsystemBase {
      * @param position - commanded motor position (motor encoder units)
      */
     public void setElevatorPositionMotionMagicTorqueCurrentFOC(double position) {
-        elevatorSetpoint.set(position);
+        elevatorSetpoint.setNumber(position);
         elevatorMainMotor.setPositionMotionMagicTorqueCurrentFOC(position);
     }
 
@@ -169,7 +183,7 @@ public class Elevator extends SubsystemBase {
      * @return position reading of the elevatorMainMotor encoder (motor encoder
      *         units)
      */
-    public double getElevatorPosition() {
+    public double getElevatorEncoderPosition() {
         return elevatorMainMotor.getPosition();
     }
 
@@ -212,7 +226,7 @@ public class Elevator extends SubsystemBase {
      * @return elevator motor setpoint (motor encoder units)
      */
     public double getElevatorSetpoint(){
-        return elevatorSetpoint.get();
+        return elevatorSetpoint.getNumber();
     }
 
     public double getElevatorMainMotorTemperature() {
@@ -229,10 +243,15 @@ public class Elevator extends SubsystemBase {
             setElevatorPercentOutput(DriverOI.getInstance().getRightForward() * 0.3);
         }
         SmartDashboard.putNumber("Elevator: Commanded Percent Output", DriverOI.getInstance().getForward() * 0.3);
-        SmartDashboard.putNumber("Elevator: Motor Encoder Position", getElevatorPosition());
-        SmartDashboard.putNumber("Elevator: CanCoder Position", getElevatorCANcoderReading());
-        SmartDashboard.putNumber("Elevator: Main Motor Supply Current", getMotorSupplyCurrent());
-        SmartDashboard.putNumber("Elevator: Main Motor Stator Current", getMotorStatorCurrent());
+
+        elevatorEncoderPosition.setNumber(getElevatorEncoderPosition());
+        elevatorCanCoderPosition.setNumber(getElevatorCANcoderReading());
+        mainMotorTemp.setNumber(getElevatorMainMotorTemperature());
+        followerMotorTemp.setNumber(getElevatorFollowerMotorTemperature());
+
+        mainMotorSupplyCurrent.setNumber(getMotorSupplyCurrent());
+        mainMotorStatorCurrent.setNumber(getMotorStatorCurrent());
+
     }
 
     @Override
