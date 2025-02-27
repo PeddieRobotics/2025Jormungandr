@@ -27,22 +27,39 @@ public class AlignToReefEstimatedPose extends Command {
     private double rotationLowerP, rotationUseLowerPThreshold;
     private double maxSpeed;
 
-    private Pose2d desiredPose;
-    private double tagBackMagnitude, tagLeftMagnitude;
-
+    private Optional<Pose2d> desiredPose;
     private double desiredAngle;
 
-    public AlignToReefEstimatedPose() {
-        drivetrain = Drivetrain.getInstance();
-        cameras = new Limelight[] {
-            LimelightFrontMiddle.getInstance(),
-            LimelightFrontLeft.getInstance(),
-            LimelightFrontRight.getInstance(),
-        };
+    private double tagBackMagnitude, tagLeftMagnitude;
 
-        translatePIDController = new PIDController(translateP, translateI, translateD);
-        rotationPIDController = new PIDController(rotationP, rotationI, rotationD);
+    public AlignToReefEstimatedPose(double tagLeftMagnitude) {
+        drivetrain = Drivetrain.getInstance();
         
+        // center
+        if (tagLeftMagnitude == 0) {
+            cameras = new Limelight[] {
+                LimelightFrontMiddle.getInstance(),
+                LimelightFrontLeft.getInstance(),
+                LimelightFrontRight.getInstance(),
+            };
+        }
+        // left
+        if (tagLeftMagnitude > 0) {
+            cameras = new Limelight[] {
+                LimelightFrontRight.getInstance(),
+                LimelightFrontMiddle.getInstance(),
+                LimelightFrontLeft.getInstance(),
+            };
+        }
+        // right
+        else {
+            cameras = new Limelight[] {
+                LimelightFrontLeft.getInstance(),
+                LimelightFrontMiddle.getInstance(),
+                LimelightFrontRight.getInstance(),
+            };
+        }
+
         translateP = 2.3;
         translateI = 0;
         translateD = 0;
@@ -58,10 +75,13 @@ public class AlignToReefEstimatedPose extends Command {
         rotationLowerP = 0.03;
         rotationUseLowerPThreshold = 1.5;
         
+        translatePIDController = new PIDController(translateP, translateI, translateD);
+        rotationPIDController = new PIDController(rotationP, rotationI, rotationD);
+        
         // center of robot distance to tag -- back (+ = back, - = forwards)
-        tagBackMagnitude = 0.5;
+        this.tagBackMagnitude = 0.5;
         // center of robot distance to tag -- left (+ = left, - = right)
-        tagLeftMagnitude = 0.1651;
+        this.tagLeftMagnitude = tagLeftMagnitude;
         
         maxSpeed = 3.0;
 
@@ -92,12 +112,14 @@ public class AlignToReefEstimatedPose extends Command {
 
     @Override
     public void initialize() {
-        // TODO: restore
-        // int desiredTarget = CalculateReefTarget.calculateTargetID();
-        int desiredTarget = (int) LimelightFrontMiddle.getInstance().getTargetID();
+        int desiredTarget = CalculateReefTarget.calculateTargetID();
+        // int desiredTarget = (int) LimelightFrontMiddle.getInstance().getTargetID();
 
-        if (Constants.kReefDesiredAngle.containsKey(desiredTarget))
-            desiredAngle = Constants.kReefDesiredAngle.get(desiredTarget);
+        if (!Constants.kReefDesiredAngle.containsKey(desiredTarget)) {
+            desiredPose = Optional.empty();
+            return;
+        }
+        desiredAngle = Constants.kReefDesiredAngle.get(desiredTarget);
         
         Pose2d tagPose = Limelight.getAprilTagPose(desiredTarget);
         double tagAngle = tagPose.getRotation().getRadians();
@@ -106,28 +128,16 @@ public class AlignToReefEstimatedPose extends Command {
         tagLeftMagnitude = SmartDashboard.getNumber("align tagLeftMagnitude", tagLeftMagnitude);
 
         // move the apriltag "forward"
-        desiredPose = new Pose2d(
+        desiredPose = Optional.of(new Pose2d(
             tagPose.getX() + tagBackMagnitude * Math.cos(tagAngle) + tagLeftMagnitude * Math.sin(tagAngle),
             tagPose.getY() + tagBackMagnitude * Math.sin(tagAngle) - tagLeftMagnitude * Math.cos(tagAngle),
             new Rotation2d(0)
-        );
+        ));
         
         SmartDashboard.putNumber("align desired tag", desiredTarget);
     }
     
     private Optional<Pose2d> getBestEstimatedPose() {
-        // double bestReprojErr = Integer.MAX_VALUE;
-        // Pose2d bestPose = drivetrain.getPose();
-        // for (PhotonVision camera : cameras) {
-        //     if (!camera.hasTarget())
-        //         continue;
-        //     if (camera.getReprojectionError() < bestReprojErr) {
-        //         bestReprojErr = camera.getReprojectionError();
-        //         bestPose = camera.getEstimatedPose();
-        //     }
-        // }
-
-
         for (Limelight camera : cameras) {
             Optional<Pose2d> measurement = camera.getEstimatedPoseMT2();
             if (measurement.isPresent() && camera.hasTarget())
@@ -158,7 +168,7 @@ public class AlignToReefEstimatedPose extends Command {
             maxSpeed = SmartDashboard.getNumber("align maxSpeed", maxSpeed);
         }
         
-        if (desiredPose == null)
+        if (desiredPose.isEmpty())
             return;
 
         double rotationError = drivetrain.getHeading() - desiredAngle;
@@ -183,11 +193,8 @@ public class AlignToReefEstimatedPose extends Command {
         }
         Pose2d estimatedPose = estimatedPoseOptional.get();
 
-        double xError = desiredPose.getX() - estimatedPose.getX();
-        double yError = desiredPose.getY() - estimatedPose.getY();
-        
-        xError *= -1;
-        yError *= -1;
+        double xError = estimatedPose.getX() - desiredPose.get().getX();
+        double yError = estimatedPose.getY() - desiredPose.get().getY();
 
         SmartDashboard.putNumber("align xError", xError);
         SmartDashboard.putNumber("align yError", yError);
@@ -212,10 +219,11 @@ public class AlignToReefEstimatedPose extends Command {
 
     @Override
     public void end(boolean interrupted) {
+        drivetrain.drive(new Translation2d(0,0), 0, false, null);
     }
 
     @Override
     public boolean isFinished() {
-        return desiredPose == null;
+        return desiredPose.isEmpty();
     }
 }
