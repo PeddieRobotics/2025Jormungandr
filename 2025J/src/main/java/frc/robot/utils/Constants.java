@@ -144,20 +144,30 @@ public final class Constants {
         public static final double kElevatorMagnetOffset = -0.685871;
 
         // Motion Magic Parameters
-        public static final double kElevatorMaxCruiseVelocity = 0.0;
-        public static final double kElevatorMaxCruiseAcceleration = 0.0;
-        public static final double kElevatorMaxCruiseJerk = 0.0;
+        public static final double kElevatorMaxCruiseVelocity = 14.0;
+        public static final double kElevatorMaxCruiseAcceleration = 40.0;
+        public static final double kElevatorMaxCruiseJerk = 400.0;
 
-        public static final double kS = 0.09;
+        // public static final double kS = 0.09;
+        // public static final double kV = 0.0;
+        // public static final double kA = 0.0;
+        // public static final double kP = 10.0;
+        // public static final double kI = 0.0;
+        // public static final double kD = 1.0;
+        // public static final double kG = 0.31;
+        // public static final double kFF = 0.0;
+
+        public static final double kS = 3.9;
         public static final double kV = 0.0;
         public static final double kA = 0.0;
-        public static final double kP = 10.0;
+        public static final double kP = 150.0;
         public static final double kI = 0.0;
-        public static final double kD = 1.0;
-        public static final double kG = 0.31;
+        public static final double kD = 30.0;
+        public static final double kG = 9.1;
         public static final double kFF = 0.0;
 
         public static final double kElevatorPositionEpsilon = 0.5;
+        public static final double kElevatorNeutralModePositionEpsilon = 0.05;
         public static final double kElevatorL1Height = 0.0;
         public static final double kElevatorL2Height = 0.0;
         public static final double kElevatorL3Height = 0.0;
@@ -192,7 +202,7 @@ public final class Constants {
         public static final double kElevatorL1ScorePosition = 2.6;
         public static final double kElevatorL2ScorePosition = 3.9;
         public static final double kElevatorL3ScorePosition = 6.9;
-        public static final double kElevatorL4PrestagePosition = 6.0;
+        public static final double kElevatorL4PrestagePosition = 3.9;
         public static final double kElevatorL4ScorePosition = 12.5; 
         public static final double kElevatorBargePrestagePosition = 6.0;
         public static final double kElevatorBargeScorePosition = 12.5;
@@ -357,8 +367,8 @@ public final class Constants {
 
     public static final class ClimberConstants {
 
-        public static final double kClimberStatorCurrentLimit = 0;
-        public static final double kClimberSupplyCurrentLimit = 0;
+        public static final double kClimberStatorCurrentLimit = 40.0;
+        public static final double kClimberSupplyCurrentLimit = 40.0;
 
         public static final double kClimberReduction = 120.0 / 1.0;
 

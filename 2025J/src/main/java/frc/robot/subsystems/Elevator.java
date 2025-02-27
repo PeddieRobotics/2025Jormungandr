@@ -55,8 +55,8 @@ public class Elevator extends SubsystemBase {
         elevatorFollowerMotor.setForwardTorqueCurrentLimit(ArmConstants.kArmForwardTorqueCurrentLimit);
         elevatorFollowerMotor.setReverseTorqueCurrentLimit(ArmConstants.kArmReverseTorqueCurrentLimit);
 
-        elevatorMainMotor.setCoast();
-        elevatorFollowerMotor.setCoast();
+        elevatorMainMotor.setBrake();
+        elevatorFollowerMotor.setBrake();
         
         elevatorMainMotor.setEncoder(0);
         elevatorMainMotor.setFeedbackDevice(RobotMap.ELEVATOR_CANCODER_ID, FeedbackSensorSourceValue.FusedCANcoder);
@@ -152,6 +152,10 @@ public class Elevator extends SubsystemBase {
         elevatorMainMotor.setPositionMotionMagicTorqueCurrentFOC(position);
     }
 
+    public void setElevatorNeutralMode(){
+        elevatorMainMotor.setNeutralControl();
+    }
+
     // Accessor methods
 
     /**
@@ -163,6 +167,10 @@ public class Elevator extends SubsystemBase {
 
     public boolean isAtPosition(double desiredPosition) {
         return Math.abs(getElevatorCANcoderReading() - desiredPosition) < ElevatorConstants.kElevatorPositionEpsilon;
+    }
+
+    public boolean isAtBottom() {
+        return Math.abs(getElevatorCANcoderReading()) < ElevatorConstants.kElevatorNeutralModePositionEpsilon;
     }
 
     /**

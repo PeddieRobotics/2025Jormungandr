@@ -16,6 +16,8 @@ public class Climber extends SubsystemBase {
         leftClimberMotor = new Kraken(RobotMap.CLIMBER_MAIN_MOTOR_ID, RobotMap.CANIVORE_NAME);
         // rightClimberMotor = new Kraken(RobotMap.CLIMBER_SECONDARY_MOTOR_ID, RobotMap.CANIVORE_NAME);
 
+        leftClimberMotor.setEncoder(0.0);
+
         leftClimberMotor.setInverted(false);
         // rightClimberMotor.setFollower(RobotMap.CLIMBER_MAIN_MOTOR_ID, true);
 
@@ -27,7 +29,7 @@ public class Climber extends SubsystemBase {
         leftClimberMotor.setSupplyCurrentLimit(ClimberConstants.kClimberSupplyCurrentLimit);
         // rightClimberMotor.setSupplyCurrentLimit(ClimberConstants.kClimberSupplyCurrentLimit);
 
-        SmartDashboard.putBoolean("Climber: Close Loop Control", false);
+        SmartDashboard.putBoolean("Climber: Open Loop Control", false);
     }
 
     public static Climber getInstance() {
@@ -105,7 +107,7 @@ public class Climber extends SubsystemBase {
 
     @Override
     public void periodic() {
-        if(SmartDashboard.getBoolean("Climber: Run Close Loop Control", false)){
+        if(SmartDashboard.getBoolean("Climber: Open Loop Control", false)){
             leftClimberMotor.setPercentOutput(DriverOI.getInstance().getRightForward());
         }
         SmartDashboard.putNumber("Climber Motor Supple Current", leftClimberMotor.getSupplyCurrent());

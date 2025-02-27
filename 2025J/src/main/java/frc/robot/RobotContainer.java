@@ -10,6 +10,7 @@ import frc.robot.commands.SwerveDriveCommand;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Autonomous;
 import frc.robot.subsystems.Claw;
+import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.HPIntake;
@@ -31,7 +32,7 @@ public class RobotContainer {
     private Arm arm;
     private Autonomous autonomous;
     private Claw claw;
-    // private Climber climber;
+    private Climber climber;
     private Drivetrain drivetrain;
     private Superstructure superstructure;
     private DriverOI driverOI;
@@ -48,7 +49,7 @@ public class RobotContainer {
     public RobotContainer() {
         arm = Arm.getInstance();
         claw = Claw.getInstance();
-        // climber = Climber.getInstance();
+        climber = Climber.getInstance();
         autonomous = Autonomous.getInstance();
         drivetrain = Drivetrain.getInstance();
         elevator = Elevator.getInstance();
