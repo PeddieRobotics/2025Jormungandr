@@ -8,8 +8,8 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.9532072368421045,
-        "y": 0.8690789473684206
+        "x": 1.953207236842104,
+        "y": 0.8690789473684204
       },
       "isLocked": false,
       "linkedName": "DReef"
@@ -72,13 +72,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 178.66778014613035
+    "rotation": 0.0
   },
   "reversed": false,
   "folder": "HP Intake",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": -119.99999999999999
+    "rotation": 59.99999999999999
   },
   "useDefaultConstraints": false
 }
