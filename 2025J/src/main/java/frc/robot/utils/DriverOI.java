@@ -66,13 +66,17 @@ public class DriverOI {
 
         Trigger touchpadButton = new JoystickButton(controller, PS4Controller.Button.kTouchpad.value);
 
+        // TODO: fix fix fix
+        
         Trigger L1Bumper = new JoystickButton(controller, PS4Controller.Button.kL1.value);
         // TODO: align left if coral, else align HP
-        L1Bumper.whileTrue(new AlignToReef2D(AlignmentDestination.LEFT));
+        // L1Bumper.whileTrue(new AlignToReef2D(AlignmentDestination.LEFT));
+        L1Bumper.whileTrue(new AlignToReefEstimatedPose());
 
         Trigger R1Bumper = new JoystickButton(controller, PS4Controller.Button.kR1.value);
         // TODO: align right if coral, else align HP
-        R1Bumper.whileTrue(new AlignToReef2D(AlignmentDestination.RIGHT));
+        // R1Bumper.whileTrue(new AlignToReef2D(AlignmentDestination.RIGHT));
+        L1Bumper.whileTrue(new AlignToReefEstimatedPose());
 
         Trigger L2Trigger = new JoystickButton(controller, PS4Controller.Button.kL2.value);
 
