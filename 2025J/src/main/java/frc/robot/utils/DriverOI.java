@@ -57,9 +57,17 @@ public class DriverOI {
         Trigger squareButton = new JoystickButton(controller, PS4Controller.Button.kSquare.value);
 
         Trigger triangleButton = new JoystickButton(controller, PS4Controller.Button.kTriangle.value);
+        triangleButton.whileTrue(new AlignToReefEstimatedPose(0));
         // triangleButton.onTrue(new AlignAndScore(true)); //right align
         triangleButton.onTrue(new InstantCommand(() -> superstructure.sendToScore()));
         // Claw.getInstance().stopClaw()));
+
+        // triangleButton.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.ALGAE_GROUND_INTAKE)));
+        // Claw.getInstance().stopClaw()));
+
+        Trigger squareButton = new JoystickButton(controller, PS4Controller.Button.kSquare.value);
+        squareButton.onTrue(new InstantCommand(() -> CalculateReefTarget.calculateTargetID()));
+        // squareButton.onTrue(new AlignToReefOdometry());
 
         Trigger muteButton = new JoystickButton(controller, 15);
         // Set to climb
@@ -70,13 +78,15 @@ public class DriverOI {
         
         Trigger L1Bumper = new JoystickButton(controller, PS4Controller.Button.kL1.value);
         // TODO: align left if coral, else align HP
+        // L1Bumper.onTrue(new InstantCommand(() -> Claw.getInstance().intakePiece(0.50)));
         // L1Bumper.whileTrue(new AlignToReef2D(AlignmentDestination.LEFT));
-        L1Bumper.whileTrue(new AlignToReefEstimatedPose());
+        L1Bumper.whileTrue(new AlignToReefEstimatedPose(0.1651));
 
         Trigger R1Bumper = new JoystickButton(controller, PS4Controller.Button.kR1.value);
         // TODO: align right if coral, else align HP
+        // R1Bumper.onTrue(new InstantCommand(() -> Claw.getInstance().stopClaw()));
         // R1Bumper.whileTrue(new AlignToReef2D(AlignmentDestination.RIGHT));
-        L1Bumper.whileTrue(new AlignToReefEstimatedPose());
+        R1Bumper.whileTrue(new AlignToReefEstimatedPose(-0.1651));
 
         Trigger L2Trigger = new JoystickButton(controller, PS4Controller.Button.kL2.value);
 

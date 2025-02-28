@@ -17,6 +17,7 @@ import edu.wpi.first.networktables.DoubleArrayPublisher;
 import edu.wpi.first.networktables.DoubleArraySubscriber;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.networktables.StructPublisher;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -103,7 +104,23 @@ public abstract class Limelight extends SubsystemBase {
     @Override 
     public void periodic() {
         updateRollingAverages();
-        LimelightHelpers.SetRobotOrientation(limelightName, Drivetrain.getInstance().getHeading(), 0, 0, 0, 0, 0);
+        
+        // TODO: TEST!!!
+        if (DriverStation.getAlliance().isEmpty() || DriverStation.getAlliance().get() == DriverStation.Alliance.Blue) {
+            LimelightHelpers.SetRobotOrientation(
+                limelightName,
+                Drivetrain.getInstance().getHeading(),
+                0, 0, 0, 0, 0
+            );
+        }
+        // RED:
+        else {
+            LimelightHelpers.SetRobotOrientation(
+                limelightName,
+                Math.IEEEremainder(Drivetrain.getInstance().getHeading() + 180, 360),
+                0, 0, 0, 0, 0
+            );
+        }
 
         Optional<Pose2d> estimatedPoseMT1 = getEstimatedPoseMT1();
         if (estimatedPoseMT1.isPresent()) {
