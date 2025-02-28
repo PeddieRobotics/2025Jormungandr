@@ -24,6 +24,7 @@ import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.utils.Constants.DriveConstants;
+import frc.robot.utils.LiveData;
 import frc.robot.utils.RobotMap;
 
 public class Drivetrain extends SubsystemBase {
@@ -47,6 +48,8 @@ public class Drivetrain extends SubsystemBase {
     private Translation2d currentMovement;
 
     private static int pipelineNumber;
+
+    private LiveData odometryX, odometryY, headingData, fusedOdometryData; 
 
     public Drivetrain() {
         frontLeftModule = new SwerveModule(RobotMap.CANIVORE_NAME, RobotMap.FRONT_LEFT_MODULE_DRIVE_ID,
@@ -101,6 +104,11 @@ public class Drivetrain extends SubsystemBase {
         SmartDashboard.putData("Fused odometry", fusedOdometry);
         fusedOdometryAdvScope = NetworkTableInstance.getDefault().getStructTopic("fused odometry for advantagescope", Pose2d.struct).publish();
         pureOdometryAdvScope = NetworkTableInstance.getDefault().getStructTopic("nonfused odometry for advantagescope", Pose2d.struct).publish();
+
+        odometryX = new LiveData(getPose().getX(), "Odometry X");
+        odometryY = new LiveData(getPose().getY(), "Odometry Y");
+        headingData = new LiveData(getHeading(), "Gyro Heading");
+        fusedOdometryData = new LiveData(fusedOdometry, "Fused odometry");
     }
 
     /**
@@ -377,9 +385,10 @@ public class Drivetrain extends SubsystemBase {
             // SmartDashboard.putNumber("module " + i +"actual angle", swerveModules[i].getAngle());
 
         }
-        SmartDashboard.putNumber("Odometry X", getPose().getX());
-        SmartDashboard.putNumber("Odometry Y", getPose().getY());
-        SmartDashboard.putNumber("Heading", getHeading());
+        odometryX.setNumber(getPose().getX());   
+        odometryY.setNumber(getPose().getY()); 
+        headingData.setNumber(getHeading()); 
+        fusedOdometryData.setData(fusedOdometry); 
     }
 
     @Override
