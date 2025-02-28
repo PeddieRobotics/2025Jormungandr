@@ -15,6 +15,7 @@ import frc.robot.commands.ReefCommands.AlignToReefEstimatedPose;
 import frc.robot.commands.ScoreCommands.AlignAndScore;
 import frc.robot.subsystems.Claw;
 import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.LimelightFrontMiddle;
 import frc.robot.utils.Constants.DriveConstants;
 
 public class DriverOI {
@@ -55,7 +56,8 @@ public class DriverOI {
         circleButton.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.HP_INTAKE)));
 
         Trigger squareButton = new JoystickButton(controller, PS4Controller.Button.kSquare.value);
-        squareButton.onTrue(new InstantCommand(() -> CalculateReefTarget.calculateTargetID()));
+        // squareButton.onTrue(new InstantCommand(() -> CalculateReefTarget.calculateTargetID()));
+        squareButton.whileTrue(new AlignToReefEstimatedPose(0));
 
         Trigger triangleButton = new JoystickButton(controller, PS4Controller.Button.kTriangle.value);
         // triangleButton.onTrue(new AlignAndScore(true)); //right align
@@ -64,6 +66,9 @@ public class DriverOI {
 
         Trigger muteButton = new JoystickButton(controller, 15);
         // Set to climb
+        muteButton.onTrue(new InstantCommand(() -> {
+            Drivetrain.getInstance().resetTranslation(LimelightFrontMiddle.getInstance().getEstimatedPoseMT2().get().getTranslation());
+        }));
 
         Trigger touchpadButton = new JoystickButton(controller, PS4Controller.Button.kTouchpad.value);
 

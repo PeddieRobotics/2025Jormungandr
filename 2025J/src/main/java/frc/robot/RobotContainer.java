@@ -66,6 +66,8 @@ public class RobotContainer {
 
         SmartDashboard.putData("Auto Routines", autonomous.getAutoChooser());
         drivetrain.setDefaultCommand(new SwerveDriveCommand());
+
+        // SmartDashboard.putBoolean("Use ", false)
     }
 
     public Command getAutonomousCommand() {

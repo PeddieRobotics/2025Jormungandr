@@ -11,6 +11,7 @@ import frc.robot.subsystems.LimelightFrontMiddle;
 import frc.robot.subsystems.LimelightFrontRight;
 import frc.robot.utils.CalculateReefTarget;
 import frc.robot.utils.Constants;
+import frc.robot.utils.Constants.AlignmentConstants;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.Timer;
@@ -133,13 +134,13 @@ public class AlignToReef2D extends Command {
         else 
             desiredTarget = CalculateReefTarget.calculateTargetID();
 
-        if (!Constants.kReefDesiredAngle.containsKey(desiredTarget)){
+        if (!AlignmentConstants.kReefDesiredAngle.containsKey(desiredTarget)){
             shouldEnd = true;
             return;
         }
         
         limelight.setPriorityTag(desiredTarget);
-        desiredAngle = Constants.kReefDesiredAngle.get(desiredTarget);
+        desiredAngle = AlignmentConstants.kReefDesiredAngle.get(desiredTarget);
 
         translation = new Translation2d(0, 0);
         shouldEnd = false;

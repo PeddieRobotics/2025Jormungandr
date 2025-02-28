@@ -279,61 +279,60 @@ public final class Constants {
         public static final double kProcessorSetpoint = 0.0;
     }
 
-    public static final class AutoAlign {
-        public static final InterpolatingDoubleTreeMap k1TagStdDevs = new InterpolatingDoubleTreeMap() {
+    public static final class AlignmentConstants {
+        public static final Map<Integer, Double> kReefDesiredAngle = new HashMap<>() {
             {
-                put(0.0, 0.1);
-                put(0.4, 0.1);
-                put(0.53, 0.15);
-                put(0.64, 0.25);
-                put(0.74, 0.3);
-                put(0.8, 0.4);
-                put(0.85, 0.5);
-                put(0.89, 0.55);
-                put(0.93, 0.7);
-                put(0.94, 1.2);
-                put(1.0, 1.4);
-                put(1.1, 1.6);
-                put(1.25, 2.5);
+                // red side
+                put(6, -60.0);
+                put(7, 0.0);
+                put(8, 60.0);
+                put(9, 120.0);
+                put(10, 180.0);
+                put(11, -120.0);
+    
+                // blue side, same angles but opposite
+                put(17, 60.0);
+                put(18, 0.0);
+                put(19, -60.0);
+                put(20, -120.0);
+                put(21, 180.0);
+                put(22, 120.0);
             }
         };
 
-        public static final InterpolatingDoubleTreeMap k2TagStdDevs = new InterpolatingDoubleTreeMap() {
-            {
-                put(0.0, 0.3);
-                put(1.5, 0.5);
-                put(2.5, 0.7);
-                put(3.5, 0.9);
-                // put(2.0, 0.2);
-                // put(2.5, 0.3);
-                // put(3.0, 0.5);
-            }
-        };
+        public static final class ReefAlignEstimatedPose {
+            public static final double kTranslateP = 2.3;
+            public static final double kTranslateI = 0;
+            public static final double kTranslateD = 0;
+            public static final double kTranslateFF = 0;
+            public static final double kTranslateThreshold = 0.015;
+            public static final double kTranslateSetpoint = 0;
+
+            public static final double kRotationP = 0.05;
+            public static final double kRotationI = 0;
+            public static final double kRotationD = 0;
+            public static final double kRotationFF = 0;
+            public static final double kRotationThreshold = 0.3;
+            public static final double kRotationLowerP = 0.03;
+            public static final double kRotationUseLowerPThreshold = 1.5;
+            
+            // center of robot distance to tag -- back (+ = back, - = forwards)
+            public static final double kTagBackMagnitude = 0.44;
+
+            // center of robot distance to tag -- left (+ = left, - = right)
+            public static final double kLeftTagLeftMagnitude = 0.1651;
+            public static final double kRightTagLeftMagnitude = 0.1651;
+            
+            public static final double kMaxSpeed = 1.0;   
+        }
+            
+        public static final double kDefaultToClosestDistance = 1.5;
 
         public static final double rotationErrorEpsilon = 0.0;
         public static final double xErrorEpsilon = 0.0;
         public static final double yErrorEpsilon = 0.0;
     }
 
-    public static final Map<Integer, Double> kReefDesiredAngle = new HashMap<>() {
-        {
-            // red side
-            put(6, -60.0);
-            put(7, 0.0);
-            put(8, 60.0);
-            put(9, 120.0);
-            put(10, 180.0);
-            put(11, -120.0);
-
-            // blue side, same angles but opposite
-            put(17, 60.0);
-            put(18, 0.0);
-            put(19, -60.0);
-            put(20, -120.0);
-            put(21, 180.0);
-            put(22, 120.0);
-        }
-    };
 
     public static final class ClawConstants {
         public static final double kClawSupplyCurrentLimit = 40.0;
@@ -424,6 +423,36 @@ public final class Constants {
         public static final double kLeftCamPitchDeg = 0;
         public static final double kLeftCamYawDeg = 0;
         public static final int kLeftCamPipeline = 0;
+
+        public static final InterpolatingDoubleTreeMap k1TagStdDevs = new InterpolatingDoubleTreeMap() {
+            {
+                put(0.0, 0.1);
+                put(0.4, 0.1);
+                put(0.53, 0.15);
+                put(0.64, 0.25);
+                put(0.74, 0.3);
+                put(0.8, 0.4);
+                put(0.85, 0.5);
+                put(0.89, 0.55);
+                put(0.93, 0.7);
+                put(0.94, 1.2);
+                put(1.0, 1.4);
+                put(1.1, 1.6);
+                put(1.25, 2.5);
+            }
+        };
+
+        public static final InterpolatingDoubleTreeMap k2TagStdDevs = new InterpolatingDoubleTreeMap() {
+            {
+                put(0.0, 0.3);
+                put(1.5, 0.5);
+                put(2.5, 0.7);
+                put(3.5, 0.9);
+                // put(2.0, 0.2);
+                // put(2.5, 0.3);
+                // put(3.0, 0.5);
+            }
+        };
     }
 
     public static final class FieldConstants {

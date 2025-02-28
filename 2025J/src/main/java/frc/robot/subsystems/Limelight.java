@@ -1,7 +1,5 @@
 package frc.robot.subsystems;
 
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Optional;
 
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
@@ -11,17 +9,13 @@ import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.filter.LinearFilter;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
-import edu.wpi.first.math.geometry.Rotation3d;
-import edu.wpi.first.math.util.Units;
-import edu.wpi.first.networktables.DoubleArrayPublisher;
-import edu.wpi.first.networktables.DoubleArraySubscriber;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.networktables.StructPublisher;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.utils.Constants;
+import frc.robot.utils.Constants.CameraConstants;
 import frc.robot.utils.LimelightHelpers;
 import frc.robot.utils.LimelightHelpers.PoseEstimate;
 import frc.robot.utils.RollingAverage;
@@ -197,9 +191,9 @@ public abstract class Limelight extends SubsystemBase {
 
         double deviation;
         if (numTagsSeen == 1)
-            deviation = Constants.AutoAlign.k1TagStdDevs.get(distance);
+            deviation = CameraConstants.k1TagStdDevs.get(distance);
         else
-            deviation = Constants.AutoAlign.k2TagStdDevs.get(distance);
+            deviation = CameraConstants.k2TagStdDevs.get(distance);
         
         odometry.setVisionMeasurementStdDevs(VecBuilder.fill(
             deviation, deviation, 30

@@ -11,6 +11,7 @@ import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.LimelightFrontMiddle;
 import frc.robot.subsystems.Superstructure;
 import frc.robot.utils.Constants;
+import frc.robot.utils.Constants.AlignmentConstants;
 
 public class AlignAndScore extends Command {
     private Drivetrain drivetrain;
@@ -86,8 +87,8 @@ public class AlignAndScore extends Command {
         // must see tag!
 
         int desiredTarget = (int) llFrontMiddle.getTargetID();
-        if (Constants.kReefDesiredAngle.containsKey(desiredTarget))
-            desiredAngle = Constants.kReefDesiredAngle.get(desiredTarget);
+        if (AlignmentConstants.kReefDesiredAngle.containsKey(desiredTarget))
+            desiredAngle = AlignmentConstants.kReefDesiredAngle.get(desiredTarget);
 
         Pose2d tagPose = llFrontMiddle.getAprilTagPose(); 
         double tagAngle = tagPose.getRotation().getRadians();
