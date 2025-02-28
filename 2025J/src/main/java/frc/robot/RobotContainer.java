@@ -16,6 +16,7 @@ import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.HPIntake;
 import frc.robot.subsystems.Lights;
 import frc.robot.subsystems.Superstructure;
+import frc.robot.utils.CalculateReefTarget;
 import frc.robot.utils.DriverOI;
 import frc.robot.utils.OperatorOI;
 
@@ -63,6 +64,8 @@ public class RobotContainer {
         // llFrontRight = LimelightFrontRight.getInstance();
         // llLeft = LimelightLeft.getInstance();
         // lights = Lights.getInstance();
+
+        CalculateReefTarget.init();
 
         SmartDashboard.putData("Auto Routines", autonomous.getAutoChooser());
         drivetrain.setDefaultCommand(new SwerveDriveCommand());
