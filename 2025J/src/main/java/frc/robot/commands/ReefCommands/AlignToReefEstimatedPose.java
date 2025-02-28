@@ -1,3 +1,5 @@
+// TODO: rectify brokenness
+
 package frc.robot.commands.ReefCommands;
 
 import java.util.Optional;
@@ -14,7 +16,8 @@ import frc.robot.subsystems.LimelightFrontMiddle;
 import frc.robot.subsystems.LimelightFrontRight;
 import frc.robot.subsystems.Limelight;
 import frc.robot.utils.CalculateReefTarget;
-import frc.robot.utils.Constants;
+import frc.robot.utils.Constants.AlignmentConstants;
+import frc.robot.utils.Constants.AlignmentConstants.ReefAlignEstimatedPose;
 
 public class AlignToReefEstimatedPose extends Command {
     private Drivetrain drivetrain;
@@ -22,48 +25,67 @@ public class AlignToReefEstimatedPose extends Command {
 
     private PIDController translatePIDController, rotationPIDController;
 
-    private double translateP, translateI, translateD, translateFF, translateThreshold, translateSetpoint;
+    private double translateP, translateI, translateD, translateFF, translateThreshold;
     private double rotationP, rotationI, rotationD, rotationFF, rotationThreshold;
     private double rotationLowerP, rotationUseLowerPThreshold;
     private double maxSpeed;
 
-    private Pose2d desiredPose;
-    private double tagBackMagnitude, tagLeftMagnitude;
-
+    private Optional<Pose2d> desiredPose;
     private double desiredAngle;
 
-    public AlignToReefEstimatedPose() {
-        drivetrain = Drivetrain.getInstance();
-        cameras = new Limelight[] {
-            LimelightFrontMiddle.getInstance(),
-            LimelightFrontLeft.getInstance(),
-            LimelightFrontRight.getInstance(),
-        };
+    private double tagBackMagnitude, tagLeftMagnitude;
 
+    public AlignToReefEstimatedPose(double tagLeftMagnitude) {
+        drivetrain = Drivetrain.getInstance();
+        
+        // center
+        if (tagLeftMagnitude == 0) {
+            cameras = new Limelight[] {
+                LimelightFrontMiddle.getInstance(),
+                LimelightFrontLeft.getInstance(),
+                LimelightFrontRight.getInstance(),
+            };
+        }
+        // left
+        else if (tagLeftMagnitude > 0) {
+            cameras = new Limelight[] {
+                LimelightFrontRight.getInstance(),
+                LimelightFrontMiddle.getInstance(),
+                LimelightFrontLeft.getInstance(),
+            };
+        }
+        // right
+        else {
+            cameras = new Limelight[] {
+                LimelightFrontLeft.getInstance(),
+                LimelightFrontMiddle.getInstance(),
+                LimelightFrontRight.getInstance(),
+            };
+        }
+
+        translateP = ReefAlignEstimatedPose.kTranslateP;
+        translateI = ReefAlignEstimatedPose.kTranslateI;
+        translateD = ReefAlignEstimatedPose.kTranslateD;
+        translateFF = ReefAlignEstimatedPose.kTranslateFF;
+        translateThreshold = ReefAlignEstimatedPose.kTranslateThreshold;
+
+        rotationP = ReefAlignEstimatedPose.kRotationP;
+        rotationI = ReefAlignEstimatedPose.kRotationI;
+        rotationD = ReefAlignEstimatedPose.kRotationD;
+        rotationFF = ReefAlignEstimatedPose.kRotationFF;
+        rotationThreshold = ReefAlignEstimatedPose.kRotationThreshold;
+        rotationLowerP = ReefAlignEstimatedPose.kRotationLowerP;
+        rotationUseLowerPThreshold = ReefAlignEstimatedPose.kRotationUseLowerPThreshold;
+        
         translatePIDController = new PIDController(translateP, translateI, translateD);
         rotationPIDController = new PIDController(rotationP, rotationI, rotationD);
         
-        translateP = 2.3;
-        translateI = 0;
-        translateD = 0;
-        translateFF = 0;
-        translateThreshold = 0.015;
-        translateSetpoint = 0;
-
-        rotationP = 0.05;
-        rotationI = 0;
-        rotationD = 0;
-        rotationFF = 0;
-        rotationThreshold = 0.5;
-        rotationLowerP = 0.03;
-        rotationUseLowerPThreshold = 1.5;
-        
         // center of robot distance to tag -- back (+ = back, - = forwards)
-        tagBackMagnitude = 0.5;
+        this.tagBackMagnitude = ReefAlignEstimatedPose.kTagBackMagnitude;
         // center of robot distance to tag -- left (+ = left, - = right)
-        tagLeftMagnitude = 0.1651;
+        this.tagLeftMagnitude = tagLeftMagnitude;
         
-        maxSpeed = 3.0;
+        maxSpeed = ReefAlignEstimatedPose.kMaxSpeed;
 
         addRequirements(drivetrain);
         
@@ -73,7 +95,6 @@ public class AlignToReefEstimatedPose extends Command {
             SmartDashboard.putNumber("align translateD", translateD);
             SmartDashboard.putNumber("align translateFF", translateFF);
             SmartDashboard.putNumber("align translateThreshold", translateThreshold);
-            SmartDashboard.putNumber("align translateSetpoint", translateSetpoint);
             
             SmartDashboard.putNumber("align rotationP", rotationP);
             SmartDashboard.putNumber("align rotationI", rotationI);
@@ -92,42 +113,34 @@ public class AlignToReefEstimatedPose extends Command {
 
     @Override
     public void initialize() {
-        // TODO: restore
-        // int desiredTarget = CalculateReefTarget.calculateTargetID();
-        int desiredTarget = (int) LimelightFrontMiddle.getInstance().getTargetID();
+        int desiredTarget = CalculateReefTarget.calculateTargetID();
+        SmartDashboard.putNumber("Align Desired Target", desiredTarget);
 
-        if (Constants.kReefDesiredAngle.containsKey(desiredTarget))
-            desiredAngle = Constants.kReefDesiredAngle.get(desiredTarget);
+        // int desiredTarget = (int) LimelightFrontMiddle.getInstance().getTargetID();
+
+        if (!AlignmentConstants.kReefDesiredAngle.containsKey(desiredTarget)) {
+            desiredPose = Optional.empty();
+            return;
+        }
+        desiredAngle = AlignmentConstants.kReefDesiredAngle.get(desiredTarget);
         
         Pose2d tagPose = Limelight.getAprilTagPose(desiredTarget);
         double tagAngle = tagPose.getRotation().getRadians();
 
         tagBackMagnitude = SmartDashboard.getNumber("align tagBackMagnitude", tagBackMagnitude);
-        tagLeftMagnitude = SmartDashboard.getNumber("align tagLeftMagnitude", tagLeftMagnitude);
+        // tagLeftMagnitude = SmartDashboard.getNumber("align tagLeftMagnitude", tagLeftMagnitude);
 
         // move the apriltag "forward"
-        desiredPose = new Pose2d(
+        desiredPose = Optional.of(new Pose2d(
             tagPose.getX() + tagBackMagnitude * Math.cos(tagAngle) + tagLeftMagnitude * Math.sin(tagAngle),
             tagPose.getY() + tagBackMagnitude * Math.sin(tagAngle) - tagLeftMagnitude * Math.cos(tagAngle),
             new Rotation2d(0)
-        );
+        ));
         
         SmartDashboard.putNumber("align desired tag", desiredTarget);
     }
     
     private Optional<Pose2d> getBestEstimatedPose() {
-        // double bestReprojErr = Integer.MAX_VALUE;
-        // Pose2d bestPose = drivetrain.getPose();
-        // for (PhotonVision camera : cameras) {
-        //     if (!camera.hasTarget())
-        //         continue;
-        //     if (camera.getReprojectionError() < bestReprojErr) {
-        //         bestReprojErr = camera.getReprojectionError();
-        //         bestPose = camera.getEstimatedPose();
-        //     }
-        // }
-
-
         for (Limelight camera : cameras) {
             Optional<Pose2d> measurement = camera.getEstimatedPoseMT2();
             if (measurement.isPresent() && camera.hasTarget())
@@ -145,7 +158,6 @@ public class AlignToReefEstimatedPose extends Command {
             translateD = SmartDashboard.getNumber("align translateD", translateD);
             translateFF = SmartDashboard.getNumber("align translateFF", translateFF);
             translateThreshold = SmartDashboard.getNumber("align translateThreshold", translateThreshold);
-            translateSetpoint = SmartDashboard.getNumber("align translateSetpoint", translateSetpoint);
 
             rotationP = SmartDashboard.getNumber("align rotationP", rotationP);
             rotationI = SmartDashboard.getNumber("align rotationI", rotationI);
@@ -158,7 +170,7 @@ public class AlignToReefEstimatedPose extends Command {
             maxSpeed = SmartDashboard.getNumber("align maxSpeed", maxSpeed);
         }
         
-        if (desiredPose == null)
+        if (desiredPose.isEmpty())
             return;
 
         double rotationError = drivetrain.getHeading() - desiredAngle;
@@ -177,17 +189,13 @@ public class AlignToReefEstimatedPose extends Command {
 
         Optional<Pose2d> estimatedPoseOptional = getBestEstimatedPose();
         if (!estimatedPoseOptional.isPresent()) {
-            // TODO
             drivetrain.drive(new Translation2d(0, 0), 0, true, null);
             return;
         }
         Pose2d estimatedPose = estimatedPoseOptional.get();
 
-        double xError = desiredPose.getX() - estimatedPose.getX();
-        double yError = desiredPose.getY() - estimatedPose.getY();
-        
-        xError *= -1;
-        yError *= -1;
+        double xError = estimatedPose.getX() - desiredPose.get().getX();
+        double yError = estimatedPose.getY() - desiredPose.get().getY();
 
         SmartDashboard.putNumber("align xError", xError);
         SmartDashboard.putNumber("align yError", yError);
@@ -212,10 +220,11 @@ public class AlignToReefEstimatedPose extends Command {
 
     @Override
     public void end(boolean interrupted) {
+        drivetrain.drive(new Translation2d(0,0), 0, false, null);
     }
 
     @Override
     public boolean isFinished() {
-        return desiredPose == null;
+        return desiredPose.isEmpty();
     }
 }

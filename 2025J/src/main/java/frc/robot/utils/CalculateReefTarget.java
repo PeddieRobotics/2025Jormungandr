@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Limelight;
+import frc.robot.utils.Constants.AlignmentConstants;
 
 class IDVectorPair {
     public int id;
@@ -46,24 +47,31 @@ public class CalculateReefTarget {
         if (DriverStation.getAlliance().isEmpty() || DriverStation.getAlliance().get() == DriverStation.Alliance.Blue) {
             for (int i = 17; i <= 22; i++) {
                 Translation2d tagPose = Limelight.getAprilTagPose(i).getTranslation();
-                // TODO: check what should be on real robot
-                robotToTag.add(new IDVectorPair(i, odometryPose.minus(tagPose)));
+                robotToTag.add(new IDVectorPair(i, tagPose.minus(odometryPose)));
             }
         }
         // RED:
         else {
             for (int i = 6; i <= 11; i++) {
                 Translation2d tagPose = Limelight.getAprilTagPose(i).getTranslation();
-                robotToTag.add(new IDVectorPair(i, odometryPose.minus(tagPose)));
+                robotToTag.add(new IDVectorPair(i, tagPose.minus(odometryPose)));
             }
         }
         
         Collections.sort(robotToTag, (o1, o2) -> (
             ((Double) o1.vector.getNorm()).compareTo(o2.vector.getNorm())
         ));
+
+        SmartDashboard.putNumber("similar 0 tag", robotToTag.get(0).id);
+        SmartDashboard.putNumber("similar 1 tag", robotToTag.get(1).id);
+        SmartDashboard.putNumber("similar 0 distance", robotToTag.get(0).vector.getNorm());
+        SmartDashboard.putNumber("similar 1 distance", robotToTag.get(1).vector.getNorm());
+
+        if (robotToTag.get(0).vector.getNorm() <= AlignmentConstants.kDefaultToClosestDistance)
+            return robotToTag.get(0).id;
         
         int desiredTarget;
-        if (robotToTag.get(0).vector.getNorm() - robotToTag.get(1).vector.getNorm() >= 0.35)
+        if (robotToTag.get(1).vector.getNorm() - robotToTag.get(0).vector.getNorm() >= 0.25)
             desiredTarget = robotToTag.get(0).id;
         else {
             Translation2d robotMovement = Drivetrain.getInstance().getCurrentMovement();
@@ -73,10 +81,10 @@ public class CalculateReefTarget {
                 double similar0 = cosineSimilarity(robotToTag.get(0).vector, robotMovement);
                 double similar1 = cosineSimilarity(robotToTag.get(1).vector, robotMovement);
                 desiredTarget = similar0 > similar1 ? robotToTag.get(0).id : robotToTag.get(1).id;
+                SmartDashboard.putNumber("similar 0 similarity", similar0);
+                SmartDashboard.putNumber("similar 1 similarity", similar1);
             }
         }
-
-        SmartDashboard.putNumber("Align Desired Target", desiredTarget);
 
         return desiredTarget;
     }

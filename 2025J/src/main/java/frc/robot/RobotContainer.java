@@ -10,6 +10,7 @@ import frc.robot.commands.SwerveDriveCommand;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Autonomous;
 import frc.robot.subsystems.Claw;
+// import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.HPIntake;
@@ -69,6 +70,8 @@ public class RobotContainer {
 
         SmartDashboard.putData("Auto Routines", autonomous.getAutoChooser());
         drivetrain.setDefaultCommand(new SwerveDriveCommand());
+
+        // SmartDashboard.putBoolean("Use ", false)
     }
 
     public Command getAutonomousCommand() {

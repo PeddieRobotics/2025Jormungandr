@@ -15,6 +15,7 @@ import frc.robot.commands.ReefCommands.AlignToReefEstimatedPose;
 import frc.robot.commands.ScoreCommands.AlignAndScore;
 import frc.robot.subsystems.Claw;
 import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.LimelightFrontMiddle;
 import frc.robot.utils.Constants.DriveConstants;
 
 public class DriverOI {
@@ -55,6 +56,8 @@ public class DriverOI {
         circleButton.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.HP_INTAKE)));
 
         Trigger squareButton = new JoystickButton(controller, PS4Controller.Button.kSquare.value);
+        // squareButton.onTrue(new InstantCommand(() -> CalculateReefTarget.calculateTargetID()));
+        squareButton.whileTrue(new AlignToReefEstimatedPose(0));
 
         Trigger triangleButton = new JoystickButton(controller, PS4Controller.Button.kTriangle.value);
         // triangleButton.onTrue(new AlignAndScore(true)); //right align
@@ -63,16 +66,21 @@ public class DriverOI {
 
         Trigger muteButton = new JoystickButton(controller, 15);
         // Set to climb
+        muteButton.onTrue(new InstantCommand(() -> {
+            Drivetrain.getInstance().resetTranslation(LimelightFrontMiddle.getInstance().getEstimatedPoseMT2().get().getTranslation());
+        }));
 
         Trigger touchpadButton = new JoystickButton(controller, PS4Controller.Button.kTouchpad.value);
 
         Trigger L1Bumper = new JoystickButton(controller, PS4Controller.Button.kL1.value);
         // TODO: align left if coral, else align HP
-        L1Bumper.whileTrue(new AlignToReef2D(AlignmentDestination.LEFT));
+        // L1Bumper.whileTrue(new AlignToReef2D(AlignmentDestination.LEFT));
+        L1Bumper.whileTrue(new AlignToReefEstimatedPose(0.1651));
 
         Trigger R1Bumper = new JoystickButton(controller, PS4Controller.Button.kR1.value);
         // TODO: align right if coral, else align HP
-        R1Bumper.whileTrue(new AlignToReef2D(AlignmentDestination.RIGHT));
+        // R1Bumper.whileTrue(new AlignToReef2D(AlignmentDestination.RIGHT));
+        R1Bumper.whileTrue(new AlignToReefEstimatedPose(-0.1651));
 
         Trigger L2Trigger = new JoystickButton(controller, PS4Controller.Button.kL2.value);
 

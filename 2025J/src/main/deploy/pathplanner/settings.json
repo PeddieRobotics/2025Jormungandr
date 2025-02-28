@@ -4,13 +4,15 @@
   "holonomicMode": true,
   "pathFolders": [
     "HP Intake",
+    "Test Paths",
     "Score",
     "Starts"
   ],
   "autoFolders": [
     "Cage Starts",
-    "Mid Start",
     "Jig Starts",
+    "Mid Start",
+    "Test Autos",
     "Tape Starts",
     "Wall Starts"
   ],

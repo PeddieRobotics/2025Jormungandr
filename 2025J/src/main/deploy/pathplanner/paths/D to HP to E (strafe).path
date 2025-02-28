@@ -25,7 +25,7 @@
       },
       "nextControl": {
         "x": 1.7326418498794314,
-        "y": 0.31874611745195447
+        "y": 0.3187461174519545
       },
       "isLocked": false,
       "linkedName": null
@@ -47,7 +47,7 @@
   "rotationTargets": [
     {
       "waypointRelativePos": 1.0173228346456784,
-      "rotationDegrees": -125.06085631593605
+      "rotationDegrees": 54.94
     }
   ],
   "constraintZones": [
@@ -77,13 +77,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -59.99999999999999
+    "rotation": 119.99999999999999
   },
   "reversed": false,
   "folder": "HP Intake",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": -119.99999999999999
+    "rotation": 59.99999999999999
   },
   "useDefaultConstraints": false
 }

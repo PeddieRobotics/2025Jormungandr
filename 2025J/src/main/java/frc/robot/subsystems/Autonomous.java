@@ -10,8 +10,10 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.commands.AutoCommands.*;
+import frc.robot.subsystems.Superstructure.SuperstructureState;
 import frc.robot.utils.Constants.AutoConstants;
 
 public class Autonomous extends SubsystemBase {
@@ -21,6 +23,7 @@ public class Autonomous extends SubsystemBase {
     private static Autonomous autonomous;
     private Drivetrain drivetrain;
     private RobotConfig config;
+    private Superstructure superstructure;
 
     public Autonomous() {
         drivetrain = Drivetrain.getInstance();
@@ -32,10 +35,11 @@ public class Autonomous extends SubsystemBase {
             e.printStackTrace();
         }
 
-        registerNamedCommands(); 
+        registerNamedCommands();
         configureAutoBuilder();
         autoChooser = AutoBuilder.buildAutoChooser();
         SmartDashboard.putData("autoSelector", autoChooser);
+        superstructure = Superstructure.getInstance();
     }
 
     public static Autonomous getInstance() {
@@ -54,8 +58,11 @@ public class Autonomous extends SubsystemBase {
                 new PPHolonomicDriveController( // PPHolonomicController is the built in path following controller for
                                                 // holonomic drive trains
                         // TODO: update these constants for AUTO
-                        new PIDConstants(AutoConstants.kTranslationP, AutoConstants.kTranslationI, AutoConstants.kTranslationD), // Translation PID constants
-                        new PIDConstants(AutoConstants.kThetaP, AutoConstants.kThetaI, AutoConstants.kThetaD) // Rotation PID constants
+                        new PIDConstants(AutoConstants.kTranslationP, AutoConstants.kTranslationI,
+                                AutoConstants.kTranslationD), // Translation PID constants
+                        new PIDConstants(AutoConstants.kThetaP, AutoConstants.kThetaI, AutoConstants.kThetaD) // Rotation
+                                                                                                              // PID
+                                                                                                              // constants
                 ),
                 config,
                 () -> {
@@ -84,6 +91,12 @@ public class Autonomous extends SubsystemBase {
 
     public void registerNamedCommands(){
         NamedCommands.registerCommand("ALIGN_TO_REEF", new AlignToReefInAuto());
+        NamedCommands.registerCommand("L1_PREP", new InstantCommand(() -> superstructure.requestState(SuperstructureState.L1_PREP)));
+        NamedCommands.registerCommand("L4_PRESTAGE", new InstantCommand(() -> superstructure.requestState(SuperstructureState.L4_PRESTAGE)));
+        NamedCommands.registerCommand("L4_PREP", new InstantCommand(() -> superstructure.requestState(SuperstructureState.L4_PREP)));
+        NamedCommands.registerCommand("STOW", new InstantCommand(() -> superstructure.requestState(SuperstructureState.STOW)));
+        NamedCommands.registerCommand("HP_INTAKE", new InstantCommand(() -> superstructure.requestState(SuperstructureState.HP_INTAKE)));
+        NamedCommands.registerCommand("SEND_TO_SCORE", new InstantCommand(() -> superstructure.sendToScore()));
     }
 
 }
