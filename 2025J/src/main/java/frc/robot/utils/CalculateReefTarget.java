@@ -1,4 +1,4 @@
-package frc.robot.util;
+package frc.robot.utils;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -13,7 +13,7 @@ import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Limelight;
-import frc.robot.util.Constants.AlignmentConstants;
+import frc.robot.utils.Constants.AlignmentConstants;
 
 class IDVectorPair {
     public int id;
@@ -181,8 +181,6 @@ public class CalculateReefTarget {
 
         if (robotToTag.get(1).vector.getNorm() - robotToTag.get(0).vector.getNorm() >= 0.25)
             return tag0gyroError < 45.0 ? tag0id : 0;
-
-        return 0;
 
         Translation2d robotMovement = drivetrain.getCurrentMovement();
 
