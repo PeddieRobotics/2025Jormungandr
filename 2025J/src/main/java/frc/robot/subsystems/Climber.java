@@ -1,33 +1,42 @@
-// package frc.robot.subsystems;
+package frc.robot.subsystems;
 
-// import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-// import edu.wpi.first.wpilibj2.command.SubsystemBase;
-// import frc.robot.utils.Constants.ClimberConstants;
-// import frc.robot.utils.DriverOI;
-// import frc.robot.utils.Kraken;
-// import frc.robot.utils.RobotMap;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.utils.Constants.ClimberConstants;
+import frc.robot.utils.DriverOI;
+import frc.robot.utils.Kraken;
+import frc.robot.utils.LiveData;
+import frc.robot.utils.RobotMap;
 
-// public class Climber extends SubsystemBase {
-//     private static Climber instance;
-//     private Kraken leftClimberMotor;
-//     // private Kraken rightClimberMotor;
 
-//     public Climber() {
-//         leftClimberMotor = new Kraken(RobotMap.CLIMBER_MAIN_MOTOR_ID, RobotMap.CANIVORE_NAME);
-//         // rightClimberMotor = new Kraken(RobotMap.CLIMBER_SECONDARY_MOTOR_ID, RobotMap.CANIVORE_NAME);
 
-//         leftClimberMotor.setEncoder(0.0);
+public class Climber extends SubsystemBase {
+    private static Climber instance;
+    private Kraken leftClimberMotor;
+    // private Kraken rightClimberMotor;
+    private LiveData leftClimberSupplyCurrent, leftClimberStatorCurrent, rightClimberSupplyCurrent, rightClimberStatorCurrent,
+        leftClimberMotorTemperature, rightClimberMotorTemperture, rightMotorPopsition, leftMotorPosition; 
 
-//         leftClimberMotor.setInverted(false);
-//         // rightClimberMotor.setFollower(RobotMap.CLIMBER_MAIN_MOTOR_ID, true);
 
-//         leftClimberMotor.setBrake();
-//         // rightClimberMotor.setBrake();
+    public Climber() {
+        // leftClimberMotor = new Kraken(RobotMap.CLIMBER_MAIN_MOTOR_ID, RobotMap.CANIVORE_NAME);
+        // // rightClimberMotor = new Kraken(RobotMap.CLIMBER_SECONDARY_MOTOR_ID, RobotMap.CANIVORE_NAME);
 
-//         leftClimberMotor.setStatorCurrentLimit(ClimberConstants.kClimberStatorCurrentLimit);
-//         // rightClimberMotor.setStatorCurrentLimit(ClimberConstants.kClimberStatorCurrentLimit);
-//         leftClimberMotor.setSupplyCurrentLimit(ClimberConstants.kClimberSupplyCurrentLimit);
-//         // rightClimberMotor.setSupplyCurrentLimit(ClimberConstants.kClimberSupplyCurrentLimit);
+        // leftClimberMotor.setEncoder(0.0);
+
+        // leftClimberMotor.setInverted(false);
+        // // rightClimberMotor.setFollower(RobotMap.CLIMBER_MAIN_MOTOR_ID, true);
+
+        // leftClimberMotor.setBrake();
+        // // rightClimberMotor.setBrake();
+
+        // SmartDashboard.putBoolean("Climber: Close Loop Control", false);
+
+        // leftClimberSupplyCurrent = new LiveData(getLeftClimberSupplyCurrent(), "Climber: Left Motor Supply Current");
+        // leftClimberStatorCurrent = new LiveData(getLeftClimberSupplyCurrent(), "Climber: Left Motor Stator Current");
+        // leftClimberMotorTemperature = new LiveData(getLeftClimberTemperature(), "Climber: Left Motor Temp");
+        // leftMotorPosition = new LiveData(getLeftClimberPosition(), "Climber: Left Motor Position"); 
+    }
 
 //         SmartDashboard.putBoolean("Climber: Open Loop Control", false);
 //     }
@@ -98,12 +107,17 @@
 //         return leftClimberMotor.getPosition();
 //     }
 
-//     /**
-//      * @return returns position reading of rightClimberMotor encoder (mechanism rotations)
-//      */
-//     // public double getRightClimberPosition() {
-//     //     return rightClimberMotor.getPosition();
-//     // }
+    @Override
+    public void periodic() {
+        if(SmartDashboard.getBoolean("Climber: Run Close Loop Control", false)){
+            leftClimberMotor.setPercentOutput(DriverOI.getInstance().getRightForward());
+        }
+        // TODO: Uncomment once climber is added
+        // leftClimberSupplyCurrent.setNumber(getLeftClimberSupplyCurrent());
+        // leftClimberStatorCurrent.setNumber(getLeftClimberStatorCurrent());
+        // leftClimberMotorTemperature.setNumber(getLeftClimberTemperature());
+        // leftMotorPosition.setNumber(getLeftClimberPosition());
+    }
 
 //     @Override
 //     public void periodic() {
@@ -117,4 +131,4 @@
 //     @Override
 //     public void simulationPeriodic() {
 //     }
-// }
+}

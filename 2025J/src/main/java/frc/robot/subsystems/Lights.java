@@ -31,11 +31,10 @@ public class Lights extends SubsystemBase {
     // private boolean isClimbing;
     private LightState systemState, requestedSystemState;
     
-    private LimelightBack llBack;
     // private LimelightFrontLeft llFrontLeft;
     // private LimelightFrontMiddle llFrontMiddle;
     // private LimelightFrontRight llFrontRight;
-    private LimelightLeft llLeft;
+    private LimelightClimber llLeft;
 
     public static Lights getInstance() {
         if (lights == null)
@@ -140,7 +139,6 @@ public class Lights extends SubsystemBase {
     }
     
     private void setBlinking(boolean blinking) {
-        llBack.setBlinking(blinking);
         // llFrontLeft.setBlinking(blinking);
         // llFrontMiddle.setBlinking(blinking);
         // llFrontRight.setBlinking(blinking);

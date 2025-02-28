@@ -2,10 +2,10 @@ package frc.robot.subsystems;
 
 import frc.robot.utils.Constants.CameraConstants;
 
-public class LimelightLeft extends Limelight {
-    private static LimelightLeft llLeft;
+public class LimelightClimber extends Limelight {
+    private static LimelightClimber llLeft;
 
-    private LimelightLeft() {
+    private LimelightClimber() {
         super(
             CameraConstants.kLeftCamName,
             CameraConstants.kLeftCamUpOffset,
@@ -14,9 +14,9 @@ public class LimelightLeft extends Limelight {
         );
     }
 
-    public static LimelightLeft getInstance() {
+    public static LimelightClimber getInstance() {
         if (llLeft == null)
-            llLeft = new LimelightLeft();
+            llLeft = new LimelightClimber();
         return llLeft;
     }
 
