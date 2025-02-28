@@ -10,7 +10,7 @@ import edu.wpi.first.wpilibj.DataLogManager;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Autonomous;
 import frc.robot.subsystems.Claw;
-import frc.robot.subsystems.Climber;
+// import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.HPIntake;
@@ -28,7 +28,7 @@ public class Logger {
     private Elevator elevator;
     private HPIntake hpIntake;
     private Superstructure superstructure;
-    private Climber climber;
+    // private Climber climber;
 
     // Limelight[] cameras;
 
