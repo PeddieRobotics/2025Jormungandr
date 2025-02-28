@@ -29,16 +29,6 @@ public class CalculateReefTarget {
     }
 
     public static int calculateTargetID() {    
-        /*
-         * desired target algorithm
-         * 1. calculate distance from current odometry to each tag and order list
-         * 2. if lowest is "significantly lower" than second lowest, use lowest (END)
-         * 3. find the robot's current movement vector
-         * 4. find cosine similarity between robot movement vector and vector
-         *      from robot to each of the top 2 tags
-         * 5. use tag with lower cosine similarity
-         */
-
         // calculate current odometry pose
         Translation2d odometryPose = Drivetrain.getInstance().getPose().getTranslation();
         List<IDVectorPair> robotToTag = new ArrayList<>();
@@ -58,34 +48,45 @@ public class CalculateReefTarget {
             }
         }
         
+        // sort list in ascending order of vector magnitude / robot distance to tag
         Collections.sort(robotToTag, (o1, o2) -> (
             ((Double) o1.vector.getNorm()).compareTo(o2.vector.getNorm())
         ));
-
-        SmartDashboard.putNumber("similar 0 tag", robotToTag.get(0).id);
-        SmartDashboard.putNumber("similar 1 tag", robotToTag.get(1).id);
-        SmartDashboard.putNumber("similar 0 distance", robotToTag.get(0).vector.getNorm());
-        SmartDashboard.putNumber("similar 1 distance", robotToTag.get(1).vector.getNorm());
-
-        if (robotToTag.get(0).vector.getNorm() <= AlignmentConstants.kDefaultToClosestDistance)
-            return robotToTag.get(0).id;
         
-        int desiredTarget;
-        if (robotToTag.get(1).vector.getNorm() - robotToTag.get(0).vector.getNorm() >= 0.25)
-            desiredTarget = robotToTag.get(0).id;
-        else {
-            Translation2d robotMovement = Drivetrain.getInstance().getCurrentMovement();
-            if (robotMovement.getNorm() == 0)
-                desiredTarget = robotToTag.get(0).id;
-            else {
-                double similar0 = cosineSimilarity(robotToTag.get(0).vector, robotMovement);
-                double similar1 = cosineSimilarity(robotToTag.get(1).vector, robotMovement);
-                desiredTarget = similar0 > similar1 ? robotToTag.get(0).id : robotToTag.get(1).id;
-                SmartDashboard.putNumber("similar 0 similarity", similar0);
-                SmartDashboard.putNumber("similar 1 similarity", similar1);
-            }
-        }
+        // closest and second closest tag IDs
+        int tag0id = robotToTag.get(0).id;
+        int tag1id = robotToTag.get(1).id;
 
-        return desiredTarget;
+        SmartDashboard.putNumber("tag 0 id", tag0id);
+        SmartDashboard.putNumber("tag 1 id", tag1id);
+        SmartDashboard.putNumber("tag 0 distance", robotToTag.get(0).vector.getNorm());
+        SmartDashboard.putNumber("tag 1 distance", robotToTag.get(1).vector.getNorm());
+
+        // when you're very close to the reef
+        if (robotToTag.get(0).vector.getNorm() <= AlignmentConstants.kDefaultToClosestDistance) {
+            // return tag/side that requires the lowest rotation
+            double gyro = Drivetrain.getInstance().getHeading();
+            double error0 = Math.abs(AlignmentConstants.kReefDesiredAngle.get(tag0id) - gyro);
+            double error1 = Math.abs(AlignmentConstants.kReefDesiredAngle.get(tag1id) - gyro);
+            SmartDashboard.putNumber("tag 0 gyro error", error0);
+            SmartDashboard.putNumber("tag 1 gyro error", error1);
+            return error0 <= error1 ? tag0id : tag1id;
+        }
+        
+        // if closest is significantly closer than second
+        if (robotToTag.get(1).vector.getNorm() - robotToTag.get(0).vector.getNorm() >= 0.25)
+            return tag0id;
+
+        Translation2d robotMovement = Drivetrain.getInstance().getCurrentMovement();
+        // not robot movement, simply move to closest tag
+        if (robotMovement.getNorm() == 0)
+            return tag0id;
+
+        // return tag with highest cosine similarity / lowest angle
+        double similar0 = cosineSimilarity(robotToTag.get(0).vector, robotMovement);
+        double similar1 = cosineSimilarity(robotToTag.get(1).vector, robotMovement);
+        SmartDashboard.putNumber("tag 0 similarity", similar0);
+        SmartDashboard.putNumber("tag 1 similarity", similar1);
+        return similar0 >= similar1 ? tag0id : tag1id;
     }
 }
