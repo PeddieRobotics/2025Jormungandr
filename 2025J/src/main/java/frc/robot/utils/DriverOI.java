@@ -83,12 +83,10 @@ public class DriverOI {
 
         Trigger L1Bumper = new JoystickButton(controller, PS4Controller.Button.kL1.value);
         // TODO: align left if coral, else align HP
-        // L1Bumper.whileTrue(new AlignToReef2D(AlignmentDestination.LEFT));
         L1Bumper.whileTrue(new AlignToReefEstimatedPose(Constants.AlignmentConstants.AlignmentDestination.LEFT));
 
         Trigger R1Bumper = new JoystickButton(controller, PS4Controller.Button.kR1.value);
         // TODO: align right if coral, else align HP
-        // R1Bumper.whileTrue(new AlignToReef2D(AlignmentDestination.RIGHT));
         R1Bumper.whileTrue(new AlignToReefEstimatedPose(Constants.AlignmentConstants.AlignmentDestination.RIGHT));
 
         Trigger L2Trigger = new JoystickButton(controller, PS4Controller.Button.kL2.value);
@@ -96,11 +94,10 @@ public class DriverOI {
         Trigger R2Trigger = new JoystickButton(controller, PS4Controller.Button.kR2.value);
 
         Trigger L3Trigger = new JoystickButton(controller, PS4Controller.Button.kL3.value);
-
+        L3Trigger.whileTrue(new AlignToReefEstimatedPose(Constants.AlignmentConstants.AlignmentDestination.LEFT));
 
         Trigger R3Trigger = new JoystickButton(controller, PS4Controller.Button.kR3.value);
-        //R3Trigger.onTrue(new OrbitReef());
-  
+        R3Trigger.whileTrue(new AlignToReefEstimatedPose(Constants.AlignmentConstants.AlignmentDestination.RIGHT));
 
         Trigger optionButton = new JoystickButton(controller, PS4Controller.Button.kOptions.value);
         optionButton.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.EJECT_CORAL)));
