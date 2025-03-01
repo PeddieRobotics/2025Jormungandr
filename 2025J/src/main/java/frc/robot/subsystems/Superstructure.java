@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.utils.Constants.ClawConstants;
 import frc.robot.utils.Constants.ScoreConstants;
+import frc.robot.utils.LiveData;
 
 import static frc.robot.subsystems.Superstructure.SuperstructureState.*;
 
@@ -26,6 +27,9 @@ public class Superstructure extends SubsystemBase {
     private SuperstructureState requestedSystemState;
 
     private Timer timer;
+
+    private LiveData systemStateData, requestedSystemStateData, algaeIndex, coralIndex; 
+
 
     public enum SuperstructureState {
         STOW,
@@ -61,8 +65,12 @@ public class Superstructure extends SubsystemBase {
         // hpIntake = HPIntake.getInstance();
 
         timer = new Timer();
-        SmartDashboard.putBoolean("algaeIndex", false);
-        SmartDashboard.putBoolean("coralIndex", false);
+
+        algaeIndex = new LiveData(false, "Algae Index"); 
+        coralIndex = new LiveData(false, "Coral Index"); 
+
+        systemStateData = new LiveData(systemState.toString(), "System State"); 
+        requestedSystemStateData = new LiveData(requestedSystemState.toString(), "Requested System State"); 
     }
 
     public static Superstructure getInstance() {
@@ -86,10 +94,10 @@ public class Superstructure extends SubsystemBase {
 
     @Override
     public void periodic() {
-        SmartDashboard.putString("current superstructure state", systemState.toString());
-        SmartDashboard.putString("requested superstructure state", requestedSystemState.toString());
+        systemStateData.setString(systemState.toString()); 
+        requestedSystemStateData.setString(requestedSystemState.toString()); 
 
-        SmartDashboard.putBoolean("algaeIndex", claw.hasAlgae());
+        algaeIndex.setBoolean(claw.hasAlgae()); 
 
         switch (systemState) {
             case STOW -> {

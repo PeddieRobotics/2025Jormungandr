@@ -17,6 +17,7 @@ import frc.robot.subsystems.LimelightFrontRight;
 import frc.robot.subsystems.Limelight;
 import frc.robot.utils.CalculateReefTarget;
 import frc.robot.utils.Constants.AlignmentConstants;
+import frc.robot.utils.Constants.AlignmentConstants.AlignmentDestination;
 import frc.robot.utils.Constants.AlignmentConstants.ReefAlignEstimatedPose;
 
 public class AlignToReefEstimatedPose extends Command {
@@ -33,34 +34,41 @@ public class AlignToReefEstimatedPose extends Command {
     private Optional<Pose2d> desiredPose;
     private double desiredAngle;
 
-    private double tagBackMagnitude, tagLeftMagnitude;
+    private String commandName;
+    private double tagBackMagnitude, tagLateralMagnitude;
 
-    public AlignToReefEstimatedPose(double tagLeftMagnitude) {
+    public AlignToReefEstimatedPose(AlignmentDestination destination) {
         drivetrain = Drivetrain.getInstance();
         
         // center
-        if (tagLeftMagnitude == 0) {
-            cameras = new Limelight[] {
-                LimelightFrontMiddle.getInstance(),
-                LimelightFrontLeft.getInstance(),
-                LimelightFrontRight.getInstance(),
-            };
-        }
-        // left
-        else if (tagLeftMagnitude > 0) {
-            cameras = new Limelight[] {
-                LimelightFrontRight.getInstance(),
-                LimelightFrontMiddle.getInstance(),
-                LimelightFrontLeft.getInstance(),
-            };
-        }
-        // right
-        else {
-            cameras = new Limelight[] {
-                LimelightFrontLeft.getInstance(),
-                LimelightFrontMiddle.getInstance(),
-                LimelightFrontRight.getInstance(),
-            };
+        switch (destination) {
+            case LEFT -> {
+                cameras = new Limelight[] {
+                    LimelightFrontRight.getInstance(),
+                    LimelightFrontMiddle.getInstance(),
+                    LimelightFrontLeft.getInstance(),
+                };
+                commandName = "left align";
+                tagLateralMagnitude = AlignmentConstants.ReefAlignEstimatedPose.kLeftOffset;
+            }
+            case MIDDLE -> {
+                cameras = new Limelight[] {
+                    LimelightFrontMiddle.getInstance(),
+                    LimelightFrontLeft.getInstance(),
+                    LimelightFrontRight.getInstance(),
+                };
+                commandName = "middle align";
+                tagLateralMagnitude = AlignmentConstants.ReefAlignEstimatedPose.kMiddleOffset;
+            }
+            case RIGHT -> {
+                cameras = new Limelight[] {
+                    LimelightFrontLeft.getInstance(),
+                    LimelightFrontMiddle.getInstance(),
+                    LimelightFrontRight.getInstance(),
+                };
+                commandName = "right align";
+                tagLateralMagnitude = AlignmentConstants.ReefAlignEstimatedPose.kRightOffset;
+            }
         }
 
         translateP = ReefAlignEstimatedPose.kTranslateP;
@@ -80,12 +88,12 @@ public class AlignToReefEstimatedPose extends Command {
         translatePIDController = new PIDController(translateP, translateI, translateD);
         rotationPIDController = new PIDController(rotationP, rotationI, rotationD);
         
-        // center of robot distance to tag -- back (+ = back, - = forwards)
-        this.tagBackMagnitude = ReefAlignEstimatedPose.kTagBackMagnitude;
-        // center of robot distance to tag -- left (+ = left, - = right)
-        this.tagLeftMagnitude = tagLeftMagnitude;
+        tagBackMagnitude = ReefAlignEstimatedPose.kTagBackMagnitude;
         
         maxSpeed = ReefAlignEstimatedPose.kMaxSpeed;
+
+        SmartDashboard.putNumber(commandName + " lateral offset", tagLateralMagnitude);
+        SmartDashboard.putNumber(commandName + " back offset", tagBackMagnitude);
 
         addRequirements(drivetrain);
         
@@ -104,19 +112,15 @@ public class AlignToReefEstimatedPose extends Command {
             SmartDashboard.putNumber("align rotationLowerP", rotationLowerP);
             SmartDashboard.putNumber("align rotationUseLowerPThreshold", rotationUseLowerPThreshold);
 
-            SmartDashboard.putNumber("align tagBackMagnitude", tagBackMagnitude);
-            SmartDashboard.putNumber("align tagLeftMagnitude", tagLeftMagnitude);
-
             SmartDashboard.putNumber("align maxSpeed", maxSpeed);
         }
     }
 
     @Override
     public void initialize() {
+        // if aligning from unacceptable position ("sad face case"): returns 0
         int desiredTarget = CalculateReefTarget.calculateTargetID();
         SmartDashboard.putNumber("Align Desired Target", desiredTarget);
-
-        // int desiredTarget = (int) LimelightFrontMiddle.getInstance().getTargetID();
 
         if (!AlignmentConstants.kReefDesiredAngle.containsKey(desiredTarget)) {
             desiredPose = Optional.empty();
@@ -127,17 +131,14 @@ public class AlignToReefEstimatedPose extends Command {
         Pose2d tagPose = Limelight.getAprilTagPose(desiredTarget);
         double tagAngle = tagPose.getRotation().getRadians();
 
-        tagBackMagnitude = SmartDashboard.getNumber("align tagBackMagnitude", tagBackMagnitude);
-        // tagLeftMagnitude = SmartDashboard.getNumber("align tagLeftMagnitude", tagLeftMagnitude);
+        tagLateralMagnitude = SmartDashboard.getNumber(commandName + " lateral offset", tagLateralMagnitude);
+        tagBackMagnitude = SmartDashboard.getNumber(commandName + " back offset", tagBackMagnitude);
 
-        // move the apriltag "forward"
         desiredPose = Optional.of(new Pose2d(
-            tagPose.getX() + tagBackMagnitude * Math.cos(tagAngle) + tagLeftMagnitude * Math.sin(tagAngle),
-            tagPose.getY() + tagBackMagnitude * Math.sin(tagAngle) - tagLeftMagnitude * Math.cos(tagAngle),
+            tagPose.getX() + tagBackMagnitude * Math.cos(tagAngle) + tagLateralMagnitude * Math.sin(tagAngle),
+            tagPose.getY() + tagBackMagnitude * Math.sin(tagAngle) - tagLateralMagnitude * Math.cos(tagAngle),
             new Rotation2d(0)
         ));
-        
-        SmartDashboard.putNumber("align desired tag", desiredTarget);
     }
     
     private Optional<Pose2d> getBestEstimatedPose() {
@@ -220,7 +221,8 @@ public class AlignToReefEstimatedPose extends Command {
 
     @Override
     public void end(boolean interrupted) {
-        drivetrain.drive(new Translation2d(0,0), 0, false, null);
+        if (desiredPose.isPresent())
+            drivetrain.drive(new Translation2d(0,0), 0, false, null);
     }
 
     @Override

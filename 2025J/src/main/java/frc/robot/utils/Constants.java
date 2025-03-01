@@ -57,13 +57,13 @@ public final class Constants {
 
         public static final double kSteerMotorReduction = 18.75;
 
-        public static final double kDriveS = 0.2;
-        public static final double kDriveV = 0.12;
-        public static final double kDriveA = 0.0;
-        public static final double kDriveP = 0.5;
-        public static final double kDriveI = 0.0;
-        public static final double kDriveD = 0.0;
-        public static final double kDriveFF = 0.0;
+        // public static final double kDriveS = 0.2;
+        // public static final double kDriveV = 0.12;
+        // public static final double kDriveA = 0.0;
+        // public static final double kDriveP = 0.5;
+        // public static final double kDriveI = 0.0;
+        // public static final double kDriveD = 0.0;
+        // public static final double kDriveFF = 0.0;
 
         public static final double kSteerS = 0.0;
         public static final double kSteerV = 0.0;
@@ -72,6 +72,22 @@ public final class Constants {
         public static final double kSteerI = 0.0;
         public static final double kSteerD = 0.0;
         public static final double kSteerFF = 0.0;
+
+        public static final double kDriveS = 0.0;
+        public static final double kDriveV = 0.0;
+        public static final double kDriveA = 0.0;
+        public static final double kDriveP = 0.0;
+        public static final double kDriveI = 0.0;
+        public static final double kDriveD = 0.0;
+        public static final double kDriveFF = 0.0;
+
+        // public static final double kSteerS = 0.20;
+        // public static final double kSteerV = 0.0;
+        // public static final double kSteerA = 0.0;
+        // public static final double kSteerP = 100.0;
+        // public static final double kSteerI = 0.0;
+        // public static final double kSteerD = 4.0;
+        // public static final double kSteerFF = 0.0;
 
     }
 
@@ -167,7 +183,7 @@ public final class Constants {
         public static final double kFF = 0.0;
 
         public static final double kElevatorPositionEpsilon = 0.5;
-        public static final double kElevatorNeutralModePositionEpsilon = 0.05;
+        public static final double kElevatorNeutralModePositionEpsilon = 0.12; // TODO: elevator might need to be rezeroed, formerly 0.05;
         public static final double kElevatorL1Height = 0.0;
         public static final double kElevatorL2Height = 0.0;
         public static final double kElevatorL3Height = 0.0;
@@ -230,8 +246,7 @@ public final class Constants {
         public static final double kArmForwardTorqueCurrentLimit = 40;
         public static final double kArmReverseTorqueCurrentLimit = -40;
 
-        // public static final double kArmMagnetOffset = -0.652588 * 2.0 + 0.5;
-        public static final double kArmMagnetOffset = -0.686768 * 2.0 + 0.5;
+        public static final double kArmMagnetOffset = -0.008789 + 0.5;
 
         public static final double kArmReduction = 120.0 / 1.0;
         public static final double kArmRotorToSensorRatio = kArmReduction / 2.0;
@@ -301,6 +316,10 @@ public final class Constants {
             }
         };
 
+        public enum AlignmentDestination {
+            LEFT, MIDDLE, RIGHT
+        };
+
         public static final class ReefAlignEstimatedPose {
             public static final double kTranslateP = 2.3;
             public static final double kTranslateI = 0;
@@ -321,10 +340,11 @@ public final class Constants {
             public static final double kTagBackMagnitude = 0.44;
 
             // center of robot distance to tag -- left (+ = left, - = right)
-            public static final double kLeftTagLeftMagnitude = 0.1651;
-            public static final double kRightTagLeftMagnitude = 0.1651;
+            public static final double kLeftOffset = 0.1896;
+            public static final double kMiddleOffset = 0;   
+            public static final double kRightOffset = -0.1651;
             
-            public static final double kMaxSpeed = 1.0;   
+            public static final double kMaxSpeed = 2.0;
         }
             
         public static final double kDefaultToClosestDistance = 1.5;
@@ -332,8 +352,11 @@ public final class Constants {
         public static final double rotationErrorEpsilon = 0.0;
         public static final double xErrorEpsilon = 0.0;
         public static final double yErrorEpsilon = 0.0;
-    }
 
+        public static final double kBadHexagonSize = 0.9;
+        public static final double kInsideBadAngleTolerance = 40.0;
+        public static final double kOutsideBadAngleTolerance = 55.0;
+    }
 
     public static final class ClawConstants {
         public static final double kClawSupplyCurrentLimit = 40.0;
@@ -382,13 +405,13 @@ public final class Constants {
          * - Front(Left/Middle/Right) (Left/Up)Offset: remove "* -1"
          */
 
-        public static final String kBackCamName = "limelight-back";
-        public static final double kBackCamForward = 0;
-        public static final double kBackCamLeftOffset = 0;
-        public static final double kBackCamUpOffset = 0;
-        public static final double kBackCamPitchDeg = 0;
-        public static final double kBackCamYawDeg = 0;
-        public static final int kBackCamPipeline = 0;
+        // public static final String kBackCamName = "limelight-back";
+        // public static final double kBackCamForward = 0;
+        // public static final double kBackCamLeftOffset = 0;
+        // public static final double kBackCamUpOffset = 0;
+        // public static final double kBackCamPitchDeg = 0;
+        // public static final double kBackCamYawDeg = 0;
+        // public static final int kBackCamPipeline = 0;
 
         // 3G: 10.58.95.11
         public static final String kFrontLeftCamName = "limelight-left";

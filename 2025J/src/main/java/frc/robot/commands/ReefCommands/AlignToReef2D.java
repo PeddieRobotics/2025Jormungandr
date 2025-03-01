@@ -12,6 +12,7 @@ import frc.robot.subsystems.LimelightFrontRight;
 import frc.robot.utils.CalculateReefTarget;
 import frc.robot.utils.Constants;
 import frc.robot.utils.Constants.AlignmentConstants;
+import frc.robot.utils.Constants.AlignmentConstants.AlignmentDestination;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.Timer;
@@ -19,10 +20,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 
 public class AlignToReef2D extends Command {
-    public enum AlignmentDestination {
-        LEFT, CENTER, RIGHT
-    }
-
     private Drivetrain drivetrain;
     private Limelight limelight;
 
@@ -47,7 +44,7 @@ public class AlignToReef2D extends Command {
             case LEFT:
                 limelight = LimelightFrontRight.getInstance();
                 break;
-            case CENTER:
+            case MIDDLE:
                 limelight = LimelightFrontMiddle.getInstance();
                 break;
             case RIGHT:

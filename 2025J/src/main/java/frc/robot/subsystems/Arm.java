@@ -13,7 +13,9 @@ import frc.robot.utils.Constants.ArmConstants;
 import frc.robot.utils.Kraken;
 import frc.robot.utils.LiveData;
 import frc.robot.utils.RobotMap;
-// import frc.robot.utils.TunableConstant;
+import frc.robot.utils.TunableConstant;
+
+
 
 public class Arm extends SubsystemBase {
 
@@ -23,7 +25,8 @@ public class Arm extends SubsystemBase {
     // private TunableConstant L1Setpoint, L2Setpoint, L3Setpoint, L4Setpoint, HPIntakeSetpoint, stowSetpoint,
     //         bargeSetpoint, algaeL1Setpoint, algaeL2Setpoint, processorSetpoint;
 
-    private LiveData armSetpoint;
+    private TunableConstant L1Setpoint, L2Setpoint, L3Setpoint, L4Setpoint, HPIntakeSetpoint, stowSetpoint, bargeSetpoint, algaeL1Setpoint, algaeL2Setpoint, processorSetpoint;
+    private LiveData armAngle, armSetpoint, motorTemp, motorCurrent, armEncoderPosition, armCanCoderPosition;
 
     public Arm() {
         armCANcoder = new CANcoder(RobotMap.ARM_CANCODER_ID, RobotMap.CANIVORE_NAME);
@@ -69,9 +72,17 @@ public class Arm extends SubsystemBase {
         // algaeL2Setpoint = new TunableConstant(ArmConstants.kAlgaeL2Setpoint, "Arm algaeL2Setpoint");
         // processorSetpoint = new TunableConstant(ArmConstants.kProcessorSetpoint, "Arm processorSetpoint");
 
-        armSetpoint = new LiveData(ArmConstants.kStowSetpoint, "Arm Current Setpoint");
+        armSetpoint = new LiveData(ArmConstants.kStowSetpoint, "Arm: Current Setpoint"); 
+        armAngle = new LiveData(getArmAngleDegrees(), "Arm: Current Angle"); 
+        armEncoderPosition = new LiveData(getArmEncoderPosition(), "Arm: Encoder Position"); 
+        armCanCoderPosition = new LiveData(getAbsoluteCANcoderPosition(), "Arm: CanCoder Position");
+        
+
+        motorTemp = new LiveData(armMotor.getMotorTemperature(), "Arm: Motor Temp"); 
+        motorCurrent = new LiveData(armMotor.getSupplyCurrent(), "Arm: Motor Current");
 
         SmartDashboard.putBoolean("Arm: Open Loop Control", false);
+        
     }
 
     /**
@@ -100,7 +111,7 @@ public class Arm extends SubsystemBase {
      * @param position - commanded motor position (cancoder units)
      */
     public void setArmPositionVoltage(double position) {
-        armSetpoint.set(position);
+        armSetpoint.setNumber(position);
         armMotor.setPositionVoltage(position);
     }
 
@@ -111,7 +122,7 @@ public class Arm extends SubsystemBase {
      * @param position - commanded motor position (cancoder units)
      */
     public void setArmPositionMotionMagicVoltage(double position) {
-        armSetpoint.set(position);
+        armSetpoint.setNumber(position);
         armMotor.setPositionMotionMagicVoltage(position);
     }
 
@@ -122,7 +133,7 @@ public class Arm extends SubsystemBase {
      * @param position - commanded motor position (cancoder units)
      */
     public void setArmPositionMotionMagicTorqueCurrentFOC(double position) {
-        armSetpoint.set(position);
+        armSetpoint.setNumber(position);
         armMotor.setPositionMotionMagicTorqueCurrentFOC(position);
     }
 
@@ -140,7 +151,7 @@ public class Arm extends SubsystemBase {
     /**
      * @return position reading of the armMotor encoder (motor encoder units)
      */
-    public double getArmPosition() {
+    public double getArmEncoderPosition() {
         return armMotor.getPosition();
     }
 
@@ -183,7 +194,7 @@ public class Arm extends SubsystemBase {
      * @return setpoint angle of arm in degrees
      */
     public double getArmSetpoint() {
-        return armSetpoint.get();
+        return armSetpoint.getNumber();
     }
 
     /**
@@ -201,7 +212,7 @@ public class Arm extends SubsystemBase {
      *         threshold
      */
     public boolean isAtPosition(double targetPosition) {
-        return Math.abs(getArmPosition() - targetPosition) < ArmConstants.kArmPositionEpsilon;
+        return Math.abs(getArmEncoderPosition() - targetPosition) < ArmConstants.kArmPositionEpsilon;
     }
 
     public double getArmMotorTemperature() {
@@ -210,9 +221,15 @@ public class Arm extends SubsystemBase {
 
     @Override
     public void periodic() {
-        SmartDashboard.putNumber("Arm: Motor Encoder Position", getArmPosition());
-        SmartDashboard.putNumber("Arm: CanCoder Position", getAbsoluteCANcoderPosition());
+        // SmartDashboard.putNumber("Arm: Motor Encoder Position", getArmEncoderPosition());
+        // SmartDashboard.putNumber("Arm: CanCoder Position", getAbsoluteCANcoderPosition());
 
+        armAngle.setNumber(getAbsoluteCANcoderPosition());
+        armEncoderPosition.setNumber(getArmEncoderPosition()); 
+        armCanCoderPosition.setNumber(getAbsoluteCANcoderPosition());
+
+        motorTemp.setNumber(armMotor.getMotorTemperature()); 
+        motorCurrent.setNumber(armMotor.getSupplyCurrent()); 
     }
 
     @Override

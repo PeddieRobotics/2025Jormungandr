@@ -15,7 +15,12 @@ import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.HPIntake;
 import frc.robot.subsystems.Lights;
+import frc.robot.subsystems.LimelightClimber;
+import frc.robot.subsystems.LimelightFrontLeft;
+import frc.robot.subsystems.LimelightFrontMiddle;
+import frc.robot.subsystems.LimelightFrontRight;
 import frc.robot.subsystems.Superstructure;
+import frc.robot.utils.CalculateReefTarget;
 import frc.robot.utils.DriverOI;
 import frc.robot.utils.OperatorOI;
 
@@ -40,10 +45,10 @@ public class RobotContainer {
     private Elevator elevator;
     private HPIntake hpIntake;
     // private LimelightBack llBack;
-    // private LimelightFrontLeft llFrontLeft;
-    // private LimelightFrontMiddle llFrontMiddle;
-    // private LimelightFrontRight llFrontRight;
-    // private LimelightLeft llLeft;
+    private LimelightFrontLeft llFrontLeft;
+    private LimelightFrontMiddle llFrontMiddle;
+    private LimelightFrontRight llFrontRight;
+    private LimelightClimber llClimber;
     private Lights lights;
 
     public RobotContainer() {
@@ -58,11 +63,13 @@ public class RobotContainer {
         driverOI = DriverOI.getInstance();
         operatorOI = OperatorOI.getInstance();
         // llBack = LimelightBack.getInstance();
-        // llFrontLeft = LimelightFrontLeft.getInstance();
-        // llFrontMiddle = LimelightFrontMiddle.getInstance();
-        // llFrontRight = LimelightFrontRight.getInstance();
-        // llLeft = LimelightLeft.getInstance();
+        llFrontLeft = LimelightFrontLeft.getInstance();
+        llFrontMiddle = LimelightFrontMiddle.getInstance();
+        llFrontRight = LimelightFrontRight.getInstance();
+        llClimber = LimelightClimber.getInstance();
         // lights = Lights.getInstance();
+
+        CalculateReefTarget.init();
 
         SmartDashboard.putData("Auto Routines", autonomous.getAutoChooser());
         drivetrain.setDefaultCommand(new SwerveDriveCommand());

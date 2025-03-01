@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.utils.Constants;
 import frc.robot.utils.Constants.ClawConstants;
 import frc.robot.utils.Kraken;
+import frc.robot.utils.LiveData;
 import frc.robot.utils.RobotMap;
 
 public class Claw extends SubsystemBase {
@@ -18,6 +19,10 @@ public class Claw extends SubsystemBase {
     private CANrange bottomSensor;
     private CANrangeConfiguration clawTopSensorConfig;
     private CANrangeConfiguration clawBottomSensorConfig;
+
+    private LiveData topSensorData, bottomSensorData, motorTemp, motorCurrent, 
+        topSensorDistance, bottomSensorDistance,
+        position, velocity, hasAlgae;  
 
     public Claw() {
         clawMotor = new Kraken(RobotMap.CLAW_MOTOR_ID, RobotMap.CANIVORE_NAME);
@@ -40,6 +45,21 @@ public class Claw extends SubsystemBase {
         configureCANrange(bottomSensor, clawBottomSensorConfig, Constants.ClawConstants.kBottomSensorSignalStrength,
                 Constants.ClawConstants.kBottomSensorProximityThreshold,
                 Constants.ClawConstants.kBottomSensorProximityHysteresis);
+
+                topSensorData = new LiveData(getTopSensor(), "Claw: Top Sensor");
+                bottomSensorData = new LiveData(getBottomSensor(), "Claw: Bottom Sensor");
+                
+        
+                topSensorDistance = new LiveData(getTopSensorDistance(), "Claw: Top Sensor Distance");
+                bottomSensorDistance = new LiveData(getBottomSensorDistance(), "Claw: Bottom Sensor Distance");
+        
+                motorTemp = new LiveData(clawMotor.getMotorTemperature(), "Claw: Motor Temp"); 
+                motorCurrent = new LiveData(clawMotor.getSupplyCurrent(), "Claw: Motor Supply Current");
+                position = new LiveData(getPosition(), "Claw: position");
+                velocity = new LiveData(getVelocity(), "Claw: Velocity RPM");
+                hasAlgae = new LiveData(hasAlgae(), "Claw: Has Algae");
+                // hasCoral = new LiveData(hasCoral(), "Claw Has Coral");
+                // coralIndexed = new LiveData(coralIndexed(), "Claw Coral is Indexed");
 
         // TODO: DELETE THIS OR ELSE
         SmartDashboard.putNumber("Claw Increment", 5);
@@ -177,13 +197,15 @@ public class Claw extends SubsystemBase {
 
     @Override
     public void periodic() {
-        SmartDashboard.putBoolean("Claw Top Sensor", getTopSensor());
-        SmartDashboard.putBoolean("Claw Bottom Sensor", getBottomSensor());
-
-        SmartDashboard.putNumber("Claw Top Sensor Distance", getTopSensorDistance());
-        SmartDashboard.putNumber("Claw Bottom Sensor Distance", getBottomSensorDistance());
-
-        SmartDashboard.putBoolean("Claw Either Sensor Triggered", eitherCoralSensorTriggered());
+        topSensorData.setBoolean(getBottomSensor());
+        bottomSensorData.setBoolean(getTopSensor()); 
+        topSensorDistance.setNumber(getTopSensorDistance());
+        bottomSensorDistance.setNumber(getBottomSensorDistance());
+        motorTemp.setNumber(getClawMotorTemperature()); 
+        motorCurrent.setNumber(getMotorSupplyCurrent());
+        position.setNumber(getPosition()); 
+        velocity.setNumber(getVelocity());
+        hasAlgae.setBoolean(hasAlgae()); 
     }
 
     @Override
