@@ -230,7 +230,7 @@ public final class Constants {
         public static final double kArmForwardTorqueCurrentLimit = 40;
         public static final double kArmReverseTorqueCurrentLimit = -40;
 
-        public static final double kArmMagnetOffset = -0.652588 * 2.0 + 0.5;
+        public static final double kArmMagnetOffset = -0.00415 * 2 + 0.5; // 0.429199 * 2.0 + 0.5; // -0.652588 * 2.0 + 0.5;
 
         public static final double kArmReduction = 120.0 / 1.0;
         public static final double kArmRotorToSensorRatio = kArmReduction / 2.0;
