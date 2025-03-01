@@ -20,6 +20,7 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.networktables.StructPublisher;
 import edu.wpi.first.util.sendable.Sendable;
 import edu.wpi.first.util.sendable.SendableBuilder;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -202,9 +203,8 @@ public class Drivetrain extends SubsystemBase {
         // LimelightFrontLeft.getInstance().fuseEstimatedPose(odometry);
         // LimelightFrontMiddle.getInstance().fuseEstimatedPose(odometry);
         // LimelightFrontRight.getInstance().fuseEstimatedPose(odometry);
-        odometry.update(getHeadingAsRotation2d(), swerveModulePositions);
-        pureOdometry.update(getHeadingAsRotation2d(), swerveModulePositions);
         // LimelightLeft.getInstance().fuseEstimatedPose(odometry);
+        odometry.update(new Rotation2d(Math.toRadians(getHeadingBlue())), swerveModulePositions);
     }
 
     /**
@@ -223,6 +223,16 @@ public class Drivetrain extends SubsystemBase {
     public double getHeading() {
         heading = gyro.getYaw().getValueAsDouble();
         return Math.IEEEremainder(heading, 360);
+    }
+    
+    /**
+     * @return returns the heading in blue-side degrees
+     * (0 degrees is ALWAYS facing the red alliance wall, on both alliances)
+     */
+    public double getHeadingBlue() {
+        if (DriverStation.getAlliance().isEmpty() || DriverStation.getAlliance().get() == DriverStation.Alliance.Blue)
+            return getHeading();
+        return Math.IEEEremainder(getHeading() + 180, 360);
     }
 
     /**

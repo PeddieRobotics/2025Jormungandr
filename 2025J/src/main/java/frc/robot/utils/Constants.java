@@ -331,6 +331,8 @@ public final class Constants {
         public static final double rotationErrorEpsilon = 0.0;
         public static final double xErrorEpsilon = 0.0;
         public static final double yErrorEpsilon = 0.0;
+
+        public static final double kBadHexagonSize = 1.2;
     }
 
 

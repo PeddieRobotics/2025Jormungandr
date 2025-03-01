@@ -91,7 +91,7 @@ public class CalculateReefTarget {
 
         double reefCornerToCenter = Units.inchesToMeters(2 * 32.75 / Math.sqrt(3));
         // TODO: tune
-        reefCornerToCenter += 1.2;
+        reefCornerToCenter += AlignmentConstants.kBadHexagonSize;
 
         badHexagonPoints = new ArrayList<>();
         for (int i = 0; i < 360; i += 60) {

@@ -130,22 +130,12 @@ public abstract class Limelight extends SubsystemBase {
     public void periodic() {
         updateRollingAverages();
         
-        // TODO: TEST!!!
-        if (DriverStation.getAlliance().isEmpty() || DriverStation.getAlliance().get() == DriverStation.Alliance.Blue) {
-            LimelightHelpers.SetRobotOrientation(
-                limelightName,
-                Drivetrain.getInstance().getHeading(),
-                0, 0, 0, 0, 0
-            );
-        }
-        // RED:
-        else {
-            LimelightHelpers.SetRobotOrientation(
-                limelightName,
-                Math.IEEEremainder(Drivetrain.getInstance().getHeading() + 180, 360),
-                0, 0, 0, 0, 0
-            );
-        }
+        // limelight wants robot orientation in blue side degrees
+        LimelightHelpers.SetRobotOrientation(
+            limelightName,
+            Drivetrain.getInstance().getHeadingBlue(),
+            0, 0, 0, 0, 0
+        );
 
         Optional<Pose2d> estimatedPoseMT1 = getEstimatedPoseMT1();
         if (estimatedPoseMT1.isPresent()) {
