@@ -75,17 +75,16 @@ public class CalculateReefTarget {
         /*
          * center to tag = 32.75
          * divide reef hexagon into 6 hexagons: each are equilateral
-         * 
-         * /|
-         * / |
-         * / |
-         * / |
-         * a / | 32.75
-         * / |
-         * / |
-         * / 60d |
+         *        /|
+         *       / |
+         *      /  |
+         *     /   |
+         *  a /    | 32.75
+         *   /     |
+         *  /      |
+         * / 60d   |
          * ----------
-         * sin(60d) = sqrt(3)/2 = 32.75/a
+         *    sin(60d) = sqrt(3)/2 = 32.75/a
          * => a = 2*32.75 / sqrt(3) = 37.816
          */
 
@@ -109,6 +108,7 @@ public class CalculateReefTarget {
         }
     }
 
+    // Solution 2: https://www.eecs.umich.edu/courses/eecs380/HANDOUTS/PROJ2/InsidePoly.html
     private static double angle2d(double x1, double y1, double x2, double y2) {
         double dtheta, theta1, theta2;
         theta1 = Math.atan2(y1,x1);
@@ -120,7 +120,6 @@ public class CalculateReefTarget {
             dtheta += 2 * Math.PI;
         return dtheta;
     }
-
     private static boolean insideBadHexagon(Point p) {
         double angle = 0;
         Point p1 = new Point(0, 0);
@@ -134,12 +133,8 @@ public class CalculateReefTarget {
             angle += angle2d(p1.x, p1.y, p2.x, p2.y);
         }
 
-        if (Math.abs(angle) < Math.PI)
-            return false;
-        else
-            return true;
+        return Math.abs(angle) >= Math.PI;
     }
-
     public static boolean insideBadHexagon(Pose2d p) {
         return insideBadHexagon(new Point(p.getX(), p.getY()));
     }
@@ -173,14 +168,23 @@ public class CalculateReefTarget {
 
         boolean isInBadHexagon = insideBadHexagon(new Point(odometryPose));
 
+        SmartDashboard.putBoolean("is inside bad hexagon", isInBadHexagon);
+
+        SmartDashboard.putNumber("tag 0 distance", robotToTag.get(0).vector.getNorm());
+        SmartDashboard.putNumber("tag 1 distance", robotToTag.get(1).vector.getNorm());
+        SmartDashboard.putNumber("tag 0 id", tag0id);
+        SmartDashboard.putNumber("key 1 id", tag1id);
+
         double tag0neededAngle = AlignmentConstants.kReefDesiredAngle.get(tag0id);
         double tag0gyroError = Math.abs(drivetrain.getHeading() - tag0neededAngle);
 
+        // TODO: tune 30.0, 45.0 degree values
         if (isInBadHexagon)
-            return tag0gyroError < 30.0 ? tag0id : 0;
+            return tag0gyroError < AlignmentConstants.kInsideBadAngleTolerance ? tag0id : 0;
 
+        // TODO: tune 0.25 value
         if (robotToTag.get(1).vector.getNorm() - robotToTag.get(0).vector.getNorm() >= 0.25)
-            return tag0gyroError < 45.0 ? tag0id : 0;
+            return tag0gyroError < AlignmentConstants.kOutsideBadAngleTolerance ? tag0id : 0;
 
         Translation2d robotMovement = drivetrain.getCurrentMovement();
 
@@ -196,6 +200,6 @@ public class CalculateReefTarget {
         }
 
         double bestTagNeededAngle = AlignmentConstants.kReefDesiredAngle.get(bestTag);
-        return Math.abs(drivetrain.getHeading() - bestTagNeededAngle) < 45.0 ? bestTag : 0;
+        return Math.abs(drivetrain.getHeading() - bestTagNeededAngle) < AlignmentConstants.kOutsideBadAngleTolerance ? bestTag : 0;
     }
 }

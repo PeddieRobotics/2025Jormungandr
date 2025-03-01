@@ -199,11 +199,14 @@ public class Drivetrain extends SubsystemBase {
      * updates odometry, where the robot thinks it is, using cameras and our current odometry
      */
     public void updateOdometry() {
-        // LimelightBack.getInstance().fuseEstimatedPose(odometry);
-        // LimelightFrontLeft.getInstance().fuseEstimatedPose(odometry);
-        // LimelightFrontMiddle.getInstance().fuseEstimatedPose(odometry);
-        // LimelightFrontRight.getInstance().fuseEstimatedPose(odometry);
-        // LimelightLeft.getInstance().fuseEstimatedPose(odometry);
+        if (!DriverStation.isAutonomous()) {
+            // LimelightBack.getInstance().fuseEstimatedPose(odometry);
+            LimelightFrontLeft.getInstance().fuseEstimatedPose(odometry);
+            LimelightFrontMiddle.getInstance().fuseEstimatedPose(odometry);
+            LimelightFrontRight.getInstance().fuseEstimatedPose(odometry);
+            // LimelightLeft.getInstance().fuseEstimatedPose(odometry);
+        }
+        
         odometry.update(new Rotation2d(Math.toRadians(getHeadingBlue())), swerveModulePositions);
     }
 

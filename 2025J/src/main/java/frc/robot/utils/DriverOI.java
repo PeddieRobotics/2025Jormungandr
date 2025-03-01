@@ -3,6 +3,7 @@ package frc.robot.utils;
 import edu.wpi.first.wpilibj.PS4Controller;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.subsystems.Superstructure;
@@ -11,7 +12,6 @@ import frc.robot.subsystems.Superstructure.SuperstructureState;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import frc.robot.commands.ReefCommands.AlignToReef2D;
-import frc.robot.commands.ReefCommands.AlignToReef2D.AlignmentDestination;
 import frc.robot.commands.ReefCommands.AlignToReefEstimatedPose;
 import frc.robot.commands.ScoreCommands.AlignAndScore;
 import frc.robot.subsystems.Claw;
@@ -58,7 +58,7 @@ public class DriverOI {
 
         Trigger squareButton = new JoystickButton(controller, PS4Controller.Button.kSquare.value);
         // squareButton.onTrue(new InstantCommand(() -> CalculateReefTarget.calculateTargetID()));
-        squareButton.whileTrue(new AlignToReefEstimatedPose(0));
+        squareButton.whileTrue(new AlignToReefEstimatedPose(Constants.AlignmentConstants.AlignmentDestination.MIDDLE));
 
         Trigger triangleButton = new JoystickButton(controller, PS4Controller.Button.kTriangle.value);
         // triangleButton.onTrue(new AlignAndScore(true)); //right align
@@ -72,19 +72,24 @@ public class DriverOI {
         }));
 
         Trigger touchpadButton = new JoystickButton(controller, PS4Controller.Button.kTouchpad.value);
-        touchpadButton.onTrue(new InstantCommand(() -> {
-            SmartDashboard.putBoolean("is inside bad hexagon", CalculateReefTarget.insideBadHexagon(Drivetrain.getInstance().getPose()));
-        }));
+        touchpadButton.onTrue(new SequentialCommandGroup(
+            new InstantCommand(() -> {
+                SmartDashboard.putBoolean("is inside bad hexagon", CalculateReefTarget.insideBadHexagon(Drivetrain.getInstance().getPose()));
+            }),
+            new InstantCommand(() -> {
+                SmartDashboard.putNumber("align to tag", CalculateReefTarget.calculateTargetID());
+            })
+        ));
 
         Trigger L1Bumper = new JoystickButton(controller, PS4Controller.Button.kL1.value);
         // TODO: align left if coral, else align HP
         // L1Bumper.whileTrue(new AlignToReef2D(AlignmentDestination.LEFT));
-        L1Bumper.whileTrue(new AlignToReefEstimatedPose(0.1651));
+        L1Bumper.whileTrue(new AlignToReefEstimatedPose(Constants.AlignmentConstants.AlignmentDestination.LEFT));
 
         Trigger R1Bumper = new JoystickButton(controller, PS4Controller.Button.kR1.value);
         // TODO: align right if coral, else align HP
         // R1Bumper.whileTrue(new AlignToReef2D(AlignmentDestination.RIGHT));
-        R1Bumper.whileTrue(new AlignToReefEstimatedPose(-0.1651));
+        R1Bumper.whileTrue(new AlignToReefEstimatedPose(Constants.AlignmentConstants.AlignmentDestination.RIGHT));
 
         Trigger L2Trigger = new JoystickButton(controller, PS4Controller.Button.kL2.value);
 

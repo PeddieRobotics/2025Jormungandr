@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import frc.robot.utils.CalculateReefTarget;
 import frc.robot.utils.Logger;
 
 import edu.wpi.first.wpilibj.DataLogManager;
@@ -74,6 +75,8 @@ public class Robot extends TimedRobot {
         if (m_autonomousCommand != null) {
             m_autonomousCommand.schedule();
         }
+
+        CalculateReefTarget.init();
     }
 
     /** This function is called periodically during autonomous. */
@@ -91,6 +94,8 @@ public class Robot extends TimedRobot {
         if (m_autonomousCommand != null) {
             m_autonomousCommand.cancel();
         }
+
+        CalculateReefTarget.init();
     }
 
     /** This function is called periodically during operator control. */
