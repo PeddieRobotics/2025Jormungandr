@@ -371,12 +371,15 @@ public final class Constants {
 
         public static final double kTopSensorProximityThreshold = 0.0;
         public static final double kBottomSensorProximityThreshold = 0.0;
+        public static final double kAlgaeSensorProximityThreshold = 0.0;
 
         public static final double kTopSensorProximityHysteresis = 0.0;
         public static final double kBottomSensorProximityHysteresis = 0.0;
+        public static final double kAlgaeSensorProximityHysteresis = 0.0;
 
         public static final double kTopSensorSignalStrength = 0.0;
         public static final double kBottomSensorSignalStrength = 0.0;
+        public static final double kAlgaeSensorSignalStrength = 0.0;
 
         public static final double kCoralIntakeSpeed = 0.75;
         public static final double kCoralOuttakeSpeed = 1.0;

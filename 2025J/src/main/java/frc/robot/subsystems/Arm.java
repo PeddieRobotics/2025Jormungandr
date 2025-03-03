@@ -29,7 +29,7 @@ public class Arm extends SubsystemBase {
     private LiveData armAngle, armSetpoint, motorTemp, motorCurrent, armEncoderPosition, armCanCoderPosition;
 
     public Arm() {
-        armCANcoder = new CANcoder(RobotMap.ARM_CANCODER_ID, RobotMap.RIO_NAME);
+        armCANcoder = new CANcoder(RobotMap.ARM_CANCODER_ID, RobotMap.RIO_BUS);
 
         CANcoderConfiguration config = new CANcoderConfiguration();
         config.MagnetSensor.AbsoluteSensorDiscontinuityPoint = 1;
@@ -38,7 +38,7 @@ public class Arm extends SubsystemBase {
         config.MagnetSensor.MagnetOffset = ArmConstants.kArmMagnetOffset;
         armCANcoder.getConfigurator().apply(config);
 
-        armMotor = new Kraken(RobotMap.ARM_MOTOR_ID, RobotMap.RIO_NAME);
+        armMotor = new Kraken(RobotMap.ARM_MOTOR_ID, RobotMap.RIO_BUS);
 
         armMotor.setInverted(false);
 

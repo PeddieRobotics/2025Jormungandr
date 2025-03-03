@@ -1,5 +1,7 @@
 package frc.robot.subsystems;
 
+import static frc.robot.subsystems.Superstructure.SuperstructureState.EJECT_ALGAE;
+
 import com.ctre.phoenix6.configs.CANrangeConfiguration;
 import com.ctre.phoenix6.hardware.CANrange;
 
@@ -15,23 +17,24 @@ public class Claw extends SubsystemBase {
 
     private static Claw claw;
     private Kraken clawMotor;
-    private CANrange topSensor;
-    private CANrange bottomSensor;
-    private CANrangeConfiguration clawTopSensorConfig;
-    private CANrangeConfiguration clawBottomSensorConfig;
+    private CANrange topSensor, bottomSensor, algaeSensor;
+    private CANrangeConfiguration clawTopSensorConfig, clawBottomSensorConfig, clawAlgaeSensorConfig;
 
     private LiveData topSensorData, bottomSensorData, motorTemp, motorCurrent, 
         topSensorDistance, bottomSensorDistance,
         position, velocity, hasAlgae;  
 
     public Claw() {
-        clawMotor = new Kraken(RobotMap.CLAW_MOTOR_ID, RobotMap.CANIVORE_NAME);
+        clawMotor = new Kraken(RobotMap.CLAW_MOTOR_ID, RobotMap.RIO_BUS);
 
-        topSensor = new CANrange(RobotMap.CLAW_TOP_SENSOR_ID, RobotMap.CANIVORE_NAME);
+        topSensor = new CANrange(RobotMap.CLAW_TOP_SENSOR_ID, RobotMap.RIO_BUS);
         clawTopSensorConfig = new CANrangeConfiguration();
 
-        bottomSensor = new CANrange(RobotMap.CLAW_BOTTOM_SENSOR_ID, RobotMap.CANIVORE_NAME);
+        bottomSensor = new CANrange(RobotMap.CLAW_BOTTOM_SENSOR_ID, RobotMap.RIO_BUS);
         clawBottomSensorConfig = new CANrangeConfiguration();
+
+        algaeSensor = new CANrange(RobotMap.CLAW_ALGAE_SENSOR_ID, RobotMap.RIO_BUS);
+        clawAlgaeSensorConfig = new CANrangeConfiguration();
 
         clawMotor.setInverted(false);
         clawMotor.setSupplyCurrentLimit(ClawConstants.kClawSupplyCurrentLimit);
@@ -45,6 +48,10 @@ public class Claw extends SubsystemBase {
         configureCANrange(bottomSensor, clawBottomSensorConfig, Constants.ClawConstants.kBottomSensorSignalStrength,
                 Constants.ClawConstants.kBottomSensorProximityThreshold,
                 Constants.ClawConstants.kBottomSensorProximityHysteresis);
+            
+        configureCANrange(algaeSensor, clawAlgaeSensorConfig, Constants.ClawConstants.kAlgaeSensorSignalStrength,
+                Constants.ClawConstants.kAlgaeSensorProximityThreshold,
+                Constants.ClawConstants.kAlgaeSensorProximityHysteresis); 
 
                 topSensorData = new LiveData(getTopSensor(), "Claw: Top Sensor");
                 bottomSensorData = new LiveData(getBottomSensor(), "Claw: Bottom Sensor");
@@ -57,7 +64,7 @@ public class Claw extends SubsystemBase {
                 motorCurrent = new LiveData(clawMotor.getSupplyCurrent(), "Claw: Motor Supply Current");
                 position = new LiveData(getPosition(), "Claw: position");
                 velocity = new LiveData(getVelocity(), "Claw: Velocity RPM");
-                hasAlgae = new LiveData(hasAlgae(), "Claw: Has Algae");
+                hasAlgae = new LiveData(getAlgaeSensor(), "Claw: Has Algae");
                 // hasCoral = new LiveData(hasCoral(), "Claw Has Coral");
                 // coralIndexed = new LiveData(coralIndexed(), "Claw Coral is Indexed");
 
@@ -129,6 +136,10 @@ public class Claw extends SubsystemBase {
         return bottomSensor.getIsDetected().getValue(); // true if detected
     }
 
+    public boolean getAlgaeSensor() {
+        return algaeSensor.getIsDetected().getValue(); // true if detected
+    }
+
     /**
      * @return claw algae coral distance sensor reading (distance sensor units)
      */
@@ -138,6 +149,10 @@ public class Claw extends SubsystemBase {
 
     public double getBottomSensorDistance() {
         return bottomSensor.getDistance().getValueAsDouble();
+    }
+
+    public double getAlgaeSensorDistance() {
+        return algaeSensor.getDistance().getValueAsDouble();
     }
 
     /**
@@ -183,14 +198,6 @@ public class Claw extends SubsystemBase {
         return getBottomSensor() && getTopSensor();
     }
 
-    /**
-     * @return returns if sensor detects algae
-     */
-    // TODO: Reimplement
-    public boolean hasAlgae() {
-        return false;
-    }
-
     public double getClawMotorTemperature() {
         return clawMotor.getMotorTemperature();
     }
@@ -205,7 +212,7 @@ public class Claw extends SubsystemBase {
         motorCurrent.setNumber(getMotorSupplyCurrent());
         position.setNumber(getPosition()); 
         velocity.setNumber(getVelocity());
-        hasAlgae.setBoolean(hasAlgae()); 
+        hasAlgae.setBoolean(getAlgaeSensor()); 
     }
 
     @Override

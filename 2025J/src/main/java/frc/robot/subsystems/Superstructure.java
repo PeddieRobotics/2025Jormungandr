@@ -97,7 +97,7 @@ public class Superstructure extends SubsystemBase {
         systemStateData.setString(systemState.toString()); 
         requestedSystemStateData.setString(requestedSystemState.toString()); 
 
-        algaeIndex.setBoolean(claw.hasAlgae()); 
+        algaeIndex.setBoolean(claw.getAlgaeSensor()); 
 
         switch (systemState) {
             case STOW -> {
@@ -113,7 +113,7 @@ public class Superstructure extends SubsystemBase {
                 // elevator.setElevatorPositionVoltage(ScoreConstants.kElevatorStowPosition);
                 arm.setArmPositionVoltage(ScoreConstants.kArmStowPosition);
 
-                if (claw.hasAlgae()) {
+                if (claw.getAlgaeSensor()) {
                     claw.holdAlgae();
                 } else {
                     claw.stopClaw();
@@ -453,7 +453,7 @@ public class Superstructure extends SubsystemBase {
                 //elevator.setElevatorPositionVoltage(ScoreConstants.kElevatorBargePrestagePosition);
                 arm.setArmPositionVoltage(ScoreConstants.kArmStowPosition);
 
-                if (claw.hasAlgae()) {
+                if (claw.getAlgaeSensor()) {
                     claw.holdAlgae();
                 }
 
@@ -484,7 +484,7 @@ public class Superstructure extends SubsystemBase {
                 //elevator.setElevatorPositionVoltage(ScoreConstants.kElevatorBargeScorePosition);
                 arm.setArmPositionVoltage(ScoreConstants.kArmBargeScorePosition);
 
-                if (claw.hasAlgae()) {
+                if (claw.getAlgaeSensor()) {
                     claw.holdAlgae();
                 }
 
@@ -509,7 +509,7 @@ public class Superstructure extends SubsystemBase {
             }
 
             case BARGE_SCORE -> {
-                if (timer.hasElapsed(ScoreConstants.kBargeTimeout) || !claw.hasAlgae()){
+                if (timer.hasElapsed(ScoreConstants.kBargeTimeout) || !claw.getAlgaeSensor()){
                     timer.reset();
                     claw.stopClaw();
                     requestState(HP_INTAKE);
@@ -535,7 +535,7 @@ public class Superstructure extends SubsystemBase {
                 //elevator.setElevatorPositionVoltage(ScoreConstants.kElevatorProcessorScorePosition);
                 arm.setArmPositionVoltage(ScoreConstants.kArmProcessorScorePosition);
 
-                if (claw.hasAlgae()) {
+                if (claw.getAlgaeSensor()) {
                     claw.holdAlgae();
                 }
 
@@ -560,7 +560,7 @@ public class Superstructure extends SubsystemBase {
             }
 
             case PROCESSOR_SCORE -> {
-                if (timer.hasElapsed(ScoreConstants.kProcessorTimeout) || !claw.hasAlgae()){
+                if (timer.hasElapsed(ScoreConstants.kProcessorTimeout) || !claw.getAlgaeSensor()){
                     timer.reset();
                     claw.stopClaw();
                     requestState(HP_INTAKE);
@@ -587,7 +587,7 @@ public class Superstructure extends SubsystemBase {
                 arm.setArmPositionVoltage(ScoreConstants.kArmReef1IntakePosition);
                 claw.intakePiece(ClawConstants.kAlgaeIntakeSpeed);
 
-                if (claw.hasAlgae()) {
+                if (claw.getAlgaeSensor()) {
                     claw.holdAlgae();
                 }
 
@@ -617,7 +617,7 @@ public class Superstructure extends SubsystemBase {
                 arm.setArmPositionVoltage(ScoreConstants.kArmReef2IntakePosition);
                 claw.intakePiece(ClawConstants.kAlgaeIntakeSpeed);
 
-                if (claw.hasAlgae()) {
+                if (claw.getAlgaeSensor()) {
                     claw.holdAlgae();
                 }
 

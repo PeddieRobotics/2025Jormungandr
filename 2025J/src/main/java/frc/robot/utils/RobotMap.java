@@ -2,8 +2,8 @@ package frc.robot.utils;
 
 public class RobotMap {
     // MISCELLANEOUS
-    public static final String CANIVORE_NAME = "canivore";
-    public static final String RIO_NAME = "rio";
+    public static final String CANIVORE_BUS = "canivore";
+    public static final String RIO_BUS = "rio";
     public static final int GYRO_ID = 1;
     public static final int HP_INTAKE_SERVO_ID = 2;
     public static final int CANDLE_ID = 3;
@@ -16,6 +16,7 @@ public class RobotMap {
     public static final int CLAW_MOTOR_ID = 6;
     public static final int CLAW_TOP_SENSOR_ID = 7;
     public static final int CLAW_BOTTOM_SENSOR_ID = 8;
+    public static final int CLAW_ALGAE_SENSOR_ID = 9;
 
     // SWERVE
     public static final int FRONT_LEFT_MODULE_DRIVE_ID = 10;

@@ -28,7 +28,7 @@ public class Elevator extends SubsystemBase {
             followerMotorTemp, bottomSensorData, elevatorHeight;
 
     public Elevator() {
-        elevatorCANcoder = new CANcoder(RobotMap.ELEVATOR_CANCODER_ID, RobotMap.CANIVORE_NAME);
+        elevatorCANcoder = new CANcoder(RobotMap.ELEVATOR_CANCODER_ID, RobotMap.CANIVORE_BUS);
         CANcoderConfiguration config = new CANcoderConfiguration();
         config.MagnetSensor.AbsoluteSensorDiscontinuityPoint = 1; // Setting this to 1 makes the absolute position
                                                                   // unsigned [0, 1)
@@ -40,8 +40,8 @@ public class Elevator extends SubsystemBase {
         config.MagnetSensor.MagnetOffset = ElevatorConstants.kElevatorMagnetOffset;
         elevatorCANcoder.getConfigurator().apply(config); 
 
-        elevatorMainMotor = new Kraken(RobotMap.ELEVATOR_MAIN_ID, RobotMap.CANIVORE_NAME);
-        elevatorFollowerMotor = new Kraken(RobotMap.ELEVATOR_SECONDARY_ID, RobotMap.CANIVORE_NAME);
+        elevatorMainMotor = new Kraken(RobotMap.ELEVATOR_MAIN_ID, RobotMap.CANIVORE_BUS);
+        elevatorFollowerMotor = new Kraken(RobotMap.ELEVATOR_SECONDARY_ID, RobotMap.CANIVORE_BUS);
 
         elevatorMainMotor.setInverted(true);
         elevatorFollowerMotor.setFollower(RobotMap.ELEVATOR_MAIN_ID, true);

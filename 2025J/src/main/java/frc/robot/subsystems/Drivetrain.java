@@ -53,16 +53,16 @@ public class Drivetrain extends SubsystemBase {
     private LiveData odometryX, odometryY, headingData, fusedOdometryData; 
 
     public Drivetrain() {
-        frontLeftModule = new SwerveModule(RobotMap.CANIVORE_NAME, RobotMap.FRONT_LEFT_MODULE_DRIVE_ID,
+        frontLeftModule = new SwerveModule(RobotMap.CANIVORE_BUS, RobotMap.FRONT_LEFT_MODULE_DRIVE_ID,
                 RobotMap.FRONT_LEFT_MODULE_TURN_ID, RobotMap.FRONT_LEFT_MODULE_CANCODER_ID,
                 DriveConstants.kFrontLeftMagnetOffset);
-        frontRightModule = new SwerveModule(RobotMap.CANIVORE_NAME, RobotMap.FRONT_RIGHT_MODULE_DRIVE_ID,
+        frontRightModule = new SwerveModule(RobotMap.CANIVORE_BUS, RobotMap.FRONT_RIGHT_MODULE_DRIVE_ID,
                 RobotMap.FRONT_RIGHT_MODULE_TURN_ID, RobotMap.FRONT_RIGHT_MODULE_CANCODER_ID,
                 DriveConstants.kFrontRightMagnetOffset);
-        backLeftModule = new SwerveModule(RobotMap.CANIVORE_NAME, RobotMap.BACK_LEFT_MODULE_DRIVE_ID,
+        backLeftModule = new SwerveModule(RobotMap.CANIVORE_BUS, RobotMap.BACK_LEFT_MODULE_DRIVE_ID,
                 RobotMap.BACK_LEFT_MODULE_TURN_ID, RobotMap.BACK_LEFT_MODULE_CANCODER_ID,
                 DriveConstants.kBackLeftMagnetOffset);
-        backRightModule = new SwerveModule(RobotMap.CANIVORE_NAME, RobotMap.BACK_RIGHT_MODULE_DRIVE_ID,
+        backRightModule = new SwerveModule(RobotMap.CANIVORE_BUS, RobotMap.BACK_RIGHT_MODULE_DRIVE_ID,
                 RobotMap.BACK_RIGHT_MODULE_TURN_ID, RobotMap.BACK_RIGHT_MODULE_CANCODER_ID,
                 DriveConstants.kBackRightMagnetOffset);
 
@@ -71,7 +71,7 @@ public class Drivetrain extends SubsystemBase {
                 backLeftModule.getPosition(), backRightModule.getPosition() };
         swerveModuleStates = DriveConstants.kKinematics.toSwerveModuleStates(new ChassisSpeeds(0, 0, 0));
 
-        gyro = new Pigeon2(RobotMap.GYRO_ID, RobotMap.CANIVORE_NAME);
+        gyro = new Pigeon2(RobotMap.GYRO_ID, RobotMap.CANIVORE_BUS);
         gyro.setYaw(0);
 
         odometry = new SwerveDrivePoseEstimator(DriveConstants.kKinematics, getHeadingAsRotation2d(), swerveModulePositions, new Pose2d());
