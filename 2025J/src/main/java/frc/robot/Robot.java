@@ -76,7 +76,7 @@ public class Robot extends TimedRobot {
             m_autonomousCommand.schedule();
         }
 
-        CalculateReefTarget.init();
+        // CalculateReefTarget.init();
     }
 
     /** This function is called periodically during autonomous. */
@@ -95,7 +95,7 @@ public class Robot extends TimedRobot {
             m_autonomousCommand.cancel();
         }
 
-        CalculateReefTarget.init();
+        // CalculateReefTarget.init();
     }
 
     /** This function is called periodically during operator control. */
