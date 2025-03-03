@@ -11,9 +11,9 @@ import edu.wpi.first.math.geometry.Translation2d;
 import frc.robot.subsystems.Superstructure.SuperstructureState;
 
 import edu.wpi.first.math.geometry.Rotation2d;
-import frc.robot.commands.ReefCommands.AlignToReef2D;
-import frc.robot.commands.ReefCommands.AlignToReefEstimatedPose;
-import frc.robot.commands.ScoreCommands.AlignAndScore;
+// import frc.robot.commands.ReefCommands.AlignToReef2D;
+// import frc.robot.commands.ReefCommands.AlignToReefEstimatedPose;
+// import frc.robot.commands.ScoreCommands.AlignAndScore;
 import frc.robot.subsystems.Claw;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.LimelightFrontMiddle;
@@ -58,7 +58,7 @@ public class DriverOI {
 
         Trigger squareButton = new JoystickButton(controller, PS4Controller.Button.kSquare.value);
         // squareButton.onTrue(new InstantCommand(() -> CalculateReefTarget.calculateTargetID()));
-        squareButton.whileTrue(new AlignToReefEstimatedPose(Constants.AlignmentConstants.AlignmentDestination.MIDDLE));
+        // squareButton.whileTrue(new AlignToReefEstimatedPose(Constants.AlignmentConstants.AlignmentDestination.MIDDLE));
 
         Trigger triangleButton = new JoystickButton(controller, PS4Controller.Button.kTriangle.value);
         // triangleButton.onTrue(new AlignAndScore(true)); //right align
@@ -72,32 +72,32 @@ public class DriverOI {
         }));
 
         Trigger touchpadButton = new JoystickButton(controller, PS4Controller.Button.kTouchpad.value);
-        touchpadButton.onTrue(new SequentialCommandGroup(
-            new InstantCommand(() -> {
-                SmartDashboard.putBoolean("is inside bad hexagon", CalculateReefTarget.insideBadHexagon(Drivetrain.getInstance().getPose()));
-            }),
-            new InstantCommand(() -> {
-                SmartDashboard.putNumber("align to tag", CalculateReefTarget.calculateTargetID());
-            })
-        ));
+        // touchpadButton.onTrue(new SequentialCommandGroup(
+        //     new InstantCommand(() -> {
+        //         SmartDashboard.putBoolean("is inside bad hexagon", CalculateReefTarget.insideBadHexagon(Drivetrain.getInstance().getPose()));
+        //     }),
+        //     new InstantCommand(() -> {
+        //         SmartDashboard.putNumber("align to tag", CalculateReefTarget.calculateTargetID());
+        //     })
+        // ));
 
         Trigger L1Bumper = new JoystickButton(controller, PS4Controller.Button.kL1.value);
         // TODO: align left if coral, else align HP
-        L1Bumper.whileTrue(new AlignToReefEstimatedPose(Constants.AlignmentConstants.AlignmentDestination.LEFT));
+        // L1Bumper.whileTrue(new AlignToReefEstimatedPose(Constants.AlignmentConstants.AlignmentDestination.LEFT));
 
         Trigger R1Bumper = new JoystickButton(controller, PS4Controller.Button.kR1.value);
         // TODO: align right if coral, else align HP
-        R1Bumper.whileTrue(new AlignToReefEstimatedPose(Constants.AlignmentConstants.AlignmentDestination.RIGHT));
+        // R1Bumper.whileTrue(new AlignToReefEstimatedPose(Constants.AlignmentConstants.AlignmentDestination.RIGHT));
 
         Trigger L2Trigger = new JoystickButton(controller, PS4Controller.Button.kL2.value);
 
         Trigger R2Trigger = new JoystickButton(controller, PS4Controller.Button.kR2.value);
 
         Trigger L3Trigger = new JoystickButton(controller, PS4Controller.Button.kL3.value);
-        L3Trigger.whileTrue(new AlignToReefEstimatedPose(Constants.AlignmentConstants.AlignmentDestination.LEFT));
+        // L3Trigger.whileTrue(new AlignToReefEstimatedPose(Constants.AlignmentConstants.AlignmentDestination.LEFT));
 
         Trigger R3Trigger = new JoystickButton(controller, PS4Controller.Button.kR3.value);
-        R3Trigger.whileTrue(new AlignToReefEstimatedPose(Constants.AlignmentConstants.AlignmentDestination.RIGHT));
+        // R3Trigger.whileTrue(new AlignToReefEstimatedPose(Constants.AlignmentConstants.AlignmentDestination.RIGHT));
 
         Trigger optionButton = new JoystickButton(controller, PS4Controller.Button.kOptions.value);
         optionButton.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.EJECT_CORAL)));
