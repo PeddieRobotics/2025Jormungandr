@@ -104,14 +104,14 @@ public class Superstructure extends SubsystemBase {
                 // stop intake
                 // bring elevator 
                 if(elevator.isAtBottom()){
-                    elevator.setElevatorNeutralMode();
+                    // elevator.setElevatorNeutralMode();
                 } else{
-                    elevator.setElevatorPositionMotionMagicTorqueCurrentFOC(ScoreConstants.kElevatorStowPosition);
+                    // elevator.setElevatorPositionMotionMagicTorqueCurrentFOC(ScoreConstants.kElevatorStowPosition);
                     // arm.setArmPositionMotionMagicTorqueCurrentFOC(ScoreConstants.kArmStowPosition);
                 }
                 
                 // elevator.setElevatorPositionVoltage(ScoreConstants.kElevatorStowPosition);
-                arm.setArmPositionVoltage(ScoreConstants.kArmStowPosition);
+                // arm.setArmPositionVoltage(ScoreConstants.kArmStowPosition);
 
                 if (claw.getAlgaeSensor()) {
                     claw.holdAlgae();

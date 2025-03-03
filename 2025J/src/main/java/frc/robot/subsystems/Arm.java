@@ -85,7 +85,6 @@ public class Arm extends SubsystemBase {
         motorCurrent = new LiveData(armMotor.getSupplyCurrent(), "Arm: Motor Current");
 
         SmartDashboard.putBoolean("Arm: Open Loop Control", false);
-        
     }
 
     /**

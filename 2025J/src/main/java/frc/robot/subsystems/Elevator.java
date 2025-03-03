@@ -73,7 +73,7 @@ public class Elevator extends SubsystemBase {
         elevatorMainMotor.setMotionMagicParameters(ElevatorConstants.kElevatorMaxCruiseVelocity,
                 ElevatorConstants.kElevatorMaxCruiseAcceleration, ElevatorConstants.kElevatorMaxCruiseJerk);
 
-        elevatorMainMotor.setSoftLimits(true, ElevatorConstants.kElevatorForwardSoftLimit,
+        elevatorMainMotor.setSoftLimits(false, ElevatorConstants.kElevatorForwardSoftLimit,
         ElevatorConstants.kElevatorReverseSoftLimit);
 
         // L1Setpoint = new TunableConstant(ElevatorConstants.kL1Setpoint, "Elevator L1Setpoint");
