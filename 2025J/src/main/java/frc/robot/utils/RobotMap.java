@@ -3,6 +3,7 @@ package frc.robot.utils;
 public class RobotMap {
     // MISCELLANEOUS
     public static final String CANIVORE_NAME = "canivore";
+    public static final String RIO_NAME = "rio";
     public static final int GYRO_ID = 1;
     public static final int HP_INTAKE_SERVO_ID = 2;
     public static final int CANDLE_ID = 3;

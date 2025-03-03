@@ -29,14 +29,16 @@ public class Arm extends SubsystemBase {
     private LiveData armAngle, armSetpoint, motorTemp, motorCurrent, armEncoderPosition, armCanCoderPosition;
 
     public Arm() {
-        armCANcoder = new CANcoder(RobotMap.ARM_CANCODER_ID, RobotMap.CANIVORE_NAME);
+        armCANcoder = new CANcoder(RobotMap.ARM_CANCODER_ID, RobotMap.RIO_NAME);
+
         CANcoderConfiguration config = new CANcoderConfiguration();
         config.MagnetSensor.AbsoluteSensorDiscontinuityPoint = 1;
+        // TODO: Change this to change direction
         config.MagnetSensor.SensorDirection = SensorDirectionValue.Clockwise_Positive;
         config.MagnetSensor.MagnetOffset = ArmConstants.kArmMagnetOffset;
         armCANcoder.getConfigurator().apply(config);
 
-        armMotor = new Kraken(RobotMap.ARM_MOTOR_ID, RobotMap.CANIVORE_NAME);
+        armMotor = new Kraken(RobotMap.ARM_MOTOR_ID, RobotMap.RIO_NAME);
 
         armMotor.setInverted(false);
 
@@ -59,7 +61,8 @@ public class Arm extends SubsystemBase {
         armMotor.setMotionMagicParameters(ArmConstants.kArmMaxCruiseVelocity, ArmConstants.kArmMaxCruiseAcceleration,
                 ArmConstants.kArmMaxCruiseJerk);
 
-        armMotor.setSoftLimits(true, ArmConstants.kArmForwardSoftLimit, ArmConstants.kArmReverseSoftLimit);
+        // TODO: redo soft limits
+        armMotor.setSoftLimits(false, ArmConstants.kArmForwardSoftLimit, ArmConstants.kArmReverseSoftLimit);
 
         // L1Setpoint = new TunableConstant(ArmConstants.kL1Setpoint, "Arm L1Setpoint");
         // L2Setpoint = new TunableConstant(ArmConstants.kL2Setpoint, "Arm L2Setpoint");
