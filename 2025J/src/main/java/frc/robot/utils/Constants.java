@@ -240,9 +240,9 @@ public final class Constants {
 
         public static final double kArmMagnetOffset = 0.0;
 
-        public static final double kArmReduction = 119.0 / 1.0;
-        public static final double kArmRotorToSensorRatio = kArmReduction / 1.19;
-        public static final double kArmSensortoMechanismRatio = 1.19;
+        public static final double kArmReduction = 114.288 / 1.0;
+        public static final double kArmRotorToSensorRatio = kArmReduction / 0.96;
+        public static final double kArmSensortoMechanismRatio = 0.96;
 
         // public static final double kS = 0.2;
         // public static final double kV = 0.0;
