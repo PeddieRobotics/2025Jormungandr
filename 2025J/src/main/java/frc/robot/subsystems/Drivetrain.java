@@ -22,6 +22,7 @@ import edu.wpi.first.util.sendable.Sendable;
 import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.utils.Constants.DriveConstants;
@@ -45,6 +46,7 @@ public class Drivetrain extends SubsystemBase {
 
     private final Field2d fusedOdometry;
     private final StructPublisher<Pose2d> fusedOdometryAdvScope, pureOdometryAdvScope;
+    private SendableChooser<String> autoStartPosition;
     
     private Translation2d currentMovement;
 
@@ -111,6 +113,9 @@ public class Drivetrain extends SubsystemBase {
         odometryY = new LiveData(getPose().getY(), "Odometry Y");
         headingData = new LiveData(getHeading(), "Gyro Heading");
         fusedOdometryData = new LiveData(fusedOdometry, "Fused odometry");
+
+        configureAutoSetupSelector();
+        
     }
 
     /**
@@ -121,6 +126,28 @@ public class Drivetrain extends SubsystemBase {
             instance = new Drivetrain();
         }
         return instance;
+    }
+
+    public void configureAutoSetupSelector(){
+        autoStartPosition = new SendableChooser<>();
+        autoStartPosition.setDefaultOption("NONE/TELEOP", "NONE/TELEOP");
+        autoStartPosition.addOption("LEFT", "LEFT");
+        autoStartPosition.addOption("RIGHT", "RIGHT");
+        autoStartPosition.addOption("CENTER", "CENTER");
+    }
+
+    public double getAutoAdjustHeading(){
+        if(autoStartPosition.getSelected().equals("NONE/TELEOP")){
+            return 0;
+        } else if (autoStartPosition.getSelected().equals("LEFT")){
+            return -90.0;
+        } else if (autoStartPosition.getSelected().equals("RIGHT")){
+            return 90.0;
+        } else if (autoStartPosition.getSelected().equals("CENTER")){
+            return 180.0;
+        } else {
+            return 0;
+        }
     }
 
     /**
