@@ -41,7 +41,7 @@ public class Drivetrain extends SubsystemBase {
     private double currentDrivetrainSpeed = 0;
 
     private final Pigeon2 gyro;
-    private double heading;
+    private double heading, autoAdjustHeading;
 
     private final Field2d fusedOdometry;
     private final StructPublisher<Pose2d> fusedOdometryAdvScope, pureOdometryAdvScope;
@@ -73,6 +73,7 @@ public class Drivetrain extends SubsystemBase {
 
         gyro = new Pigeon2(RobotMap.GYRO_ID, RobotMap.CANIVORE_BUS);
         gyro.setYaw(0);
+        autoAdjustHeading = 0.0;
 
         odometry = new SwerveDrivePoseEstimator(DriveConstants.kKinematics, getHeadingAsRotation2d(), swerveModulePositions, new Pose2d());
         pureOdometry = new SwerveDrivePoseEstimator(DriveConstants.kKinematics, getHeadingAsRotation2d(), swerveModulePositions, new Pose2d());
@@ -145,7 +146,7 @@ public class Drivetrain extends SubsystemBase {
 
         ChassisSpeeds robotRelativeSpeeds;
         if (fieldOriented) {
-            robotRelativeSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(fieldRelativeSpeeds, getHeadingAsRotation2d());
+            robotRelativeSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(fieldRelativeSpeeds, getHeadingAsRotation2d().plus(new Rotation2d(Math.toRadians(autoAdjustHeading))));
         } else {
             robotRelativeSpeeds = fieldRelativeSpeeds;
         }
@@ -242,6 +243,7 @@ public class Drivetrain extends SubsystemBase {
      * resets gyro
      */
     public void resetGyro() {
+        autoAdjustHeading = 0.0;
         gyro.reset();
     }
 
@@ -330,6 +332,10 @@ public class Drivetrain extends SubsystemBase {
                 frontRightModule.getState(),
                 backLeftModule.getState(),
                 backRightModule.getState());
+    }
+
+    public void setAutoAdjustHeading(double angleOffset){
+        autoAdjustHeading = angleOffset;
     }
 
 
