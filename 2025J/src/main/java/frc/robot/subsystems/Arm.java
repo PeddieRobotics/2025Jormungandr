@@ -10,6 +10,7 @@ import com.ctre.phoenix6.signals.StaticFeedforwardSignValue;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.utils.Constants.ArmConstants;
+import frc.robot.utils.DriverOI;
 import frc.robot.utils.Kraken;
 import frc.robot.utils.LiveData;
 import frc.robot.utils.RobotMap;
@@ -34,23 +35,23 @@ public class Arm extends SubsystemBase {
         CANcoderConfiguration config = new CANcoderConfiguration();
         config.MagnetSensor.AbsoluteSensorDiscontinuityPoint = 1;
         // TODO: Change this to change direction
-        config.MagnetSensor.SensorDirection = SensorDirectionValue.Clockwise_Positive;
+        config.MagnetSensor.SensorDirection = SensorDirectionValue.CounterClockwise_Positive;
         config.MagnetSensor.MagnetOffset = ArmConstants.kArmMagnetOffset;
         armCANcoder.getConfigurator().apply(config);
 
         armMotor = new Kraken(RobotMap.ARM_MOTOR_ID, RobotMap.RIO_BUS);
 
-        armMotor.setInverted(false);
+        armMotor.setInverted(true);
 
         armMotor.setSupplyCurrentLimit(ArmConstants.kArmSupplyCurrentLimit);
         armMotor.setStatorCurrentLimit(ArmConstants.kArmStatorCurrentLimit);
         armMotor.setForwardTorqueCurrentLimit(ArmConstants.kArmForwardTorqueCurrentLimit);
         armMotor.setReverseTorqueCurrentLimit(ArmConstants.kArmReverseTorqueCurrentLimit);
 
-        armMotor.setCoast();
+        armMotor.setBrake();
 
         armMotor.setEncoder(0);
-        armMotor.setFeedbackDevice(RobotMap.ARM_CANCODER_ID, FeedbackSensorSourceValue.FusedCANcoder);
+        armMotor.setFeedbackDevice(RobotMap.ARM_CANCODER_ID, FeedbackSensorSourceValue.RemoteCANcoder);
         armMotor.setRotorToSensorRatio(ArmConstants.kArmRotorToSensorRatio);
         armMotor.setSensorToMechanismRatio(ArmConstants.kArmSensortoMechanismRatio);
 
@@ -61,8 +62,7 @@ public class Arm extends SubsystemBase {
         armMotor.setMotionMagicParameters(ArmConstants.kArmMaxCruiseVelocity, ArmConstants.kArmMaxCruiseAcceleration,
                 ArmConstants.kArmMaxCruiseJerk);
 
-        // TODO: redo soft limits
-        armMotor.setSoftLimits(false, ArmConstants.kArmForwardSoftLimit, ArmConstants.kArmReverseSoftLimit);
+        armMotor.setSoftLimits(true, ArmConstants.kArmForwardSoftLimit, ArmConstants.kArmReverseSoftLimit);
 
         // L1Setpoint = new TunableConstant(ArmConstants.kL1Setpoint, "Arm L1Setpoint");
         // L2Setpoint = new TunableConstant(ArmConstants.kL2Setpoint, "Arm L2Setpoint");
@@ -223,8 +223,12 @@ public class Arm extends SubsystemBase {
 
     @Override
     public void periodic() {
-        // SmartDashboard.putNumber("Arm: Motor Encoder Position", getArmEncoderPosition());
-        // SmartDashboard.putNumber("Arm: CanCoder Position", getAbsoluteCANcoderPosition());
+        SmartDashboard.putNumber("Arm: Motor Encoder Position", getArmEncoderPosition());
+        SmartDashboard.putNumber("Arm: CanCoder Position", getAbsoluteCANcoderPosition());
+
+        if(SmartDashboard.getBoolean("Arm: Open Loop Control", false)){
+            armMotor.setPercentOutput(DriverOI.getInstance().getRightForward() * 0.3);
+        }
 
         armAngle.setNumber(getAbsoluteCANcoderPosition());
         armEncoderPosition.setNumber(getArmEncoderPosition()); 

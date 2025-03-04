@@ -140,7 +140,7 @@ public final class Constants {
         public static final double kElevatorRotorToSensorRatio = kElevatorReduction;
         public static final double kElevatorSensortoMechanismRatio = 1.0;
 
-        public static final double kElevatorMagnetOffset = 0.0;
+        public static final double kElevatorMagnetOffset = -0.513184;
 
         // Motion Magic Parameters
         public static final double kElevatorMaxCruiseVelocity = 14.0;
@@ -165,13 +165,13 @@ public final class Constants {
         // public static final double kG = 9.1;
         // public static final double kFF = 0.0;
 
-        public static final double kS = 0.0;
+        public static final double kS = 0.085;
         public static final double kV = 0.0;
         public static final double kA = 0.0;
-        public static final double kP = 0.0;
+        public static final double kP = 20.0;
         public static final double kI = 0.0;
-        public static final double kD = 0.0;
-        public static final double kG = 0.0;
+        public static final double kD = 1.0;
+        public static final double kG = 0.255;
         public static final double kFF = 0.0;
 
         public static final double kElevatorPositionEpsilon = 0.5;
@@ -238,11 +238,12 @@ public final class Constants {
         public static final double kArmForwardTorqueCurrentLimit = 40;
         public static final double kArmReverseTorqueCurrentLimit = -40;
 
-        public static final double kArmMagnetOffset = 0.0;
-
         public static final double kArmReduction = 114.288 / 1.0;
         public static final double kArmRotorToSensorRatio = kArmReduction / 0.96;
         public static final double kArmSensortoMechanismRatio = 0.96;
+
+        // public static final double kArmMagnetOffset = 0.052246 - 0.25 * kArmSensortoMechanismRatio;
+        public static final double kArmMagnetOffset = -0.052979 + 0.25 * kArmSensortoMechanismRatio;
 
         // public static final double kS = 0.2;
         // public static final double kV = 0.0;
@@ -257,14 +258,14 @@ public final class Constants {
         public static final double kS = 0.0;
         public static final double kV = 0.0;
         public static final double kA = 0.0;
-        public static final double kP = 0.0;
+        public static final double kP = 50.0;
         public static final double kI = 0.0;
-        public static final double kD = 0.0;
+        public static final double kD = 1.0;
         public static final double kFF = 0.0;
         public static final double kIZone = 0.0;
-        public static final double kG = 0.0;
+        public static final double kG = 0.45;
 
-        // these are on the CAN CODER!
+        // 
         public static final double kArmForwardSoftLimit = 0.25;
         public static final double kArmReverseSoftLimit = 0.13;
 
@@ -386,9 +387,9 @@ public final class Constants {
         public static final double kCoralSlowIntake = 0.675;
 
         public static final double kAlgaeIntakeSpeed = 0.5;
-        public static final double kAlgaeOuttakeSpeed = -0.5;
+        public static final double kAlgaeOuttakeSpeed = -1.0;
 
-        public static final double kAlgaeHoldSpeed = 0.5;
+        public static final double kAlgaeHoldSpeed = 0.05;
 
         public static final double kCoralPositionIncrement = 3.0;
     }

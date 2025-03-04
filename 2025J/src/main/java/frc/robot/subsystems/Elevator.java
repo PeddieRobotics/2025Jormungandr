@@ -43,7 +43,7 @@ public class Elevator extends SubsystemBase {
         elevatorMainMotor = new Kraken(RobotMap.ELEVATOR_MAIN_ID, RobotMap.CANIVORE_BUS);
         elevatorFollowerMotor = new Kraken(RobotMap.ELEVATOR_SECONDARY_ID, RobotMap.CANIVORE_BUS);
 
-        elevatorMainMotor.setInverted(true);
+        elevatorMainMotor.setInverted(false);
         elevatorFollowerMotor.setFollower(RobotMap.ELEVATOR_MAIN_ID, true);
 
         elevatorMainMotor.setSupplyCurrentLimit(ElevatorConstants.kElevatorMotorSupplyCurrentLimit);
@@ -57,8 +57,8 @@ public class Elevator extends SubsystemBase {
         elevatorFollowerMotor.setForwardTorqueCurrentLimit(ArmConstants.kArmForwardTorqueCurrentLimit);
         elevatorFollowerMotor.setReverseTorqueCurrentLimit(ArmConstants.kArmReverseTorqueCurrentLimit);
 
-        elevatorMainMotor.setCoast();
-        elevatorFollowerMotor.setCoast();
+        elevatorMainMotor.setBrake();
+        elevatorFollowerMotor.setBrake();
         
         elevatorMainMotor.setEncoder(0);
         elevatorMainMotor.setFeedbackDevice(RobotMap.ELEVATOR_CANCODER_ID, FeedbackSensorSourceValue.FusedCANcoder);
@@ -73,7 +73,7 @@ public class Elevator extends SubsystemBase {
         elevatorMainMotor.setMotionMagicParameters(ElevatorConstants.kElevatorMaxCruiseVelocity,
                 ElevatorConstants.kElevatorMaxCruiseAcceleration, ElevatorConstants.kElevatorMaxCruiseJerk);
 
-        elevatorMainMotor.setSoftLimits(false, ElevatorConstants.kElevatorForwardSoftLimit,
+        elevatorMainMotor.setSoftLimits(true, ElevatorConstants.kElevatorForwardSoftLimit,
         ElevatorConstants.kElevatorReverseSoftLimit);
 
         // L1Setpoint = new TunableConstant(ElevatorConstants.kL1Setpoint, "Elevator L1Setpoint");

@@ -137,7 +137,7 @@ public class Claw extends SubsystemBase {
     }
 
     public boolean getAlgaeSensor() {
-        return algaeSensor.getIsDetected().getValue(); // true if detected
+        return algaeSensor.getAmbientSignal().getValueAsDouble() < 30.0 && algaeSensor.getDistance().getValueAsDouble() < 0.05; // true if detected
     }
 
     /**
@@ -213,6 +213,7 @@ public class Claw extends SubsystemBase {
         position.setNumber(getPosition()); 
         velocity.setNumber(getVelocity());
         hasAlgae.setBoolean(getAlgaeSensor()); 
+        SmartDashboard.putNumber("Algae Sensor Distance", getAlgaeSensorDistance());
     }
 
     @Override
