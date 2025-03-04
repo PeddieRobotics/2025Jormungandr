@@ -30,6 +30,8 @@ public class Superstructure extends SubsystemBase {
 
     private LiveData systemStateData, requestedSystemStateData, algaeIndex, coralIndex; 
 
+    private boolean isManualControl;
+
 
     public enum SuperstructureState {
         STOW,
@@ -71,6 +73,8 @@ public class Superstructure extends SubsystemBase {
 
         systemStateData = new LiveData(systemState.toString(), "System State"); 
         requestedSystemStateData = new LiveData(requestedSystemState.toString(), "Requested System State"); 
+
+        isManualControl = false;
     }
 
     public static Superstructure getInstance() {
@@ -92,6 +96,11 @@ public class Superstructure extends SubsystemBase {
         return requestedSystemState;
     }
 
+    public void setManualControl(boolean isTrue){
+        isManualControl = isTrue;
+    }
+
+
     @Override
     public void periodic() {
         systemStateData.setString(systemState.toString()); 
@@ -101,19 +110,21 @@ public class Superstructure extends SubsystemBase {
 
         switch (systemState) {
             case STOW -> {
-                // stop intake
-                // bring elevator 
-                if(elevator.isAtBottom()){
-                    elevator.setElevatorNeutralMode();
-                } else{
-                    elevator.setElevatorPositionMotionMagicVoltage(ScoreConstants.kElevatorStowPosition);
+                if(!isManualControl){
+                    // stop intake
+                    // bring elevator 
+                    if(elevator.isAtBottom()){
+                        elevator.setElevatorNeutralMode();
+                    } else{
+                        elevator.setElevatorPositionMotionMagicVoltage(ScoreConstants.kElevatorStowPosition);
+                    }
                     arm.setArmPositionVoltage(ScoreConstants.kArmStowPosition);
-                }
 
-                if (claw.getAlgaeSensor()) {
-                    claw.holdAlgae();
-                } else {
-                    claw.stopClaw();
+                    if (claw.getAlgaeSensor()) {
+                        claw.holdAlgae();
+                    } else {
+                        claw.stopClaw();
+                    }
                 }
 
                 if (Arrays.asList(
@@ -366,7 +377,7 @@ public class Superstructure extends SubsystemBase {
                     claw.stopClaw();
                     requestState(HP_INTAKE);
                 } else {
-                    claw.outtakePiece(ClawConstants.kCoralOuttakeSpeed);
+                    claw.outtakePiece(ClawConstants.kCoralL1OuttakeSpeed);
                 }
 
                 if (Arrays.asList(
@@ -506,7 +517,7 @@ public class Superstructure extends SubsystemBase {
             }
 
             case BARGE_SCORE -> {
-                if (timer.hasElapsed(ScoreConstants.kBargeTimeout) || !claw.getAlgaeSensor()){
+                if (timer.hasElapsed(ScoreConstants.kBargeTimeout) && !claw.getAlgaeSensor()){
                     timer.reset();
                     claw.stopClaw();
                     requestState(HP_INTAKE);
@@ -557,7 +568,7 @@ public class Superstructure extends SubsystemBase {
             }
 
             case PROCESSOR_SCORE -> {
-                if (timer.hasElapsed(ScoreConstants.kProcessorTimeout) || !claw.getAlgaeSensor()){
+                if (timer.hasElapsed(ScoreConstants.kProcessorTimeout) && !claw.getAlgaeSensor()){
                     timer.reset();
                     claw.stopClaw();
                     requestState(HP_INTAKE);

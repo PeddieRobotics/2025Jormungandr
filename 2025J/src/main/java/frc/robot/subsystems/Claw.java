@@ -44,14 +44,27 @@ public class Claw extends SubsystemBase {
 
         configureCANrange(topSensor, clawTopSensorConfig, Constants.ClawConstants.kTopSensorSignalStrength,
                 Constants.ClawConstants.kTopSensorProximityThreshold,
-                Constants.ClawConstants.kTopSensorProximityHysteresis);
+                Constants.ClawConstants.kTopSensorProximityHysteresis,
+                Constants.ClawConstants.kTopSensorFovCenterX,
+                Constants.ClawConstants.kTopSensorFovCenterY,
+                Constants.ClawConstants.kTopSensorFovRangeX,
+                Constants.ClawConstants.kTopSensorFovRangeY);
+                
         configureCANrange(bottomSensor, clawBottomSensorConfig, Constants.ClawConstants.kBottomSensorSignalStrength,
                 Constants.ClawConstants.kBottomSensorProximityThreshold,
-                Constants.ClawConstants.kBottomSensorProximityHysteresis);
+                Constants.ClawConstants.kBottomSensorProximityHysteresis,
+                Constants.ClawConstants.kBottomSensorFovCenterX,
+                Constants.ClawConstants.kBottomSensorFovCenterY,
+                Constants.ClawConstants.kBottomSensorFovRangeX,
+                Constants.ClawConstants.kBottomSensorFovRangeY);
             
         configureCANrange(algaeSensor, clawAlgaeSensorConfig, Constants.ClawConstants.kAlgaeSensorSignalStrength,
                 Constants.ClawConstants.kAlgaeSensorProximityThreshold,
-                Constants.ClawConstants.kAlgaeSensorProximityHysteresis); 
+                Constants.ClawConstants.kAlgaeSensorProximityHysteresis,
+                Constants.ClawConstants.kAlgaeSensorFovCenterX,
+                Constants.ClawConstants.kAlgaeSensorFovCenterY,
+                Constants.ClawConstants.kAlgaeSensorFovRangeX,
+                Constants.ClawConstants.kAlgaeSensorFovRangeY);
 
                 topSensorData = new LiveData(getTopSensor(), "Claw: Top Sensor");
                 bottomSensorData = new LiveData(getBottomSensor(), "Claw: Bottom Sensor");
@@ -77,6 +90,19 @@ public class Claw extends SubsystemBase {
         config.ProximityParams.ProximityThreshold = proximityThreshold;
         config.ProximityParams.MinSignalStrengthForValidMeasurement = signalStrengthThreshold;
         config.ProximityParams.ProximityHysteresis = proximityHysteresis;
+        sensor.getConfigurator().apply(config);
+    }
+
+    public void configureCANrange(CANrange sensor, CANrangeConfiguration config, double signalStrengthThreshold,
+            double proximityThreshold, double proximityHysteresis, double fovCenterX, double fovCenterY, double fovRangeX, double fovRangeY) {
+        config.ProximityParams.ProximityThreshold = proximityThreshold;
+        config.ProximityParams.MinSignalStrengthForValidMeasurement = signalStrengthThreshold;
+        config.ProximityParams.ProximityHysteresis = proximityHysteresis;
+
+        config.FovParams.FOVCenterX = fovCenterX;
+        config.FovParams.FOVCenterY = fovCenterY;
+        config.FovParams.FOVRangeX = fovRangeX;
+        config.FovParams.FOVRangeY = fovRangeY;
         sensor.getConfigurator().apply(config);
     }
 
@@ -129,11 +155,13 @@ public class Claw extends SubsystemBase {
      * @return claw coral algae sensor reading (digital sensor) as boolean
      */
     public boolean getTopSensor() {
-        return topSensor.getIsDetected().getValue(); // true if detected
+        // return topSensor.getIsDetected().getValue(); // true if detected
+        return topSensor.getDistance().getValueAsDouble() < 0.16;
     }
 
     public boolean getBottomSensor() {
-        return bottomSensor.getIsDetected().getValue(); // true if detected
+        // return bottomSensor.getIsDetected().getValue(); // true if detected
+        return bottomSensor.getDistance().getValueAsDouble() < 0.14;
     }
 
     public boolean getAlgaeSensor() {
@@ -204,8 +232,8 @@ public class Claw extends SubsystemBase {
 
     @Override
     public void periodic() {
-        topSensorData.setBoolean(getBottomSensor());
-        bottomSensorData.setBoolean(getTopSensor()); 
+        topSensorData.setBoolean(getTopSensor());
+        bottomSensorData.setBoolean(getBottomSensor()); 
         topSensorDistance.setNumber(getTopSensorDistance());
         bottomSensorDistance.setNumber(getBottomSensorDistance());
         motorTemp.setNumber(getClawMotorTemperature()); 

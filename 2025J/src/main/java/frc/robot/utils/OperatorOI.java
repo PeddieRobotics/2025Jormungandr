@@ -68,11 +68,11 @@ public class OperatorOI {
         Trigger R1Bumper = new JoystickButton(controller, PS4Controller.Button.kR1.value);
         // R1Bumper.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.L4_PREP)));
 
-        // Trigger L2Trigger = new JoystickButton(controller, PS4Controller.Button.kL2.value);
-        // L2Trigger.whileTrue(new ManualElevatorControl());
+        Trigger L2Trigger = new JoystickButton(controller, PS4Controller.Button.kL2.value);
+        L2Trigger.whileTrue(new ManualElevatorControl());
 
-        // Trigger R2Trigger = new JoystickButton(controller, PS4Controller.Button.kR2.value);
-        // R2Trigger.whileTrue(new ManualArmControl());
+        Trigger R2Trigger = new JoystickButton(controller, PS4Controller.Button.kR2.value);
+        R2Trigger.whileTrue(new ManualArmControl());
 
         Trigger L3Trigger = new JoystickButton(controller, PS4Controller.Button.kL3.value);
 
@@ -108,6 +108,11 @@ public class OperatorOI {
 
     public double getForward() {
         double val = -controller.getRawAxis(PS4Controller.Axis.kLeftY.value);
+        return Math.abs(val) < 0.1 ? 0 : val;
+    }
+
+    public double getRightForward() {
+        double val = -controller.getRawAxis(PS4Controller.Axis.kRightY.value);
         return Math.abs(val) < 0.1 ? 0 : val;
     }
 

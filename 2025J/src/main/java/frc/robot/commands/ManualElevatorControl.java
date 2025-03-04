@@ -1,6 +1,8 @@
 package frc.robot.commands;
 
 import frc.robot.subsystems.Elevator;
+import frc.robot.subsystems.Superstructure;
+import frc.robot.subsystems.Superstructure.SuperstructureState;
 import frc.robot.utils.OperatorOI;
 import edu.wpi.first.wpilibj2.command.Command;
 
@@ -12,11 +14,14 @@ public class ManualElevatorControl extends Command {
 
     public ManualElevatorControl() {
         elevator = Elevator.getInstance();
+        addRequirements(elevator);
     }
 
     // Called when the command is initially scheduled.
     @Override
     public void initialize() {
+        Superstructure.getInstance().setManualControl(true);
+        Superstructure.getInstance().requestState(SuperstructureState.STOW);
         operatorOI = OperatorOI.getInstance();
     }
 
@@ -29,6 +34,7 @@ public class ManualElevatorControl extends Command {
     // Called once the command ends or is interrupted.
     @Override
     public void end(boolean interrupted) {
+        Superstructure.getInstance().setManualControl(false);
     }
 
     // Returns true when the command should end.

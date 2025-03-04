@@ -201,22 +201,22 @@ public final class Constants {
         public static final double kL2ScoreTimeout = 1.0; 
         public static final double kL3ScoreTimeout = 1.0; 
         public static final double kL4ScoreTimeout = 1.0; 
-        public static final double kProcessorTimeout = 2.0; 
-        public static final double kBargeTimeout = 2.0;
+        public static final double kProcessorTimeout = 1.0; 
+        public static final double kBargeTimeout = 1.0;
 
         public static final double kElevatorStowPosition = 0.0;
         public static final double kElevatorHPIntakePosition = 0.0;
         public static final double kElevatorGroundIntakePosition = 0.0;
-        public static final double kElevatorL1ScorePosition = 2.6;
-        public static final double kElevatorL2ScorePosition = 3.9;
+        public static final double kElevatorL1ScorePosition = 2.0;
+        public static final double kElevatorL2ScorePosition = 3.7;
         public static final double kElevatorL3ScorePosition = 6.9;
-        public static final double kElevatorL4PrestagePosition = 3.9;
-        public static final double kElevatorL4ScorePosition = 12.5; 
+        public static final double kElevatorL4PrestagePosition = 3.7;
+        public static final double kElevatorL4ScorePosition = 12.3; 
         public static final double kElevatorBargePrestagePosition = 6.0;
         public static final double kElevatorBargeScorePosition = 12.5;
         public static final double kElevatorProcessorScorePosition = 0.0;
-        public static final double kElevatorReef1IntakePosition = 3.0;
-        public static final double kElevatorReef2IntakePosition = 6.0;
+        public static final double kElevatorReef1IntakePosition = 2.0;
+        public static final double kElevatorReef2IntakePosition = 5.25;
 
         public static final double kArmStowPosition = 0.25;
         public static final double kArmHPIntakePosition = 0.25;
@@ -382,14 +382,31 @@ public final class Constants {
         public static final double kBottomSensorSignalStrength = 0.0;
         public static final double kAlgaeSensorSignalStrength = 0.0;
 
-        public static final double kCoralIntakeSpeed = 0.75;
-        public static final double kCoralOuttakeSpeed = 1.0;
-        public static final double kCoralSlowIntake = 0.675;
+        public static final double kTopSensorFovCenterX = 0.0;
+        public static final double kBottomSensorFovCenterX = 0.0;
+        public static final double kAlgaeSensorFovCenterX = 0.0;
 
-        public static final double kAlgaeIntakeSpeed = 0.5;
+        public static final double kTopSensorFovCenterY = 5.0;
+        public static final double kBottomSensorFovCenterY = 0.0;
+        public static final double kAlgaeSensorFovCenterY = 0.0;
+
+        public static final double kTopSensorFovRangeX = 7.0;
+        public static final double kBottomSensorFovRangeX = 27.0;
+        public static final double kAlgaeSensorFovRangeX = 27.0;
+
+        public static final double kTopSensorFovRangeY = 7.0;
+        public static final double kBottomSensorFovRangeY = 27.0;
+        public static final double kAlgaeSensorFovRangeY = 27.0;
+
+        public static final double kCoralIntakeSpeed = 0.75;
+        public static final double kCoralOuttakeSpeed = 0.75;
+        public static final double kCoralSlowIntake = 0.675;
+        public static final double kCoralL1OuttakeSpeed = 0.4;
+
+        public static final double kAlgaeIntakeSpeed = 1.0;
         public static final double kAlgaeOuttakeSpeed = -1.0;
 
-        public static final double kAlgaeHoldSpeed = 0.05;
+        public static final double kAlgaeHoldSpeed = 1.0;
 
         public static final double kCoralPositionIncrement = 3.0;
     }
