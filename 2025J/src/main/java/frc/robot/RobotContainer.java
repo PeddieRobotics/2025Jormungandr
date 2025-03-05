@@ -63,13 +63,13 @@ public class RobotContainer {
         driverOI = DriverOI.getInstance();
         operatorOI = OperatorOI.getInstance();
         // llBack = LimelightBack.getInstance();
-        // llFrontLeft = LimelightFrontLeft.getInstance();
-        // llFrontMiddle = LimelightFrontMiddle.getInstance();
-        // llFrontRight = LimelightFrontRight.getInstance();
-        // llClimber = LimelightClimber.getInstance();
+        llFrontLeft = LimelightFrontLeft.getInstance();
+        llFrontMiddle = LimelightFrontMiddle.getInstance();
+        llFrontRight = LimelightFrontRight.getInstance();
+        llClimber = LimelightClimber.getInstance();
         // lights = Lights.getInstance();
 
-        // CalculateReefTarget.init();
+        CalculateReefTarget.init();
 
         SmartDashboard.putData("Auto Routines", autonomous.getAutoChooser());
         drivetrain.setDefaultCommand(new SwerveDriveCommand());

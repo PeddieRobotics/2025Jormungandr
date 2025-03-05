@@ -767,4 +767,8 @@ public class Superstructure extends SubsystemBase {
     public void simulationPeriodic() {
 
     }
+
+    public boolean isReefScoringState() {
+        return requestedSystemState == L1_SCORE || requestedSystemState == L2_SCORE || requestedSystemState == L3_SCORE || requestedSystemState == L4_SCORE;
+    }
 }

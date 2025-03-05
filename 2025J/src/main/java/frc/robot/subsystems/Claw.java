@@ -161,7 +161,7 @@ public class Claw extends SubsystemBase {
 
     public boolean getBottomSensor() {
         // return bottomSensor.getIsDetected().getValue(); // true if detected
-        return bottomSensor.getDistance().getValueAsDouble() < 0.14;
+        return bottomSensor.getDistance().getValueAsDouble() < 0.1;
     }
 
     public boolean getAlgaeSensor() {
