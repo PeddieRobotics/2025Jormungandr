@@ -8,24 +8,24 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 6.298917985031727,
-        "y": 1.3137190869414754
+        "x": 6.707999999998342,
+        "y": 0.8854999999998505
       },
       "isLocked": false,
-      "linkedName": "RedWall"
+      "linkedName": null
     },
     {
       "anchor": {
-        "x": 5.0,
-        "y": 2.6779605263157897
+        "x": 5.772,
+        "y": 1.8507499999999992
       },
       "prevControl": {
-        "x": 5.431988647931464,
-        "y": 2.280477652712519
+        "x": 6.045,
+        "y": 1.460749999999999
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "EReef"
+      "linkedName": null
     }
   ],
   "rotationTargets": [],
@@ -33,7 +33,7 @@
   "pointTowardsZones": [],
   "eventMarkers": [],
   "globalConstraints": {
-    "maxVelocity": 2.0,
+    "maxVelocity": 1.0,
     "maxAcceleration": 3.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0,
@@ -41,14 +41,14 @@
     "unlimited": false
   },
   "goalEndState": {
-    "velocity": 0,
-    "rotation": 119.99999999999999
+    "velocity": 1.0,
+    "rotation": 130.0
   },
   "reversed": false,
-  "folder": "Starts",
+  "folder": "Test Paths",
   "idealStartingState": {
-    "velocity": 0,
-    "rotation": 0.0
+    "velocity": 0.0,
+    "rotation": 90.0
   },
-  "useDefaultConstraints": false
+  "useDefaultConstraints": true
 }

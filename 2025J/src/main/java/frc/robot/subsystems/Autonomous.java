@@ -13,7 +13,9 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.commands.AutoCommands.*;
+import frc.robot.commands.ReefCommands.AlignToReef;
 import frc.robot.subsystems.Superstructure.SuperstructureState;
+import frc.robot.utils.Constants;
 import frc.robot.utils.Constants.AutoConstants;
 
 public class Autonomous extends SubsystemBase {
@@ -90,8 +92,18 @@ public class Autonomous extends SubsystemBase {
     }
 
     public void registerNamedCommands(){
-        NamedCommands.registerCommand("ALIGN_TO_REEF", new AlignToReefInAuto());
+        // NamedCommands.registerCommand("ALIGN_TO_REEF", new AlignToReefInAuto());
+        NamedCommands.registerCommand(
+            "ALIGN_TO_REEF_LEFT", 
+            new AlignToReef(Constants.AlignmentConstants.AlignmentDestination.LEFT, 1.0)
+        );
+        NamedCommands.registerCommand(
+            "ALIGN_TO_REEF_RIGHT", 
+            new AlignToReef(Constants.AlignmentConstants.AlignmentDestination.RIGHT, 1.0)
+        );
         NamedCommands.registerCommand("L1_PREP", new InstantCommand(() -> superstructure.requestState(SuperstructureState.L1_PREP)));
+        NamedCommands.registerCommand("L2_PREP", new InstantCommand(() -> superstructure.requestState(SuperstructureState.L2_PREP)));
+        NamedCommands.registerCommand("L3_PREP", new InstantCommand(() -> superstructure.requestState(SuperstructureState.L3_PREP)));
         NamedCommands.registerCommand("L4_PRESTAGE", new InstantCommand(() -> superstructure.requestState(SuperstructureState.L4_PRESTAGE)));
         NamedCommands.registerCommand("L4_PREP", new InstantCommand(() -> superstructure.requestState(SuperstructureState.L4_PREP)));
         NamedCommands.registerCommand("STOW", new InstantCommand(() -> superstructure.requestState(SuperstructureState.STOW)));

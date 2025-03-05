@@ -7,7 +7,19 @@
         {
           "type": "path",
           "data": {
-            "pathName": "1 Meter Straight"
+            "pathName": "Crazy"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "L3_PREP"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "ALIGN_TO_REEF_LEFT"
           }
         }
       ]

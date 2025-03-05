@@ -53,6 +53,7 @@ public class AlignToHPStationMegaTag extends Command {
         
         translatePIDController = new PIDController(translateP, translateI, translateD);
         rotationPIDController = new PIDController(rotationP, rotationI, rotationD);
+        rotationPIDController.enableContinuousInput(-180.0, 180.0);
                 
         maxSpeed = ReefAlignEstimatedPose.kMaxSpeed;
         

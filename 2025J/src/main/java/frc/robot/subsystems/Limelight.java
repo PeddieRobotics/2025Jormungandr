@@ -165,7 +165,7 @@ public abstract class Limelight extends SubsystemBase {
     }
 
     // ========================================================
-    // Pose/Translation Getters
+    //                 Pose/Translation Getters
     // ========================================================
 
     private Optional<PoseEstimate> getPoseEstimateMT1() {
@@ -224,7 +224,7 @@ public abstract class Limelight extends SubsystemBase {
     }
 
     // =======================================================
-    // T-Something Raw Getters
+    //                 T-Something Raw Getters
     // =======================================================
 
     // so, uh, Limelight doesn't invert the Tx and Ty automatically on upside down
@@ -238,7 +238,7 @@ public abstract class Limelight extends SubsystemBase {
     }
 
     // ================================================
-    // Distance Getters
+    //                 Distance Getters
     // ================================================
 
     // distance to CENTER OF ROBOT
@@ -288,7 +288,7 @@ public abstract class Limelight extends SubsystemBase {
     }
 
     // ======================================================
-    // Other AprilTag Getters
+    //                 Other AprilTag Getters
     // ======================================================
 
     // TODO: test
@@ -319,7 +319,7 @@ public abstract class Limelight extends SubsystemBase {
     }
 
     // ====================================================
-    // Pipeline Controllers
+    //                 Pipeline Controllers
     // ====================================================
 
     public int getPipeline() {
@@ -331,7 +331,7 @@ public abstract class Limelight extends SubsystemBase {
     }
 
     // ===============================================
-    // Average Getters
+    //                 Average Getters
     // ===============================================
 
     public double getTxAverage() {
@@ -343,7 +343,7 @@ public abstract class Limelight extends SubsystemBase {
     }
 
     // ===========================================================
-    // Rolling Average Controllers
+    //                 Rolling Average Controllers
     // ===========================================================
 
     public void updateRollingAverages() {
@@ -368,7 +368,7 @@ public abstract class Limelight extends SubsystemBase {
     }
 
     // ======================================
-    // Others
+    //                 Others
     // ======================================
 
     public double getTotalLatencyInMS() {

@@ -173,7 +173,7 @@ public class Drivetrain extends SubsystemBase {
 
         ChassisSpeeds robotRelativeSpeeds;
         if (fieldOriented) {
-            robotRelativeSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(fieldRelativeSpeeds, getHeadingAsRotation2d().plus(new Rotation2d(Math.toRadians(autoAdjustHeading))));
+            robotRelativeSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(fieldRelativeSpeeds, getHeadingAsRotation2d());
         } else {
             robotRelativeSpeeds = fieldRelativeSpeeds;
         }
@@ -249,15 +249,15 @@ public class Drivetrain extends SubsystemBase {
     }
 
     /**
-     * @return returns heading in degrees 
+     * @return returns heading in degrees, adjusted for auto start
      */
     public double getHeading() {
-        heading = gyro.getYaw().getValueAsDouble();
+        heading = gyro.getYaw().getValueAsDouble() + autoAdjustHeading;
         return Math.IEEEremainder(heading, 360);
     }
     
     /**
-     * @return returns the heading in blue-side degrees
+     * @return returns the heading in blue-side degrees, adjusted for auto start
      * (0 degrees is ALWAYS facing the red alliance wall, on both alliances)
      */
     public double getHeadingBlue() {
@@ -275,10 +275,10 @@ public class Drivetrain extends SubsystemBase {
     }
 
     /**
-     * @return returns gyro heading in terms of rotation2d
+     * @return returns gyro heading in terms of Rotation2d, adjusted for auto start
      */
     public Rotation2d getHeadingAsRotation2d() {
-        return gyro.getRotation2d();
+        return gyro.getRotation2d().plus(new Rotation2d(Math.toRadians(autoAdjustHeading)));
     }
 
     /**
@@ -355,10 +355,11 @@ public class Drivetrain extends SubsystemBase {
      */
     public ChassisSpeeds getRobotRelativeSpeeds() {
         return DriveConstants.kKinematics.toChassisSpeeds(
-                frontLeftModule.getState(),
-                frontRightModule.getState(),
-                backLeftModule.getState(),
-                backRightModule.getState());
+            frontLeftModule.getState(),
+            frontRightModule.getState(),
+            backLeftModule.getState(),
+            backRightModule.getState()
+        );
     }
 
     public void setAutoAdjustHeading(double angleOffset){
@@ -412,6 +413,7 @@ public class Drivetrain extends SubsystemBase {
 
             }
         }
+
         return false;
     }
 
@@ -425,12 +427,12 @@ public class Drivetrain extends SubsystemBase {
         pureOdometryAdvScope.set(pureOdometry.getEstimatedPosition());
 
         for(int i = 0; i < 4; i++){
-            SmartDashboard.putNumber("module " + i +"desired speed", swerveModuleStates[i].speedMetersPerSecond);
-            SmartDashboard.putNumber("module " + i +"desired angle", swerveModuleStates[i].angle.getRadians());
-            SmartDashboard.putNumber("module " + i +"actual speed", swerveModules[i].getVelocity());
-            SmartDashboard.putNumber("module " + i +"actual angle", swerveModules[i].getAngle());
-
+            SmartDashboard.putNumber("module " + i + "desired speed", swerveModuleStates[i].speedMetersPerSecond);
+            SmartDashboard.putNumber("module " + i + "desired angle", swerveModuleStates[i].angle.getRadians());
+            SmartDashboard.putNumber("module " + i + "actual speed", swerveModules[i].getVelocity());
+            SmartDashboard.putNumber("module " + i + "actual angle", swerveModules[i].getAngle());
         }
+
         odometryX.setNumber(getPose().getX());   
         odometryY.setNumber(getPose().getY()); 
         headingData.setNumber(getHeading()); 
