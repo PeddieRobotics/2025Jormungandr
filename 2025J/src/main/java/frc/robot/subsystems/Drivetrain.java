@@ -134,15 +134,17 @@ public class Drivetrain extends SubsystemBase {
         autoStartPosition.addOption("LEFT", "LEFT");
         autoStartPosition.addOption("RIGHT", "RIGHT");
         autoStartPosition.addOption("CENTER", "CENTER");
+
+        SmartDashboard.putData("Auto Starting Direction", autoStartPosition);
     }
 
     public double getAutoAdjustHeading(){
         if(autoStartPosition.getSelected().equals("NONE/TELEOP")){
             return 0;
         } else if (autoStartPosition.getSelected().equals("LEFT")){
-            return -90.0;
-        } else if (autoStartPosition.getSelected().equals("RIGHT")){
             return 90.0;
+        } else if (autoStartPosition.getSelected().equals("RIGHT")){
+            return -90.0;
         } else if (autoStartPosition.getSelected().equals("CENTER")){
             return 180.0;
         } else {

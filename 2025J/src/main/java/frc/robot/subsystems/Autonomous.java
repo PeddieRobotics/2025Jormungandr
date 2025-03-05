@@ -53,33 +53,33 @@ public class Autonomous extends SubsystemBase {
 
     public void configureAutoBuilder() {
         AutoBuilder.configure(
-                drivetrain::getPose, // Robot pose supplier
-                drivetrain::setPose, // Method to reset odometry (will be called if your auto has a starting pose)
-                drivetrain::getRobotRelativeSpeeds, // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
-                drivetrain::driveRobotRelative, // Method that will drive the robot given ROBOT RELATIVE ChassisSpeeds.
-                new PPHolonomicDriveController( // PPHolonomicController is the built in path following controller for
-                                                // holonomic drive trains
-                        // TODO: update these constants for AUTO
-                        new PIDConstants(AutoConstants.kTranslationP, AutoConstants.kTranslationI,
-                                AutoConstants.kTranslationD), // Translation PID constants
-                        new PIDConstants(AutoConstants.kThetaP, AutoConstants.kThetaI, AutoConstants.kThetaD) // Rotation
-                                                                                                              // PID
-                                                                                                              // constants
-                ),
-                config,
-                () -> {
-                    // Boolean supplier that controls when the path will be mirrored for the red
-                    // alliance
-                    // This will flip the path being followed to the red side of the field.
-                    // THE ORIGIN WILL REMAIN ON THE RED SIDE (FOR THE LAB)
+            drivetrain::getPose, // Robot pose supplier
+            drivetrain::setPose, // Method to reset odometry (will be called if your auto has a starting pose)
+            drivetrain::getRobotRelativeSpeeds, // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
+            drivetrain::driveRobotRelative, // Method that will drive the robot given ROBOT RELATIVE ChassisSpeeds.
+            new PPHolonomicDriveController( // PPHolonomicController is the built in path following controller for
+                                            // holonomic drive trains
+                    // TODO: update these constants for AUTO
+                    new PIDConstants(AutoConstants.kTranslationP, AutoConstants.kTranslationI,
+                            AutoConstants.kTranslationD), // Translation PID constants
+                    new PIDConstants(AutoConstants.kThetaP, AutoConstants.kThetaI, AutoConstants.kThetaD) // Rotation
+                                                                                                            // PID
+                                                                                                            // constants
+            ),
+            config,
+            () -> {
+                // Boolean supplier that controls when the path will be mirrored for the red
+                // alliance
+                // This will flip the path being followed to the red side of the field.
+                // THE ORIGIN WILL REMAIN ON THE RED SIDE (FOR THE LAB)
 
-                    var alliance = DriverStation.getAlliance();
-                    if (alliance.isPresent()) {
-                        return alliance.get() == DriverStation.Alliance.Red;
-                    }
-                    return true;
-                },
-                drivetrain // Reference to this subsystem to set requirements
+                var alliance = DriverStation.getAlliance();
+                if (alliance.isPresent()) {
+                    return alliance.get() == DriverStation.Alliance.Red;
+                }
+                return true;
+            },
+            drivetrain // Reference to this subsystem to set requirements
         );
     }
 

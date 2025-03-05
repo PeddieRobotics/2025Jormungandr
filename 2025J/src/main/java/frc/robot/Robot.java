@@ -78,7 +78,7 @@ public class Robot extends TimedRobot {
         }
 
         CalculateReefTarget.init();
-        Drivetrain.getInstance().setAutoAdjustHeading(Drivetrain.getInstance().getAutoAdjustHeading());
+        // Drivetrain.getInstance().setAutoAdjustHeading(Drivetrain.getInstance().getAutoAdjustHeading());
     }
 
     /** This function is called periodically during autonomous. */
