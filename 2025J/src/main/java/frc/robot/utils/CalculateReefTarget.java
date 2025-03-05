@@ -176,7 +176,12 @@ public class CalculateReefTarget {
         SmartDashboard.putNumber("key 1 id", tag1id);
 
         double tag0neededAngle = AlignmentConstants.kReefDesiredAngle.get(tag0id);
-        double tag0gyroError = Math.abs(drivetrain.getHeading() - tag0neededAngle);
+        double tag0gyroError = drivetrain.getHeading() - tag0neededAngle;
+        if (tag0gyroError < -180)
+            tag0gyroError += 360;
+        if (tag0gyroError > 180)
+            tag0gyroError -= 360;
+        tag0gyroError = Math.abs(tag0gyroError);
 
         if (isInBadHexagon)
             return tag0gyroError < AlignmentConstants.kInsideBadAngleTolerance ? tag0id : 0;
@@ -199,6 +204,13 @@ public class CalculateReefTarget {
         }
 
         double bestTagNeededAngle = AlignmentConstants.kReefDesiredAngle.get(bestTag);
-        return Math.abs(drivetrain.getHeading() - bestTagNeededAngle) < AlignmentConstants.kOutsideBadAngleTolerance ? bestTag : 0;
+        double bestTagError = drivetrain.getHeading() - bestTagNeededAngle;
+        if (bestTagError < -180)
+            bestTagError += 360;
+        if (bestTagError > 180)
+            bestTagError -= 180;
+        bestTagError = Math.abs(tag0gyroError);
+
+        return bestTagError < AlignmentConstants.kOutsideBadAngleTolerance ? bestTag : 0;
     }
 }

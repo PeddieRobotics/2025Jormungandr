@@ -5,6 +5,8 @@ package frc.robot.commands.ReefCommands;
 import java.time.Year;
 import java.util.Optional;
 
+import javax.sql.rowset.spi.XmlReader;
+
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -95,6 +97,7 @@ public class AlignToReefEstimatedPose extends Command {
         
         translatePIDController = new PIDController(translateP, translateI, translateD);
         rotationPIDController = new PIDController(rotationP, rotationI, rotationD);
+        rotationPIDController.enableContinuousInput(-180.0, 180.0);
         
         tagBackMagnitude = ReefAlignEstimatedPose.kTagBackMagnitude;
         
@@ -125,7 +128,7 @@ public class AlignToReefEstimatedPose extends Command {
     @Override
     public void initialize() {
         int desiredTarget;
-        if (SmartDashboard.putBoolean("Align: Smart Target Finding", true)) {
+        if (SmartDashboard.getBoolean("Align: Smart Target Finding", true)) {
             // if aligning from unacceptable position ("sad face case"): returns 0
             desiredTarget = CalculateReefTarget.calculateTargetID();
         }
@@ -168,6 +171,11 @@ public class AlignToReefEstimatedPose extends Command {
         }
 
         return Optional.empty();
+    }
+
+    private boolean translationDistanceGood() {
+        // sqrt(xError^2 + yError^2) < 0.04
+        return xError * xError + yError * yError < Math.pow(ReefAlignEstimatedPose.kTranslateDistanceThreshold, 2);
     }
 
     @Override
@@ -235,8 +243,9 @@ public class AlignToReefEstimatedPose extends Command {
         drivetrain.drive(translation, rotation, true, null);
 
         boolean autoScore = SmartDashboard.getBoolean("Align: Auto Score", true);
-        if (Math.abs(xError) < translateThreshold && Math.abs(yError) < translateThreshold &&
-                Math.abs(rotationError) < rotationThreshold  && autoScore) {
+        // if (Math.abs(xError) < translateThreshold && Math.abs(yError) < translateThreshold &&
+        //         Math.abs(rotationError) < rotationThreshold  && autoScore) {
+        if (Math.abs(rotationError) < rotationThreshold && translationDistanceGood() && autoScore) {
             Superstructure.getInstance().sendToScore();
         }
 
@@ -263,9 +272,10 @@ public class AlignToReefEstimatedPose extends Command {
     @Override
     public boolean isFinished() {
         if (isAutonomous) {
-            return Math.abs(xError) < translateThreshold &&
-                Math.abs(yError) < translateThreshold &&
-                Math.abs(rotationError) < rotationThreshold;
+            // return Math.abs(xError) < translateThreshold &&
+            //     Math.abs(yError) < translateThreshold &&
+            //     Math.abs(rotationError) < rotationThreshold;
+            return Math.abs(rotationError) < rotationThreshold && translationDistanceGood();
         }
 
         return desiredPose.isEmpty() || Superstructure.getInstance().isReefScoringState();

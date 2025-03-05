@@ -140,7 +140,7 @@ public final class Constants {
         public static final double kElevatorRotorToSensorRatio = kElevatorReduction;
         public static final double kElevatorSensortoMechanismRatio = 1.0;
 
-        public static final double kElevatorMagnetOffset = -0.513184;
+        public static final double kElevatorMagnetOffset = -0.618408;
 
         // Motion Magic Parameters
         public static final double kElevatorMaxCruiseVelocity = 14.0;
@@ -328,14 +328,15 @@ public final class Constants {
             public static final double kTranslateI = 0;
             public static final double kTranslateD = 0;
             public static final double kTranslateFF = 0;
-            public static final double kTranslateThreshold = 0.015;
+            public static final double kTranslateThreshold = 0.02;
+            public static final double kTranslateDistanceThreshold = 0.04;
             public static final double kTranslateSetpoint = 0;
 
             public static final double kRotationP = 0.05;
             public static final double kRotationI = 0;
             public static final double kRotationD = 0;
             public static final double kRotationFF = 0;
-            public static final double kRotationThreshold = 0.3;
+            public static final double kRotationThreshold = 0.5;
             public static final double kRotationLowerP = 0.03;
             public static final double kRotationUseLowerPThreshold = 1.5;
             
@@ -398,9 +399,9 @@ public final class Constants {
         public static final double kBottomSensorFovRangeY = 14.0;
         public static final double kAlgaeSensorFovRangeY = 27.0;
 
-        public static final double kCoralIntakeSpeed = 0.75;
+        public static final double kCoralIntakeSpeed = 0.65;
         public static final double kCoralOuttakeSpeed = 0.75;
-        public static final double kCoralSlowIntake = 0.65;
+        public static final double kCoralSlowIntake = 0.4;
         public static final double kCoralL1OuttakeSpeed = 0.4;
 
         public static final double kAlgaeIntakeSpeed = 1.0;

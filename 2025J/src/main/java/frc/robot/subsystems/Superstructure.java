@@ -175,14 +175,7 @@ public class Superstructure extends SubsystemBase {
                 if (Arrays.asList(
                         STOW,
                         ALGAE_GROUND_INTAKE,
-                        L1_PREP,
-                        L2_PREP,
-                        L3_PREP,
-                        L4_PRESTAGE,
-                        BARGE_PRESTAGE,
                         PROCESSOR_PREP,
-                        REEF1_ALGAE_INTAKE,
-                        REEF2_ALGAE_INTAKE,
                         EJECT_ALGAE,
                         EJECT_CORAL)
                         .contains(requestedSystemState)) {
