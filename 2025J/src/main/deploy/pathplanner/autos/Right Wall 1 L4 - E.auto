@@ -5,27 +5,33 @@
     "data": {
       "commands": [
         {
+          "type": "named",
+          "data": {
+            "name": "L4_PRESTAGE"
+          }
+        },
+        {
           "type": "path",
           "data": {
-            "pathName": "Crazy"
+            "pathName": "Right Wall to E Align"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "L3_PREP"
+            "name": "L4_PREP"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "ALIGN_TO_REEF_RIGHT"
+            "name": "ALIGN_TO_REEF_LEFT"
           }
         }
       ]
     }
   },
   "resetOdom": true,
-  "folder": "Test Autos",
+  "folder": "Wall Starts",
   "choreoAuto": false
 }

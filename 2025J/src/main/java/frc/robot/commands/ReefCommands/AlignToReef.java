@@ -121,13 +121,13 @@ public class AlignToReef extends Command {
 
     @Override
     public void initialize() {
-        int desiredTarget = 22;
-        // if (SmartDashboard.getBoolean("Align: Smart Target Finding", true)) {
-        //     // if aligning from unacceptable position ("sad face case"): returns 0
-        //     desiredTarget = CalculateReefTarget.calculateTargetID();
-        // }
-        // else
-        //     desiredTarget = LimelightFrontMiddle.getInstance().getTargetID();
+        int desiredTarget;
+        if (SmartDashboard.getBoolean("Align: Smart Target Finding", true)) {
+            // if aligning from unacceptable position ("sad face case"): returns 0
+            desiredTarget = CalculateReefTarget.calculateTargetID();
+        }
+        else
+            desiredTarget = LimelightFrontMiddle.getInstance().getTargetID();
 
         SmartDashboard.putNumber("Align: Desired Target", desiredTarget);
 

@@ -95,11 +95,11 @@ public class Autonomous extends SubsystemBase {
         // NamedCommands.registerCommand("ALIGN_TO_REEF", new AlignToReefInAuto());
         NamedCommands.registerCommand(
             "ALIGN_TO_REEF_LEFT", 
-            new AlignToReef(Constants.AlignmentConstants.AlignmentDestination.LEFT, 1.0)
+            new AlignToReef(Constants.AlignmentConstants.AlignmentDestination.LEFT, 2.0)
         );
         NamedCommands.registerCommand(
             "ALIGN_TO_REEF_RIGHT", 
-            new AlignToReef(Constants.AlignmentConstants.AlignmentDestination.RIGHT, 1.0)
+            new AlignToReef(Constants.AlignmentConstants.AlignmentDestination.RIGHT, 2.0)
         );
         NamedCommands.registerCommand("L1_PREP", new InstantCommand(() -> superstructure.requestState(SuperstructureState.L1_PREP)));
         NamedCommands.registerCommand("L2_PREP", new InstantCommand(() -> superstructure.requestState(SuperstructureState.L2_PREP)));
