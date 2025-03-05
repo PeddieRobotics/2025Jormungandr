@@ -259,6 +259,15 @@ public class Drivetrain extends SubsystemBase {
     }
     
     /**
+     * PLEASE ONLY USE THIS IN AUTONOMOUS
+     * @return returns heading in degrees, always adjusted to auto start (including in auto)
+     */
+    public double getHeadingForceAdjust() {
+        heading = gyro.getYaw().getValueAsDouble() + getAutoAdjustHeading();
+        return Math.IEEEremainder(heading, 360);
+    }
+    
+    /**
      * @return returns the heading in blue-side degrees, adjusted for auto start
      * (0 degrees is ALWAYS facing the red alliance wall, on both alliances)
      */
@@ -266,6 +275,17 @@ public class Drivetrain extends SubsystemBase {
         if (DriverStation.getAlliance().isEmpty() || DriverStation.getAlliance().get() == DriverStation.Alliance.Blue)
             return getHeading();
         return Math.IEEEremainder(getHeading() + 180, 360);
+    }
+
+    /**
+     * PLEASE ONLY USE THIS IN AUTONOMOUS
+     * @return returns the heading in blue-side degrees, always adjusted to auto start (including in auto)
+     * (0 degrees is ALWAYS facing the red alliance wall, on both alliances)
+     */
+    public double getHeadingBlueForceAdjust() {
+        if (DriverStation.getAlliance().isEmpty() || DriverStation.getAlliance().get() == DriverStation.Alliance.Blue)
+            return getHeadingForceAdjust();
+        return Math.IEEEremainder(getHeadingForceAdjust() + 180, 360);
     }
 
     /**
