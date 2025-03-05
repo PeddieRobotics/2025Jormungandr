@@ -142,9 +142,9 @@ public class Drivetrain extends SubsystemBase {
         if(autoStartPosition.getSelected().equals("NONE/TELEOP")){
             return 0;
         } else if (autoStartPosition.getSelected().equals("LEFT")){
-            return 90.0;
-        } else if (autoStartPosition.getSelected().equals("RIGHT")){
             return -90.0;
+        } else if (autoStartPosition.getSelected().equals("RIGHT")){
+            return 90.0;
         } else if (autoStartPosition.getSelected().equals("CENTER")){
             return 180.0;
         } else {
