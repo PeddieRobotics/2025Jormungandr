@@ -79,7 +79,7 @@ public class AlignToReef extends Command {
         translateI = ReefAlignEstimatedPose.kTranslateI;
         translateD = ReefAlignEstimatedPose.kTranslateD;
         translateFF = ReefAlignEstimatedPose.kTranslateFF;
-        translateThreshold = ReefAlignEstimatedPose.kTranslateThreshold;
+        translateThreshold = ReefAlignEstimatedPose.kTranslateDistanceThreshold;
 
         rotationP = ReefAlignEstimatedPose.kRotationP;
         rotationI = ReefAlignEstimatedPose.kRotationI;
@@ -95,7 +95,7 @@ public class AlignToReef extends Command {
         
         tagBackMagnitude = ReefAlignEstimatedPose.kTagBackMagnitude;
         
-        maxSpeed = this.maxSpeed;
+        this.maxSpeed = maxSpeed;
 
         SmartDashboard.putNumber(commandName + " lateral offset", tagLateralMagnitude);
         SmartDashboard.putNumber(commandName + " back offset", tagBackMagnitude);
@@ -121,13 +121,13 @@ public class AlignToReef extends Command {
 
     @Override
     public void initialize() {
-        int desiredTarget;
-        if (SmartDashboard.getBoolean("Align: Smart Target Finding", true)) {
-            // if aligning from unacceptable position ("sad face case"): returns 0
-            desiredTarget = CalculateReefTarget.calculateTargetID();
-        }
-        else
-            desiredTarget = LimelightFrontMiddle.getInstance().getTargetID();
+        int desiredTarget = 22;
+        // if (SmartDashboard.getBoolean("Align: Smart Target Finding", true)) {
+        //     // if aligning from unacceptable position ("sad face case"): returns 0
+        //     desiredTarget = CalculateReefTarget.calculateTargetID();
+        // }
+        // else
+        //     desiredTarget = LimelightFrontMiddle.getInstance().getTargetID();
 
         SmartDashboard.putNumber("Align: Desired Target", desiredTarget);
 
@@ -169,7 +169,7 @@ public class AlignToReef extends Command {
 
     private boolean translationDistanceGood() {
         // sqrt(xError^2 + yError^2) < 0.04
-        return xError * xError + yError * yError < Math.pow(ReefAlignEstimatedPose.kTranslateDistanceThreshold, 2);
+        return xError * xError + yError * yError < Math.pow(translateThreshold, 2);
     }
 
     @Override
@@ -221,10 +221,10 @@ public class AlignToReef extends Command {
         yError = estimatedPose.getY() - desiredPose.get().getY();
         
         double xTranslate = 0, yTranslate = 0;
-        if (Math.abs(xError) > translateThreshold)
+        if (!translationDistanceGood()) {
             xTranslate = translatePIDController.calculate(xError) + Math.signum(xError) * translateFF;
-        if (Math.abs(yError) > translateThreshold)
             yTranslate = translatePIDController.calculate(yError) + Math.signum(yError) * translateFF;
+        }
 
         Translation2d translation = new Translation2d(xTranslate, yTranslate);
         double translateX = translation.getX();
@@ -235,7 +235,7 @@ public class AlignToReef extends Command {
         double desaturatedY = Math.min(Math.abs(translateY), maxSpeed);
         translation = new Translation2d(translateX_sgn * desaturatedX, translateY_sgn * desaturatedY);
 
-        drivetrain.drive(translation, rotation, true, null);
+        drivetrain.driveForceAdjust(translation, rotation, true, null);
 
         boolean autoScore = SmartDashboard.getBoolean("Align: Auto Score", true);
         if (Math.abs(rotationError) < rotationThreshold && translationDistanceGood() && autoScore)
@@ -246,8 +246,6 @@ public class AlignToReef extends Command {
             SmartDashboard.putNumber("Align: yError", yError);
             SmartDashboard.putNumber("Align: rotationError", rotationError);
 
-            SmartDashboard.putBoolean("Align: xError good?", Math.abs(xError) < translateThreshold);
-            SmartDashboard.putBoolean("Align: yError good?", Math.abs(yError) < translateThreshold);
             SmartDashboard.putBoolean("Align: translation good?", translationDistanceGood());
             SmartDashboard.putBoolean("Align: rotation good?", Math.abs(rotationError) < rotationThreshold);
         }

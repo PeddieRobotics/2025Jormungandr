@@ -19,7 +19,7 @@
         {
           "type": "named",
           "data": {
-            "name": "ALIGN_TO_REEF_LEFT"
+            "name": "ALIGN_TO_REEF_RIGHT"
           }
         }
       ]

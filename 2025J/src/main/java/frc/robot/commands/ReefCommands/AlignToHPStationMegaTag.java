@@ -1,3 +1,5 @@
+// TODO: Use pythagorean theorem thingy
+
 package frc.robot.commands.ReefCommands;
 
 import static frc.robot.subsystems.Superstructure.SuperstructureState.HP_INTAKE;
@@ -41,7 +43,7 @@ public class AlignToHPStationMegaTag extends Command {
         translateI = ReefAlignEstimatedPose.kTranslateI;
         translateD = ReefAlignEstimatedPose.kTranslateD;
         translateFF = ReefAlignEstimatedPose.kTranslateFF;
-        translateThreshold = ReefAlignEstimatedPose.kTranslateThreshold;
+        translateThreshold = ReefAlignEstimatedPose.kTranslateDistanceThreshold;
 
         rotationP = ReefAlignEstimatedPose.kRotationP;
         rotationI = ReefAlignEstimatedPose.kRotationI;

@@ -328,8 +328,7 @@ public final class Constants {
             public static final double kTranslateI = 0;
             public static final double kTranslateD = 0;
             public static final double kTranslateFF = 0;
-            public static final double kTranslateThreshold = 0.02;
-            public static final double kTranslateDistanceThreshold = 0.04;
+            public static final double kTranslateDistanceThreshold = 0.03;
             public static final double kTranslateSetpoint = 0;
 
             public static final double kRotationP = 0.05;
@@ -341,7 +340,7 @@ public final class Constants {
             public static final double kRotationUseLowerPThreshold = 1.5;
             
             // center of robot distance to tag -- back (+ = back, - = forwards)
-            public static final double kTagBackMagnitude = 0.44;
+            public static final double kTagBackMagnitude = 0.43;
 
             // center of robot distance to tag -- left (+ = left, - = right)
             public static final double kLeftOffset = 0.1896;

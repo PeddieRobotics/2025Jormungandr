@@ -190,6 +190,38 @@ public class Drivetrain extends SubsystemBase {
     }
 
     /**
+     * PLEASE ONLY USE THIS IN AUTONOMOUS
+     * commands the robot to drive with the auto angle adjustment
+     * 
+     * @param translation - translation input (x,y meters/sec in field space)
+     * @param rotation - rotation input (degrees/sec)
+     * @param fieldOriented - whether the robot is field oriented (true) or robot oriented (false)
+     * @param centerOfRotation - robot's center of rotation
+     */
+    public void driveForceAdjust(Translation2d translation, double rotation, boolean fieldOriented, Translation2d centerOfRotation) {
+        if (fieldOriented)
+            currentMovement = translation;
+
+        ChassisSpeeds fieldRelativeSpeeds = new ChassisSpeeds(translation.getX(), translation.getY(), rotation);
+
+        ChassisSpeeds robotRelativeSpeeds;
+        if (fieldOriented) {
+            Rotation2d rotation2d = new Rotation2d(Math.toRadians(getHeadingForceAdjust()));
+            robotRelativeSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(fieldRelativeSpeeds, rotation2d);
+        } else {
+            robotRelativeSpeeds = fieldRelativeSpeeds;
+        }
+
+        currentDrivetrainSpeed = Math.sqrt(Math.pow(robotRelativeSpeeds.vxMetersPerSecond, 2)
+                                + Math.pow(robotRelativeSpeeds.vyMetersPerSecond, 2));
+
+        swerveModuleStates = DriveConstants.kKinematics.toSwerveModuleStates(robotRelativeSpeeds);
+        SwerveDriveKinematics.desaturateWheelSpeeds(swerveModuleStates, DriveConstants.kMaxModuleSpeed);
+        optimizeModuleStates();
+        setSwerveModuleStates(swerveModuleStates);
+    }
+
+    /**
      * Only used during autonomous, sets driving strictly to robot relative
      * 
      * @param robotRelativeSpeeds
@@ -237,7 +269,10 @@ public class Drivetrain extends SubsystemBase {
             // LimelightLeft.getInstance().fuseEstimatedPose(odometry);
         }
         
-        odometry.update(new Rotation2d(Math.toRadians(getHeadingBlue())), swerveModulePositions);
+        // if (DriverStation.isAutonomous())
+        //     odometry.update(new Rotation2d(Math.toRadians(getHeadingBlueForceAdjust())), swerveModulePositions);
+        // else
+        odometry.update(new Rotation2d(Math.toRadians(getHeadingNoAdjust())), swerveModulePositions);
     }
 
     /**
@@ -255,6 +290,14 @@ public class Drivetrain extends SubsystemBase {
      */
     public double getHeading() {
         heading = gyro.getYaw().getValueAsDouble() + autoAdjustHeading;
+        return Math.IEEEremainder(heading, 360);
+    }
+
+    /**
+     * @return returns heading in degrees, adjusted for auto start
+     */
+    public double getHeadingNoAdjust() {
+        heading = gyro.getYaw().getValueAsDouble();
         return Math.IEEEremainder(heading, 360);
     }
     
@@ -275,6 +318,16 @@ public class Drivetrain extends SubsystemBase {
         if (DriverStation.getAlliance().isEmpty() || DriverStation.getAlliance().get() == DriverStation.Alliance.Blue)
             return getHeading();
         return Math.IEEEremainder(getHeading() + 180, 360);
+    }
+    
+    /**
+     * @return returns the heading in blue-side degrees, adjusted for auto start
+     * (0 degrees is ALWAYS facing the red alliance wall, on both alliances)
+     */
+    public double getHeadingBlueNoAdjust() {
+        if (DriverStation.getAlliance().isEmpty() || DriverStation.getAlliance().get() == DriverStation.Alliance.Blue)
+            return getHeadingNoAdjust();
+        return Math.IEEEremainder(getHeadingNoAdjust() + 180, 360);
     }
 
     /**
