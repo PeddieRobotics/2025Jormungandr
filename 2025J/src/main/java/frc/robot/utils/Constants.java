@@ -344,7 +344,7 @@ public final class Constants {
 
             // center of robot distance to tag -- left (+ = left, - = right)
             public static final double kLeftOffset = 0.1896;
-            public static final double kMiddleOffset = 0;   
+            public static final double kMiddleOffset = 0.02;   
             public static final double kRightOffset = -0.1651;
             
             public static final double kMaxSpeed = 2.0;

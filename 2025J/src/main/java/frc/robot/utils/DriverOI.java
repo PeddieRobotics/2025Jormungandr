@@ -61,7 +61,7 @@ public class DriverOI {
 
         Trigger squareButton = new JoystickButton(controller, PS4Controller.Button.kSquare.value);
         // squareButton.onTrue(new InstantCommand(() -> CalculateReefTarget.calculateTargetID()));
-        // squareButton.whileTrue(new AlignToReefEstimatedPose(Constants.AlignmentConstants.AlignmentDestination.MIDDLE));
+        squareButton.whileTrue(new AlignToReefEstimatedPose(Constants.AlignmentConstants.AlignmentDestination.MIDDLE, true));
 
         Trigger triangleButton = new JoystickButton(controller, PS4Controller.Button.kTriangle.value);
         // triangleButton.onTrue(new AlignAndScore(true)); //right align
@@ -95,10 +95,10 @@ public class DriverOI {
         Trigger R2Trigger = new JoystickButton(controller, PS4Controller.Button.kR2.value);
 
         Trigger L3Trigger = new JoystickButton(controller, PS4Controller.Button.kL3.value);
-        L3Trigger.whileTrue(new AlignToReefEstimatedPose(Constants.AlignmentConstants.AlignmentDestination.LEFT));
+        L3Trigger.whileTrue(new AlignToReefEstimatedPose(Constants.AlignmentConstants.AlignmentDestination.LEFT, true));
 
         Trigger R3Trigger = new JoystickButton(controller, PS4Controller.Button.kR3.value);
-        R3Trigger.whileTrue(new AlignToReefEstimatedPose(Constants.AlignmentConstants.AlignmentDestination.RIGHT));
+        R3Trigger.whileTrue(new AlignToReefEstimatedPose(Constants.AlignmentConstants.AlignmentDestination.RIGHT, true));
 
         Trigger optionButton = new JoystickButton(controller, PS4Controller.Button.kOptions.value);
         optionButton.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.EJECT_CORAL)));
