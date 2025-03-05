@@ -2,12 +2,14 @@
 
 package frc.robot.commands.ReefCommands;
 
+import java.time.Year;
 import java.util.Optional;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Drivetrain;
@@ -38,8 +40,13 @@ public class AlignToReefEstimatedPose extends Command {
     private String commandName;
     private double tagBackMagnitude, tagLateralMagnitude;
 
-    public AlignToReefEstimatedPose(AlignmentDestination destination) {
+    private double xError, yError, rotationError;
+
+    private boolean isAutonomous;
+
+    public AlignToReefEstimatedPose(AlignmentDestination destination, boolean isAutonomous) {
         drivetrain = Drivetrain.getInstance();
+        this.isAutonomous = isAutonomous;
         
         // center
         switch (destination) {
@@ -98,34 +105,34 @@ public class AlignToReefEstimatedPose extends Command {
 
         addRequirements(drivetrain);
         
-        SmartDashboard.putNumber("align translateP", translateP);
-        SmartDashboard.putNumber("align translateI", translateI);
-        SmartDashboard.putNumber("align translateD", translateD);
-        SmartDashboard.putNumber("align translateFF", translateFF);
-        SmartDashboard.putNumber("align translateThreshold", translateThreshold);
+        SmartDashboard.putNumber("Align: translateP", translateP);
+        SmartDashboard.putNumber("Align: translateI", translateI);
+        SmartDashboard.putNumber("Align: translateD", translateD);
+        SmartDashboard.putNumber("Align: translateFF", translateFF);
+        SmartDashboard.putNumber("Align: translateThreshold", translateThreshold);
         
-        SmartDashboard.putNumber("align rotationP", rotationP);
-        SmartDashboard.putNumber("align rotationI", rotationI);
-        SmartDashboard.putNumber("align rotationD", rotationD);
-        SmartDashboard.putNumber("align rotationFF", rotationFF);
-        SmartDashboard.putNumber("align rotationThreshold", rotationThreshold);
-        SmartDashboard.putNumber("align rotationLowerP", rotationLowerP);
-        SmartDashboard.putNumber("align rotationUseLowerPThreshold", rotationUseLowerPThreshold);
+        SmartDashboard.putNumber("Align: rotationP", rotationP);
+        SmartDashboard.putNumber("Align: rotationI", rotationI);
+        SmartDashboard.putNumber("Align: rotationD", rotationD);
+        SmartDashboard.putNumber("Align: rotationFF", rotationFF);
+        SmartDashboard.putNumber("Align: rotationThreshold", rotationThreshold);
+        SmartDashboard.putNumber("Align: rotationLowerP", rotationLowerP);
+        SmartDashboard.putNumber("Align: rotationUseLowerPThreshold", rotationUseLowerPThreshold);
 
-        SmartDashboard.putNumber("align maxSpeed", maxSpeed);
+        SmartDashboard.putNumber("Align: maxSpeed", maxSpeed);
     }
 
     @Override
     public void initialize() {
         int desiredTarget;
-        if (SmartDashboard.getBoolean("Backup Alignment Targeting", false))
-            desiredTarget = LimelightFrontMiddle.getInstance().getTargetID();
-        else {
+        if (SmartDashboard.putBoolean("Align: Smart Target Finding", true)) {
             // if aligning from unacceptable position ("sad face case"): returns 0
             desiredTarget = CalculateReefTarget.calculateTargetID();
         }
+        else
+            desiredTarget = LimelightFrontMiddle.getInstance().getTargetID();
 
-        SmartDashboard.putNumber("Align Desired Target", desiredTarget);
+        SmartDashboard.putNumber("Align: Desired Target", desiredTarget);
 
         if (!AlignmentConstants.kReefDesiredAngle.containsKey(desiredTarget)) {
             desiredPose = Optional.empty();
@@ -145,7 +152,12 @@ public class AlignToReefEstimatedPose extends Command {
             new Rotation2d(0)
         ));
 
+        xError = 10000;
+        yError = 10000;
+        rotationError = 10000;
+
         LimelightFrontMiddle.getInstance().setLED(Limelight.LightMode.ON);
+        SmartDashboard.putBoolean("Align: Finished?", false);
     }
     
     private Optional<Pose2d> getBestEstimatedPose() {
@@ -161,27 +173,27 @@ public class AlignToReefEstimatedPose extends Command {
     @Override
     public void execute() {
         {
-            translateP = SmartDashboard.getNumber("align translateP", translateP);
-            translateI = SmartDashboard.getNumber("align translateI", translateI);
-            translateD = SmartDashboard.getNumber("align translateD", translateD);
-            translateFF = SmartDashboard.getNumber("align translateFF", translateFF);
-            translateThreshold = SmartDashboard.getNumber("align translateThreshold", translateThreshold);
+            translateP = SmartDashboard.getNumber("Align: translateP", translateP);
+            translateI = SmartDashboard.getNumber("Align: translateI", translateI);
+            translateD = SmartDashboard.getNumber("Align: translateD", translateD);
+            translateFF = SmartDashboard.getNumber("Align: translateFF", translateFF);
+            translateThreshold = SmartDashboard.getNumber("Align: translateThreshold", translateThreshold);
 
-            rotationP = SmartDashboard.getNumber("align rotationP", rotationP);
-            rotationI = SmartDashboard.getNumber("align rotationI", rotationI);
-            rotationD = SmartDashboard.getNumber("align rotationD", rotationD);
-            rotationFF = SmartDashboard.getNumber("align rotationFF", rotationFF);
-            rotationThreshold = SmartDashboard.getNumber("align rotationThreshold", rotationThreshold);
-            rotationLowerP = SmartDashboard.getNumber("align rotationLowerP", rotationLowerP);
-            rotationUseLowerPThreshold = SmartDashboard.getNumber("align rotationUseLowerPThreshold", rotationUseLowerPThreshold);
+            rotationP = SmartDashboard.getNumber("Align: rotationP", rotationP);
+            rotationI = SmartDashboard.getNumber("Align: rotationI", rotationI);
+            rotationD = SmartDashboard.getNumber("Align: rotationD", rotationD);
+            rotationFF = SmartDashboard.getNumber("Align: rotationFF", rotationFF);
+            rotationThreshold = SmartDashboard.getNumber("Align: rotationThreshold", rotationThreshold);
+            rotationLowerP = SmartDashboard.getNumber("Align: rotationLowerP", rotationLowerP);
+            rotationUseLowerPThreshold = SmartDashboard.getNumber("Align: rotationUseLowerPThreshold", rotationUseLowerPThreshold);
 
-            maxSpeed = SmartDashboard.getNumber("align maxSpeed", maxSpeed);
+            maxSpeed = SmartDashboard.getNumber("Align: maxSpeed", maxSpeed);
         }
         
         if (desiredPose.isEmpty())
             return;
 
-        double rotationError = drivetrain.getHeading() - desiredAngle;
+        rotationError = drivetrain.getHeading() - desiredAngle;
 
         translatePIDController.setPID(translateP, translateI, translateD);
         if(Math.abs(rotationError) < rotationUseLowerPThreshold)
@@ -202,11 +214,8 @@ public class AlignToReefEstimatedPose extends Command {
         }
         Pose2d estimatedPose = estimatedPoseOptional.get();
 
-        double xError = estimatedPose.getX() - desiredPose.get().getX();
-        double yError = estimatedPose.getY() - desiredPose.get().getY();
-
-        SmartDashboard.putNumber("align xError", xError);
-        SmartDashboard.putNumber("align yError", yError);
+        xError = estimatedPose.getX() - desiredPose.get().getX();
+        yError = estimatedPose.getY() - desiredPose.get().getY();
         
         double xTranslate = 0, yTranslate = 0;
         if (Math.abs(xError) > translateThreshold)
@@ -225,9 +234,20 @@ public class AlignToReefEstimatedPose extends Command {
 
         drivetrain.drive(translation, rotation, true, null);
 
-        if (Math.abs(xError) < translateThreshold && Math.abs(yError) < translateThreshold
-                && Math.abs(rotationError) < rotationThreshold) {
+        boolean autoScore = SmartDashboard.getBoolean("Align: Auto Score", true);
+        if (Math.abs(xError) < translateThreshold && Math.abs(yError) < translateThreshold &&
+                Math.abs(rotationError) < rotationThreshold  && autoScore) {
             Superstructure.getInstance().sendToScore();
+        }
+
+        {
+            SmartDashboard.putNumber("Align: xError", xError);
+            SmartDashboard.putNumber("Align: yError", yError);
+            SmartDashboard.putNumber("Align: rotationError", rotationError);
+
+            SmartDashboard.putBoolean("Align: xError good?", Math.abs(xError) < translateThreshold);
+            SmartDashboard.putBoolean("Align: yError good?", Math.abs(yError) < translateThreshold);
+            SmartDashboard.putBoolean("Align: rotationError good?", Math.abs(rotationError) < rotationThreshold);
         }
     }
 
@@ -235,11 +255,19 @@ public class AlignToReefEstimatedPose extends Command {
     public void end(boolean interrupted) {
         if (desiredPose.isPresent())
             drivetrain.drive(new Translation2d(0,0), 0, false, null);
+        
         LimelightFrontMiddle.getInstance().setLED(Limelight.LightMode.OFF);
+        SmartDashboard.putBoolean("Align: Finished?", true);
     }
 
     @Override
     public boolean isFinished() {
+        if (isAutonomous) {
+            return Math.abs(xError) < translateThreshold &&
+                Math.abs(yError) < translateThreshold &&
+                Math.abs(rotationError) < rotationThreshold;
+        }
+
         return desiredPose.isEmpty() || Superstructure.getInstance().isReefScoringState();
     }
 

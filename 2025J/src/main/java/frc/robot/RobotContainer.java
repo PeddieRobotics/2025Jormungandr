@@ -74,7 +74,8 @@ public class RobotContainer {
         SmartDashboard.putData("Auto Routines", autonomous.getAutoChooser());
         drivetrain.setDefaultCommand(new SwerveDriveCommand());
 
-        SmartDashboard.putBoolean("Backup Alignment Targeting", false);
+        SmartDashboard.putBoolean("Align: Smart Target Finding", true);
+        SmartDashboard.putBoolean("Align: Auto Score", true);
 
         // SmartDashboard.putBoolean("Use ", false)
     }

@@ -123,7 +123,8 @@ public class Superstructure extends SubsystemBase {
                     if (claw.getAlgaeSensor()) {
                         claw.holdAlgae();
                     } else {
-                        claw.stopClaw();
+                        // claw.stopClaw();
+                        
                     }
                 }
 
