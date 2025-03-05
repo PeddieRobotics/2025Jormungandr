@@ -14,8 +14,8 @@ import frc.robot.subsystems.Claw;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.HPIntake;
-import frc.robot.subsystems.Lights;
-import frc.robot.subsystems.LimelightClimber;
+// import frc.robot.subsystems.Lights;
+// import frc.robot.subsystems.LimelightClimber;
 import frc.robot.subsystems.LimelightFrontLeft;
 import frc.robot.subsystems.LimelightFrontMiddle;
 import frc.robot.subsystems.LimelightFrontRight;
@@ -48,8 +48,8 @@ public class RobotContainer {
     private LimelightFrontLeft llFrontLeft;
     private LimelightFrontMiddle llFrontMiddle;
     private LimelightFrontRight llFrontRight;
-    private LimelightClimber llClimber;
-    private Lights lights;
+    // private LimelightClimber llClimber;
+    // private Lights lights;
 
     public RobotContainer() {
         arm = Arm.getInstance();
@@ -66,13 +66,15 @@ public class RobotContainer {
         llFrontLeft = LimelightFrontLeft.getInstance();
         llFrontMiddle = LimelightFrontMiddle.getInstance();
         llFrontRight = LimelightFrontRight.getInstance();
-        llClimber = LimelightClimber.getInstance();
+        // llClimber = LimelightClimber.getInstance();
         // lights = Lights.getInstance();
 
         CalculateReefTarget.init();
 
         SmartDashboard.putData("Auto Routines", autonomous.getAutoChooser());
         drivetrain.setDefaultCommand(new SwerveDriveCommand());
+
+        SmartDashboard.putBoolean("Backup Alignment Targeting", false);
 
         // SmartDashboard.putBoolean("Use ", false)
     }

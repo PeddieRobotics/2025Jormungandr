@@ -99,13 +99,13 @@ public class CalculateReefTarget {
                     reefCenter.y + reefCornerToCenter * Math.sin(Math.toRadians(i))));
         }
 
-        Field2d[] fields = new Field2d[6];
-        for (int i = 0; i < 6; i++) {
-            Point p = badHexagonPoints.get(i);
-            fields[i] = new Field2d();
-            fields[i].setRobotPose(new Pose2d(p.x, p.y, new Rotation2d(0)));
-            SmartDashboard.putData("hexagon " + i, fields[i]);
-        }
+        // Field2d[] fields = new Field2d[6];
+        // for (int i = 0; i < 6; i++) {
+        //     Point p = badHexagonPoints.get(i);
+        //     fields[i] = new Field2d();
+        //     fields[i].setRobotPose(new Pose2d(p.x, p.y, new Rotation2d(0)));
+        //     SmartDashboard.putData("hexagon " + i, fields[i]);
+        // }
     }
 
     // Solution 2: https://www.eecs.umich.edu/courses/eecs380/HANDOUTS/PROJ2/InsidePoly.html
@@ -178,7 +178,6 @@ public class CalculateReefTarget {
         double tag0neededAngle = AlignmentConstants.kReefDesiredAngle.get(tag0id);
         double tag0gyroError = Math.abs(drivetrain.getHeading() - tag0neededAngle);
 
-        // TODO: tune 30.0, 45.0 degree values
         if (isInBadHexagon)
             return tag0gyroError < AlignmentConstants.kInsideBadAngleTolerance ? tag0id : 0;
 

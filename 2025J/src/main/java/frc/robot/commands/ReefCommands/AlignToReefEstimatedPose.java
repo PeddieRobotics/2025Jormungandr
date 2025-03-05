@@ -117,8 +117,14 @@ public class AlignToReefEstimatedPose extends Command {
 
     @Override
     public void initialize() {
-        // if aligning from unacceptable position ("sad face case"): returns 0
-        int desiredTarget = CalculateReefTarget.calculateTargetID();
+        int desiredTarget;
+        if (SmartDashboard.getBoolean("Backup Alignment Targeting", false))
+            desiredTarget = LimelightFrontMiddle.getInstance().getTargetID();
+        else {
+            // if aligning from unacceptable position ("sad face case"): returns 0
+            desiredTarget = CalculateReefTarget.calculateTargetID();
+        }
+
         SmartDashboard.putNumber("Align Desired Target", desiredTarget);
 
         if (!AlignmentConstants.kReefDesiredAngle.containsKey(desiredTarget)) {
@@ -139,6 +145,7 @@ public class AlignToReefEstimatedPose extends Command {
             new Rotation2d(0)
         ));
 
+        LimelightFrontMiddle.getInstance().setLED(Limelight.LightMode.ON);
     }
     
     private Optional<Pose2d> getBestEstimatedPose() {
@@ -218,19 +225,17 @@ public class AlignToReefEstimatedPose extends Command {
 
         drivetrain.drive(translation, rotation, true, null);
 
-        if((Math.abs(estimatedPose.getX() - desiredPose.get().getX()) < translateThreshold) 
-        && (Math.abs(estimatedPose.getY() - desiredPose.get().getY()) < translateThreshold)
-        && (Math.abs(desiredAngle - drivetrain.getHeading()) < rotationThreshold)){
+        if (Math.abs(xError) < translateThreshold && Math.abs(yError) < translateThreshold
+                && Math.abs(rotationError) < rotationThreshold) {
             Superstructure.getInstance().sendToScore();
         }
     }
 
     @Override
     public void end(boolean interrupted) {
-        if (desiredPose.isPresent()){
+        if (desiredPose.isPresent())
             drivetrain.drive(new Translation2d(0,0), 0, false, null);
-        }
-
+        LimelightFrontMiddle.getInstance().setLED(Limelight.LightMode.OFF);
     }
 
     @Override

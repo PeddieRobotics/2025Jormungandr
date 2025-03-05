@@ -17,6 +17,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.utils.Constants.CameraConstants;
 import frc.robot.utils.LimelightHelpers;
+import frc.robot.utils.LimelightHelpers.LimelightTarget_Barcode;
 import frc.robot.utils.LimelightHelpers.PoseEstimate;
 import frc.robot.utils.LiveData;
 import frc.robot.utils.RollingAverage;
@@ -377,10 +378,28 @@ public abstract class Limelight extends SubsystemBase {
     public String getName() {
         return limelightName;
     }
+    
+    public enum LightMode {
+        PIPELINE,
+        OFF,
+        ON,
+        BLINK
+    }
 
-    // TODO
-    public void setBlinking(boolean blinking) {
-        // LimelightHelpers.
-        // camera.setLED(blinking ? VisionLEDMode.kBlink : VisionLEDMode.kOff);
+    public void setLED(LightMode mode) {
+        switch (mode) {
+            case PIPELINE:
+                LimelightHelpers.setLEDMode_PipelineControl(limelightName);
+                break;
+            case OFF:
+                LimelightHelpers.setLEDMode_ForceOff(limelightName);
+                break;
+            case ON:
+                LimelightHelpers.setLEDMode_ForceOn(limelightName);
+                break;
+            case BLINK:
+                LimelightHelpers.setLEDMode_ForceBlink(limelightName);
+                break;
+        }
     }
 }
