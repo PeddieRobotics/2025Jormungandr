@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 3.55875,
-        "y": 2.90375
+        "x": 3.26625,
+        "y": 2.4942499999999996
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.7846506628061625,
-        "y": 2.2456239693115845
+        "x": 2.4921506628061625,
+        "y": 1.836123969311584
       },
       "isLocked": false,
       "linkedName": "CReef"
     },
     {
       "anchor": {
-        "x": 1.131,
-        "y": 0.905
+        "x": 2.38875,
+        "y": 1.2559999999999991
       },
       "prevControl": {
-        "x": 2.1940503374718987,
-        "y": 1.8276991574562524
+        "x": 3.451800337471899,
+        "y": 2.1786991574562515
       },
       "nextControl": null,
       "isLocked": false,
@@ -42,7 +42,7 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 54.94
+    "rotation": 16.69924423399368
   },
   "reversed": false,
   "folder": "HP Intake",

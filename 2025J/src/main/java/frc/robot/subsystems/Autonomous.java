@@ -11,7 +11,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.commands.AutoCommands.*;
 import frc.robot.commands.ReefCommands.AlignToReef;
 import frc.robot.subsystems.Superstructure.SuperstructureState;
@@ -97,11 +99,17 @@ public class Autonomous extends SubsystemBase {
             int red = AlignmentConstants.kBlueToRedReefTag.get(blue);
             NamedCommands.registerCommand(
                 "ALIGN_" + blue + "_" + red + "_LEFT",
-                new AlignToReef(Constants.AlignmentConstants.AlignmentDestination.LEFT, 2.0, blue, red)
+                new SequentialCommandGroup(
+                    new AlignToReef(Constants.AlignmentConstants.AlignmentDestination.LEFT, 2.0, blue, red),
+                    new WaitCommand(0.2)
+                )
             );
             NamedCommands.registerCommand(
                 "ALIGN_" + blue + "_" + red + "_RIGHT",
-                new AlignToReef(Constants.AlignmentConstants.AlignmentDestination.RIGHT, 2.0, blue, red)
+                new SequentialCommandGroup(
+                    new AlignToReef(Constants.AlignmentConstants.AlignmentDestination.RIGHT, 2.0, blue, red),
+                    new WaitCommand(0.2)
+                )
             );
         }
 

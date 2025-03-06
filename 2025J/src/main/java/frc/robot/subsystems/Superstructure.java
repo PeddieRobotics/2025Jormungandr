@@ -6,6 +6,7 @@ package frc.robot.subsystems;
 
 import java.util.Arrays;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -164,7 +165,10 @@ public class Superstructure extends SubsystemBase {
 
                 if(claw.bothCoralSensorsTriggered()) {
                     claw.stopClaw();
-                    requestState(STOW);
+                    if (DriverStation.isAutonomous())
+                        systemState = requestedSystemState;
+                    else
+                        requestState(STOW);
                 } else if (claw.getTopSensor() && !claw.getBottomSensor()){
                     claw.intakePiece(ClawConstants.kCoralSlowIntake);
                 } else {
