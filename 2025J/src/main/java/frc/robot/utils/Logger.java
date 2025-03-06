@@ -16,6 +16,10 @@ import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.HPIntake;
 // import frc.robot.subsystems.LimelightClimber;
 import frc.robot.subsystems.Limelight;
+import frc.robot.subsystems.LimelightBack;
+import frc.robot.subsystems.LimelightFrontLeft;
+import frc.robot.subsystems.LimelightFrontMiddle;
+import frc.robot.subsystems.LimelightFrontRight;
 import frc.robot.subsystems.Superstructure;
 
 public class Logger {
@@ -29,7 +33,7 @@ public class Logger {
     private Superstructure superstructure;
     // private Climber climber;
 
-    // Limelight[] cameras;
+    Limelight[] limelights;
 
     private DataLog log = DataLogManager.getLog();
     private StringLogEntry commandEntry, superstructureCurrentStateEntry, superstructureRequestedStateEntry;
@@ -51,8 +55,8 @@ public class Logger {
 
     private DoubleArrayLogEntry fieldPositionEntry, botposeFieldPositionEntry, moduleSpeedsEntry, modulePositionsEntry;
     
-    private DoubleLogEntry[] LimelightTyDistanceEntry, LimelightPoseDistanceEntry, LimelightFilteredPoseDistanceEntry,
-        LimelightFilteredTyDistanceEntry, LimelightNumOfApriltagEntry, LimelightTxEntry, LimelightTyEntry;
+    private DoubleLogEntry[] limelightTyDistanceEntry, limelightPoseDistanceEntry, limelightFilteredPoseDistanceEntry,
+        limelightFilteredTyDistanceEntry, limelightNumOfApriltagEntry, limelightTxEntry, limelightTyEntry;
 
     public static Logger getInstance() {
         if (instance == null) {
@@ -63,48 +67,23 @@ public class Logger {
 
     public Logger() {
         drivetrain = Drivetrain.getInstance();
-        // arm = Arm.getInstance();
+        arm = Arm.getInstance();
         autonomous = Autonomous.getInstance();
-        // claw = Claw.getInstance();
-        // elevator = Elevator.getInstance();
+        claw = Claw.getInstance();
+        elevator = Elevator.getInstance();
         // hpIntake = HPIntake.getInstance();
-        // superstructure = Superstructure.getInstance();
+        superstructure = Superstructure.getInstance();
         // climber = Climber.getInstance();
-        //
-        // llBack = LimelightBack.getInstance();
-        // llFrontLeft = LimelightFrontLeft.getInstance();
-        // llFrontMiddle = LimelightFrontMiddle.getInstance();
-        // llFrontRight = LimelightFrontRight.getInstance();
-        // llLeft = LimelightLeft.getInstance();
 
-        //  uncomment when all limelights are on the robot 
-        // cameras = new PhotonVision[] {
-        //     llBack, llFrontLeft, llFrontMiddle, llFrontRight, llLeft
-        // };
-
-        // temp     
-        // cameras = new Limelight[] { 
-        //     llFrontLeft, llFrontMiddle, llFrontRight
-        // };
-
-        /*
-         * Superstructure Logs
-         */
-
+        // Superstructure Logs
         superstructureCurrentStateEntry = new StringLogEntry(log, "/Superstructure/Current Superstructure State");
         superstructureRequestedStateEntry = new StringLogEntry(log, "/Superstructure/Requested Superstructure State");
 
-        /*
-         * Field Logs
-         */
-
+        // Field Logs
         fieldPositionEntry = new DoubleArrayLogEntry(log, "/Field/Position");
         botposeFieldPositionEntry = new DoubleArrayLogEntry(log, "/Field/Botpose position");
 
-        /*
-         * Drivetrain Logs
-         */
-
+        // Drivetrain Logs
         gyroAngleEntry = new DoubleLogEntry(log, "/Drivetrain/Gyro Angle");
 
         driveTrainXAccEntry = new DoubleLogEntry(log, "/Drivetrain/Drivetrain X Accel");
@@ -115,37 +94,26 @@ public class Logger {
         moduleSpeedsEntry = new DoubleArrayLogEntry(log, "/Drivetrain/Swerve Module Speeds");
         modulePositionsEntry = new DoubleArrayLogEntry(log, "/Drivetrain/Swerve Module Positions");
 
-        /*
-         * Intake Logs
-         */
-
+        // Intake Logs
         hpIntakePositionEntry = new DoubleLogEntry(log, "/Intake/HP Intake Position");
         hpIntakeVelocityEntry = new DoubleLogEntry(log, "/Intake/HP Intake Velocity");
         hpIntakeAccEntry = new DoubleLogEntry(log, "/Intake/HP Intake Acceleration");
         hpIntakeSupplyCurrentEntry = new DoubleLogEntry(log, "/Intake/HP Intake Motor Supply Current");
         hpIntakeStatorCurrentEntry = new DoubleLogEntry(log, "/Intake/HP Intake Motor Stator Current");
-        /*
-         * Claw logs
-         */
-
+        
+        // Claw logs
         clawPositionEntry = new DoubleLogEntry(log, "/Claw/Claw Position");
         clawAccEntry = new DoubleLogEntry(log, "/Claw/Claw Acceleration");
         clawVelocityEntry = new DoubleLogEntry(log, "/Claw/Claw Velocity");
         clawSupplyCurrentEntry = new DoubleLogEntry(log, "/Claw/Claw Motor Supply Current");
         clawStatorCurrentEntry = new DoubleLogEntry(log, "/Claw/Claw Motor Stator Current");
 
-        /*
-         * Elevator Logs
-         */
-
+        // Elevator Logs
         elevatorPositionEntry = new DoubleLogEntry(log, "/Elevator/Elevator Position");
         elevatorVelocityEntry = new DoubleLogEntry(log, "/Elevator/Elevator Velocity");
         elevatorAccEntry = new DoubleLogEntry(log, "/Elevator/Elevator Acceleration");
 
-        /*
-         * Arm logs
-         */
-
+        // Arm logs
         armAngleEntry = new DoubleLogEntry(log, "/Arm/Arm Angle");
         armAccEntry = new DoubleLogEntry(log, "/Arm/Arm Acceleration");
         armSupplyCurrentEntry = new DoubleLogEntry(log, "/Arm/Arm Motor Supply Current");
@@ -154,10 +122,7 @@ public class Logger {
         armPositionEntry = new DoubleLogEntry(log, "/Arm/Arm Position");
         armVelocityEntry = new DoubleLogEntry(log, "/Arm/Arm Velocity");
 
-        /*
-         * Climber logs
-         */
-
+        // Climber logs
         leftClimberSupplyCurrentEntry = new DoubleLogEntry(log, "/Climber/Left Climber Motor Supply Current");
         leftClimberStatorCurrentEntry = new DoubleLogEntry(log, "/Climber/Left Climber Motor Stator Current");
         leftClimberTemperatureEntry = new DoubleLogEntry(log, "/Climber/Left Climber Motor Temperature");
@@ -167,29 +132,32 @@ public class Logger {
         rightClimberStatorCurrentEntry = new DoubleLogEntry(log, "/Climber/Right Climber Motor Stator Current");
         rightClimberTemperatureEntry = new DoubleLogEntry(log, "/Climber/Right Climber Motor Temperature");
         rightClimberPosition = new DoubleLogEntry(log, "/Climber/Right Climber Motor Position");
-
-        /*
-         * Limelight Logs
-         */
         
-        LimelightTyDistanceEntry = new DoubleLogEntry[5];
-        LimelightPoseDistanceEntry = new DoubleLogEntry[5];
-        LimelightFilteredTyDistanceEntry = new DoubleLogEntry[5];
-        LimelightFilteredPoseDistanceEntry = new DoubleLogEntry[5];
-        LimelightNumOfApriltagEntry = new DoubleLogEntry[5];
-        LimelightTxEntry = new DoubleLogEntry[5];
-        LimelightTyEntry = new DoubleLogEntry[5];
+        // Limelight Logs
+        limelights = new Limelight[] { 
+            LimelightFrontLeft.getInstance(),
+            LimelightFrontMiddle.getInstance(),
+            LimelightFrontRight.getInstance(),
+            LimelightBack.getInstance()
+        };
+        limelightTyDistanceEntry = new DoubleLogEntry[limelights.length];
+        limelightPoseDistanceEntry = new DoubleLogEntry[limelights.length];
+        limelightFilteredTyDistanceEntry = new DoubleLogEntry[limelights.length];
+        limelightFilteredPoseDistanceEntry = new DoubleLogEntry[limelights.length];
+        limelightNumOfApriltagEntry = new DoubleLogEntry[limelights.length];
+        limelightTxEntry = new DoubleLogEntry[limelights.length];
+        limelightTyEntry = new DoubleLogEntry[limelights.length];
 
-        // for (int i = 0; i < cameras.length; i++) { //5
-        //     String cameraName = cameras[i].getName();
-        //     LimelightTyDistanceEntry[i] = new DoubleLogEntry(log, "/Camera/" + cameraName + " Ty Distance");
-        //     LimelightPoseDistanceEntry[i] = new DoubleLogEntry(log, "/Camera/" + cameraName + " Pose Distance");
-        //     LimelightFilteredTyDistanceEntry[i] = new DoubleLogEntry(log, "/Camera/" + cameraName + " Filtered Ty Distance");
-        //     LimelightFilteredPoseDistanceEntry[i] = new DoubleLogEntry(log, "/Camera/" + cameraName + " Filtered Pose Distance");
-        //     LimelightNumOfApriltagEntry[i] = new DoubleLogEntry(log, "/Camera/" + cameraName + " Number of AprilTags");
-        //     LimelightTxEntry[i] = new DoubleLogEntry(log, "/Camera/" + cameraName + " Tx");
-        //     LimelightTyEntry[i] = new DoubleLogEntry(log, "/Camera/" + cameraName + " Ty");
-        // }
+        for (int i = 0; i < limelights.length; i++) {
+            String cameraName = limelights[i].getName();
+            limelightTyDistanceEntry[i] = new DoubleLogEntry(log, "/Camera/" + cameraName + " Ty Distance");
+            limelightPoseDistanceEntry[i] = new DoubleLogEntry(log, "/Camera/" + cameraName + " Pose Distance");
+            limelightFilteredTyDistanceEntry[i] = new DoubleLogEntry(log, "/Camera/" + cameraName + " Filtered Ty Distance");
+            limelightFilteredPoseDistanceEntry[i] = new DoubleLogEntry(log, "/Camera/" + cameraName + " Filtered Pose Distance");
+            limelightNumOfApriltagEntry[i] = new DoubleLogEntry(log, "/Camera/" + cameraName + " Number of AprilTags");
+            limelightTxEntry[i] = new DoubleLogEntry(log, "/Camera/" + cameraName + " Tx");
+            limelightTyEntry[i] = new DoubleLogEntry(log, "/Camera/" + cameraName + " Ty");
+        }
     }
 
     public void logEvent(String event, Boolean isStart) {
@@ -198,61 +166,42 @@ public class Logger {
 
     public void updateLogs() {
 
-        /*
-         * Drivetrain Logs
-         */
+        // Drivetrain Logs
         updateDrivetrainLogs();
 
-        /*
-         * Superstructure Logs
-         */
+        // Superstructure Logs
+        superstructureCurrentStateEntry.append(superstructure.getCurrentState().toString());
+        superstructureRequestedStateEntry.append(superstructure.getRequestedState().toString());
 
-        //superstructureCurrentStateEntry.append(superstructure.getCurrentState().toString());
-        //superstructureRequestedStateEntry.append(superstructure.getRequestedState().toString());
-
-        /*
-         * Intake Logs
-         */
-
+        // Intake Logs
         // hpIntakePositionEntry.append(hpIntake.getIntakePosition());
         // hpIntakeVelocityEntry.append(hpIntake.getIntakeVelocity());
         // // hpIntakeAccEntry.append(hpIntake.getIntakeAcc());
         // hpIntakeSupplyCurrentEntry.append(hpIntake.getMotorSupplyCurrent());
         // hpIntakeStatorCurrentEntry.append(hpIntake.getMotorStatorCurrent());
-        /*
-         * Claw logs
-         */
+        
+        // Claw logs
+        clawPositionEntry.append(claw.getPosition());
+        // clawAccEntry.append(claw.getAcc());
+        clawVelocityEntry.append(claw.getVelocity());
+        clawSupplyCurrentEntry.append(claw.getMotorSupplyCurrent());
+        clawStatorCurrentEntry.append(claw.getMotorStatorCurrent());
 
-        // clawPositionEntry.append(claw.getPosition());
-        // // clawAccEntry.append(claw.getAcc());
-        // clawVelocityEntry.append(claw.getVelocity());
-        // clawSupplyCurrentEntry.append(claw.getMotorSupplyCurrent());
-        // clawStatorCurrentEntry.append(claw.getMotorStatorCurrent());
-
-        /*
-         * Elevator Logs
-         */
-
+        // Elevator Logs
         // elevatorPositionEntry.append(elevator.getPosition());
         // elevatorVelocityEntry.append(elevator.getVelocity());
         // elevatorAccEntry.append(elevator.getAcc());
 
-        /*
-         * Arm logs
-         */
-
-        // armAngleEntry.append(arm.getArmAngleDegrees());
-        // // armAccEntry.append(arm.getAcc());
-        // armSupplyCurrentEntry.append(arm.getMotorSupplyCurrent());
-        // armStatorCurrentEntry.append(arm.getMotorStatorCurrent());
-        // armTorqueCurrentEntry.append(arm.getMotorTorqueCurrent());
+        // Arm Logs
+        armAngleEntry.append(arm.getArmAngleDegrees());
+        // armAccEntry.append(arm.getAcc());
+        armSupplyCurrentEntry.append(arm.getMotorSupplyCurrent());
+        armStatorCurrentEntry.append(arm.getMotorStatorCurrent());
+        armTorqueCurrentEntry.append(arm.getMotorTorqueCurrent());
         // armPositionEntry.append(arm.getArmPosition());
-        // armVelocityEntry.append(arm.getArmVelocity());
+        armVelocityEntry.append(arm.getArmVelocity());
 
-        /*
-         * Climber logs
-         */
-
+        // Climber Logs
         // leftClimberSupplyCurrentEntry.append(climber.getLeftClimberSupplyCurrent());
         // leftClimberStatorCurrentEntry.append(climber.getLeftClimberStatorCurrent());
         // leftClimberTemperatureEntry.append(climber.getLeftClimberTemperature());
@@ -263,16 +212,16 @@ public class Logger {
         // rightClimberTemperatureEntry.append(climber.getRightClimberTemperature());
         // rightClimberPosition.append(climber.getRightClimberPosition());
 
-        // PhotonVision Logs
-        // for (int i = 0; i < cameras.length; i++) { //5
-        //     LimelightTyDistanceEntry[i].append(cameras[i].getDistanceTy());
-        //     LimelightPoseDistanceEntry[i].append(cameras[i].getDistanceEstimatedPose());
-        //     LimelightFilteredTyDistanceEntry[i].append(cameras[i].getFilteredDistanceTy());
-        //     LimelightFilteredPoseDistanceEntry[i].append(cameras[i].getFilteredDistanceEstimatedPose());
-        //     LimelightNumOfApriltagEntry[i].append(cameras[i].getNumberOfTagsSeen());
-        //     LimelightTxEntry[i].append(cameras[i].getTxAverage());
-        //     LimelightTyEntry[i].append(cameras[i].getTyAverage());
-        // }
+        // Limelight Logs
+        for (int i = 0; i < limelights.length; i++) {
+            limelightTyDistanceEntry[i].append(limelights[i].getDistanceTy());
+            limelightPoseDistanceEntry[i].append(limelights[i].getDistanceEstimatedPose());
+            limelightFilteredTyDistanceEntry[i].append(limelights[i].getFilteredDistanceTy());
+            limelightFilteredPoseDistanceEntry[i].append(limelights[i].getFilteredDistanceEstimatedPose());
+            limelightNumOfApriltagEntry[i].append(limelights[i].getNumberOfTagsSeen());
+            limelightTxEntry[i].append(limelights[i].getTxAverage());
+            limelightTyEntry[i].append(limelights[i].getTyAverage());
+        }
 
         // Commands run
         commandEntry = new StringLogEntry(log, "/Commands/Commands Run");

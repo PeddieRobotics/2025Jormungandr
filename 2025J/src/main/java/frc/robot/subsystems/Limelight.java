@@ -296,7 +296,6 @@ public abstract class Limelight extends SubsystemBase {
     //                 Other AprilTag Getters
     // ======================================================
 
-    // TODO: test
     public int getNumberOfTagsSeen() {
         return LimelightHelpers.getTargetCount(limelightName);
     }

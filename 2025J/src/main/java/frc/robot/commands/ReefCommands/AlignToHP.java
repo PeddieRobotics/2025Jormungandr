@@ -1,5 +1,3 @@
-// TODO: rectify brokenness
-
 package frc.robot.commands.ReefCommands;
 
 import java.util.Optional;
