@@ -801,16 +801,16 @@ public class Superstructure extends SubsystemBase {
     );
 
     private boolean isHighAlgae() {
-        return SmartDashboard.getBoolean("RemoveAlgae: high?", false);
-        // Limelight camera = LimelightFrontLeft.getInstance();
-        // if (camera.getNumberOfTagsSeen() == 1 && highAlgaeTags.contains(camera.getTargetID()))
-        //     return true;
+        // return SmartDashboard.getBoolean("RemoveAlgae: high?", false);
+        Limelight camera = LimelightFrontLeft.getInstance();
+        if (camera.getNumberOfTagsSeen() == 1 && highAlgaeTags.contains(camera.getTargetID()))
+            return true;
 
-        // camera = LimelightFrontRight.getInstance();
-        // if (camera.getNumberOfTagsSeen() == 1 && highAlgaeTags.contains(camera.getTargetID()))
-        //     return true;
+        camera = LimelightFrontRight.getInstance();
+        if (camera.getNumberOfTagsSeen() == 1 && highAlgaeTags.contains(camera.getTargetID()))
+            return true;
 
-        // return false;
+        return false;
     }
 
     private double getAlgaeRemovalSpeed() {

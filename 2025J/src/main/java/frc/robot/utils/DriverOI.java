@@ -64,7 +64,7 @@ public class DriverOI {
         circleButton.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.HP_INTAKE)));
 
         Trigger squareButton = new JoystickButton(controller, PS4Controller.Button.kSquare.value);
-        squareButton.whileTrue(new AlignToHP(HPAlign.kMaxSpeed, HPAlign.kMiddleOffset, HPAlign.kBackOffset));
+        // squareButton.whileTrue(new AlignToHP(HPAlign.kMaxSpeed, HPAlign.kMiddleOffset, HPAlign.kBackOffset));
         // squareButton.onTrue(new InstantCommand(() -> SmartDashboard.putNumber("HPTarget", CalculateHPTarget.calculateTargetID())));
         // squareButton.whileTrue(new AlignToReefEstimatedPose(AlignmentConstants.AlignmentDestination.MIDDLE, false));
 
@@ -90,11 +90,11 @@ public class DriverOI {
         // ));
 
         Trigger L1Bumper = new JoystickButton(controller, PS4Controller.Button.kL1.value);
-        L1Bumper.whileTrue(new AlignToHP(HPAlign.kMaxSpeed, HPAlign.kLeftOffset, HPAlign.kBackOffset));
+        // L1Bumper.whileTrue(new AlignToHP(HPAlign.kMaxSpeed, HPAlign.kLeftOffset, HPAlign.kBackOffset));
         // L1Bumper.whileTrue(new OrbitReef());
 
         Trigger R1Bumper = new JoystickButton(controller, PS4Controller.Button.kR1.value);
-        R1Bumper.whileTrue(new AlignToHP(HPAlign.kMaxSpeed, HPAlign.kRightOffset, HPAlign.kBackOffset));
+        // R1Bumper.whileTrue(new AlignToHP(HPAlign.kMaxSpeed, HPAlign.kRightOffset, HPAlign.kBackOffset));
         // R1Bumper.whileTrue(new OrbitReef());
 
         Trigger L2Trigger = new JoystickButton(controller, PS4Controller.Button.kL2.value);
