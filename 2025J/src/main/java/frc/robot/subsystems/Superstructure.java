@@ -34,8 +34,8 @@ public class Superstructure extends SubsystemBase {
 
     private LiveData systemStateData, requestedSystemStateData, algaeIndex, coralIndex; 
 
-    private boolean isManualControl;
-
+    private boolean isManualControl, hasJustRemovedAlgae;
+    private double startedOuttakingRemovedAlgaeTime;
 
     public enum SuperstructureState {
         STOW,
@@ -80,6 +80,8 @@ public class Superstructure extends SubsystemBase {
         requestedSystemStateData = new LiveData(requestedSystemState.toString(), "Requested System State"); 
 
         isManualControl = false;
+        hasJustRemovedAlgae = false;
+        startedOuttakingRemovedAlgaeTime = 0.0;
     }
 
     public static Superstructure getInstance() {
@@ -167,7 +169,15 @@ public class Superstructure extends SubsystemBase {
 
                 // add gate to check elevator height and arm angle ?
 
-                if(claw.bothCoralSensorsTriggered()) {
+                if (hasJustRemovedAlgae) {
+                    if (startedOuttakingRemovedAlgaeTime == 0)
+                        startedOuttakingRemovedAlgaeTime = Timer.getFPGATimestamp();
+                    else if (Timer.getFPGATimestamp() - startedOuttakingRemovedAlgaeTime >= 0.2) {
+                        hasJustRemovedAlgae = false;
+                        startedOuttakingRemovedAlgaeTime = 0;
+                    }
+                    claw.intakePiece(ClawConstants.kAlgaeOuttakeSpeed);
+                } else if(claw.bothCoralSensorsTriggered()) {
                     claw.stopClaw();
                     if (DriverStation.isAutonomous())
                         systemState = requestedSystemState;
@@ -705,15 +715,16 @@ public class Superstructure extends SubsystemBase {
                 }
             }
             case REMOVING_ALGAE -> {
-                double armAngle = SmartDashboard.getNumber("RemoveAlgae: arm angle", 0.21);
-                if (elevator.getElevatorCANcoderReading() > 1.5) {
+                double armAngle = 0.21;
+                if (elevator.getElevatorCANcoderPosition() > 1.5) {
                     claw.setClaw(ClawConstants.kCoralIntakeSpeed);
                     arm.setArmPositionVoltage(armAngle);
                     elevator.setElevatorPercentOutput(getAlgaeRemovalSpeed());
                 }
                 else {
                     arm.setArmPositionVoltage(0.25);
-                    requestState(HP_INTAKE);
+                    hasJustRemovedAlgae = true;
+                    requestState(STOW);
                 }
 
                 if (Arrays.asList(STOW, HP_INTAKE).contains(requestedSystemState)) {
@@ -803,19 +814,20 @@ public class Superstructure extends SubsystemBase {
     }
 
     private double getAlgaeRemovalSpeed() {
-        double elevatorFast = SmartDashboard.getNumber("RemoveAlgae: elevator fast", -0.7);
-        double elevatorSlow = SmartDashboard.getNumber("RemoveAlgae: elevator slow", -0.3);
-        double slowThreshold = SmartDashboard.getNumber("RemoveAlgae: slow threshold", 1.0);
-        double thing = SmartDashboard.getNumber("RemoveAlgae: thing", 0.3);
+        // double elevatorFast = SmartDashboard.getNumber("RemoveAlgae: elevator fast", -0.7);
+        // double elevatorSlow = SmartDashboard.getNumber("RemoveAlgae: elevator slow", -0.3);
+        // double slowThreshold = SmartDashboard.getNumber("RemoveAlgae: slow threshold", 1.0);
+        // double thing = SmartDashboard.getNumber("RemoveAlgae: thing", 0.3);
 
-        double elevatorPosition = elevator.getElevatorCANcoderReading();
+        double elevatorFast = -0.7, elevatorSlow = -0.3, slowThreshold = 0.8;
+        double elevatorPosition = elevator.getElevatorCANcoderPosition();
         if (isHighAlgae()) {
-            if (Math.abs(elevatorPosition - (ScoreConstants.kElevatorReef2IntakePosition + thing)) <= slowThreshold)
+            if (Math.abs(elevatorPosition - (ScoreConstants.kElevatorReef2IntakePosition + 0.5)) <= slowThreshold)
                 return elevatorSlow;
             return elevatorFast;
         }
 
-        if (Math.abs(elevatorPosition - (ScoreConstants.kElevatorReef1IntakePosition + thing)) <= slowThreshold)
+        if (Math.abs(elevatorPosition - (ScoreConstants.kElevatorReef1IntakePosition + 0.5)) <= slowThreshold)
             return elevatorSlow;
         return elevatorFast;
     }

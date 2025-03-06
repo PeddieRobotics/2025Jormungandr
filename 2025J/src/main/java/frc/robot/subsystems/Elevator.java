@@ -90,7 +90,7 @@ public class Elevator extends SubsystemBase {
 
         elevatorSetpoint = new LiveData(ElevatorConstants.kStowSetpoint, "Elevator: Current Setpoint");
         elevatorEncoderPosition = new LiveData(elevatorMainMotor.getPosition(), "Elevator: Current Encoder Position");
-        elevatorCanCoderPosition = new LiveData(getElevatorCANcoderReading(), "Elevator: Current Cancoder Position"); 
+        elevatorCanCoderPosition = new LiveData(getElevatorCANcoderPosition(), "Elevator: Current Cancoder Position"); 
 
         mainMotorTemp = new LiveData(elevatorMainMotor.getMotorTemperature(), "Elevator: Main Motor Temp");
         followerMotorTemp = new LiveData(elevatorFollowerMotor.getMotorTemperature(), "Elevator: Follower Motor Temp");
@@ -177,63 +177,95 @@ public class Elevator extends SubsystemBase {
     /**
      * @return returns cancoder reading from elevator in rotations, more accurate than just encoder
      */
-    public double getElevatorCANcoderReading() {
+    public double getElevatorCANcoderPosition() {
         return elevatorCANcoder.getPosition().getValueAsDouble();
     }
 
+    public double getElevatorCANcoderVelocity(){
+        return elevatorCANcoder.getVelocity().getValueAsDouble();
+    }
+
     public boolean isAtPosition(double desiredPosition) {
-        return Math.abs(getElevatorCANcoderReading() - desiredPosition) < ElevatorConstants.kElevatorPositionEpsilon;
+        return Math.abs(getElevatorCANcoderPosition() - desiredPosition) < ElevatorConstants.kElevatorPositionEpsilon;
     }
 
     public boolean isAtBottom() {
-        return Math.abs(getElevatorCANcoderReading()) < ElevatorConstants.kElevatorNeutralModePositionEpsilon;
+        return Math.abs(getElevatorCANcoderPosition()) < ElevatorConstants.kElevatorNeutralModePositionEpsilon;
     }
 
     /**
      * @return position reading of the elevatorMainMotor encoder (motor encoder
      *         units)
      */
-    public double getElevatorEncoderPosition() {
+    public double getElevatorMotorEncoderPosition() {
         return elevatorMainMotor.getPosition();
     }
 
     /**
-     * resets encoder on elevatorMotor
+     * resets encoder on main elevator motor
      */
     public void resetElevatorPosition() {
         elevatorMainMotor.resetEncoder();
     }
 
     /**
-     * @return elevator motor TorqueCurrent draw (amps)
+     * @return elevator main motor TorqueCurrent draw (amps)
      */
-    public double getMotorTorqueCurrent() {
+    public double getMainMotorTorqueCurrent() {
         return elevatorMainMotor.getTorqueCurrent();
     }
 
     /**
-     * @return elevator motor stator current draw (amps)
+     * @return elevator follower motor TorqueCurrent draw (amps)
      */
-    public double getMotorStatorCurrent() {
+    public double getFollowerMotorTorqueCurrent() {
+        return elevatorFollowerMotor.getTorqueCurrent();
+    }
+
+    /**
+     * @return elevator main motor stator current draw (amps)
+     */
+    public double getMainMotorStatorCurrent() {
         return elevatorMainMotor.getStatorCurrent();
     }
 
     /**
-     * @return elevator motor supply current draw (amps)
+     * @return elevator main motor stator current draw (amps)
      */
-    public double getMotorSupplyCurrent() {
+    public double getFollowerMotorStatorCurrent() {
+        return elevatorFollowerMotor.getStatorCurrent();
+    }
+
+    /**
+     * @return elevator main motor supply current draw (amps)
+     */
+    public double getMainMotorSupplyCurrent() {
         return elevatorMainMotor.getSupplyCurrent();
     }
 
     /**
-     * @return elevator motor velocity (rotations per second)
+     * @return elevator follower motor supply current draw (amps)
      */
-    public double getElevatorVelocity(){
+    public double getFollowerMotorSupplyCurrent() {
+        return elevatorFollowerMotor.getSupplyCurrent();
+    }
+
+    /**
+     * @return elevator main motor velocity (rotations per second)
+     */
+    public double getElevatorMainMotorVelocity(){
         return elevatorMainMotor.getRPS();
     }
 
     /**
-     * @return elevator motor setpoint (motor encoder units)
+     * @return elevator follower motor velocity (rotations per second)
+     */
+    public double getElevatorFollowerMotorVelocity(){
+        return elevatorFollowerMotor.getRPS();
+    }
+
+    /**
+     * @return elevator position setpoint (CANcoder value)
      */
     public double getElevatorSetpoint(){
         return elevatorSetpoint.getNumber();
@@ -254,15 +286,15 @@ public class Elevator extends SubsystemBase {
         }
         SmartDashboard.putNumber("Elevator: Commanded Percent Output", DriverOI.getInstance().getForward() * 0.3);
 
-        elevatorEncoderPosition.setNumber(getElevatorEncoderPosition());
-        elevatorCanCoderPosition.setNumber(getElevatorCANcoderReading());
+        elevatorEncoderPosition.setNumber(getElevatorMotorEncoderPosition());
+        elevatorCanCoderPosition.setNumber(getElevatorCANcoderPosition());
         mainMotorTemp.setNumber(getElevatorMainMotorTemperature());
         followerMotorTemp.setNumber(getElevatorFollowerMotorTemperature());
 
-        mainMotorSupplyCurrent.setNumber(getMotorSupplyCurrent());
-        mainMotorStatorCurrent.setNumber(getMotorStatorCurrent());
+        mainMotorSupplyCurrent.setNumber(getMainMotorSupplyCurrent());
+        mainMotorStatorCurrent.setNumber(getMainMotorStatorCurrent());
 
-        canCoderVelocity.setNumber(elevatorCANcoder.getVelocity().getValueAsDouble());
+        canCoderVelocity.setNumber(getElevatorCANcoderVelocity());
 
     }
 
