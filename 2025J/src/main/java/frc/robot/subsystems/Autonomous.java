@@ -21,6 +21,7 @@ import frc.robot.commands.ReefCommands.AlignToReef;
 import frc.robot.subsystems.Superstructure.SuperstructureState;
 import frc.robot.utils.Constants;
 import frc.robot.utils.Constants.AlignmentConstants;
+import frc.robot.utils.Constants.AlignmentConstants.HPAlign;
 import frc.robot.utils.Constants.AutoConstants;
 
 public class Autonomous extends SubsystemBase {
@@ -123,9 +124,18 @@ public class Autonomous extends SubsystemBase {
         NamedCommands.registerCommand("STOW", new InstantCommand(() -> superstructure.requestState(SuperstructureState.STOW)));
         NamedCommands.registerCommand("HP_INTAKE", new InstantCommand(() -> superstructure.requestState(SuperstructureState.HP_INTAKE)));
         NamedCommands.registerCommand("SEND_TO_SCORE", new InstantCommand(() -> superstructure.sendToScore()));
-        NamedCommands.registerCommand("ALIGN_TO_HP_LEFT", new AlignToHP(2.0, 0.5, 0.45));
-        NamedCommands.registerCommand("ALIGN_TO_HP_MIDDLE", new AlignToHP(2.0, 0, 0.45));
-        NamedCommands.registerCommand("ALIGN_TO_HP_RIGHT", new AlignToHP(2.0, -0.5, 0.45));
-    }
 
+        NamedCommands.registerCommand(
+            "ALIGN_TO_HP_LEFT",
+            new AlignToHP(HPAlign.kMaxSpeed, HPAlign.kLeftOffset, HPAlign.kBackOffset)
+        );
+        NamedCommands.registerCommand(
+            "ALIGN_TO_HP_MIDDLE",
+            new AlignToHP(HPAlign.kMaxSpeed, HPAlign.kMiddleOffset, HPAlign.kBackOffset)
+        );
+        NamedCommands.registerCommand(
+            "ALIGN_TO_HP_RIGHT",
+            new AlignToHP(HPAlign.kMaxSpeed, HPAlign.kRightOffset, HPAlign.kBackOffset)
+        );
+    }
 }

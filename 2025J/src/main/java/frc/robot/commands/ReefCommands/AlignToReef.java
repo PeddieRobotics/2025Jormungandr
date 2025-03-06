@@ -161,7 +161,8 @@ public class AlignToReef extends Command {
         xError = 10000;
         yError = 10000;
         rotationError = 10000;
-
+        
+        LimelightFrontMiddle.getInstance().setLED(Limelight.LightMode.ON);
         LimelightBack.getInstance().setLED(Limelight.LightMode.ON);
         // SmartDashboard.putBoolean("Align: Finished?", false);
     }
@@ -247,8 +248,11 @@ public class AlignToReef extends Command {
         drivetrain.driveForceAdjust(translation, rotation, true, null);
 
         boolean autoScore = SmartDashboard.getBoolean("Align: Auto Score", true);
-        if (Math.abs(rotationError) < rotationThreshold && translationDistanceGood() && autoScore)
+        if (Math.abs(rotationError) < rotationThreshold && translationDistanceGood() && autoScore) {
             Superstructure.getInstance().sendToScore();
+            LimelightFrontMiddle.getInstance().setLED(Limelight.LightMode.OFF);
+            LimelightBack.getInstance().setLED(Limelight.LightMode.OFF);
+        }
 
         // {
         //     SmartDashboard.putNumber("Align: xError", xError);
@@ -265,6 +269,7 @@ public class AlignToReef extends Command {
         if (desiredPose.isPresent())
             drivetrain.drive(new Translation2d(0,0), 0, false, null);
         
+        LimelightFrontMiddle.getInstance().setLED(Limelight.LightMode.OFF);
         LimelightBack.getInstance().setLED(Limelight.LightMode.OFF);
         // SmartDashboard.putBoolean("Align: Finished?", true);
     }

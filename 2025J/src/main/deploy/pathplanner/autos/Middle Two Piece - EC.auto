@@ -43,7 +43,7 @@
         {
           "type": "wait",
           "data": {
-            "waitTime": 1.0
+            "waitTime": 0.5
           }
         },
         {
@@ -68,6 +68,48 @@
           "type": "named",
           "data": {
             "name": "ALIGN_17_8_LEFT"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "C to HP Align"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "ALIGN_TO_HP_LEFT"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.5
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "L4_PRESTAGE"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "HP to D Align"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "L4_PREP"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "ALIGN_17_8_RIGHT"
           }
         }
       ]

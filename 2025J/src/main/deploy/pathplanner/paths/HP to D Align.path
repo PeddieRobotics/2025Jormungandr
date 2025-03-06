@@ -3,29 +3,29 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 3.2675966734756487,
-        "y": 2.2611118855236363
+        "x": 1.219,
+        "y": 0.907
       },
       "prevControl": null,
       "nextControl": {
-        "x": 3.016879644340763,
-        "y": 2.2097136211488118
+        "x": 2.2096974280026878,
+        "y": 1.56079181997791
       },
       "isLocked": false,
-      "linkedName": "CReef"
+      "linkedName": "AlignToHPLeft"
     },
     {
       "anchor": {
-        "x": 1.7741803278688524,
-        "y": 2.5445184426229503
+        "x": 3.2675966734756487,
+        "y": 2.2611118855236363
       },
       "prevControl": {
-        "x": 2.3855532786885245,
-        "y": 2.724334016393442
+        "x": 2.291121222456382,
+        "y": 1.6211450968150911
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "Lollipop1"
+      "linkedName": "CReef"
     }
   ],
   "rotationTargets": [],
@@ -33,22 +33,22 @@
   "pointTowardsZones": [],
   "eventMarkers": [],
   "globalConstraints": {
-    "maxVelocity": 4.0,
-    "maxAcceleration": 6.0,
+    "maxVelocity": 3.0,
+    "maxAcceleration": 4.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0,
     "nominalVoltage": 12.0,
     "unlimited": false
   },
   "goalEndState": {
-    "velocity": 0,
-    "rotation": -141.70983680775691
-  },
-  "reversed": false,
-  "folder": null,
-  "idealStartingState": {
-    "velocity": 0,
+    "velocity": 2.0,
     "rotation": 59.99999999999999
   },
-  "useDefaultConstraints": true
+  "reversed": false,
+  "folder": "HP Intake",
+  "idealStartingState": {
+    "velocity": 0,
+    "rotation": 55.0
+  },
+  "useDefaultConstraints": false
 }

@@ -73,8 +73,8 @@ public class AlignToHP extends Command {
         this.lateralOffset = lateralOffset;
         this.backOffset = backOffset;
 
-        SmartDashboard.putNumber("HPAlign: lateral offset", lateralOffset);
-        SmartDashboard.putNumber("HPAlign: back offset", backOffset);
+        // SmartDashboard.putNumber("HPAlign: lateral offset", lateralOffset);
+        // SmartDashboard.putNumber("HPAlign: back offset", backOffset);
         SmartDashboard.putNumber("HPAlign: max speed", maxSpeed);
 
         addRequirements(drivetrain);
@@ -103,8 +103,8 @@ public class AlignToHP extends Command {
         Pose2d tagPose = Limelight.getAprilTagPose(12);
         double tagAngle = tagPose.getRotation().getRadians();
 
-        lateralOffset = SmartDashboard.getNumber("HPAlign: lateral offset", lateralOffset);
-        backOffset = SmartDashboard.getNumber("HPAlign: back offset", backOffset);
+        // lateralOffset = SmartDashboard.getNumber("HPAlign: lateral offset", lateralOffset);
+        // backOffset = SmartDashboard.getNumber("HPAlign: back offset", backOffset);
 
         desiredPose = new Pose2d(
             tagPose.getX() + backOffset * Math.cos(tagAngle) + lateralOffset * Math.sin(tagAngle),

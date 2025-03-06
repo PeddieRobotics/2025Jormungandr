@@ -23,6 +23,7 @@ import frc.robot.subsystems.Claw;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.LimelightFrontMiddle;
 import frc.robot.utils.Constants.AlignmentConstants;
+import frc.robot.utils.Constants.AlignmentConstants.HPAlign;
 import frc.robot.utils.Constants.AlignmentConstants.ReefAlign;
 import frc.robot.utils.Constants.DriveConstants;
 
@@ -63,7 +64,7 @@ public class DriverOI {
         circleButton.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.HP_INTAKE)));
 
         Trigger squareButton = new JoystickButton(controller, PS4Controller.Button.kSquare.value);
-        squareButton.whileTrue(new AlignToHP(2.0, 0, 0.45));
+        squareButton.whileTrue(new AlignToHP(HPAlign.kMaxSpeed, HPAlign.kMiddleOffset, HPAlign.kBackOffset));
         // squareButton.onTrue(new InstantCommand(() -> CalculateReefTarget.calculateTargetID()));
         // squareButton.whileTrue(new AlignToReefEstimatedPose(AlignmentConstants.AlignmentDestination.MIDDLE, false));
 
@@ -89,11 +90,11 @@ public class DriverOI {
         // ));
 
         Trigger L1Bumper = new JoystickButton(controller, PS4Controller.Button.kL1.value);
-        L1Bumper.whileTrue(new AlignToHP(2.0, 0.5, 0.45));
+        L1Bumper.whileTrue(new AlignToHP(HPAlign.kMaxSpeed, HPAlign.kLeftOffset, HPAlign.kBackOffset));
         // L1Bumper.whileTrue(new OrbitReef());
 
         Trigger R1Bumper = new JoystickButton(controller, PS4Controller.Button.kR1.value);
-        R1Bumper.whileTrue(new AlignToHP(2.0, -0.5, 0.45));
+        R1Bumper.whileTrue(new AlignToHP(HPAlign.kMaxSpeed, HPAlign.kRightOffset, HPAlign.kBackOffset));
         // R1Bumper.whileTrue(new OrbitReef());
 
         Trigger L2Trigger = new JoystickButton(controller, PS4Controller.Button.kL2.value);
