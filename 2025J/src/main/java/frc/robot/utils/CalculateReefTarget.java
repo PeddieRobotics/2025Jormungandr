@@ -171,12 +171,12 @@ public class CalculateReefTarget {
 
         boolean isInBadHexagon = insideBadHexagon(new Point(odometryPose));
 
-        SmartDashboard.putBoolean("is inside bad hexagon", isInBadHexagon);
+        // SmartDashboard.putBoolean("is inside bad hexagon", isInBadHexagon);
 
-        SmartDashboard.putNumber("tag 0 distance", robotToTag.get(0).vector.getNorm());
-        SmartDashboard.putNumber("tag 1 distance", robotToTag.get(1).vector.getNorm());
-        SmartDashboard.putNumber("tag 0 id", tag0id);
-        SmartDashboard.putNumber("key 1 id", tag1id);
+        // SmartDashboard.putNumber("tag 0 distance", robotToTag.get(0).vector.getNorm());
+        // SmartDashboard.putNumber("tag 1 distance", robotToTag.get(1).vector.getNorm());
+        // SmartDashboard.putNumber("tag 0 id", tag0id);
+        // SmartDashboard.putNumber("key 1 id", tag1id);
 
         double tag0neededAngle = AlignmentConstants.kReefDesiredAngle.get(tag0id);
         double tag0gyroError = drivetrain.getHeading() - tag0neededAngle;
@@ -201,8 +201,8 @@ public class CalculateReefTarget {
         else {
             double similar0 = cosineSimilarity(robotToTag.get(0).vector, robotMovement);
             double similar1 = cosineSimilarity(robotToTag.get(1).vector, robotMovement);
-            SmartDashboard.putNumber("tag 0 similarity", similar0);
-            SmartDashboard.putNumber("tag 1 similarity", similar1);
+            // SmartDashboard.putNumber("tag 0 similarity", similar0);
+            // SmartDashboard.putNumber("tag 1 similarity", similar1);
             bestTag = similar0 >= similar1 ? tag0id : tag1id;
         }
 

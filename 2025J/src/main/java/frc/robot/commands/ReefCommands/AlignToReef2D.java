@@ -56,8 +56,8 @@ public class AlignToReef2D extends Command {
         desiredDistance = 0.49;
         desiredTranslation = 0.0;
 
-        SmartDashboard.putNumber("Desired Distance", desiredDistance);
-        SmartDashboard.putNumber("Desired Translation", desiredTranslation);
+        // SmartDashboard.putNumber("Desired Distance", desiredDistance);
+        // SmartDashboard.putNumber("Desired Translation", desiredTranslation);
 
         distanceP = 2;
         distanceI = 0;
@@ -66,10 +66,10 @@ public class AlignToReef2D extends Command {
         distanceFF = 0;
         distancePidController = new PIDController(distanceP, distanceI , distanceD);
 
-        SmartDashboard.putNumber("Distance P", distanceP);
-        SmartDashboard.putNumber("Distance I", distanceI);
-        SmartDashboard.putNumber("Distance D", distanceD);
-        SmartDashboard.putNumber("Distance FF", distanceFF);
+        // SmartDashboard.putNumber("Distance P", distanceP);
+        // SmartDashboard.putNumber("Distance I", distanceI);
+        // SmartDashboard.putNumber("Distance D", distanceD);
+        // SmartDashboard.putNumber("Distance FF", distanceFF);
         
         translationP = 1.75;
         translationI = 0;
@@ -77,10 +77,10 @@ public class AlignToReef2D extends Command {
         translationFF = 0.0;
         translationPidController = new PIDController(translationP, translationI , translationD);
 
-        SmartDashboard.putNumber("PhilipAlign P", translationP);
-        SmartDashboard.putNumber("PhilipAlign I", translationI);
-        SmartDashboard.putNumber("PhilipAlign D", translationD);
-        SmartDashboard.putNumber("PhilipAlign FF", translationFF);
+        // SmartDashboard.putNumber("PhilipAlign P", translationP);
+        // SmartDashboard.putNumber("PhilipAlign I", translationI);
+        // SmartDashboard.putNumber("PhilipAlign D", translationD);
+        // SmartDashboard.putNumber("PhilipAlign FF", translationFF);
 
         rotationP = 0.09;
         rotationI = 0.0;
@@ -89,21 +89,21 @@ public class AlignToReef2D extends Command {
         rotationThresholdP = 0.07;
         rotationPidController = new PIDController(rotationP, rotationI, rotationD);
 
-        SmartDashboard.putNumber("Rotation P", rotationP);
-        SmartDashboard.putNumber("Rotation Threshold P", rotationThresholdP);
-        SmartDashboard.putNumber("Rotation I", rotationI);
-        SmartDashboard.putNumber("Rotation D", rotationD);
-        SmartDashboard.putNumber("Rotation FF", rotationFF);
+        // SmartDashboard.putNumber("Rotation P", rotationP);
+        // SmartDashboard.putNumber("Rotation Threshold P", rotationThresholdP);
+        // SmartDashboard.putNumber("Rotation I", rotationI);
+        // SmartDashboard.putNumber("Rotation D", rotationD);
+        // SmartDashboard.putNumber("Rotation FF", rotationFF);
 
         distanceThreshold = 0.0254;
         rotationThreshold = 0.5;
         translationThreshold = 0.0254;
         rotationUseLowerPThreshold = 1.5;
         
-        SmartDashboard.putNumber("rotationThreshold", rotationThreshold);
-        SmartDashboard.putNumber("translationThreshold", translationThreshold);
-        SmartDashboard.putNumber("distanceThreshold", distanceThreshold);
-        SmartDashboard.putNumber("rotationUseLowerPThreshold", rotationUseLowerPThreshold);
+        // SmartDashboard.putNumber("rotationThreshold", rotationThreshold);
+        // SmartDashboard.putNumber("translationThreshold", translationThreshold);
+        // SmartDashboard.putNumber("distanceThreshold", distanceThreshold);
+        // SmartDashboard.putNumber("rotationUseLowerPThreshold", rotationUseLowerPThreshold);
 
         translation = new Translation2d(0, 0);
         
@@ -150,29 +150,29 @@ public class AlignToReef2D extends Command {
         if (shouldEnd)
             return;
 
-        translationP = SmartDashboard.getNumber("PhilipAlign P", translationP);
-        translationI = SmartDashboard.getNumber("PhilipAlign I", translationI);
-        translationD = SmartDashboard.getNumber("PhilipAlign D", translationD);
-        translationFF = SmartDashboard.getNumber("PhilipAlign FF", translationFF);
+        // translationP = SmartDashboard.getNumber("PhilipAlign P", translationP);
+        // translationI = SmartDashboard.getNumber("PhilipAlign I", translationI);
+        // translationD = SmartDashboard.getNumber("PhilipAlign D", translationD);
+        // translationFF = SmartDashboard.getNumber("PhilipAlign FF", translationFF);
 
-        rotationP = SmartDashboard.getNumber("Rotation P", rotationP);
-        rotationThresholdP = SmartDashboard.getNumber("Rotation Threshold P", rotationThresholdP);
-        rotationI = SmartDashboard.getNumber("Rotation I", rotationI);
-        rotationD = SmartDashboard.getNumber("Rotation D", rotationD);
-        rotationFF = SmartDashboard.getNumber("Rotation FF", rotationFF);
+        // rotationP = SmartDashboard.getNumber("Rotation P", rotationP);
+        // rotationThresholdP = SmartDashboard.getNumber("Rotation Threshold P", rotationThresholdP);
+        // rotationI = SmartDashboard.getNumber("Rotation I", rotationI);
+        // rotationD = SmartDashboard.getNumber("Rotation D", rotationD);
+        // rotationFF = SmartDashboard.getNumber("Rotation FF", rotationFF);
 
-        distanceP = SmartDashboard.getNumber("Distance P", distanceP);
-        distanceI = SmartDashboard.getNumber("Distance I", distanceI);
-        distanceD = SmartDashboard.getNumber("Distance D", distanceD);
-        distanceFF = SmartDashboard.getNumber("Distance FF", distanceFF);
+        // distanceP = SmartDashboard.getNumber("Distance P", distanceP);
+        // distanceI = SmartDashboard.getNumber("Distance I", distanceI);
+        // distanceD = SmartDashboard.getNumber("Distance D", distanceD);
+        // distanceFF = SmartDashboard.getNumber("Distance FF", distanceFF);
 
-        rotationThreshold = SmartDashboard.getNumber("rotationThreshold", rotationThreshold);
-        translationThreshold = SmartDashboard.getNumber("translationThreshold", translationThreshold);
-        distanceThreshold = SmartDashboard.getNumber("distanceThreshold", distanceThreshold);
-        rotationUseLowerPThreshold = SmartDashboard.getNumber("rotationUseLowerPThreshold", rotationUseLowerPThreshold);
+        // rotationThreshold = SmartDashboard.getNumber("rotationThreshold", rotationThreshold);
+        // translationThreshold = SmartDashboard.getNumber("translationThreshold", translationThreshold);
+        // distanceThreshold = SmartDashboard.getNumber("distanceThreshold", distanceThreshold);
+        // rotationUseLowerPThreshold = SmartDashboard.getNumber("rotationUseLowerPThreshold", rotationUseLowerPThreshold);
 
-        desiredDistance = SmartDashboard.getNumber("Desired Distance", desiredDistance);
-        desiredTranslation = SmartDashboard.getNumber("Desired Translation", desiredTranslation);
+        // desiredDistance = SmartDashboard.getNumber("Desired Distance", desiredDistance);
+        // desiredTranslation = SmartDashboard.getNumber("Desired Translation", desiredTranslation);
 
         rotationError = drivetrain.getHeading() - desiredAngle;
         double desiredTx = drivetrain.getHeading() - desiredAngle; // = gyro - desiredAngle
@@ -200,8 +200,8 @@ public class AlignToReef2D extends Command {
             
             double translationError = distance * Math.sin((txValue - desiredTx) * (Math.PI/180));
             
-            SmartDashboard.putNumber("Translation Error", translationError);
-            SmartDashboard.putNumber("Distance Error", distanceError);
+            // SmartDashboard.putNumber("Translation Error", translationError);
+            // SmartDashboard.putNumber("Distance Error", distanceError);
             distanceError = distance - desiredDistance;
 
             if (Math.abs(translationError) > translationThreshold)
@@ -217,7 +217,7 @@ public class AlignToReef2D extends Command {
         else
             translation = new Translation2d(translation.getX() / 2, translation.getY() / 2);
 
-        SmartDashboard.putNumber("Rotation Error", rotationError);
+        // SmartDashboard.putNumber("Rotation Error", rotationError);
 
         // calculate rotation
         double rotation = 0;
