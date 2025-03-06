@@ -432,20 +432,21 @@ public final class Constants {
     }
 
     public static final class CameraConstants {
-        // TODO: update real values
         /*
          * TODO: ONCE ROBOT ORIENTATION IS CORRECTED
          * - Front(Left/Middle/Right) Yaw: 180 -> 0
          * - Front(Left/Middle/Right) (Left/Up)Offset: remove "* -1"
          */
 
-        // public static final String kBackCamName = "limelight-back";
-        // public static final double kBackCamForward = 0;
-        // public static final double kBackCamLeftOffset = 0;
-        // public static final double kBackCamUpOffset = 0;
-        // public static final double kBackCamPitchDeg = 0;
-        // public static final double kBackCamYawDeg = 0;
-        // public static final int kBackCamPipeline = 0;
+        // 3: ???
+        // TODO: find real values
+        public static final String kBackCamName = "limelight-back";
+        public static final double kBackCamForward = 0;
+        public static final double kBackCamLeftOffset = 0;
+        public static final double kBackCamUpOffset = 0;
+        public static final double kBackCamPitchDeg = 0;
+        public static final double kBackCamYawDeg = 0;
+        public static final int kBackCamPipeline = 0;
 
         // 3G: 10.58.95.11
         public static final String kFrontLeftCamName = "limelight-left";

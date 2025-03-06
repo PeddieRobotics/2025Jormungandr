@@ -63,7 +63,7 @@ public class DriverOI {
         circleButton.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.HP_INTAKE)));
 
         Trigger squareButton = new JoystickButton(controller, PS4Controller.Button.kSquare.value);
-        squareButton.whileTrue(new AlignToHPStationMegaTag());
+        squareButton.whileTrue(new AlignToHP(2.0, 0, 0.45));
         // squareButton.onTrue(new InstantCommand(() -> CalculateReefTarget.calculateTargetID()));
         // squareButton.whileTrue(new AlignToReefEstimatedPose(AlignmentConstants.AlignmentDestination.MIDDLE, false));
 
@@ -89,12 +89,11 @@ public class DriverOI {
         // ));
 
         Trigger L1Bumper = new JoystickButton(controller, PS4Controller.Button.kL1.value);
-        L1Bumper.whileTrue(new AlignToHP(AlignmentConstants.AlignmentDestination.LEFT, 2.0, 0.43));
+        L1Bumper.whileTrue(new AlignToHP(2.0, 0.5, 0.45));
         // L1Bumper.whileTrue(new OrbitReef());
 
         Trigger R1Bumper = new JoystickButton(controller, PS4Controller.Button.kR1.value);
-        // R1Bumper.whileTrue(new AlignToHPStationMegaTag());
-        R1Bumper.whileTrue(new AlignToHP(AlignmentConstants.AlignmentDestination.RIGHT, 2.0, 0.43));
+        R1Bumper.whileTrue(new AlignToHP(2.0, -0.5, 0.45));
         // R1Bumper.whileTrue(new OrbitReef());
 
         Trigger L2Trigger = new JoystickButton(controller, PS4Controller.Button.kL2.value);
@@ -111,7 +110,8 @@ public class DriverOI {
         Trigger R3Trigger = new JoystickButton(controller, PS4Controller.Button.kR3.value);
         R3Trigger.whileTrue(new ConditionalCommand(
             new AlignToReef(AlignmentConstants.AlignmentDestination.RIGHT, ReefAlignEstimatedPose.kMaxSpeed, 0, 0),
-            new AlignToHPStationMegaTag(),
+            new AlignToHP(2.0, 0, 0.45),
+            // new AlignToHPStationMegaTag(),
             Claw.getInstance()::eitherCoralSensorTriggered
         ));
 
