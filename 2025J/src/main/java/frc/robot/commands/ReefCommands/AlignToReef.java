@@ -19,7 +19,7 @@ import frc.robot.subsystems.LimelightBack;
 import frc.robot.utils.CalculateReefTarget;
 import frc.robot.utils.Constants.AlignmentConstants;
 import frc.robot.utils.Constants.AlignmentConstants.AlignmentDestination;
-import frc.robot.utils.Constants.AlignmentConstants.ReefAlignEstimatedPose;
+import frc.robot.utils.Constants.AlignmentConstants.ReefAlign;
 
 public class AlignToReef extends Command {
     private Drivetrain drivetrain;
@@ -54,7 +54,7 @@ public class AlignToReef extends Command {
                     LimelightFrontLeft.getInstance(),
                 };
                 commandName = "left align";
-                tagLateralMagnitude = AlignmentConstants.ReefAlignEstimatedPose.kLeftOffset;
+                tagLateralMagnitude = AlignmentConstants.ReefAlign.kLeftOffset;
             }
             case MIDDLE -> {
                 cameras = new Limelight[] {
@@ -63,7 +63,7 @@ public class AlignToReef extends Command {
                     LimelightFrontRight.getInstance(),
                 };
                 commandName = "middle align";
-                tagLateralMagnitude = AlignmentConstants.ReefAlignEstimatedPose.kMiddleOffset;
+                tagLateralMagnitude = AlignmentConstants.ReefAlign.kMiddleOffset;
             }
             case RIGHT -> {
                 cameras = new Limelight[] {
@@ -72,29 +72,29 @@ public class AlignToReef extends Command {
                     LimelightFrontRight.getInstance(),
                 };
                 commandName = "right align";
-                tagLateralMagnitude = AlignmentConstants.ReefAlignEstimatedPose.kRightOffset;
+                tagLateralMagnitude = AlignmentConstants.ReefAlign.kRightOffset;
             }
         }
 
-        translateP = ReefAlignEstimatedPose.kTranslateP;
-        translateI = ReefAlignEstimatedPose.kTranslateI;
-        translateD = ReefAlignEstimatedPose.kTranslateD;
-        translateFF = ReefAlignEstimatedPose.kTranslateFF;
-        translateThreshold = ReefAlignEstimatedPose.kTranslateDistanceThreshold;
+        translateP = ReefAlign.kTranslateP;
+        translateI = ReefAlign.kTranslateI;
+        translateD = ReefAlign.kTranslateD;
+        translateFF = ReefAlign.kTranslateFF;
+        translateThreshold = ReefAlign.kTranslateDistanceThreshold;
 
-        rotationP = ReefAlignEstimatedPose.kRotationP;
-        rotationI = ReefAlignEstimatedPose.kRotationI;
-        rotationD = ReefAlignEstimatedPose.kRotationD;
-        rotationFF = ReefAlignEstimatedPose.kRotationFF;
-        rotationThreshold = ReefAlignEstimatedPose.kRotationThreshold;
-        rotationLowerP = ReefAlignEstimatedPose.kRotationLowerP;
-        rotationUseLowerPThreshold = ReefAlignEstimatedPose.kRotationUseLowerPThreshold;
+        rotationP = ReefAlign.kRotationP;
+        rotationI = ReefAlign.kRotationI;
+        rotationD = ReefAlign.kRotationD;
+        rotationFF = ReefAlign.kRotationFF;
+        rotationThreshold = ReefAlign.kRotationThreshold;
+        rotationLowerP = ReefAlign.kRotationLowerP;
+        rotationUseLowerPThreshold = ReefAlign.kRotationUseLowerPThreshold;
         
         translatePIDController = new PIDController(translateP, translateI, translateD);
         rotationPIDController = new PIDController(rotationP, rotationI, rotationD);
         rotationPIDController.enableContinuousInput(-180.0, 180.0);
         
-        tagBackMagnitude = ReefAlignEstimatedPose.kTagBackMagnitude;
+        tagBackMagnitude = ReefAlign.kTagBackMagnitude;
         
         this.maxSpeed = maxSpeed;
         this.blueTargetTag = blueTargetTag;

@@ -23,7 +23,7 @@ import frc.robot.subsystems.Claw;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.LimelightFrontMiddle;
 import frc.robot.utils.Constants.AlignmentConstants;
-import frc.robot.utils.Constants.AlignmentConstants.ReefAlignEstimatedPose;
+import frc.robot.utils.Constants.AlignmentConstants.ReefAlign;
 import frc.robot.utils.Constants.DriveConstants;
 
 public class DriverOI {
@@ -102,14 +102,14 @@ public class DriverOI {
 
         Trigger L3Trigger = new JoystickButton(controller, PS4Controller.Button.kL3.value);
         L3Trigger.whileTrue(new ConditionalCommand(
-            new AlignToReef(AlignmentConstants.AlignmentDestination.LEFT, ReefAlignEstimatedPose.kMaxSpeed, 0, 0),
-            new AlignToReef(AlignmentConstants.AlignmentDestination.MIDDLE, ReefAlignEstimatedPose.kMaxSpeed, 0, 0),
+            new AlignToReef(AlignmentConstants.AlignmentDestination.LEFT, ReefAlign.kMaxSpeed, 0, 0),
+            new AlignToReef(AlignmentConstants.AlignmentDestination.MIDDLE, ReefAlign.kMaxSpeed, 0, 0),
             Claw.getInstance()::eitherCoralSensorTriggered
         ));
 
         Trigger R3Trigger = new JoystickButton(controller, PS4Controller.Button.kR3.value);
         R3Trigger.whileTrue(new ConditionalCommand(
-            new AlignToReef(AlignmentConstants.AlignmentDestination.RIGHT, ReefAlignEstimatedPose.kMaxSpeed, 0, 0),
+            new AlignToReef(AlignmentConstants.AlignmentDestination.RIGHT, ReefAlign.kMaxSpeed, 0, 0),
             new AlignToHP(2.0, 0, 0.45),
             // new AlignToHPStationMegaTag(),
             Claw.getInstance()::eitherCoralSensorTriggered

@@ -22,7 +22,7 @@ import frc.robot.subsystems.Limelight;
 import frc.robot.utils.CalculateReefTarget;
 import frc.robot.utils.Constants.AlignmentConstants;
 import frc.robot.utils.Constants.AlignmentConstants.AlignmentDestination;
-import frc.robot.utils.Constants.AlignmentConstants.ReefAlignEstimatedPose;
+import frc.robot.utils.Constants.AlignmentConstants.ReefAlign;
 
 public class AlignToHPStationMegaTag extends Command {
     private Drivetrain drivetrain;
@@ -49,25 +49,25 @@ public class AlignToHPStationMegaTag extends Command {
             LimelightFrontRight.getInstance(),
         };
         
-        translateP = ReefAlignEstimatedPose.kTranslateP;
-        translateI = ReefAlignEstimatedPose.kTranslateI;
-        translateD = ReefAlignEstimatedPose.kTranslateD;
-        translateFF = ReefAlignEstimatedPose.kTranslateFF;
-        translateThreshold = ReefAlignEstimatedPose.kTranslateDistanceThreshold;
+        translateP = ReefAlign.kTranslateP;
+        translateI = ReefAlign.kTranslateI;
+        translateD = ReefAlign.kTranslateD;
+        translateFF = ReefAlign.kTranslateFF;
+        translateThreshold = ReefAlign.kTranslateDistanceThreshold;
 
-        rotationP = ReefAlignEstimatedPose.kRotationP;
-        rotationI = ReefAlignEstimatedPose.kRotationI;
-        rotationD = ReefAlignEstimatedPose.kRotationD;
-        rotationFF = ReefAlignEstimatedPose.kRotationFF;
-        rotationThreshold = ReefAlignEstimatedPose.kRotationThreshold;
-        rotationLowerP = ReefAlignEstimatedPose.kRotationLowerP;
-        rotationUseLowerPThreshold = ReefAlignEstimatedPose.kRotationUseLowerPThreshold;
+        rotationP = ReefAlign.kRotationP;
+        rotationI = ReefAlign.kRotationI;
+        rotationD = ReefAlign.kRotationD;
+        rotationFF = ReefAlign.kRotationFF;
+        rotationThreshold = ReefAlign.kRotationThreshold;
+        rotationLowerP = ReefAlign.kRotationLowerP;
+        rotationUseLowerPThreshold = ReefAlign.kRotationUseLowerPThreshold;
         
         translatePIDController = new PIDController(translateP, translateI, translateD);
         rotationPIDController = new PIDController(rotationP, rotationI, rotationD);
         rotationPIDController.enableContinuousInput(-180.0, 180.0);
                 
-        maxSpeed = ReefAlignEstimatedPose.kMaxSpeed;
+        maxSpeed = ReefAlign.kMaxSpeed;
         
         addRequirements(drivetrain);
         
