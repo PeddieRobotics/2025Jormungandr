@@ -16,8 +16,8 @@
     "Tape Starts",
     "Wall Starts"
   ],
-  "defaultMaxVel": 1.0,
-  "defaultMaxAccel": 3.0,
+  "defaultMaxVel": 4.0,
+  "defaultMaxAccel": 6.0,
   "defaultMaxAngVel": 540.0,
   "defaultMaxAngAccel": 720.0,
   "defaultNominalVoltage": 12.0,
