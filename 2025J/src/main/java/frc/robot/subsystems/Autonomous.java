@@ -124,7 +124,7 @@ public class Autonomous extends SubsystemBase {
         NamedCommands.registerCommand("HP_INTAKE", new InstantCommand(() -> superstructure.requestState(SuperstructureState.HP_INTAKE)));
         NamedCommands.registerCommand("SEND_TO_SCORE", new InstantCommand(() -> superstructure.sendToScore()));
         NamedCommands.registerCommand("ALIGN_TO_HP_LEFT", new AlignToHP(2.0, 0.5, 0.45));
-        NamedCommands.registerCommand("ALIGN_TO_HP_CENTER", new AlignToHP(2.0, 0, 0.45));
+        NamedCommands.registerCommand("ALIGN_TO_HP_MIDDLE", new AlignToHP(2.0, 0, 0.45));
         NamedCommands.registerCommand("ALIGN_TO_HP_RIGHT", new AlignToHP(2.0, -0.5, 0.45));
     }
 
