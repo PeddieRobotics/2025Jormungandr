@@ -53,7 +53,7 @@ public class AlignToHPStationMegaTag extends Command {
         translateI = ReefAlign.kTranslateI;
         translateD = ReefAlign.kTranslateD;
         translateFF = ReefAlign.kTranslateFF;
-        translateThreshold = ReefAlign.kTranslateDistanceThreshold;
+        translateThreshold = ReefAlign.kTranslateThreshold;
 
         rotationP = ReefAlign.kRotationP;
         rotationI = ReefAlign.kRotationI;

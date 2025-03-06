@@ -1,6 +1,12 @@
 package frc.robot.utils;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.networktables.StructPublisher;
 import edu.wpi.first.util.datalog.BooleanLogEntry;
 import edu.wpi.first.util.datalog.DataLog;
 import edu.wpi.first.util.datalog.DoubleArrayLogEntry;
@@ -53,10 +59,12 @@ public class Logger {
             rightClimberSupplyCurrentEntry, rightClimberStatorCurrentEntry, rightClimberTemperatureEntry,
             rightClimberPosition;
 
-    private DoubleArrayLogEntry fieldPositionEntry, botposeFieldPositionEntry, moduleSpeedsEntry, modulePositionsEntry;
+    private DoubleArrayLogEntry moduleSpeedsEntry, modulePositionsEntry;
+    private StructPublisher<Pose2d> fusedOdometryEntry;
     
     private DoubleLogEntry[] limelightTyDistanceEntry, limelightPoseDistanceEntry, limelightFilteredPoseDistanceEntry,
         limelightFilteredTyDistanceEntry, limelightNumOfApriltagEntry, limelightTxEntry, limelightTyEntry;
+    private List<StructPublisher<Pose2d>> limelightMT2Entry;
 
     public static Logger getInstance() {
         if (instance == null) {
@@ -80,8 +88,7 @@ public class Logger {
         superstructureRequestedStateEntry = new StringLogEntry(log, "/Superstructure/Requested Superstructure State");
 
         // Field Logs
-        fieldPositionEntry = new DoubleArrayLogEntry(log, "/Field/Position");
-        botposeFieldPositionEntry = new DoubleArrayLogEntry(log, "/Field/Botpose position");
+        fusedOdometryEntry = NetworkTableInstance.getDefault().getStructTopic("/Drivetrain/Fused Odometry", Pose2d.struct).publish();
 
         // Drivetrain Logs
         gyroAngleEntry = new DoubleLogEntry(log, "/Drivetrain/Gyro Angle");
@@ -140,6 +147,7 @@ public class Logger {
             LimelightFrontRight.getInstance(),
             LimelightBack.getInstance()
         };
+        limelightMT2Entry = new ArrayList<>();
         limelightTyDistanceEntry = new DoubleLogEntry[limelights.length];
         limelightPoseDistanceEntry = new DoubleLogEntry[limelights.length];
         limelightFilteredTyDistanceEntry = new DoubleLogEntry[limelights.length];
@@ -157,11 +165,12 @@ public class Logger {
             limelightNumOfApriltagEntry[i] = new DoubleLogEntry(log, "/Camera/" + cameraName + " Number of AprilTags");
             limelightTxEntry[i] = new DoubleLogEntry(log, "/Camera/" + cameraName + " Tx");
             limelightTyEntry[i] = new DoubleLogEntry(log, "/Camera/" + cameraName + " Ty");
+            // limelightMT2Entry.add(new StructPublisher<Pose2d>())
         }
     }
 
     public void logEvent(String event, Boolean isStart) {
-        commandEntry.append(event + (isStart ? "Started" : "Ended"));
+        commandEntry.append(event + (isStart ? " Started" : " Ended"));
     }
 
     public void updateLogs() {
@@ -243,5 +252,6 @@ public class Logger {
         moduleSpeedsEntry.append(swerveModuleSpeeds);
         modulePositionsEntry.append(swerveModulePositions);
 
+        fusedOdometryEntry.set(drivetrain.getPose());
     }
 }

@@ -137,5 +137,6 @@ public class Autonomous extends SubsystemBase {
             "ALIGN_TO_HP_RIGHT",
             new AlignToHP(HPAlign.kMaxSpeed, HPAlign.kRightOffset, HPAlign.kBackOffset)
         );
+        NamedCommands.registerCommand("WAIT_FOR_TOP_CORAL", new WaitForTopCoral());
     }
 }

@@ -4,7 +4,9 @@
 
 package frc.robot.subsystems;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
@@ -13,6 +15,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.utils.Constants.ClawConstants;
 import frc.robot.utils.Constants.ScoreConstants;
 import frc.robot.utils.LiveData;
+import frc.robot.utils.OperatorOI;
 
 import static frc.robot.subsystems.Superstructure.SuperstructureState.*;
 
@@ -55,7 +58,8 @@ public class Superstructure extends SubsystemBase {
         REEF1_ALGAE_INTAKE,
         REEF2_ALGAE_INTAKE,
         EJECT_ALGAE,
-        EJECT_CORAL
+        EJECT_CORAL,
+        REMOVING_ALGAE
     }
 
     public Superstructure() {
@@ -248,12 +252,12 @@ public class Superstructure extends SubsystemBase {
             case L2_PREP -> {
                 // set prep angle
                 /*
-                 * two different cases:
-                 * - dunk case
-                 * move to angle close to scoring angle
-                 * - shoot case
-                 * move to scoring angle
-                 */
+                    * two different cases:
+                    * - dunk case
+                    * move to angle close to scoring angle
+                    * - shoot case
+                    * move to scoring angle
+                    */
                 elevator.setElevatorPositionMotionMagicVoltage(ScoreConstants.kElevatorL2ScorePosition);
                 // arm.setArmPositionMotionMagicTorqueCurrentFOC(ScoreConstants.kArmL2ScorePosition);
 
@@ -282,12 +286,12 @@ public class Superstructure extends SubsystemBase {
             case L3_PREP -> {
                 // set prep angle
                 /*
-                 * two different cases:
-                 * - dunk case
-                 * move to angle close to scoring angle
-                 * - shoot case
-                 * move to scoring angle
-                 */
+                    * two different cases:
+                    * - dunk case
+                    * move to angle close to scoring angle
+                    * - shoot case
+                    * move to scoring angle
+                    */
                 elevator.setElevatorPositionMotionMagicVoltage(ScoreConstants.kElevatorL3ScorePosition);
                 // arm.setArmPositionMotionMagicTorqueCurrentFOC(ScoreConstants.kArmL3ScorePosition);
                 
@@ -433,8 +437,12 @@ public class Superstructure extends SubsystemBase {
 
                 if (timer.hasElapsed(ScoreConstants.kL4ScoreTimeout) || !claw.eitherCoralSensorTriggered()){
                     timer.reset();
-                    claw.stopClaw();
-                    requestState(HP_INTAKE);
+                    if (OperatorOI.getInstance().getLeftBumperHeld()) {
+                        requestState(REMOVING_ALGAE);
+                    } else {
+                        claw.stopClaw();
+                        requestState(HP_INTAKE);
+                    }
                 } else {
                     claw.outtakePiece(ClawConstants.kCoralOuttakeSpeed);
                 }
@@ -444,7 +452,8 @@ public class Superstructure extends SubsystemBase {
                         HP_INTAKE,
                         ALGAE_GROUND_INTAKE,
                         REEF1_ALGAE_INTAKE,
-                        REEF2_ALGAE_INTAKE)
+                        REEF2_ALGAE_INTAKE,
+                        REMOVING_ALGAE)
                         .contains(requestedSystemState)) {
                     systemState = requestedSystemState;
                 }
@@ -695,6 +704,22 @@ public class Superstructure extends SubsystemBase {
                     systemState = requestedSystemState;
                 }
             }
+            case REMOVING_ALGAE -> {
+                double armAngle = SmartDashboard.getNumber("RemoveAlgae: arm angle", 0.21);
+                if (elevator.getElevatorCANcoderReading() > 1.5) {
+                    claw.setClaw(ClawConstants.kCoralIntakeSpeed);
+                    arm.setArmPositionVoltage(armAngle);
+                    elevator.setElevatorPercentOutput(getAlgaeRemovalSpeed());
+                }
+                else {
+                    arm.setArmPositionVoltage(0.25);
+                    requestState(HP_INTAKE);
+                }
+
+                if (Arrays.asList(STOW, HP_INTAKE).contains(requestedSystemState)) {
+                    systemState = requestedSystemState;
+                }
+            }
         }
 
     }
@@ -758,6 +783,41 @@ public class Superstructure extends SubsystemBase {
                 break;
             }
         }
+    }
+
+    private final List<Integer> highAlgaeTags = Arrays.asList(
+        18, 20, 22, 7, 9, 11
+    );
+
+    private boolean isHighAlgae() {
+        return SmartDashboard.getBoolean("RemoveAlgae: high?", false);
+        // Limelight camera = LimelightFrontLeft.getInstance();
+        // if (camera.getNumberOfTagsSeen() == 1 && highAlgaeTags.contains(camera.getTargetID()))
+        //     return true;
+
+        // camera = LimelightFrontRight.getInstance();
+        // if (camera.getNumberOfTagsSeen() == 1 && highAlgaeTags.contains(camera.getTargetID()))
+        //     return true;
+
+        // return false;
+    }
+
+    private double getAlgaeRemovalSpeed() {
+        double elevatorFast = SmartDashboard.getNumber("RemoveAlgae: elevator fast", -0.7);
+        double elevatorSlow = SmartDashboard.getNumber("RemoveAlgae: elevator slow", -0.3);
+        double slowThreshold = SmartDashboard.getNumber("RemoveAlgae: slow threshold", 1.0);
+        double thing = SmartDashboard.getNumber("RemoveAlgae: thing", 0.3);
+
+        double elevatorPosition = elevator.getElevatorCANcoderReading();
+        if (isHighAlgae()) {
+            if (Math.abs(elevatorPosition - (ScoreConstants.kElevatorReef2IntakePosition + thing)) <= slowThreshold)
+                return elevatorSlow;
+            return elevatorFast;
+        }
+
+        if (Math.abs(elevatorPosition - (ScoreConstants.kElevatorReef1IntakePosition + thing)) <= slowThreshold)
+            return elevatorSlow;
+        return elevatorFast;
     }
 
     @Override

@@ -14,6 +14,7 @@ import frc.robot.subsystems.LimelightFrontLeft;
 import frc.robot.subsystems.LimelightFrontMiddle;
 import frc.robot.subsystems.LimelightFrontRight;
 import frc.robot.subsystems.Superstructure;
+import frc.robot.subsystems.Superstructure.SuperstructureState;
 import frc.robot.subsystems.Limelight;
 import frc.robot.subsystems.LimelightBack;
 import frc.robot.utils.CalculateReefTarget;
@@ -80,7 +81,7 @@ public class AlignToReef extends Command {
         translateI = ReefAlign.kTranslateI;
         translateD = ReefAlign.kTranslateD;
         translateFF = ReefAlign.kTranslateFF;
-        translateThreshold = ReefAlign.kTranslateDistanceThreshold;
+        translateThreshold = ReefAlign.kTranslateThreshold;
 
         rotationP = ReefAlign.kRotationP;
         rotationI = ReefAlign.kRotationI;
@@ -152,6 +153,19 @@ public class AlignToReef extends Command {
         tagLateralMagnitude = SmartDashboard.getNumber(commandName + " lateral offset", tagLateralMagnitude);
         tagBackMagnitude = SmartDashboard.getNumber(commandName + " back offset", tagBackMagnitude);
 
+        if (Superstructure.getInstance().getCurrentState() == SuperstructureState.L1_PREP){
+            if (commandName.equals("left align")) {
+                tagLateralMagnitude = 0.1;
+                tagBackMagnitude = 0.55;
+                desiredAngle += 20.0;
+            }
+            else if (commandName.equals("right align")) {
+                tagLateralMagnitude = -0.1;
+                tagBackMagnitude = 0.55;
+                desiredAngle -= 20.0;
+            }
+        }
+
         desiredPose = Optional.of(new Pose2d(
             tagPose.getX() + tagBackMagnitude * Math.cos(tagAngle) + tagLateralMagnitude * Math.sin(tagAngle),
             tagPose.getY() + tagBackMagnitude * Math.sin(tagAngle) - tagLateralMagnitude * Math.cos(tagAngle),
@@ -161,6 +175,8 @@ public class AlignToReef extends Command {
         xError = 10000;
         yError = 10000;
         rotationError = 10000;
+
+        translateThreshold = DriverStation.isAutonomous() ? ReefAlign.kTranslateThresholdAuto : ReefAlign.kTranslateThreshold;
         
         LimelightFrontMiddle.getInstance().setLED(Limelight.LightMode.ON);
         LimelightBack.getInstance().setLED(Limelight.LightMode.ON);
@@ -249,9 +265,9 @@ public class AlignToReef extends Command {
 
         boolean autoScore = SmartDashboard.getBoolean("Align: Auto Score", true);
         if (Math.abs(rotationError) < rotationThreshold && translationDistanceGood() && autoScore) {
-            Superstructure.getInstance().sendToScore();
             LimelightFrontMiddle.getInstance().setLED(Limelight.LightMode.OFF);
             LimelightBack.getInstance().setLED(Limelight.LightMode.OFF);
+            Superstructure.getInstance().sendToScore();
         }
 
         // {

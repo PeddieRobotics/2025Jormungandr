@@ -18,6 +18,7 @@ import frc.robot.subsystems.LimelightFrontRight;
 import frc.robot.subsystems.Superstructure;
 import frc.robot.subsystems.Limelight;
 import frc.robot.subsystems.LimelightBack;
+import frc.robot.utils.CalculateHPTarget;
 import frc.robot.utils.CalculateReefTarget;
 import frc.robot.utils.Constants.AlignmentConstants;
 import frc.robot.utils.Constants.AlignmentConstants.AlignmentDestination;
@@ -100,7 +101,7 @@ public class AlignToHP extends Command {
     public void initialize() {
         // blue: 12, 13
         // red: 1, 2
-        Pose2d tagPose = Limelight.getAprilTagPose(12);
+        Pose2d tagPose = Limelight.getAprilTagPose(CalculateHPTarget.calculateTargetID());
         double tagAngle = tagPose.getRotation().getRadians();
 
         // lateralOffset = SmartDashboard.getNumber("HPAlign: lateral offset", lateralOffset);

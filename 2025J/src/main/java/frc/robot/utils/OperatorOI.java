@@ -120,6 +120,14 @@ public class OperatorOI {
         return controller.getL1Button() && controller.getR1Button();
     }
 
+    public boolean getLeftBumperHeld(){
+        return controller.getL1Button();
+    }
+
+    public boolean getRightBumperHeld(){
+        return controller.getR1Button();
+    }
+
     public boolean bothTriggersHeld() {
         return leftTriggerHeld() & rightTriggerHeld();
     }

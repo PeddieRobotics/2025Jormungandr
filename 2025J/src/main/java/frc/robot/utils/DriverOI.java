@@ -65,7 +65,7 @@ public class DriverOI {
 
         Trigger squareButton = new JoystickButton(controller, PS4Controller.Button.kSquare.value);
         squareButton.whileTrue(new AlignToHP(HPAlign.kMaxSpeed, HPAlign.kMiddleOffset, HPAlign.kBackOffset));
-        // squareButton.onTrue(new InstantCommand(() -> CalculateReefTarget.calculateTargetID()));
+        // squareButton.onTrue(new InstantCommand(() -> SmartDashboard.putNumber("HPTarget", CalculateHPTarget.calculateTargetID())));
         // squareButton.whileTrue(new AlignToReefEstimatedPose(AlignmentConstants.AlignmentDestination.MIDDLE, false));
 
         Trigger triangleButton = new JoystickButton(controller, PS4Controller.Button.kTriangle.value);
@@ -125,6 +125,14 @@ public class DriverOI {
 
     public boolean bothBumpersHeld() {
         return controller.getL1Button() && controller.getR1Button();
+    }
+
+    public boolean getLeftBumperHeld(){
+        return controller.getL1Button();
+    }
+
+    public boolean getRightBumperHeld(){
+        return controller.getR1Button();
     }
 
     public boolean bothTriggersHeld() {

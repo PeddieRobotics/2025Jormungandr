@@ -25,7 +25,7 @@ public class Elevator extends SubsystemBase {
 
 
     private LiveData elevatorEncoderPosition, elevatorCanCoderPosition, elevatorSetpoint, mainMotorTemp, mainMotorStatorCurrent, mainMotorSupplyCurrent,
-            followerMotorTemp, bottomSensorData, elevatorHeight;
+            followerMotorTemp, bottomSensorData, elevatorHeight, canCoderVelocity;
 
     public Elevator() {
         elevatorCANcoder = new CANcoder(RobotMap.ELEVATOR_CANCODER_ID, RobotMap.CANIVORE_BUS);
@@ -97,6 +97,8 @@ public class Elevator extends SubsystemBase {
 
         mainMotorSupplyCurrent = new LiveData(elevatorMainMotor.getSupplyCurrent(), "Elevator: Main Motor Supply Current");
         mainMotorStatorCurrent = new LiveData(elevatorMainMotor.getStatorCurrent(), "Elevator: Main Motor Stator Current");
+
+        canCoderVelocity = new LiveData(elevatorCANcoder.getVelocity().getValueAsDouble(), "Elevator: CANCoder Velocity");
         
 
         // bottomSensorData = new LiveData(getBottomLimitSwitch(), "Elevator Bottom Limit Switch");
@@ -259,6 +261,8 @@ public class Elevator extends SubsystemBase {
 
         mainMotorSupplyCurrent.setNumber(getMotorSupplyCurrent());
         mainMotorStatorCurrent.setNumber(getMotorStatorCurrent());
+
+        canCoderVelocity.setNumber(elevatorCANcoder.getVelocity().getValueAsDouble());
 
     }
 
