@@ -99,14 +99,14 @@ public class DriverOI {
 
         Trigger L3Trigger = new JoystickButton(controller, PS4Controller.Button.kL3.value);
         L3Trigger.whileTrue(new ConditionalCommand(
-            new AlignToReef(AlignmentConstants.AlignmentDestination.LEFT, ReefAlignEstimatedPose.kMaxSpeed),
-            new AlignToReef(AlignmentConstants.AlignmentDestination.MIDDLE, ReefAlignEstimatedPose.kMaxSpeed),
+            new AlignToReef(AlignmentConstants.AlignmentDestination.LEFT, ReefAlignEstimatedPose.kMaxSpeed, 0, 0),
+            new AlignToReef(AlignmentConstants.AlignmentDestination.MIDDLE, ReefAlignEstimatedPose.kMaxSpeed, 0, 0),
             Claw.getInstance()::eitherCoralSensorTriggered
         ));
 
         Trigger R3Trigger = new JoystickButton(controller, PS4Controller.Button.kR3.value);
         R3Trigger.whileTrue(new ConditionalCommand(
-            new AlignToReef(AlignmentConstants.AlignmentDestination.RIGHT, ReefAlignEstimatedPose.kMaxSpeed),
+            new AlignToReef(AlignmentConstants.AlignmentDestination.RIGHT, ReefAlignEstimatedPose.kMaxSpeed, 0, 0),
             new AlignToHPStationMegaTag(),
             Claw.getInstance()::eitherCoralSensorTriggered
         ));

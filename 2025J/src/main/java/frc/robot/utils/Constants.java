@@ -319,6 +319,17 @@ public final class Constants {
             }
         };
 
+        public static final Map<Integer, Integer> kBlueToRedReefTag = new HashMap<>() {
+            {
+                put(17, 8);
+                put(18, 7);
+                put(19, 6);
+                put(20, 11);
+                put(21, 10);
+                put(22, 9);
+            }
+        };
+
         public enum AlignmentDestination {
             LEFT, MIDDLE, RIGHT
         };

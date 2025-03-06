@@ -60,16 +60,18 @@ public class CalculateReefTarget {
             Pose2d tag18 = Limelight.getAprilTagPose(18);
             Pose2d tag21 = Limelight.getAprilTagPose(21);
             reefCenter = new Point(
-                    (tag18.getX() + tag21.getX()) / 2,
-                    (tag18.getY() + tag21.getY()) / 2);
+                (tag18.getX() + tag21.getX()) / 2,
+                (tag18.getY() + tag21.getY()) / 2
+            );
         }
         // RED
         else {
             Pose2d tag7 = Limelight.getAprilTagPose(7);
             Pose2d tag10 = Limelight.getAprilTagPose(10);
             reefCenter = new Point(
-                    (tag7.getX() + tag10.getX()) / 2,
-                    (tag7.getY() + tag10.getY()) / 2);
+                (tag7.getX() + tag10.getX()) / 2,
+                (tag7.getY() + tag10.getY()) / 2
+            );
         }
 
         /*
@@ -95,8 +97,9 @@ public class CalculateReefTarget {
         badHexagonPoints = new ArrayList<>();
         for (int i = 0; i < 360; i += 60) {
             badHexagonPoints.add(new Point(
-                    reefCenter.x + reefCornerToCenter * Math.cos(Math.toRadians(i)),
-                    reefCenter.y + reefCornerToCenter * Math.sin(Math.toRadians(i))));
+                reefCenter.x + reefCornerToCenter * Math.cos(Math.toRadians(i)),
+                reefCenter.y + reefCornerToCenter * Math.sin(Math.toRadians(i))
+            ));
         }
 
         // Field2d[] fields = new Field2d[6];

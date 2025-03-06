@@ -16,6 +16,7 @@ import frc.robot.commands.AutoCommands.*;
 import frc.robot.commands.ReefCommands.AlignToReef;
 import frc.robot.subsystems.Superstructure.SuperstructureState;
 import frc.robot.utils.Constants;
+import frc.robot.utils.Constants.AlignmentConstants;
 import frc.robot.utils.Constants.AutoConstants;
 
 public class Autonomous extends SubsystemBase {
@@ -92,15 +93,18 @@ public class Autonomous extends SubsystemBase {
     }
 
     public void registerNamedCommands(){
-        // NamedCommands.registerCommand("ALIGN_TO_REEF", new AlignToReefInAuto());
-        NamedCommands.registerCommand(
-            "ALIGN_TO_REEF_LEFT", 
-            new AlignToReef(Constants.AlignmentConstants.AlignmentDestination.LEFT, 2.0)
-        );
-        NamedCommands.registerCommand(
-            "ALIGN_TO_REEF_RIGHT", 
-            new AlignToReef(Constants.AlignmentConstants.AlignmentDestination.RIGHT, 2.0)
-        );
+        for (int blue = 17; blue <= 22; blue++) {
+            int red = AlignmentConstants.kBlueToRedReefTag.get(blue);
+            NamedCommands.registerCommand(
+                "ALIGN_" + blue + "_" + red + "_LEFT",
+                new AlignToReef(Constants.AlignmentConstants.AlignmentDestination.LEFT, 2.0, blue, red)
+            );
+            NamedCommands.registerCommand(
+                "ALIGN_" + blue + "_" + red + "_RIGHT",
+                new AlignToReef(Constants.AlignmentConstants.AlignmentDestination.RIGHT, 2.0, blue, red)
+            );
+        }
+
         NamedCommands.registerCommand("L1_PREP", new InstantCommand(() -> superstructure.requestState(SuperstructureState.L1_PREP)));
         NamedCommands.registerCommand("L2_PREP", new InstantCommand(() -> superstructure.requestState(SuperstructureState.L2_PREP)));
         NamedCommands.registerCommand("L3_PREP", new InstantCommand(() -> superstructure.requestState(SuperstructureState.L3_PREP)));

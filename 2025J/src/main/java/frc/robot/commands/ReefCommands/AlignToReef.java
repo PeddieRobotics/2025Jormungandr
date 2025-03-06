@@ -41,7 +41,9 @@ public class AlignToReef extends Command {
 
     private double xError, yError, rotationError;
 
-    public AlignToReef(AlignmentDestination destination, double maxSpeed) {
+    private int blueTargetTag, redTargetTag;
+
+    public AlignToReef(AlignmentDestination destination, double maxSpeed, int blueTargetTag, int redTargetTag) {
         drivetrain = Drivetrain.getInstance();
         
         // center
@@ -96,6 +98,8 @@ public class AlignToReef extends Command {
         tagBackMagnitude = ReefAlignEstimatedPose.kTagBackMagnitude;
         
         this.maxSpeed = maxSpeed;
+        this.blueTargetTag = blueTargetTag;
+        this.redTargetTag = redTargetTag;
 
         SmartDashboard.putNumber(commandName + " lateral offset", tagLateralMagnitude);
         SmartDashboard.putNumber(commandName + " back offset", tagBackMagnitude);
@@ -122,7 +126,13 @@ public class AlignToReef extends Command {
     @Override
     public void initialize() {
         int desiredTarget;
-        if (SmartDashboard.getBoolean("Align: Smart Target Finding", true)) {
+        if (DriverStation.isAutonomous()) {
+            if (DriverStation.getAlliance().isEmpty() || DriverStation.getAlliance().get() == DriverStation.Alliance.Blue)
+                desiredTarget = blueTargetTag;
+            else
+                desiredTarget = redTargetTag;
+        }
+        else if (SmartDashboard.getBoolean("Align: Smart Target Finding", true)) {
             // if aligning from unacceptable position ("sad face case"): returns 0
             desiredTarget = CalculateReefTarget.calculateTargetID();
         }
