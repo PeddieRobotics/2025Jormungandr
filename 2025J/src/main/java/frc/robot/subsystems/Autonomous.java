@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.commands.AutoCommands.*;
+import frc.robot.commands.ReefCommands.AlignToHPStationMegaTag;
 import frc.robot.commands.ReefCommands.AlignToReef;
 import frc.robot.subsystems.Superstructure.SuperstructureState;
 import frc.robot.utils.Constants;
@@ -101,14 +102,14 @@ public class Autonomous extends SubsystemBase {
                 "ALIGN_" + blue + "_" + red + "_LEFT",
                 new SequentialCommandGroup(
                     new AlignToReef(Constants.AlignmentConstants.AlignmentDestination.LEFT, 2.0, blue, red),
-                    new WaitCommand(0.2)
+                    new WaitCommand(0.3)
                 )
             );
             NamedCommands.registerCommand(
                 "ALIGN_" + blue + "_" + red + "_RIGHT",
                 new SequentialCommandGroup(
                     new AlignToReef(Constants.AlignmentConstants.AlignmentDestination.RIGHT, 2.0, blue, red),
-                    new WaitCommand(0.2)
+                    new WaitCommand(0.3)
                 )
             );
         }
@@ -121,6 +122,7 @@ public class Autonomous extends SubsystemBase {
         NamedCommands.registerCommand("STOW", new InstantCommand(() -> superstructure.requestState(SuperstructureState.STOW)));
         NamedCommands.registerCommand("HP_INTAKE", new InstantCommand(() -> superstructure.requestState(SuperstructureState.HP_INTAKE)));
         NamedCommands.registerCommand("SEND_TO_SCORE", new InstantCommand(() -> superstructure.sendToScore()));
+        NamedCommands.registerCommand("ALIGN_TO_HP", new AlignToHPStationMegaTag());
     }
 
 }

@@ -8,20 +8,20 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 3.9925639618968303,
-        "y": 2.1753359464235302
+        "x": 4.071903846997848,
+        "y": 2.2647436227790214
       },
       "isLocked": false,
       "linkedName": "EReef"
     },
     {
       "anchor": {
-        "x": 2.38875,
-        "y": 1.2559999999999991
+        "x": 2.36925,
+        "y": 1.3242499999999995
       },
       "prevControl": {
-        "x": 3.818287289943187,
-        "y": 2.1876491508659757
+        "x": 4.175316727437732,
+        "y": 2.385908109024953
       },
       "nextControl": null,
       "isLocked": false,
@@ -46,8 +46,8 @@
     "unlimited": false
   },
   "goalEndState": {
-    "velocity": 0,
-    "rotation": 16.69924423399368
+    "velocity": 2.0,
+    "rotation": 55.0
   },
   "reversed": false,
   "folder": "HP Intake",

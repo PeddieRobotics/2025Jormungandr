@@ -209,7 +209,7 @@ public class AlignToReef extends Command {
             rotationError = drivetrain.getHeading() - desiredAngle;
 
         translatePIDController.setPID(translateP, translateI, translateD);
-        if(Math.abs(rotationError) < rotationUseLowerPThreshold)
+        if (Math.abs(rotationError) < rotationUseLowerPThreshold)
             rotationPIDController.setP(rotationLowerP);
         else
             rotationPIDController.setP(rotationP);
