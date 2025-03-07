@@ -258,7 +258,7 @@ public class Logger {
         return new double[] {
             pose.getX(),
             pose.getY(),
-            pose.getRotation().getDegrees()
+            pose.getRotation().getRadians()
         };
     }
 
@@ -268,7 +268,7 @@ public class Logger {
         return new double[] {
             pose.get().getX(),
             pose.get().getY(),
-            pose.get().getRotation().getDegrees()
+            pose.get().getRotation().getRadians()
         };
     }
 
