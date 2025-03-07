@@ -31,10 +31,10 @@ public class OrbitReef extends Command {
     public OrbitReef() { //center of the reef is (4.5, 4)!!!
         drivetrain = Drivetrain.getInstance();
         
-        SmartDashboard.putNumber("P turn pid orbitReef", P);
-        SmartDashboard.putNumber("I turn pid orbitReef", I);
-        SmartDashboard.putNumber("D turn pid orbitReef", D);
-        SmartDashboard.putNumber("FF turn pid orbitReef", FF);
+        // SmartDashboard.putNumber("P turn pid orbitReef", P);
+        // SmartDashboard.putNumber("I turn pid orbitReef", I);
+        // SmartDashboard.putNumber("D turn pid orbitReef", D);
+        // SmartDashboard.putNumber("FF turn pid orbitReef", FF);
 
         turnPIDController = new PIDController(P, I, D);
         turnPIDController.enableContinuousInput(-180, 180); //wrap around values 
@@ -61,10 +61,10 @@ public class OrbitReef extends Command {
 
     @Override
     public void execute() {
-        P = SmartDashboard.getNumber("P turn pid orbitReef", P);
-        I = SmartDashboard.getNumber("I turn pid orbitReef", I);
-        D = SmartDashboard.getNumber("D turn pid orbitReef", D);
-        FF = SmartDashboard.getNumber("FF turn pid orbitReef", FF);
+        // P = SmartDashboard.getNumber("P turn pid orbitReef", P);
+        // I = SmartDashboard.getNumber("I turn pid orbitReef", I);
+        // D = SmartDashboard.getNumber("D turn pid orbitReef", D);
+        // FF = SmartDashboard.getNumber("FF turn pid orbitReef", FF);
 
         turnPIDController.setPID(P, I, D);
         
@@ -87,6 +87,7 @@ public class OrbitReef extends Command {
 
     @Override
     public boolean isFinished() {
-        return Math.abs(Math.abs(currentHeading) - setpoint) < turnThreshold;
+        return false;
+        // return Math.abs(Math.abs(currentHeading) - setpoint) < turnThreshold;
     }
 }

@@ -45,7 +45,7 @@ public class Logger {
 
     private DataLog log = DataLogManager.getLog();
     private StringLogEntry commandEntry, superstructureCurrentStateEntry, superstructureRequestedStateEntry;
-    private BooleanLogEntry LLIntakeHasTargetEntry;
+    private BooleanLogEntry LLIntakeHasTargetEntry, clawTopSensorEntry, clawBottomSensorEntry, clawAlgaeSensorEntry;
     private DoubleLogEntry gyroAngleEntry, gyroAngleEntryBlue, driveTrainSpeedEntry, driveTrainAngleEntry, driveTrainXEntry,
             driveTrainYEntry, driveTrainXVelEntry, driveTrainZAccEntry,
             driveTrainYVelEntry, driveTrainXAccEntry, driveTrainYAccEntry, driveTrainAngleVelEntry,
@@ -113,6 +113,9 @@ public class Logger {
         clawVelocityEntry = new DoubleLogEntry(log, "/Claw/Claw Velocity");
         clawSupplyCurrentEntry = new DoubleLogEntry(log, "/Claw/Claw Motor Supply Current");
         clawStatorCurrentEntry = new DoubleLogEntry(log, "/Claw/Claw Motor Stator Current");
+        clawTopSensorEntry = new BooleanLogEntry(log, "/Claw/Top Sensor");
+        clawBottomSensorEntry = new BooleanLogEntry(log, "/Claw/Bottom Sensor");
+        clawAlgaeSensorEntry = new BooleanLogEntry(log, "Claw/Algae Sensor");
 
         // Elevator Logs
         elevatorPositionEntry = new DoubleLogEntry(log, "/Elevator/Elevator CANcoder Position");
@@ -209,6 +212,9 @@ public class Logger {
         clawVelocityEntry.append(claw.getVelocity());
         clawSupplyCurrentEntry.append(claw.getMotorSupplyCurrent());
         clawStatorCurrentEntry.append(claw.getMotorStatorCurrent());
+        clawTopSensorEntry.append(claw.getTopSensor());
+        clawBottomSensorEntry.append(claw.getBottomSensor());
+        clawAlgaeSensorEntry.append(claw.getAlgaeSensor());
 
         // Elevator Logs
         elevatorPositionEntry.append(elevator.getElevatorCANcoderPosition());

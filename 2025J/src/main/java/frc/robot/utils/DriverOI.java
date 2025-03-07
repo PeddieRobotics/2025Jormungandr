@@ -89,7 +89,7 @@ public class DriverOI {
         // L1Bumper.whileTrue(new OrbitReef());
 
         Trigger R1Bumper = new JoystickButton(controller, PS4Controller.Button.kR1.value);
-        // R1Bumper.whileTrue(new OrbitReef());
+        R1Bumper.whileTrue(new OrbitReef());
 
         Trigger L2Trigger = new JoystickButton(controller, PS4Controller.Button.kL2.value);
 
