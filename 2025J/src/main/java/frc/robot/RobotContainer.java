@@ -21,6 +21,8 @@ import frc.robot.subsystems.LimelightFrontMiddle;
 import frc.robot.subsystems.LimelightFrontRight;
 import frc.robot.subsystems.Superstructure;
 import frc.robot.utils.CalculateReefTarget;
+import frc.robot.utils.Constants.ClawConstants;
+import frc.robot.utils.Constants.ScoreConstants;
 import frc.robot.utils.DriverOI;
 import frc.robot.utils.OperatorOI;
 
@@ -90,6 +92,9 @@ public class RobotContainer {
         SmartDashboard.putNumber("L1AlignRight: lateral offset", -0.1);
         SmartDashboard.putNumber("L1AlignRight: back offset", 0.55);
         SmartDashboard.putNumber("L1AlignRight: angle offset", -20.0);
+
+        SmartDashboard.putNumber("Tuning: L1Position", ScoreConstants.kElevatorL1ScorePosition);
+        SmartDashboard.putNumber("Tuning: L1Speed", ClawConstants.kCoralL1OuttakeSpeed);
 
 
         // SmartDashboard.putBoolean("Use ", false)

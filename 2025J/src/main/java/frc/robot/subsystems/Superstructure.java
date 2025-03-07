@@ -242,7 +242,9 @@ public class Superstructure extends SubsystemBase {
 
             case L1_PREP -> {
                 // set prep angle
-                elevator.setElevatorPositionMotionMagicVoltage(ScoreConstants.kElevatorL1ScorePosition);
+                double position = SmartDashboard.getNumber("Tuning: L1Position", ScoreConstants.kElevatorL1ScorePosition);
+                // elevator.setElevatorPositionMotionMagicVoltage(ScoreConstants.kElevatorL1ScorePosition);
+                elevator.setElevatorPositionMotionMagicVoltage(position);
                 // arm.setArmPositionMotionMagicTorqueCurrentFOC(ScoreConstants.kArmL1ScorePosition);
 
                 //elevator.setElevatorPositionVoltage(ScoreConstants.kElevatorL1ScorePosition);
@@ -393,7 +395,8 @@ public class Superstructure extends SubsystemBase {
                     claw.stopClaw();
                     requestState(HP_INTAKE);
                 } else {
-                    claw.outtakePiece(ClawConstants.kCoralL1OuttakeSpeed);
+                    double speed = SmartDashboard.getNumber("Tuning: L1Speed", ClawConstants.kCoralL1OuttakeSpeed);
+                    claw.outtakePiece(speed);
                 }
 
                 if (Arrays.asList(

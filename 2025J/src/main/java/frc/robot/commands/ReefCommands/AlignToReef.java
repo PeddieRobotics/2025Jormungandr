@@ -197,7 +197,7 @@ public class AlignToReef extends Command {
 
     private boolean translationDistanceGood() {
         // sqrt(xError^2 + yError^2) < threshold
-        
+
         double pythagSquare = xError * xError + yError * yError;
         if (Arrays.asList(SuperstructureState.L2_PREP, SuperstructureState.L3_PREP).contains(
                 Superstructure.getInstance().getCurrentState())) {
