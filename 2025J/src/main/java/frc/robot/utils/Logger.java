@@ -302,4 +302,8 @@ public class Logger {
         HPAlignYErrorEntry.append(yError);
         HPAlignRotationErrorEntry.append(rotationError);
     }
+
+    public void logScoreEvent(int level, double elevator, double arm) {
+        logEvent("Score L" + level + " with elevator " + elevator + ", arm " + arm, null);
+    }
 }

@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.utils.Constants.ClawConstants;
 import frc.robot.utils.Constants.ScoreConstants;
 import frc.robot.utils.LiveData;
+import frc.robot.utils.Logger;
 import frc.robot.utils.OperatorOI;
 
 import static frc.robot.subsystems.Superstructure.SuperstructureState.*;
@@ -732,10 +733,12 @@ public class Superstructure extends SubsystemBase {
     }
 
     public void sendToScore() {
+        Logger logger = Logger.getInstance();
         switch (systemState) {
             case L1_PREP -> {
                 if (arm.isAtPosition(ScoreConstants.kArmL1ScorePosition)
                         && elevator.isAtPosition(ScoreConstants.kElevatorL1ScorePosition)) {
+                    logger.logScoreEvent(1, elevator.getElevatorCANcoderPosition(), arm.getArmMotorEncoderPosition());  
                     requestState(L1_SCORE);
                     timer.reset();
                     timer.start();
@@ -745,6 +748,7 @@ public class Superstructure extends SubsystemBase {
             case L2_PREP -> {
                 if (arm.isAtPosition(ScoreConstants.kArmL2ScorePosition)
                         && elevator.isAtPosition(ScoreConstants.kElevatorL2ScorePosition)) {
+                    logger.logScoreEvent(2, elevator.getElevatorCANcoderPosition(), arm.getArmMotorEncoderPosition());  
                     requestState(L2_SCORE);
                     timer.reset();
                     timer.start();
@@ -754,6 +758,7 @@ public class Superstructure extends SubsystemBase {
             case L3_PREP -> {
                 if (arm.isAtPosition(ScoreConstants.kArmL3ScorePosition)
                         && elevator.isAtPosition(ScoreConstants.kElevatorL3ScorePosition)) {
+                    logger.logScoreEvent(3, elevator.getElevatorCANcoderPosition(), arm.getArmMotorEncoderPosition());  
                     requestState(L3_SCORE);
                     timer.reset();
                     timer.start();
@@ -763,6 +768,7 @@ public class Superstructure extends SubsystemBase {
             case L4_PREP -> {
                 if (arm.isAtPosition(ScoreConstants.kArmL4ScorePosition)
                         && elevator.isAtPosition(ScoreConstants.kElevatorL4ScorePosition)) {
+                    logger.logScoreEvent(4, elevator.getElevatorCANcoderPosition(), arm.getArmMotorEncoderPosition());  
                     requestState(L4_SCORE);
                     timer.reset();
                     timer.start();
