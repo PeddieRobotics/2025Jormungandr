@@ -19,25 +19,25 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Middle Right to E Align"
+            "pathName": "Middle Left to J Align"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "ALIGN_22_9_LEFT"
+            "name": "ALIGN_20_11_RIGHT"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "E to HP Align"
+            "pathName": "J to HP Align"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "ALIGN_TO_HP_LEFT"
+            "name": "ALIGN_TO_HP_RIGHT"
           }
         },
         {
@@ -55,7 +55,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "HP to C Align"
+            "pathName": "HP to L Align"
           }
         },
         {
@@ -67,19 +67,19 @@
         {
           "type": "named",
           "data": {
-            "name": "ALIGN_17_8_LEFT"
+            "name": "ALIGN_19_6_RIGHT"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "C to HP Align"
+            "pathName": "L to HP Align"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "ALIGN_TO_HP_LEFT"
+            "name": "ALIGN_TO_HP_RIGHT"
           }
         },
         {
@@ -97,7 +97,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "HP to D Align"
+            "pathName": "HP to K Align"
           }
         },
         {
@@ -115,7 +115,7 @@
         {
           "type": "named",
           "data": {
-            "name": "ALIGN_17_8_RIGHT"
+            "name": "ALIGN_19_6_LEFT"
           }
         }
       ]
