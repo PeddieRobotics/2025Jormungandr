@@ -45,6 +45,7 @@ public class Superstructure extends SubsystemBase {
         ALGAE_GROUND_INTAKE,
         L1_PREP,
         L2_PREP,
+        L3_PRESTAGE,
         L3_PREP,
         L4_PRESTAGE,
         L4_PREP,
@@ -143,7 +144,7 @@ public class Superstructure extends SubsystemBase {
                         ALGAE_GROUND_INTAKE,
                         L1_PREP,
                         L2_PREP,
-                        L3_PREP,
+                        L3_PRESTAGE,
                         L4_PRESTAGE,
                         BARGE_PRESTAGE,
                         PROCESSOR_PREP,
@@ -204,8 +205,10 @@ public class Superstructure extends SubsystemBase {
                     systemState = requestedSystemState;
                 }
 
-                if (requestedSystemState == L4_PREP && DriverStation.isAutonomous() && claw.bothCoralSensorsTriggered())
+                if ((requestedSystemState == L4_PREP || requestedSystemState == L3_PREP) &&
+                        DriverStation.isAutonomous() && claw.bothCoralSensorsTriggered()) {
                     systemState = requestedSystemState;
+                }
             }
 
             case ALGAE_GROUND_INTAKE -> {
@@ -226,7 +229,7 @@ public class Superstructure extends SubsystemBase {
                         HP_INTAKE,
                         L1_PREP,
                         L2_PREP,
-                        L3_PREP,
+                        L3_PRESTAGE,
                         L4_PRESTAGE,
                         BARGE_PRESTAGE,
                         PROCESSOR_PREP,
@@ -253,7 +256,7 @@ public class Superstructure extends SubsystemBase {
                         ALGAE_GROUND_INTAKE,
                         L1_SCORE,
                         L2_PREP,
-                        L3_PREP,
+                        L3_PRESTAGE,
                         L4_PRESTAGE,
                         BARGE_PRESTAGE,
                         PROCESSOR_PREP,
@@ -287,8 +290,32 @@ public class Superstructure extends SubsystemBase {
                         ALGAE_GROUND_INTAKE,
                         L1_PREP,
                         L2_SCORE,
+                        L3_PRESTAGE,
+                        L4_PRESTAGE,
+                        BARGE_PRESTAGE,
+                        PROCESSOR_PREP,
+                        REEF1_ALGAE_INTAKE,
+                        REEF2_ALGAE_INTAKE,
+                        EJECT_ALGAE,
+                        EJECT_CORAL)
+                        .contains(requestedSystemState)) {
+                    systemState = requestedSystemState;
+                }
+            }
+
+            case L3_PRESTAGE -> {
+                elevator.setElevatorPositionMotionMagicVoltage(ScoreConstants.kElevatorL3PrestagePosition);
+                arm.setArmPositionVoltage(ScoreConstants.kArmStowPosition);
+
+                if (Arrays.asList(
+                        STOW,
+                        HP_INTAKE,
+                        ALGAE_GROUND_INTAKE,
+                        L1_PREP,
+                        L2_PREP,
                         L3_PREP,
                         L4_PRESTAGE,
+                        L4_PREP,
                         BARGE_PRESTAGE,
                         PROCESSOR_PREP,
                         REEF1_ALGAE_INTAKE,
@@ -349,6 +376,7 @@ public class Superstructure extends SubsystemBase {
                         ALGAE_GROUND_INTAKE,
                         L1_PREP,
                         L2_PREP,
+                        L3_PRESTAGE,
                         L3_PREP,
                         L4_PREP,
                         BARGE_PRESTAGE,
@@ -375,6 +403,7 @@ public class Superstructure extends SubsystemBase {
                         ALGAE_GROUND_INTAKE,
                         L1_PREP,
                         L2_PREP,
+                        L3_PRESTAGE,
                         L3_PREP,
                         L4_SCORE,
                         BARGE_PRESTAGE,
@@ -493,7 +522,7 @@ public class Superstructure extends SubsystemBase {
                         ALGAE_GROUND_INTAKE,
                         L1_PREP,
                         L2_PREP,
-                        L3_PREP,
+                        L3_PRESTAGE,
                         L4_PRESTAGE,
                         BARGE_PREP,
                         PROCESSOR_PREP,
@@ -524,7 +553,7 @@ public class Superstructure extends SubsystemBase {
                         ALGAE_GROUND_INTAKE,
                         L1_PREP,
                         L2_PREP,
-                        L3_PREP,
+                        L3_PRESTAGE,
                         L4_PRESTAGE,
                         BARGE_PRESTAGE,
                         BARGE_SCORE,
@@ -576,7 +605,7 @@ public class Superstructure extends SubsystemBase {
                         ALGAE_GROUND_INTAKE,
                         L1_PREP,
                         L2_PREP,
-                        L3_PREP,
+                        L3_PRESTAGE,
                         L4_PRESTAGE,
                         BARGE_PRESTAGE,
                         PROCESSOR_SCORE,
@@ -627,7 +656,7 @@ public class Superstructure extends SubsystemBase {
                         ALGAE_GROUND_INTAKE,
                         L1_PREP,
                         L2_PREP,
-                        L3_PREP,
+                        L3_PRESTAGE,
                         L4_PRESTAGE,
                         BARGE_PRESTAGE,
                         PROCESSOR_PREP,
@@ -657,7 +686,7 @@ public class Superstructure extends SubsystemBase {
                         ALGAE_GROUND_INTAKE,
                         L1_PREP,
                         L2_PREP,
-                        L3_PREP,
+                        L3_PRESTAGE,
                         L4_PRESTAGE,
                         BARGE_PRESTAGE,
                         PROCESSOR_PREP,
@@ -683,7 +712,7 @@ public class Superstructure extends SubsystemBase {
                         ALGAE_GROUND_INTAKE,
                         L1_PREP,
                         L2_PREP,
-                        L3_PREP,
+                        L3_PRESTAGE,
                         L4_PRESTAGE,
                         BARGE_PRESTAGE,
                         PROCESSOR_PREP,
@@ -709,7 +738,7 @@ public class Superstructure extends SubsystemBase {
                         ALGAE_GROUND_INTAKE,
                         L1_PREP,
                         L2_PREP,
-                        L3_PREP,
+                        L3_PRESTAGE,
                         L4_PRESTAGE,
                         BARGE_PRESTAGE,
                         PROCESSOR_PREP,

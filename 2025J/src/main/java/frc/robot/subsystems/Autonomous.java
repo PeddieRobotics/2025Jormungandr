@@ -125,6 +125,7 @@ public class Autonomous extends SubsystemBase {
 
         NamedCommands.registerCommand("L1_PREP", new InstantCommand(() -> superstructure.requestState(SuperstructureState.L1_PREP)));
         NamedCommands.registerCommand("L2_PREP", new InstantCommand(() -> superstructure.requestState(SuperstructureState.L2_PREP)));
+        NamedCommands.registerCommand("L3_PRESTAGE", new InstantCommand(() -> superstructure.requestState(SuperstructureState.L3_PRESTAGE)));
         NamedCommands.registerCommand("L3_PREP", new InstantCommand(() -> superstructure.requestState(SuperstructureState.L3_PREP)));
         NamedCommands.registerCommand("L4_PRESTAGE", new InstantCommand(() -> superstructure.requestState(SuperstructureState.L4_PRESTAGE)));
         NamedCommands.registerCommand("L4_PREP", new InstantCommand(() -> superstructure.requestState(SuperstructureState.L4_PREP)));
