@@ -302,12 +302,12 @@ public final class Constants {
         public static final Map<Integer, Double> kReefDesiredAngle = new HashMap<>() {
             {
                 // red side
-                put(6, -60.0);
-                put(7, 0.0);
-                put(8, 60.0);
-                put(9, 120.0);
-                put(10, 180.0);
-                put(11, -120.0);
+                put(6, 120.0);
+                put(7, 180.0);
+                put(8, -120.0);
+                put(9, -60.0);
+                put(10, 0.0);
+                put(11, 60.0);
     
                 // blue side, same angles but opposite
                 put(17, 60.0);
@@ -368,7 +368,7 @@ public final class Constants {
             public static final double kTranslateI = 0;
             public static final double kTranslateD = 0;
             public static final double kTranslateFF = 0;
-            public static final double kTranslateThreshold = 0.07;
+            public static final double kTranslateThreshold = 0.02;
             public static final double kTranslateSetpoint = 0;
 
             public static final double kRotationP = 0.065;

@@ -43,7 +43,9 @@ public class AlignToHP extends Command {
 
     private double xError, yError, rotationError;
 
-    public AlignToHP(double maxSpeed, double lateralOffset, double backOffset) {
+    private int blueTargetTag, redTargetTag;
+
+    public AlignToHP(double maxSpeed, double lateralOffset, double backOffset, int blueTargetTag, int redTargetTag) {
         drivetrain = Drivetrain.getInstance();
         
         cameras = new Limelight[] {
@@ -74,6 +76,8 @@ public class AlignToHP extends Command {
         this.maxSpeed = maxSpeed;
         this.lateralOffset = lateralOffset;
         this.backOffset = backOffset;
+        this.blueTargetTag = blueTargetTag;
+        this.redTargetTag = redTargetTag;
 
         SmartDashboard.putNumber("HPAlign: lateral offset", lateralOffset);
         SmartDashboard.putNumber("HPAlign: back offset", backOffset);
@@ -86,7 +90,7 @@ public class AlignToHP extends Command {
         //     SmartDashboard.putNumber("HPAlign: translateI", translateI);
         //     SmartDashboard.putNumber("HPAlign: translateD", translateD);
         //     SmartDashboard.putNumber("HPAlign: translateFF", translateFF);
-        //     SmartDashboard.putNumber("HPAlign: translateThreshold", translateThreshold);
+            SmartDashboard.putNumber("HPAlign: translateThreshold", translateThreshold);
             
         //     SmartDashboard.putNumber("HPAlign: rotationP", rotationP);
         //     SmartDashboard.putNumber("HPAlign: rotationI", rotationI);
@@ -100,10 +104,21 @@ public class AlignToHP extends Command {
 
     @Override
     public void initialize() {
-        // blue: 12, 13
-        // red: 1, 2
-        Pose2d tagPose = Limelight.getAprilTagPose(CalculateHPTarget.calculateTargetID());
+        int desiredTarget;
+        if (DriverStation.isAutonomous()) {
+            if (DriverStation.getAlliance().isEmpty() || DriverStation.getAlliance().get() == DriverStation.Alliance.Blue)
+                desiredTarget = blueTargetTag;
+            else
+                desiredTarget = redTargetTag;
+        }
+        else
+            desiredTarget = CalculateHPTarget.calculateTargetID();
+
+        Pose2d tagPose = Limelight.getAprilTagPose(desiredTarget);
         double tagAngle = tagPose.getRotation().getRadians();
+            
+        SmartDashboard.putNumber("HPAlign: desired tag", desiredTarget);
+        SmartDashboard.putNumber("HPAlign: tag angle", tagAngle);
 
         lateralOffset = SmartDashboard.getNumber("HPAlign: lateral offset", lateralOffset);
         backOffset = SmartDashboard.getNumber("HPAlign: back offset", backOffset);
@@ -153,7 +168,7 @@ public class AlignToHP extends Command {
         //     translateI = SmartDashboard.getNumber("HPAlign: translateI", translateI);
         //     translateD = SmartDashboard.getNumber("HPAlign: translateD", translateD);
         //     translateFF = SmartDashboard.getNumber("HPAlign: translateFF", translateFF);
-        //     translateThreshold = SmartDashboard.getNumber("HPAlign: translateThreshold", translateThreshold);
+            translateThreshold = SmartDashboard.getNumber("HPAlign: translateThreshold", translateThreshold);
 
         //     rotationP = SmartDashboard.getNumber("HPAlign: rotationP", rotationP);
         //     rotationI = SmartDashboard.getNumber("HPAlign: rotationI", rotationI);
@@ -166,9 +181,9 @@ public class AlignToHP extends Command {
         // maxSpeed = SmartDashboard.getNumber("HPAlign: max speed", maxSpeed);
         
         if (DriverStation.isAutonomous())
-            rotationError = drivetrain.getHeadingForceAdjust() - desiredAngle;
+            rotationError = drivetrain.getHeadingBlueForceAdjust() - desiredAngle;
         else
-            rotationError = drivetrain.getHeading() - desiredAngle;
+            rotationError = drivetrain.getHeadingBlue() - desiredAngle;
 
         translatePIDController.setPID(translateP, translateI, translateD);
         if (Math.abs(rotationError) < rotationUseLowerPThreshold)
@@ -207,18 +222,23 @@ public class AlignToHP extends Command {
         double desaturatedY = Math.min(Math.abs(translateY), maxSpeed);
         translation = new Translation2d(translateX_sgn * desaturatedX, translateY_sgn * desaturatedY);
 
-        drivetrain.driveForceAdjust(translation, rotation, true, null);
+        if (DriverStation.isAutonomous())
+            drivetrain.driveBlueForceAdjust(translation, rotation, true, null);
+        else
+            drivetrain.driveBlue(translation, rotation, true, null);
 
         Logger.getInstance().logAlignToHP(xError, yError, rotationError);
 
-        // {
-        //     SmartDashboard.putNumber("HPAlign: xError", xError);
-        //     SmartDashboard.putNumber("HPAlign: yError", yError);
-        //     SmartDashboard.putNumber("HPAlign: rotationError", rotationError);
+        {
+            SmartDashboard.putNumber("HPAlign: estimatedX", estimatedPose.getX());
+            SmartDashboard.putNumber("HPAlign: estimatedY", estimatedPose.getY());
+            SmartDashboard.putNumber("HPAlign: xError", xError);
+            SmartDashboard.putNumber("HPAlign: yError", yError);
+            SmartDashboard.putNumber("HPAlign: rotationError", rotationError);
 
-        //     SmartDashboard.putBoolean("HPAlign: translation good?", translationDistanceGood());
-        //     SmartDashboard.putBoolean("HPAlign: rotation good?", Math.abs(rotationError) < rotationThreshold);
-        // }
+            SmartDashboard.putBoolean("HPAlign: translation good?", translationDistanceGood());
+            SmartDashboard.putBoolean("HPAlign: rotation good?", Math.abs(rotationError) < rotationThreshold);
+        }
     }
 
     @Override

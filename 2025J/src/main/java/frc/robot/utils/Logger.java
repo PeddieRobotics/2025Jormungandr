@@ -190,7 +190,7 @@ public class Logger {
         commandEntry = new StringLogEntry(log, "/Commands/Commands Run");
     }
 
-    public void logEvent(String event, Boolean isStart) {
+    public void logEvent(String event, boolean isStart) {
         commandEntry.append(event + (isStart ? " Started" : " Ended"));
     }
 
@@ -304,6 +304,6 @@ public class Logger {
     }
 
     public void logScoreEvent(int level, double elevator, double arm) {
-        logEvent("Score L" + level + " with elevator " + elevator + ", arm " + arm, null);
+        logEvent("Score L" + level + " with elevator " + elevator + ", arm " + arm, false);
     }
 }

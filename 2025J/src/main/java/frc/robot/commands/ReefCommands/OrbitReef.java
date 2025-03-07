@@ -65,9 +65,7 @@ public class OrbitReef extends Command {
 
         turnPIDController.setPID(P, I, D);
         
-        currentHeading = drivetrain.getHeading();
-
-        double currentHeading = drivetrain.getHeading();
+        double currentHeading = drivetrain.getHeadingBlue();
         double poseX = drivetrain.getPose().getX();
         double poseY = drivetrain.getPose().getY();
         setpoint = Math.atan2(reefCenterY - poseY, reefCenterX - poseX);

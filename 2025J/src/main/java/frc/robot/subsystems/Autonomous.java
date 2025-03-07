@@ -1,5 +1,7 @@
 package frc.robot.subsystems;
 
+import static frc.robot.subsystems.Superstructure.SuperstructureState.HP_INTAKE;
+
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.config.PIDConstants;
@@ -108,7 +110,10 @@ public class Autonomous extends SubsystemBase {
                         new AlignToReef(Constants.AlignmentConstants.AlignmentDestination.LEFT, 2.0, blue, red),
                         new WaitCommand(0.3)
                     ),
-                    new WaitCommand(2)
+                    new SequentialCommandGroup(
+                        new WaitCommand(2),
+                        new InstantCommand(() -> superstructure.requestState(HP_INTAKE))
+                    )
                 )
             );
             NamedCommands.registerCommand(
@@ -118,7 +123,10 @@ public class Autonomous extends SubsystemBase {
                         new AlignToReef(Constants.AlignmentConstants.AlignmentDestination.RIGHT, 2.0, blue, red),
                         new WaitCommand(0.3)
                     ),
-                    new WaitCommand(2)
+                    new SequentialCommandGroup(
+                        new WaitCommand(2),
+                        new InstantCommand(() -> superstructure.requestState(HP_INTAKE))
+                    )
                 )
             );
         }
@@ -132,10 +140,15 @@ public class Autonomous extends SubsystemBase {
         NamedCommands.registerCommand("HP_INTAKE", new InstantCommand(() -> superstructure.requestState(SuperstructureState.HP_INTAKE)));
         NamedCommands.registerCommand("SEND_TO_SCORE", new InstantCommand(() -> superstructure.sendToScore()));
 
-        NamedCommands.registerCommand("ALIGN_TO_HP", new ParallelRaceGroup(
-            new AlignToHP(HPAlign.kMaxSpeed, HPAlign.kLateralOffset, HPAlign.kBackOffset),
+        NamedCommands.registerCommand("ALIGN_TO_HP_12_2", new ParallelRaceGroup(
+            new AlignToHP(HPAlign.kMaxSpeed, HPAlign.kLateralOffset, HPAlign.kBackOffset, 12, 2),
             new WaitForCoral(), new WaitCommand(2)
         ));
+        NamedCommands.registerCommand("ALIGN_TO_HP_13_1", new ParallelRaceGroup(
+            new AlignToHP(HPAlign.kMaxSpeed, HPAlign.kLateralOffset, HPAlign.kBackOffset, 13, 1),
+            new WaitForCoral(), new WaitCommand(2)
+        ));
+
         NamedCommands.registerCommand("WAIT_FOR_CORAL", new ParallelRaceGroup(
             new WaitForCoral(), new WaitCommand(2)
         ));

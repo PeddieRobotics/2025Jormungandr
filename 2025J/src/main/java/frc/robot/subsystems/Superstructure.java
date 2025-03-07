@@ -7,6 +7,7 @@ package frc.robot.subsystems;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
@@ -289,7 +290,8 @@ public class Superstructure extends SubsystemBase {
                         ALGAE_GROUND_INTAKE,
                         L1_PREP,
                         L2_SCORE,
-                        L3L4_PRESTAGE,
+                        L3_PREP,
+                        L4_PREP,
                         BARGE_PRESTAGE,
                         PROCESSOR_PREP,
                         REEF1_ALGAE_INTAKE,
@@ -800,10 +802,6 @@ public class Superstructure extends SubsystemBase {
             }
         }
     }
-
-    private final List<Integer> highAlgaeTags = Arrays.asList(
-        18, 20, 22, 7, 9, 11
-    );
     
     public void setAutoRemoveAlgaeSwitch(boolean value) {
         autoRemoveAlgaeSwitch = value;
@@ -818,17 +816,20 @@ public class Superstructure extends SubsystemBase {
         return OperatorOI.getInstance().getLeftBumperHeld();
     }
 
-    private boolean isHighAlgae() {
+    private final List<Integer> highAlgaeTags = Arrays.asList(
+        18, 20, 22, 7, 9, 11
+    );
+    private Optional<Boolean> isHighAlgae() {
         // return SmartDashboard.getBoolean("RemoveAlgae: high?", false);
         Limelight camera = LimelightFrontLeft.getInstance();
-        if (camera.getNumberOfTagsSeen() == 1 && highAlgaeTags.contains(camera.getTargetID()))
-            return true;
+        if (camera.getNumberOfTagsSeen() == 1)
+            return Optional.of(highAlgaeTags.contains(camera.getTargetID()));
 
         camera = LimelightFrontRight.getInstance();
-        if (camera.getNumberOfTagsSeen() == 1 && highAlgaeTags.contains(camera.getTargetID()))
-            return true;
+        if (camera.getNumberOfTagsSeen() == 1)
+            return Optional.of(highAlgaeTags.contains(camera.getTargetID()));
 
-        return false;
+        return Optional.empty();
     }
 
     private double getAlgaeRemovalSpeed() {
@@ -837,9 +838,14 @@ public class Superstructure extends SubsystemBase {
         // double slowThreshold = SmartDashboard.getNumber("RemoveAlgae: slow threshold", 1.0);
         // double thing = SmartDashboard.getNumber("RemoveAlgae: thing", 0.3);
 
-        double elevatorFast = -0.7, elevatorSlow = -0.3, slowThreshold = 0.8;
+        Optional<Boolean> high = isHighAlgae();
+        final double elevatorFast = -0.7, elevatorSlow = -0.3, slowThreshold = 0.8;
+
+        if (high.isEmpty())
+            return elevatorSlow;
+
         double elevatorPosition = elevator.getElevatorCANcoderPosition();
-        if (isHighAlgae()) {
+        if (high.get()) {
             if (Math.abs(elevatorPosition - (ScoreConstants.kElevatorReef2IntakePosition + 0.5)) <= slowThreshold)
                 return elevatorSlow;
             return elevatorFast;

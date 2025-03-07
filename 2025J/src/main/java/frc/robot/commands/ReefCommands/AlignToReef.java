@@ -141,7 +141,7 @@ public class AlignToReef extends Command {
         else
             desiredTarget = LimelightFrontMiddle.getInstance().getTargetID();
 
-        // SmartDashboard.putNumber("Align: Desired Target", desiredTarget);
+        SmartDashboard.putNumber("Align: Desired Target", desiredTarget);
 
         if (!AlignmentConstants.kReefDesiredAngle.containsKey(desiredTarget)) {
             desiredPose = Optional.empty();
@@ -228,9 +228,9 @@ public class AlignToReef extends Command {
             return;
 
         if (DriverStation.isAutonomous())
-            rotationError = drivetrain.getHeadingForceAdjust() - desiredAngle;
+            rotationError = drivetrain.getHeadingBlueForceAdjust() - desiredAngle;
         else
-            rotationError = drivetrain.getHeading() - desiredAngle;
+            rotationError = drivetrain.getHeadingBlue() - desiredAngle;
 
         translatePIDController.setPID(translateP, translateI, translateD);
         if (Math.abs(rotationError) < rotationUseLowerPThreshold)
@@ -269,7 +269,10 @@ public class AlignToReef extends Command {
         double desaturatedY = Math.min(Math.abs(translateY), maxSpeed);
         translation = new Translation2d(translateX_sgn * desaturatedX, translateY_sgn * desaturatedY);
 
-        drivetrain.driveForceAdjust(translation, rotation, true, null);
+        if (DriverStation.isAutonomous())
+            drivetrain.driveBlueForceAdjust(translation, rotation, true, null);
+        else
+            drivetrain.driveBlue(translation, rotation, true, null);
 
         boolean autoScore = SmartDashboard.getBoolean("Align: Auto Score", true);
         if (Math.abs(rotationError) < rotationThreshold && translationDistanceGood() && autoScore) {
