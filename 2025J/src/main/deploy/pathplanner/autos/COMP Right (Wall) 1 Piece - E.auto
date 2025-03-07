@@ -1,0 +1,43 @@
+{
+  "version": "2025.0",
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "named",
+          "data": {
+            "name": "L3L4_PRESTAGE"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Right Wall to E Align"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "L4_PREP"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "SET_ALGAE_REMOVAL"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "ALIGN_22_9_LEFT"
+          }
+        }
+      ]
+    }
+  },
+  "resetOdom": true,
+  "folder": null,
+  "choreoAuto": false
+}

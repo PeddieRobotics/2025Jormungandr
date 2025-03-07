@@ -1,0 +1,134 @@
+// package frc.robot.subsystems;
+
+// import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+// import edu.wpi.first.wpilibj2.command.SubsystemBase;
+// import frc.robot.utils.Constants.ClimberConstants;
+// import frc.robot.utils.DriverOI;
+// import frc.robot.utils.Kraken;
+// import frc.robot.utils.LiveData;
+// import frc.robot.utils.RobotMap;
+
+
+
+// public class Climber extends SubsystemBase {
+//     private static Climber instance;
+//     private Kraken leftClimberMotor;
+//     // private Kraken rightClimberMotor;
+//     private LiveData leftClimberSupplyCurrent, leftClimberStatorCurrent, rightClimberSupplyCurrent, rightClimberStatorCurrent,
+//         leftClimberMotorTemperature, rightClimberMotorTemperture, rightMotorPopsition, leftMotorPosition; 
+
+
+//     public Climber() {
+//         // leftClimberMotor = new Kraken(RobotMap.CLIMBER_MAIN_MOTOR_ID, RobotMap.CANIVORE_NAME);
+//         // // rightClimberMotor = new Kraken(RobotMap.CLIMBER_SECONDARY_MOTOR_ID, RobotMap.CANIVORE_NAME);
+
+//         // leftClimberMotor.setEncoder(0.0);
+
+//         // leftClimberMotor.setInverted(false);
+//         // // rightClimberMotor.setFollower(RobotMap.CLIMBER_MAIN_MOTOR_ID, true);
+
+//         // leftClimberMotor.setBrake();
+//         // // rightClimberMotor.setBrake();
+
+//         // SmartDashboard.putBoolean("Climber: Close Loop Control", false);
+
+//         // leftClimberSupplyCurrent = new LiveData(getLeftClimberSupplyCurrent(), "Climber: Left Motor Supply Current");
+//         // leftClimberStatorCurrent = new LiveData(getLeftClimberSupplyCurrent(), "Climber: Left Motor Stator Current");
+//         // leftClimberMotorTemperature = new LiveData(getLeftClimberTemperature(), "Climber: Left Motor Temp");
+//         // leftMotorPosition = new LiveData(getLeftClimberPosition(), "Climber: Left Motor Position"); 
+//     }
+
+// //         SmartDashboard.putBoolean("Climber: Open Loop Control", false);
+// //     }
+
+// //     public static Climber getInstance() {
+// //         if (instance == null) {
+// //             instance = new Climber();
+// //         }
+// //         return instance;
+// //     }
+
+// //     /**
+// //      * Sets leftClimberMotor speed to a designated percent output (open loop control)
+// //      * ex: input of 0.5 will run 50% of its max speed forward
+// //      * 
+// //      * @param speed - Percent of leftClimberMotor's speed [-1.0, 1.0]
+// //      */
+// //     public void setSpeed(double speed) {
+// //         leftClimberMotor.setPercentOutput(speed);
+// //     }
+
+// //     /**
+// //      * @return returns left climber supply current draw (amps)
+// //      */
+// //     public double getLeftClimberSupplyCurrent() {
+// //         return leftClimberMotor.getSupplyCurrent();
+// //     }
+
+// //     /**
+// //      * @return returns right climber supply current draw (amps)
+// //      */
+// //     // public double getRightClimberSupplyCurrent() {
+// //     //     return rightClimberMotor.getSupplyCurrent();
+// //     // }
+
+// //     /**
+// //      * @return returns left climber stator current draw (amps)
+// //      */
+// //     public double getLeftClimberStatorCurrent() {
+// //         return leftClimberMotor.getStatorCurrent();
+// //     }
+
+// //     /**
+// //      * @return returns right climber stator current draw (amps)
+// //      */
+// //     // public double getRightClimberStatorCurrent() {
+// //     //     return rightClimberMotor.getStatorCurrent();
+// //     // }
+
+// //     /**
+// //      * @return returns temperature of leftClimberMotor in celcius
+// //      */
+// //     public double getLeftClimberTemperature() {
+// //         return leftClimberMotor.getMotorTemperature();
+// //     }
+
+// //     /**
+// //      * @return returns temperature of rightClimberMotor in celcius
+// //      */
+// //     // public double getRightClimberTemperature() {
+// //     //     return rightClimberMotor.getMotorTemperature();
+// //     // }
+
+// //     /**
+// //      * @return returns position reading of leftClimberMotor encoder (mechanism rotations)
+// //      */
+// //     public double getLeftClimberPosition() {
+// //         return leftClimberMotor.getPosition();
+// //     }
+
+//     @Override
+//     public void periodic() {
+//         if(SmartDashboard.getBoolean("Climber: Run Close Loop Control", false)){
+//             leftClimberMotor.setPercentOutput(DriverOI.getInstance().getRightForward());
+//         }
+//         // TODO: Uncomment once climber is added
+//         // leftClimberSupplyCurrent.setNumber(getLeftClimberSupplyCurrent());
+//         // leftClimberStatorCurrent.setNumber(getLeftClimberStatorCurrent());
+//         // leftClimberMotorTemperature.setNumber(getLeftClimberTemperature());
+//         // leftMotorPosition.setNumber(getLeftClimberPosition());
+//     }
+
+// //     @Override
+// //     public void periodic() {
+// //         if(SmartDashboard.getBoolean("Climber: Open Loop Control", false)){
+// //             leftClimberMotor.setPercentOutput(DriverOI.getInstance().getRightForward());
+// //         }
+// //         SmartDashboard.putNumber("Climber Motor Supple Current", leftClimberMotor.getSupplyCurrent());
+// //         SmartDashboard.putNumber("Climber Motor Stator Current", leftClimberMotor.getStatorCurrent());
+// //     }
+
+// //     @Override
+// //     public void simulationPeriodic() {
+// //     }
+// }

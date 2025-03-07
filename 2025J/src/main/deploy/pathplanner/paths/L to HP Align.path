@@ -1,0 +1,54 @@
+{
+  "version": "2025.0",
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 3.723314906480305,
+        "y": 5.042
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 2.8376325511798823,
+        "y": 5.827820527238989
+      },
+      "isLocked": false,
+      "linkedName": "ReefL"
+    },
+    {
+      "anchor": {
+        "x": 2.2010220855924114,
+        "y": 6.322
+      },
+      "prevControl": {
+        "x": 3.3753468697456492,
+        "y": 5.330952908965872
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": null
+    }
+  ],
+  "rotationTargets": [],
+  "constraintZones": [],
+  "pointTowardsZones": [],
+  "eventMarkers": [],
+  "globalConstraints": {
+    "maxVelocity": 3.0,
+    "maxAcceleration": 4.0,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0,
+    "nominalVoltage": 12.0,
+    "unlimited": false
+  },
+  "goalEndState": {
+    "velocity": 3.0,
+    "rotation": -54.0
+  },
+  "reversed": false,
+  "folder": "Reef to HP",
+  "idealStartingState": {
+    "velocity": 0,
+    "rotation": -59.99999999999999
+  },
+  "useDefaultConstraints": false
+}
