@@ -11,6 +11,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
+import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
@@ -102,16 +104,22 @@ public class Autonomous extends SubsystemBase {
             int red = AlignmentConstants.kBlueToRedReefTag.get(blue);
             NamedCommands.registerCommand(
                 "ALIGN_" + blue + "_" + red + "_LEFT",
-                new SequentialCommandGroup(
-                    new AlignToReef(Constants.AlignmentConstants.AlignmentDestination.LEFT, 2.0, blue, red),
-                    new WaitCommand(0.3)
+                new ParallelRaceGroup(
+                    new SequentialCommandGroup(
+                        new AlignToReef(Constants.AlignmentConstants.AlignmentDestination.LEFT, 2.0, blue, red),
+                        new WaitCommand(0.3)
+                    ),
+                    new WaitCommand(2)
                 )
             );
             NamedCommands.registerCommand(
                 "ALIGN_" + blue + "_" + red + "_RIGHT",
-                new SequentialCommandGroup(
-                    new AlignToReef(Constants.AlignmentConstants.AlignmentDestination.RIGHT, 2.0, blue, red),
-                    new WaitCommand(0.3)
+                new ParallelRaceGroup(
+                    new SequentialCommandGroup(
+                        new AlignToReef(Constants.AlignmentConstants.AlignmentDestination.RIGHT, 2.0, blue, red),
+                        new WaitCommand(0.3)
+                    ),
+                    new WaitCommand(2)
                 )
             );
         }
@@ -125,18 +133,18 @@ public class Autonomous extends SubsystemBase {
         NamedCommands.registerCommand("HP_INTAKE", new InstantCommand(() -> superstructure.requestState(SuperstructureState.HP_INTAKE)));
         NamedCommands.registerCommand("SEND_TO_SCORE", new InstantCommand(() -> superstructure.sendToScore()));
 
-        NamedCommands.registerCommand(
-            "ALIGN_TO_HP_LEFT",
-            new AlignToHP(HPAlign.kMaxSpeed, HPAlign.kLeftOffset, HPAlign.kBackOffset)
-        );
-        NamedCommands.registerCommand(
-            "ALIGN_TO_HP_MIDDLE",
-            new AlignToHP(HPAlign.kMaxSpeed, HPAlign.kMiddleOffset, HPAlign.kBackOffset)
-        );
-        NamedCommands.registerCommand(
-            "ALIGN_TO_HP_RIGHT",
-            new AlignToHP(HPAlign.kMaxSpeed, HPAlign.kRightOffset, HPAlign.kBackOffset)
-        );
+        NamedCommands.registerCommand("ALIGN_TO_HP_LEFT", new ParallelRaceGroup(
+            new AlignToHP(HPAlign.kMaxSpeed, HPAlign.kLeftOffset, HPAlign.kBackOffset),
+            new WaitCommand(2)
+        ));
+        NamedCommands.registerCommand("ALIGN_TO_HP_MIDDLE", new ParallelRaceGroup(
+            new AlignToHP(HPAlign.kMaxSpeed, HPAlign.kMiddleOffset, HPAlign.kBackOffset),
+            new WaitCommand(2)
+        ));
+        NamedCommands.registerCommand("ALIGN_TO_HP_RIGHT", new ParallelRaceGroup(
+            new AlignToHP(HPAlign.kMaxSpeed, HPAlign.kRightOffset, HPAlign.kBackOffset),
+            new WaitCommand(2)
+        ));
         NamedCommands.registerCommand("WAIT_FOR_CORAL", new WaitForCoral());
 
         NamedCommands.registerCommand("SET_ALGAE_REMOVAL", new InstantCommand(() -> {
