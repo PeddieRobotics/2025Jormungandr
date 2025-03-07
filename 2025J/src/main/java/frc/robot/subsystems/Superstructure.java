@@ -205,7 +205,7 @@ public class Superstructure extends SubsystemBase {
                     systemState = requestedSystemState;
                 }
 
-                if ((requestedSystemState == L4_PREP || requestedSystemState == L3_PREP) &&
+                if ((requestedSystemState == L3_PREP || requestedSystemState == L4_PREP) &&
                         DriverStation.isAutonomous() && claw.bothCoralSensorsTriggered()) {
                     systemState = requestedSystemState;
                 }
