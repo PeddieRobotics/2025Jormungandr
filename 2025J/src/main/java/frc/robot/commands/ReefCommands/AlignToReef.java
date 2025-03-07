@@ -182,7 +182,7 @@ public class AlignToReef extends Command {
         
         LimelightFrontMiddle.getInstance().setLED(Limelight.LightMode.ON);
         LimelightBack.getInstance().setLED(Limelight.LightMode.ON);
-        Logger.getInstance().logEvent("Align to Reef", true);
+        Logger.getInstance().logEvent("Align to Reef, ID " + desiredTarget, true);
     }
     
     private Optional<Pose2d> getBestEstimatedPose() {

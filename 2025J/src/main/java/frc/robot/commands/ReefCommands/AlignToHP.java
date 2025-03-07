@@ -135,7 +135,7 @@ public class AlignToHP extends Command {
         rotationError = 10000;
 
         LimelightFrontMiddle.getInstance().setLED(Limelight.LightMode.ON);
-        Logger.getInstance().logEvent("Align to HP", true);
+        Logger.getInstance().logEvent("Align to HP, ID " + desiredTarget, true);
 
         Superstructure.getInstance().requestState(SuperstructureState.HP_INTAKE);
         
