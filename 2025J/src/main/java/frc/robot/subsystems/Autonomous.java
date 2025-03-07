@@ -18,7 +18,6 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.commands.AutoCommands.*;
 import frc.robot.commands.ReefCommands.AlignToHP;
-import frc.robot.commands.ReefCommands.AlignToHPStationMegaTag;
 import frc.robot.commands.ReefCommands.AlignToReef;
 import frc.robot.subsystems.Superstructure.SuperstructureState;
 import frc.robot.utils.Constants;
@@ -133,16 +132,8 @@ public class Autonomous extends SubsystemBase {
         NamedCommands.registerCommand("HP_INTAKE", new InstantCommand(() -> superstructure.requestState(SuperstructureState.HP_INTAKE)));
         NamedCommands.registerCommand("SEND_TO_SCORE", new InstantCommand(() -> superstructure.sendToScore()));
 
-        NamedCommands.registerCommand("ALIGN_TO_HP_LEFT", new ParallelRaceGroup(
-            new AlignToHP(HPAlign.kMaxSpeed, HPAlign.kLeftOffset, HPAlign.kBackOffset),
-            new WaitCommand(2)
-        ));
-        NamedCommands.registerCommand("ALIGN_TO_HP_MIDDLE", new ParallelRaceGroup(
-            new AlignToHP(HPAlign.kMaxSpeed, HPAlign.kMiddleOffset, HPAlign.kBackOffset),
-            new WaitCommand(2)
-        ));
-        NamedCommands.registerCommand("ALIGN_TO_HP_RIGHT", new ParallelRaceGroup(
-            new AlignToHP(HPAlign.kMaxSpeed, HPAlign.kRightOffset, HPAlign.kBackOffset),
+        NamedCommands.registerCommand("ALIGN_TO_HP", new ParallelRaceGroup(
+            new AlignToHP(HPAlign.kMaxSpeed, HPAlign.kLateralOffset, HPAlign.kBackOffset),
             new WaitCommand(2)
         ));
         NamedCommands.registerCommand("WAIT_FOR_CORAL", new WaitForCoral());

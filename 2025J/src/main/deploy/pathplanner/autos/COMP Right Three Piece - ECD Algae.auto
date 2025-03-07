@@ -37,7 +37,7 @@
         {
           "type": "named",
           "data": {
-            "name": "ALIGN_TO_HP_LEFT"
+            "name": "ALIGN_TO_HP"
           }
         },
         {
@@ -79,7 +79,7 @@
         {
           "type": "named",
           "data": {
-            "name": "ALIGN_TO_HP_LEFT"
+            "name": "ALIGN_TO_HP"
           }
         },
         {
