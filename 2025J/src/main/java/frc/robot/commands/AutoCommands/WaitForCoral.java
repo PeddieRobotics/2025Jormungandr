@@ -5,14 +5,14 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Claw;
 
 public class WaitForCoral extends Command {
-    private double startTime;
+    // private double startTime;
     public WaitForCoral() {
-        startTime = 0;
+        // startTime = 0;
     }
 
     @Override
     public void initialize() {
-        startTime = Timer.getFPGATimestamp();
+        // startTime = Timer.getFPGATimestamp();
     }
 
     @Override
@@ -27,6 +27,6 @@ public class WaitForCoral extends Command {
 
     @Override
     public boolean isFinished() {
-        return Claw.getInstance().bothCoralSensorsTriggered() || Timer.getFPGATimestamp() - startTime >= 1;
+        return Claw.getInstance().bothCoralSensorsTriggered();// || Timer.getFPGATimestamp() - startTime >= 1;
     }
 }
