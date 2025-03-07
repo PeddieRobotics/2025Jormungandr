@@ -25,6 +25,12 @@
         {
           "type": "named",
           "data": {
+            "name": "SET_ALGAE_REMOVAL"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
             "name": "ALIGN_22_9_LEFT"
           }
         }
