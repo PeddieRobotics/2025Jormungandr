@@ -36,6 +36,8 @@ public class Superstructure extends SubsystemBase {
 
     private boolean isManualControl, hasJustRemovedAlgae;
     private double startedOuttakingRemovedAlgaeTime;
+    
+    private boolean autoRemoveAlgaeSwitch;
 
     public enum SuperstructureState {
         STOW,
@@ -82,6 +84,8 @@ public class Superstructure extends SubsystemBase {
         isManualControl = false;
         hasJustRemovedAlgae = false;
         startedOuttakingRemovedAlgaeTime = 0.0;
+        
+        autoRemoveAlgaeSwitch = false;
     }
 
     public static Superstructure getInstance() {
@@ -447,10 +451,9 @@ public class Superstructure extends SubsystemBase {
             }
 
             case L4_SCORE -> {
-
                 if (timer.hasElapsed(ScoreConstants.kL4ScoreTimeout) || !claw.eitherCoralSensorTriggered()){
                     timer.reset();
-                    if (OperatorOI.getInstance().getLeftBumperHeld()) {
+                    if (shouldRemoveAlgae()) {
                         requestState(REMOVING_ALGAE);
                     } else {
                         claw.stopClaw();
@@ -802,6 +805,19 @@ public class Superstructure extends SubsystemBase {
     private final List<Integer> highAlgaeTags = Arrays.asList(
         18, 20, 22, 7, 9, 11
     );
+    
+    public void setAutoRemoveAlgaeSwitch(boolean value) {
+        autoRemoveAlgaeSwitch = value;
+    }
+    
+    private boolean shouldRemoveAlgae() {
+        if (DriverStation.isAutonomous()) {
+            boolean value = autoRemoveAlgaeSwitch;
+            autoRemoveAlgaeSwitch = false;
+            return value;
+        }
+        return OperatorOI.getInstance().getLeftBumperHeld();
+    }
 
     private boolean isHighAlgae() {
         // return SmartDashboard.getBoolean("RemoveAlgae: high?", false);

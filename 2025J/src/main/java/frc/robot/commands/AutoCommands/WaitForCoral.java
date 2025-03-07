@@ -4,9 +4,9 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Claw;
 
-public class WaitForTopCoral extends Command {
+public class WaitForCoral extends Command {
     private double startTime;
-    public WaitForTopCoral() {
+    public WaitForCoral() {
         startTime = 0;
     }
 

@@ -43,7 +43,7 @@
         {
           "type": "named",
           "data": {
-            "name": "WAIT_FOR_TOP_CORAL"
+            "name": "WAIT_FOR_CORAL"
           }
         },
         {
@@ -85,7 +85,7 @@
         {
           "type": "named",
           "data": {
-            "name": "WAIT_FOR_TOP_CORAL"
+            "name": "WAIT_FOR_CORAL"
           }
         },
         {
