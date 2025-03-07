@@ -77,6 +77,21 @@ public class RobotContainer {
         SmartDashboard.putBoolean("Align: Smart Target Finding", true);
         SmartDashboard.putBoolean("Align: Auto Score", true);
 
+        // SmartDashboard.putNumber("RemoveAlgae: elevator fast", -0.6);
+        // SmartDashboard.putNumber("RemoveAlgae: elevator slow", -0.3);
+        // SmartDashboard.putNumber("RemoveAlgae: slow threshold", 1.0);
+        SmartDashboard.putBoolean("RemoveAlgae: high?", false);
+        // SmartDashboard.putNumber("RemoveAlgae: thing", 0.3);
+
+        SmartDashboard.putNumber("L1AlignLeft: lateral offset", 0.1);
+        SmartDashboard.putNumber("L1AlignLeft: back offset", 0.55);
+        SmartDashboard.putNumber("L1AlignLeft: angle offset", 20.0);
+
+        SmartDashboard.putNumber("L1AlignRight: lateral offset", -0.1);
+        SmartDashboard.putNumber("L1AlignRight: back offset", 0.55);
+        SmartDashboard.putNumber("L1AlignRight: angle offset", -20.0);
+
+
         // SmartDashboard.putBoolean("Use ", false)
     }
 

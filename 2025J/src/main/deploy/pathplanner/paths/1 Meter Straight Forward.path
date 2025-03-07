@@ -3,29 +3,29 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 5.0,
-        "y": 2.68
+        "x": 7.1,
+        "y": 0.5
       },
       "prevControl": null,
       "nextControl": {
-        "x": 3.9761187011640313,
-        "y": 2.1568446874370952
+        "x": 6.500135437551629,
+        "y": 0.5
       },
       "isLocked": false,
-      "linkedName": "EReef"
+      "linkedName": null
     },
     {
       "anchor": {
-        "x": 1.131,
-        "y": 0.905
+        "x": 6.1,
+        "y": 0.5
       },
       "prevControl": {
-        "x": 2.7714325613881865,
-        "y": 1.58587163586761
+        "x": 6.35,
+        "y": 0.5
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "BottomHP"
+      "linkedName": null
     }
   ],
   "rotationTargets": [],
@@ -33,22 +33,22 @@
   "pointTowardsZones": [],
   "eventMarkers": [],
   "globalConstraints": {
-    "maxVelocity": 2.0,
-    "maxAcceleration": 3.0,
-    "maxAngularVelocity": 540.0,
-    "maxAngularAcceleration": 720.0,
+    "maxVelocity": 1.0,
+    "maxAcceleration": 1.0,
+    "maxAngularVelocity": 180.0,
+    "maxAngularAcceleration": 360.0,
     "nominalVoltage": 12.0,
     "unlimited": false
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 54.94
+    "rotation": 0.0
   },
   "reversed": false,
-  "folder": "HP Intake",
+  "folder": "Test Paths",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 119.99999999999999
+    "rotation": 0.0
   },
   "useDefaultConstraints": false
 }

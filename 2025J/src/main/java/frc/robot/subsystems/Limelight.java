@@ -76,8 +76,8 @@ public abstract class Limelight extends SubsystemBase {
     private double cameraPitchRadians;
     private boolean isInverted;
 
-    private Field2d fieldMT1, fieldMT2;
-    private StructPublisher<Pose2d> publisherMT1, publisherMT2;
+    private Field2d fieldMT2;
+    // private StructPublisher<Pose2d> publisherMT2;
 
     private LiveData tx, ty, poseDistance, tagsSeen, fieldData, latency, distanceTy, filteredDistanceEstimatedPose,
             filteredDistanceTY, targetID, hasTargetData, currentPriority;
@@ -96,15 +96,11 @@ public abstract class Limelight extends SubsystemBase {
         distTyFilter = LinearFilter.singlePoleIIR(0.24, 0.02);
         distEstimatedPoseFilter = LinearFilter.singlePoleIIR(0.24, 0.02);
 
-        fieldMT1 = new Field2d();
         fieldMT2 = new Field2d();
-        SmartDashboard.putData(limelightName + " estimated pose (MT1)", fieldMT1);
         SmartDashboard.putData(limelightName + " estimated pose (MT2)", fieldMT2);
 
-        publisherMT1 = NetworkTableInstance.getDefault().getStructTopic(
-                limelightName + " estimated pose for advantagescope (MT1)", Pose2d.struct).publish();
-        publisherMT2 = NetworkTableInstance.getDefault().getStructTopic(
-                limelightName + " estimated pose for advantagescope (MT2)", Pose2d.struct).publish();
+        // publisherMT2 = NetworkTableInstance.getDefault().getStructTopic(
+        //         limelightName + " estimated pose for advantagescope (MT2)", Pose2d.struct).publish();
 
         // ELASTIC SETUP -- AWAITING CONFIGURATION
         fieldData = new LiveData(fieldMT2, limelightName + " Estimated Pose");
@@ -132,22 +128,21 @@ public abstract class Limelight extends SubsystemBase {
         updateRollingAverages();
         
         // limelight wants robot orientation in blue side degrees
+        double gyro;
+        if (DriverStation.isAutonomous())
+            gyro = Drivetrain.getInstance().getHeadingBlueForceAdjust();
+        else 
+            gyro = Drivetrain.getInstance().getHeadingBlue();
+            
         LimelightHelpers.SetRobotOrientation(
-            limelightName,
-            Drivetrain.getInstance().getHeadingBlue(),
+            limelightName, gyro,
             0, 0, 0, 0, 0
         );
-
-        Optional<Pose2d> estimatedPoseMT1 = getEstimatedPoseMT1();
-        if (estimatedPoseMT1.isPresent()) {
-            fieldMT1.setRobotPose(estimatedPoseMT1.get());
-            publisherMT1.set(estimatedPoseMT1.get());
-        }
 
         Optional<Pose2d> estimatedPoseMT2 = getEstimatedPoseMT2();
         if (estimatedPoseMT2.isPresent()) {
             fieldMT2.setRobotPose(estimatedPoseMT2.get());
-            publisherMT2.set(estimatedPoseMT2.get());
+            // publisherMT2.set(estimatedPoseMT2.get());
         }
 
         fieldData.setData(fieldMT2);
@@ -165,7 +160,7 @@ public abstract class Limelight extends SubsystemBase {
     }
 
     // ========================================================
-    // Pose/Translation Getters
+    //                 Pose/Translation Getters
     // ========================================================
 
     private Optional<PoseEstimate> getPoseEstimateMT1() {
@@ -224,7 +219,7 @@ public abstract class Limelight extends SubsystemBase {
     }
 
     // =======================================================
-    // T-Something Raw Getters
+    //                 T-Something Raw Getters
     // =======================================================
 
     // so, uh, Limelight doesn't invert the Tx and Ty automatically on upside down
@@ -238,7 +233,7 @@ public abstract class Limelight extends SubsystemBase {
     }
 
     // ================================================
-    // Distance Getters
+    //                 Distance Getters
     // ================================================
 
     // distance to CENTER OF ROBOT
@@ -288,10 +283,9 @@ public abstract class Limelight extends SubsystemBase {
     }
 
     // ======================================================
-    // Other AprilTag Getters
+    //                 Other AprilTag Getters
     // ======================================================
 
-    // TODO: test
     public int getNumberOfTagsSeen() {
         return LimelightHelpers.getTargetCount(limelightName);
     }
@@ -319,7 +313,7 @@ public abstract class Limelight extends SubsystemBase {
     }
 
     // ====================================================
-    // Pipeline Controllers
+    //                 Pipeline Controllers
     // ====================================================
 
     public int getPipeline() {
@@ -331,7 +325,7 @@ public abstract class Limelight extends SubsystemBase {
     }
 
     // ===============================================
-    // Average Getters
+    //                 Average Getters
     // ===============================================
 
     public double getTxAverage() {
@@ -343,7 +337,7 @@ public abstract class Limelight extends SubsystemBase {
     }
 
     // ===========================================================
-    // Rolling Average Controllers
+    //                 Rolling Average Controllers
     // ===========================================================
 
     public void updateRollingAverages() {
@@ -368,7 +362,7 @@ public abstract class Limelight extends SubsystemBase {
     }
 
     // ======================================
-    // Others
+    //                 Others
     // ======================================
 
     public double getTotalLatencyInMS() {

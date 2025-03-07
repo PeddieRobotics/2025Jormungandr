@@ -12,8 +12,9 @@ import edu.wpi.first.math.geometry.Translation2d;
 import frc.robot.subsystems.Superstructure.SuperstructureState;
 
 import edu.wpi.first.math.geometry.Rotation2d;
+import frc.robot.commands.ReefCommands.AlignToHP;
 import frc.robot.commands.ReefCommands.AlignToHPStationMegaTag;
-import frc.robot.commands.ReefCommands.AlignToReefEstimatedPose;
+import frc.robot.commands.ReefCommands.AlignToReef;
 import frc.robot.commands.ReefCommands.OrbitReef;
 // import frc.robot.commands.ReefCommands.AlignToReef2D;
 // import frc.robot.commands.ReefCommands.AlignToReefEstimatedPose;
@@ -21,6 +22,9 @@ import frc.robot.commands.ReefCommands.OrbitReef;
 import frc.robot.subsystems.Claw;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.LimelightFrontMiddle;
+import frc.robot.utils.Constants.AlignmentConstants;
+import frc.robot.utils.Constants.AlignmentConstants.HPAlign;
+import frc.robot.utils.Constants.AlignmentConstants.ReefAlign;
 import frc.robot.utils.Constants.DriveConstants;
 
 public class DriverOI {
@@ -34,7 +38,6 @@ public class DriverOI {
 
         superstructure = Superstructure.getInstance();
         configureController();
-
     }
 
     public static DriverOI getInstance() {
@@ -61,8 +64,9 @@ public class DriverOI {
         circleButton.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.HP_INTAKE)));
 
         Trigger squareButton = new JoystickButton(controller, PS4Controller.Button.kSquare.value);
-        // squareButton.onTrue(new InstantCommand(() -> CalculateReefTarget.calculateTargetID()));
-        // squareButton.whileTrue(new AlignToReefEstimatedPose(Constants.AlignmentConstants.AlignmentDestination.MIDDLE, false));
+        // squareButton.whileTrue(new AlignToHP(HPAlign.kMaxSpeed, HPAlign.kMiddleOffset, HPAlign.kBackOffset));
+        // squareButton.onTrue(new InstantCommand(() -> SmartDashboard.putNumber("HPTarget", CalculateHPTarget.calculateTargetID())));
+        // squareButton.whileTrue(new AlignToReefEstimatedPose(AlignmentConstants.AlignmentDestination.MIDDLE, false));
 
         Trigger triangleButton = new JoystickButton(controller, PS4Controller.Button.kTriangle.value);
         // triangleButton.onTrue(new AlignAndScore(true)); //right align
@@ -86,11 +90,12 @@ public class DriverOI {
         // ));
 
         Trigger L1Bumper = new JoystickButton(controller, PS4Controller.Button.kL1.value);
+        // L1Bumper.whileTrue(new AlignToHP(HPAlign.kMaxSpeed, HPAlign.kLeftOffset, HPAlign.kBackOffset));
         // L1Bumper.whileTrue(new OrbitReef());
 
         Trigger R1Bumper = new JoystickButton(controller, PS4Controller.Button.kR1.value);
-        // R1Bumper.whileTrue(new AlignToHPStationMegaTag());
-        R1Bumper.whileTrue(new OrbitReef());
+        // R1Bumper.whileTrue(new AlignToHP(HPAlign.kMaxSpeed, HPAlign.kRightOffset, HPAlign.kBackOffset));
+        // R1Bumper.whileTrue(new OrbitReef());
 
         Trigger L2Trigger = new JoystickButton(controller, PS4Controller.Button.kL2.value);
 
@@ -98,15 +103,16 @@ public class DriverOI {
 
         Trigger L3Trigger = new JoystickButton(controller, PS4Controller.Button.kL3.value);
         L3Trigger.whileTrue(new ConditionalCommand(
-            new AlignToReefEstimatedPose(Constants.AlignmentConstants.AlignmentDestination.LEFT, false),
-            new AlignToReefEstimatedPose(Constants.AlignmentConstants.AlignmentDestination.MIDDLE, false),
+            new AlignToReef(AlignmentConstants.AlignmentDestination.LEFT, ReefAlign.kMaxSpeed, 0, 0),
+            new AlignToReef(AlignmentConstants.AlignmentDestination.MIDDLE, ReefAlign.kMaxSpeed, 0, 0),
             Claw.getInstance()::eitherCoralSensorTriggered
         ));
 
         Trigger R3Trigger = new JoystickButton(controller, PS4Controller.Button.kR3.value);
         R3Trigger.whileTrue(new ConditionalCommand(
-            new AlignToReefEstimatedPose(Constants.AlignmentConstants.AlignmentDestination.RIGHT, false),
-            new AlignToHPStationMegaTag(),
+            new AlignToReef(AlignmentConstants.AlignmentDestination.RIGHT, ReefAlign.kMaxSpeed, 0, 0),
+            new AlignToHP(2.0, 0, 0.45),
+            // new AlignToHPStationMegaTag(),
             Claw.getInstance()::eitherCoralSensorTriggered
         ));
 
@@ -119,6 +125,14 @@ public class DriverOI {
 
     public boolean bothBumpersHeld() {
         return controller.getL1Button() && controller.getR1Button();
+    }
+
+    public boolean getLeftBumperHeld(){
+        return controller.getL1Button();
+    }
+
+    public boolean getRightBumperHeld(){
+        return controller.getR1Button();
     }
 
     public boolean bothTriggersHeld() {

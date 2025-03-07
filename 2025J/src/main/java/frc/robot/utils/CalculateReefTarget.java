@@ -60,16 +60,18 @@ public class CalculateReefTarget {
             Pose2d tag18 = Limelight.getAprilTagPose(18);
             Pose2d tag21 = Limelight.getAprilTagPose(21);
             reefCenter = new Point(
-                    (tag18.getX() + tag21.getX()) / 2,
-                    (tag18.getY() + tag21.getY()) / 2);
+                (tag18.getX() + tag21.getX()) / 2,
+                (tag18.getY() + tag21.getY()) / 2
+            );
         }
         // RED
         else {
             Pose2d tag7 = Limelight.getAprilTagPose(7);
             Pose2d tag10 = Limelight.getAprilTagPose(10);
             reefCenter = new Point(
-                    (tag7.getX() + tag10.getX()) / 2,
-                    (tag7.getY() + tag10.getY()) / 2);
+                (tag7.getX() + tag10.getX()) / 2,
+                (tag7.getY() + tag10.getY()) / 2
+            );
         }
 
         /*
@@ -95,8 +97,9 @@ public class CalculateReefTarget {
         badHexagonPoints = new ArrayList<>();
         for (int i = 0; i < 360; i += 60) {
             badHexagonPoints.add(new Point(
-                    reefCenter.x + reefCornerToCenter * Math.cos(Math.toRadians(i)),
-                    reefCenter.y + reefCornerToCenter * Math.sin(Math.toRadians(i))));
+                reefCenter.x + reefCornerToCenter * Math.cos(Math.toRadians(i)),
+                reefCenter.y + reefCornerToCenter * Math.sin(Math.toRadians(i))
+            ));
         }
 
         // Field2d[] fields = new Field2d[6];
@@ -168,12 +171,12 @@ public class CalculateReefTarget {
 
         boolean isInBadHexagon = insideBadHexagon(new Point(odometryPose));
 
-        SmartDashboard.putBoolean("is inside bad hexagon", isInBadHexagon);
+        // SmartDashboard.putBoolean("is inside bad hexagon", isInBadHexagon);
 
-        SmartDashboard.putNumber("tag 0 distance", robotToTag.get(0).vector.getNorm());
-        SmartDashboard.putNumber("tag 1 distance", robotToTag.get(1).vector.getNorm());
-        SmartDashboard.putNumber("tag 0 id", tag0id);
-        SmartDashboard.putNumber("key 1 id", tag1id);
+        // SmartDashboard.putNumber("tag 0 distance", robotToTag.get(0).vector.getNorm());
+        // SmartDashboard.putNumber("tag 1 distance", robotToTag.get(1).vector.getNorm());
+        // SmartDashboard.putNumber("tag 0 id", tag0id);
+        // SmartDashboard.putNumber("key 1 id", tag1id);
 
         double tag0neededAngle = AlignmentConstants.kReefDesiredAngle.get(tag0id);
         double tag0gyroError = drivetrain.getHeading() - tag0neededAngle;
@@ -198,8 +201,8 @@ public class CalculateReefTarget {
         else {
             double similar0 = cosineSimilarity(robotToTag.get(0).vector, robotMovement);
             double similar1 = cosineSimilarity(robotToTag.get(1).vector, robotMovement);
-            SmartDashboard.putNumber("tag 0 similarity", similar0);
-            SmartDashboard.putNumber("tag 1 similarity", similar1);
+            // SmartDashboard.putNumber("tag 0 similarity", similar0);
+            // SmartDashboard.putNumber("tag 1 similarity", similar1);
             bestTag = similar0 >= similar1 ? tag0id : tag1id;
         }
 

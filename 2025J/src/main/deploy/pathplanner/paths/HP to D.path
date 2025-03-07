@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.131,
-        "y": 0.905
+        "x": 2.2010220855924114,
+        "y": 1.7278245915820185
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.1581813672248154,
-        "y": 1.4457793346826726
+        "x": 3.228203452817227,
+        "y": 2.2686039262646895
       },
       "isLocked": false,
       "linkedName": "BottomHP"
@@ -48,7 +48,7 @@
   "folder": "Score",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 54.94
+    "rotation": 54.0
   },
   "useDefaultConstraints": false
 }

@@ -13,19 +13,19 @@
         {
           "type": "path",
           "data": {
-            "pathName": "E to HP"
+            "pathName": "E to HP Align"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "HP to C"
+            "pathName": "HP to C Align"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "C to HP"
+            "pathName": "C to HP Align"
           }
         },
         {
@@ -43,7 +43,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "HP to C"
+            "pathName": "HP to C Align"
           }
         }
       ]

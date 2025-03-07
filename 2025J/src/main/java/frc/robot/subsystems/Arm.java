@@ -77,7 +77,7 @@ public class Arm extends SubsystemBase {
 
         armSetpoint = new LiveData(ArmConstants.kStowSetpoint, "Arm: Current Setpoint"); 
         armAngle = new LiveData(getArmAngleDegrees(), "Arm: Current Angle"); 
-        armEncoderPosition = new LiveData(getArmEncoderPosition(), "Arm: Encoder Position"); 
+        armEncoderPosition = new LiveData(getArmMotorEncoderPosition(), "Arm: Encoder Position"); 
         armCanCoderPosition = new LiveData(getAbsoluteCANcoderPosition(), "Arm: CanCoder Position");
         
 
@@ -151,9 +151,9 @@ public class Arm extends SubsystemBase {
     }
 
     /**
-     * @return position reading of the armMotor encoder (motor encoder units)
+     * @return position reading of the armMotor encoder IN MECHANISM ROTATIONS (motor encoder units)
      */
-    public double getArmEncoderPosition() {
+    public double getArmMotorEncoderPosition() {
         return armMotor.getPosition();
     }
 
@@ -193,7 +193,7 @@ public class Arm extends SubsystemBase {
     }
 
     /**
-     * @return setpoint angle of arm in degrees
+     * @return setpoint position of arm (mechanism rotations)
      */
     public double getArmSetpoint() {
         return armSetpoint.getNumber();
@@ -214,7 +214,7 @@ public class Arm extends SubsystemBase {
      *         threshold
      */
     public boolean isAtPosition(double targetPosition) {
-        return Math.abs(getArmEncoderPosition() - targetPosition) < ArmConstants.kArmPositionEpsilon;
+        return Math.abs(getArmMotorEncoderPosition() - targetPosition) < ArmConstants.kArmPositionEpsilon;
     }
 
     public double getArmMotorTemperature() {
@@ -223,7 +223,7 @@ public class Arm extends SubsystemBase {
 
     @Override
     public void periodic() {
-        SmartDashboard.putNumber("Arm: Motor Encoder Position", getArmEncoderPosition());
+        SmartDashboard.putNumber("Arm: Motor Encoder Position", getArmMotorEncoderPosition());
         SmartDashboard.putNumber("Arm: CanCoder Position", getAbsoluteCANcoderPosition());
 
         if(SmartDashboard.getBoolean("Arm: Open Loop Control", false)){
@@ -231,7 +231,7 @@ public class Arm extends SubsystemBase {
         }
 
         armAngle.setNumber(getAbsoluteCANcoderPosition());
-        armEncoderPosition.setNumber(getArmEncoderPosition()); 
+        armEncoderPosition.setNumber(getArmMotorEncoderPosition()); 
         armCanCoderPosition.setNumber(getAbsoluteCANcoderPosition());
 
         motorTemp.setNumber(armMotor.getMotorTemperature()); 

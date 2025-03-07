@@ -4,14 +4,18 @@
 
 package frc.robot.subsystems;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.utils.Constants.ClawConstants;
 import frc.robot.utils.Constants.ScoreConstants;
 import frc.robot.utils.LiveData;
+import frc.robot.utils.OperatorOI;
 
 import static frc.robot.subsystems.Superstructure.SuperstructureState.*;
 
@@ -30,8 +34,10 @@ public class Superstructure extends SubsystemBase {
 
     private LiveData systemStateData, requestedSystemStateData, algaeIndex, coralIndex; 
 
-    private boolean isManualControl;
-
+    private boolean isManualControl, hasJustRemovedAlgae;
+    private double startedOuttakingRemovedAlgaeTime;
+    
+    private boolean autoRemoveAlgaeSwitch;
 
     public enum SuperstructureState {
         STOW,
@@ -54,7 +60,8 @@ public class Superstructure extends SubsystemBase {
         REEF1_ALGAE_INTAKE,
         REEF2_ALGAE_INTAKE,
         EJECT_ALGAE,
-        EJECT_CORAL
+        EJECT_CORAL,
+        REMOVING_ALGAE
     }
 
     public Superstructure() {
@@ -75,6 +82,10 @@ public class Superstructure extends SubsystemBase {
         requestedSystemStateData = new LiveData(requestedSystemState.toString(), "Requested System State"); 
 
         isManualControl = false;
+        hasJustRemovedAlgae = false;
+        startedOuttakingRemovedAlgaeTime = 0.0;
+        
+        autoRemoveAlgaeSwitch = false;
     }
 
     public static Superstructure getInstance() {
@@ -162,9 +173,20 @@ public class Superstructure extends SubsystemBase {
 
                 // add gate to check elevator height and arm angle ?
 
-                if(claw.bothCoralSensorsTriggered()) {
+                if (hasJustRemovedAlgae) {
+                    if (startedOuttakingRemovedAlgaeTime == 0)
+                        startedOuttakingRemovedAlgaeTime = Timer.getFPGATimestamp();
+                    else if (Timer.getFPGATimestamp() - startedOuttakingRemovedAlgaeTime >= 0.2) {
+                        hasJustRemovedAlgae = false;
+                        startedOuttakingRemovedAlgaeTime = 0;
+                    }
+                    claw.intakePiece(ClawConstants.kAlgaeOuttakeSpeed);
+                } else if(claw.bothCoralSensorsTriggered()) {
                     claw.stopClaw();
-                    requestState(STOW);
+                    if (DriverStation.isAutonomous())
+                        systemState = requestedSystemState;
+                    else
+                        requestState(STOW);
                 } else if (claw.getTopSensor() && !claw.getBottomSensor()){
                     claw.intakePiece(ClawConstants.kCoralSlowIntake);
                 } else {
@@ -181,6 +203,9 @@ public class Superstructure extends SubsystemBase {
                         .contains(requestedSystemState)) {
                     systemState = requestedSystemState;
                 }
+
+                if (requestedSystemState == L4_PREP && DriverStation.isAutonomous() && claw.bothCoralSensorsTriggered())
+                    systemState = requestedSystemState;
             }
 
             case ALGAE_GROUND_INTAKE -> {
@@ -244,12 +269,12 @@ public class Superstructure extends SubsystemBase {
             case L2_PREP -> {
                 // set prep angle
                 /*
-                 * two different cases:
-                 * - dunk case
-                 * move to angle close to scoring angle
-                 * - shoot case
-                 * move to scoring angle
-                 */
+                    * two different cases:
+                    * - dunk case
+                    * move to angle close to scoring angle
+                    * - shoot case
+                    * move to scoring angle
+                    */
                 elevator.setElevatorPositionMotionMagicVoltage(ScoreConstants.kElevatorL2ScorePosition);
                 // arm.setArmPositionMotionMagicTorqueCurrentFOC(ScoreConstants.kArmL2ScorePosition);
 
@@ -278,12 +303,12 @@ public class Superstructure extends SubsystemBase {
             case L3_PREP -> {
                 // set prep angle
                 /*
-                 * two different cases:
-                 * - dunk case
-                 * move to angle close to scoring angle
-                 * - shoot case
-                 * move to scoring angle
-                 */
+                    * two different cases:
+                    * - dunk case
+                    * move to angle close to scoring angle
+                    * - shoot case
+                    * move to scoring angle
+                    */
                 elevator.setElevatorPositionMotionMagicVoltage(ScoreConstants.kElevatorL3ScorePosition);
                 // arm.setArmPositionMotionMagicTorqueCurrentFOC(ScoreConstants.kArmL3ScorePosition);
                 
@@ -426,11 +451,14 @@ public class Superstructure extends SubsystemBase {
             }
 
             case L4_SCORE -> {
-
                 if (timer.hasElapsed(ScoreConstants.kL4ScoreTimeout) || !claw.eitherCoralSensorTriggered()){
                     timer.reset();
-                    claw.stopClaw();
-                    requestState(HP_INTAKE);
+                    if (shouldRemoveAlgae()) {
+                        requestState(REMOVING_ALGAE);
+                    } else {
+                        claw.stopClaw();
+                        requestState(HP_INTAKE);
+                    }
                 } else {
                     claw.outtakePiece(ClawConstants.kCoralOuttakeSpeed);
                 }
@@ -440,7 +468,8 @@ public class Superstructure extends SubsystemBase {
                         HP_INTAKE,
                         ALGAE_GROUND_INTAKE,
                         REEF1_ALGAE_INTAKE,
-                        REEF2_ALGAE_INTAKE)
+                        REEF2_ALGAE_INTAKE,
+                        REMOVING_ALGAE)
                         .contains(requestedSystemState)) {
                     systemState = requestedSystemState;
                 }
@@ -691,6 +720,23 @@ public class Superstructure extends SubsystemBase {
                     systemState = requestedSystemState;
                 }
             }
+            case REMOVING_ALGAE -> {
+                double armAngle = 0.21;
+                if (elevator.getElevatorCANcoderPosition() > 1.5) {
+                    claw.setClaw(ClawConstants.kCoralIntakeSpeed);
+                    arm.setArmPositionVoltage(armAngle);
+                    elevator.setElevatorPercentOutput(getAlgaeRemovalSpeed());
+                }
+                else {
+                    arm.setArmPositionVoltage(0.25);
+                    hasJustRemovedAlgae = true;
+                    requestState(STOW);
+                }
+
+                if (Arrays.asList(STOW, HP_INTAKE).contains(requestedSystemState)) {
+                    systemState = requestedSystemState;
+                }
+            }
         }
 
     }
@@ -754,6 +800,55 @@ public class Superstructure extends SubsystemBase {
                 break;
             }
         }
+    }
+
+    private final List<Integer> highAlgaeTags = Arrays.asList(
+        18, 20, 22, 7, 9, 11
+    );
+    
+    public void setAutoRemoveAlgaeSwitch(boolean value) {
+        autoRemoveAlgaeSwitch = value;
+    }
+    
+    private boolean shouldRemoveAlgae() {
+        if (DriverStation.isAutonomous()) {
+            boolean value = autoRemoveAlgaeSwitch;
+            autoRemoveAlgaeSwitch = false;
+            return value;
+        }
+        return OperatorOI.getInstance().getLeftBumperHeld();
+    }
+
+    private boolean isHighAlgae() {
+        // return SmartDashboard.getBoolean("RemoveAlgae: high?", false);
+        Limelight camera = LimelightFrontLeft.getInstance();
+        if (camera.getNumberOfTagsSeen() == 1 && highAlgaeTags.contains(camera.getTargetID()))
+            return true;
+
+        camera = LimelightFrontRight.getInstance();
+        if (camera.getNumberOfTagsSeen() == 1 && highAlgaeTags.contains(camera.getTargetID()))
+            return true;
+
+        return false;
+    }
+
+    private double getAlgaeRemovalSpeed() {
+        // double elevatorFast = SmartDashboard.getNumber("RemoveAlgae: elevator fast", -0.7);
+        // double elevatorSlow = SmartDashboard.getNumber("RemoveAlgae: elevator slow", -0.3);
+        // double slowThreshold = SmartDashboard.getNumber("RemoveAlgae: slow threshold", 1.0);
+        // double thing = SmartDashboard.getNumber("RemoveAlgae: thing", 0.3);
+
+        double elevatorFast = -0.7, elevatorSlow = -0.3, slowThreshold = 0.8;
+        double elevatorPosition = elevator.getElevatorCANcoderPosition();
+        if (isHighAlgae()) {
+            if (Math.abs(elevatorPosition - (ScoreConstants.kElevatorReef2IntakePosition + 0.5)) <= slowThreshold)
+                return elevatorSlow;
+            return elevatorFast;
+        }
+
+        if (Math.abs(elevatorPosition - (ScoreConstants.kElevatorReef1IntakePosition + 0.5)) <= slowThreshold)
+            return elevatorSlow;
+        return elevatorFast;
     }
 
     @Override

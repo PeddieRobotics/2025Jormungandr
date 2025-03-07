@@ -57,7 +57,7 @@ public final class Constants {
 
         public static final double kSteerMotorReduction = 18.75;
 
-        public static final double kDriveS = 0.49;
+        public static final double kDriveS = 0.49; 
         public static final double kDriveV = 0.11;
         public static final double kDriveA = 0.0;
         public static final double kDriveP = 0.5;
@@ -68,9 +68,9 @@ public final class Constants {
         public static final double kSteerS = 0.0;
         public static final double kSteerV = 0.0;
         public static final double kSteerA = 0.0;
-        public static final double kSteerP = 100.0;
+        public static final double kSteerP = 100.0; 
         public static final double kSteerI = 0.0;
-        public static final double kSteerD = 4.0;
+        public static final double kSteerD = 4.0; 
         public static final double kSteerFF = 0.0;
 
     }
@@ -140,7 +140,7 @@ public final class Constants {
         public static final double kElevatorRotorToSensorRatio = kElevatorReduction;
         public static final double kElevatorSensortoMechanismRatio = 1.0;
 
-        public static final double kElevatorMagnetOffset = -0.618408;
+        public static final double kElevatorMagnetOffset = -1.580078;
 
         // Motion Magic Parameters
         public static final double kElevatorMaxCruiseVelocity = 14.0;
@@ -207,11 +207,11 @@ public final class Constants {
         public static final double kElevatorStowPosition = 0.0;
         public static final double kElevatorHPIntakePosition = 0.0;
         public static final double kElevatorGroundIntakePosition = 0.0;
-        public static final double kElevatorL1ScorePosition = 2.0;
+        public static final double kElevatorL1ScorePosition = 4.5;
         public static final double kElevatorL2ScorePosition = 3.7;
         public static final double kElevatorL3ScorePosition = 6.9;
         public static final double kElevatorL4PrestagePosition = 3.7;
-        public static final double kElevatorL4ScorePosition = 12.45; 
+        public static final double kElevatorL4ScorePosition = 12.40; 
         public static final double kElevatorBargePrestagePosition = 6.0;
         public static final double kElevatorBargeScorePosition = 12.5;
         public static final double kElevatorProcessorScorePosition = 0.0;
@@ -319,17 +319,29 @@ public final class Constants {
             }
         };
 
+        public static final Map<Integer, Integer> kBlueToRedReefTag = new HashMap<>() {
+            {
+                put(17, 8);
+                put(18, 7);
+                put(19, 6);
+                put(20, 11);
+                put(21, 10);
+                put(22, 9);
+            }
+        };
+
         public enum AlignmentDestination {
             LEFT, MIDDLE, RIGHT
         };
 
-        public static final class ReefAlignEstimatedPose {
+        public static final class ReefAlign {
             public static final double kTranslateP = 2.3;
             public static final double kTranslateI = 0;
             public static final double kTranslateD = 0;
             public static final double kTranslateFF = 0;
-            public static final double kTranslateThreshold = 0.02;
-            public static final double kTranslateDistanceThreshold = 0.04;
+            public static final double kTranslateThreshold = 0.03;
+            public static final double kTranslateThresholdAuto = 0.035;
+            public static final double kTranslateThresholdL2L3 = 0.065;
             public static final double kTranslateSetpoint = 0;
 
             public static final double kRotationP = 0.05;
@@ -341,7 +353,7 @@ public final class Constants {
             public static final double kRotationUseLowerPThreshold = 1.5;
             
             // center of robot distance to tag -- back (+ = back, - = forwards)
-            public static final double kTagBackMagnitude = 0.44;
+            public static final double kTagBackMagnitude = 0.43;
 
             // center of robot distance to tag -- left (+ = left, - = right)
             public static final double kLeftOffset = 0.1896;
@@ -349,6 +361,33 @@ public final class Constants {
             public static final double kRightOffset = -0.1651;
             
             public static final double kMaxSpeed = 2.0;
+        }
+
+        public static final class HPAlign {
+            public static final double kTranslateP = 2.9;
+            public static final double kTranslateI = 0;
+            public static final double kTranslateD = 0;
+            public static final double kTranslateFF = 0;
+            public static final double kTranslateDistanceThreshold = 0.07;
+            public static final double kTranslateSetpoint = 0;
+
+            public static final double kRotationP = 0.065;
+            public static final double kRotationI = 0;
+            public static final double kRotationD = 0;
+            public static final double kRotationFF = 0;
+            public static final double kRotationThreshold = 0.8;
+            public static final double kRotationLowerP = 0.04;
+            public static final double kRotationUseLowerPThreshold = 1.5;
+            
+            // center of robot distance to tag -- back (+ = back, - = forwards)
+            public static final double kBackOffset = 0.42;
+
+            // TODO
+            public static final double kLeftOffset = 0.15;
+            public static final double kMiddleOffset = 0.0;
+            public static final double kRightOffset = -0.15;
+            
+            public static final double kMaxSpeed = 3.0;
         }
             
         public static final double kDefaultToClosestDistance = 1.5;
@@ -422,55 +461,56 @@ public final class Constants {
     }
 
     public static final class CameraConstants {
-        // TODO: update real values
         /*
          * TODO: ONCE ROBOT ORIENTATION IS CORRECTED
          * - Front(Left/Middle/Right) Yaw: 180 -> 0
          * - Front(Left/Middle/Right) (Left/Up)Offset: remove "* -1"
          */
 
-        // public static final String kBackCamName = "limelight-back";
+        // 3: 10.58.95.14
+        // TODO: find real values
+        public static final String kBackCamName = "limelight-back";
         // public static final double kBackCamForward = 0;
         // public static final double kBackCamLeftOffset = 0;
-        // public static final double kBackCamUpOffset = 0;
-        // public static final double kBackCamPitchDeg = 0;
+        public static final double kBackCamUpOffset = 1.00;
+        public static final double kBackCamPitchDeg = 36.0;
         // public static final double kBackCamYawDeg = 0;
         // public static final int kBackCamPipeline = 0;
 
         // 3G: 10.58.95.11
         public static final String kFrontLeftCamName = "limelight-left";
-        public static final double kFrontLeftCamForward = 7.7188 * 0.0254;
-        public static final double kFrontLeftCamLeftOffset = 6.625 * 0.0254;
+        // public static final double kFrontLeftCamForward = 7.7188 * 0.0254;
+        // public static final double kFrontLeftCamLeftOffset = 6.625 * 0.0254;
         public static final double kFrontLeftCamUpOffset = 6.9909 * 0.0254;
         public static final double kFrontLeftCamPitchDeg = 6;
-        public static final double kFrontLeftCamYawDeg = 0;
-        public static final int kFrontLeftCamPipeline = 0;
+        // public static final double kFrontLeftCamYawDeg = 0;
+        // public static final int kFrontLeftCamPipeline = 0;
 
         // 3: 10.58.95.12
         public static final String kFrontMiddleCamName = "limelight-middle";
-        public static final double kFrontMiddleCamForward = 7.7188 * 0.0254;
-        public static final double kFrontMiddleCamLeftOffset = 0;
+        // public static final double kFrontMiddleCamForward = 7.7188 * 0.0254;
+        // public static final double kFrontMiddleCamLeftOffset = 0;
         public static final double kFrontMiddleCamUpOffset = 6.9909 * 0.0254;
         public static final double kFrontMiddleCamPitchDeg = 6;
-        public static final double kFrontMiddleCamYawDeg = 0;
-        public static final int kFrontMiddleCamPipeline = 0;
+        // public static final double kFrontMiddleCamYawDeg = 0;
+        // public static final int kFrontMiddleCamPipeline = 0;
 
         // 3G: 10.58.95.13
         public static final String kFrontRightCamName = "limelight-right";
-        public static final double kFrontRightCamForward = 7.7188 * 0.0254;
-        public static final double kFrontRightCamLeftOffset = -6.5 * 0.0254;
+        // public static final double kFrontRightCamForward = 7.7188 * 0.0254;
+        // public static final double kFrontRightCamLeftOffset = -6.5 * 0.0254;
         public static final double kFrontRightCamUpOffset = 6.9909 * 0.0254;
         public static final double kFrontRightCamPitchDeg = 6;
-        public static final double kFrontRightCamYawDeg = 0;
-        public static final int kFrontRightCamPipeline = 0;
+        // public static final double kFrontRightCamYawDeg = 0;
+        // public static final int kFrontRightCamPipeline = 0;
 
         public static final String kLeftCamName = "limelight-climber";
-        public static final double kLeftCamForward = 0;
-        public static final double kLeftCamLeftOffset = 0;
+        // public static final double kLeftCamForward = 0;
+        // public static final double kLeftCamLeftOffset = 0;
         public static final double kLeftCamUpOffset = 0;
         public static final double kLeftCamPitchDeg = 0;
-        public static final double kLeftCamYawDeg = 0;
-        public static final int kLeftCamPipeline = 0;
+        // public static final double kLeftCamYawDeg = 0;
+        // public static final int kLeftCamPipeline = 0;
 
         public static final InterpolatingDoubleTreeMap k1TagStdDevs = new InterpolatingDoubleTreeMap() {
             {

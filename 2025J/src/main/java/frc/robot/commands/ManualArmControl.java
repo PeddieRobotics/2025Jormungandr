@@ -28,7 +28,7 @@ public class ManualArmControl extends Command {
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-        arm.setArmPercentOutput(operatorOI.getRightForward());
+        arm.setArmPercentOutput(operatorOI.getRightForward() / 10.0);
     }
 
     // Called once the command ends or is interrupted.

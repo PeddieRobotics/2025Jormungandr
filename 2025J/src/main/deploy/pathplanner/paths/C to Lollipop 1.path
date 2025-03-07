@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 3.55875,
-        "y": 2.90375
+        "x": 3.2675966734756487,
+        "y": 2.2611118855236363
       },
       "prevControl": null,
       "nextControl": {
-        "x": 3.308032970865114,
-        "y": 2.8523517356251755
+        "x": 3.016879644340763,
+        "y": 2.2097136211488118
       },
       "isLocked": false,
       "linkedName": "CReef"
@@ -33,8 +33,8 @@
   "pointTowardsZones": [],
   "eventMarkers": [],
   "globalConstraints": {
-    "maxVelocity": 1.0,
-    "maxAcceleration": 3.0,
+    "maxVelocity": 4.0,
+    "maxAcceleration": 6.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0,
     "nominalVoltage": 12.0,
