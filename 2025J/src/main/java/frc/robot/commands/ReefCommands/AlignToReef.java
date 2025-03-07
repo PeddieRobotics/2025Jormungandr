@@ -22,6 +22,7 @@ import frc.robot.utils.CalculateReefTarget;
 import frc.robot.utils.Constants.AlignmentConstants;
 import frc.robot.utils.Constants.AlignmentConstants.AlignmentDestination;
 import frc.robot.utils.Constants.AlignmentConstants.ReefAlign;
+import frc.robot.utils.Logger;
 
 public class AlignToReef extends Command {
     private Drivetrain drivetrain;
@@ -181,7 +182,7 @@ public class AlignToReef extends Command {
         
         LimelightFrontMiddle.getInstance().setLED(Limelight.LightMode.ON);
         LimelightBack.getInstance().setLED(Limelight.LightMode.ON);
-        // SmartDashboard.putBoolean("Align: Finished?", false);
+        Logger.getInstance().logEvent("Align to Reef", true);
     }
     
     private Optional<Pose2d> getBestEstimatedPose() {
@@ -277,6 +278,8 @@ public class AlignToReef extends Command {
             Superstructure.getInstance().sendToScore();
         }
 
+        Logger.getInstance().logAlignToReef(xError, yError, rotationError);
+
         // {
         //     SmartDashboard.putNumber("Align: xError", xError);
         //     SmartDashboard.putNumber("Align: yError", yError);
@@ -294,7 +297,11 @@ public class AlignToReef extends Command {
         
         LimelightFrontMiddle.getInstance().setLED(Limelight.LightMode.OFF);
         LimelightBack.getInstance().setLED(Limelight.LightMode.OFF);
-        // SmartDashboard.putBoolean("Align: Finished?", true);
+        
+        Logger.getInstance().logEvent(
+            "Align to Reef ended with errors: x " + xError + ", y " + yError + ", rotation " + rotationError,
+            false
+        );
     }
 
     @Override

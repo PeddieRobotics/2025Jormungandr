@@ -2,8 +2,6 @@ package frc.robot.commands.ReefCommands;
 
 import java.util.Optional;
 
-import org.ejml.dense.block.TriangularSolver_MT_DDRB;
-
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -21,6 +19,7 @@ import frc.robot.subsystems.Limelight;
 import frc.robot.subsystems.LimelightBack;
 import frc.robot.utils.CalculateHPTarget;
 import frc.robot.utils.CalculateReefTarget;
+import frc.robot.utils.Logger;
 import frc.robot.utils.Constants.AlignmentConstants;
 import frc.robot.utils.Constants.AlignmentConstants.AlignmentDestination;
 import frc.robot.utils.Constants.AlignmentConstants.HPAlign;
@@ -120,7 +119,7 @@ public class AlignToHP extends Command {
         rotationError = 10000;
 
         LimelightFrontMiddle.getInstance().setLED(Limelight.LightMode.ON);
-        SmartDashboard.putBoolean("HPAlign: Finished?", false);
+        Logger.getInstance().logEvent("Align to HP", true);
 
         Superstructure.getInstance().requestState(SuperstructureState.HP_INTAKE);
         
@@ -209,6 +208,8 @@ public class AlignToHP extends Command {
 
         drivetrain.driveForceAdjust(translation, rotation, true, null);
 
+        Logger.getInstance().logAlignToHP(xError, yError, rotationError);
+
         // {
         //     SmartDashboard.putNumber("HPAlign: xError", xError);
         //     SmartDashboard.putNumber("HPAlign: yError", yError);
@@ -222,7 +223,10 @@ public class AlignToHP extends Command {
     @Override
     public void end(boolean interrupted) {
         LimelightFrontMiddle.getInstance().setLED(Limelight.LightMode.OFF);
-        SmartDashboard.putBoolean("HPAlign: Finished?", true);
+        Logger.getInstance().logEvent(
+            "Align to HP ended with errors: x " + xError + ", y " + yError + ", rotation " + rotationError,
+            false
+        );
     }
 
     @Override
