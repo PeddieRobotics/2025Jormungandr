@@ -341,7 +341,7 @@ public final class Constants {
             public static final double kTranslateFF = 0;
             public static final double kTranslateThreshold = 0.03;
             public static final double kTranslateThresholdAuto = 0.035;
-            public static final double kTranslateThresholdL2L3 = 0.045;
+            public static final double kTranslateThresholdL2L3 = 0.065;
             public static final double kTranslateSetpoint = 0;
 
             public static final double kRotationP = 0.05;
