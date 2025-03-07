@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.utils.Constants.FieldConstants;
 import frc.robot.utils.DriverOI;
+import frc.robot.utils.Logger;
 
 public class OrbitReef extends Command {
 
@@ -30,10 +31,10 @@ public class OrbitReef extends Command {
     public OrbitReef() { //center of the reef is (4.5, 4)!!!
         drivetrain = Drivetrain.getInstance();
         
-        SmartDashboard.putNumber("P turn pid orbitReef", P);
-        SmartDashboard.putNumber("I turn pid orbitReef", I);
-        SmartDashboard.putNumber("D turn pid orbitReef", D);
-        SmartDashboard.putNumber("FF turn pid orbitReef", FF);
+        // SmartDashboard.putNumber("P turn pid orbitReef", P);
+        // SmartDashboard.putNumber("I turn pid orbitReef", I);
+        // SmartDashboard.putNumber("D turn pid orbitReef", D);
+        // SmartDashboard.putNumber("FF turn pid orbitReef", FF);
 
         turnPIDController = new PIDController(P, I, D);
         turnPIDController.enableContinuousInput(-180, 180); //wrap around values 
@@ -54,20 +55,20 @@ public class OrbitReef extends Command {
             reefCenterX = FieldConstants.kReefCenterXBlue;
             reefCenterY = FieldConstants.kReefCenterYBlue;
         }
+
+        Logger.getInstance().logEvent("Orbit Reef", true);
     }
 
     @Override
     public void execute() {
-        P = SmartDashboard.getNumber("P turn pid orbitReef", P);
-        I = SmartDashboard.getNumber("I turn pid orbitReef", I);
-        D = SmartDashboard.getNumber("D turn pid orbitReef", D);
-        FF = SmartDashboard.getNumber("FF turn pid orbitReef", FF);
+        // P = SmartDashboard.getNumber("P turn pid orbitReef", P);
+        // I = SmartDashboard.getNumber("I turn pid orbitReef", I);
+        // D = SmartDashboard.getNumber("D turn pid orbitReef", D);
+        // FF = SmartDashboard.getNumber("FF turn pid orbitReef", FF);
 
         turnPIDController.setPID(P, I, D);
         
-        currentHeading = drivetrain.getHeading();
-
-        double currentHeading = drivetrain.getHeading();
+        double currentHeading = drivetrain.getHeadingBlue();
         double poseX = drivetrain.getPose().getX();
         double poseY = drivetrain.getPose().getY();
         setpoint = Math.atan2(reefCenterY - poseY, reefCenterX - poseX);
@@ -81,11 +82,12 @@ public class OrbitReef extends Command {
 
     @Override
     public void end(boolean interrupted) {
-
+        Logger.getInstance().logEvent("Orbit Reef", false);
     }
 
     @Override
     public boolean isFinished() {
-        return Math.abs(Math.abs(currentHeading) - setpoint) < turnThreshold;
+        return false;
+        // return Math.abs(Math.abs(currentHeading) - setpoint) < turnThreshold;
     }
 }

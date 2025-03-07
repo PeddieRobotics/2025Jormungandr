@@ -189,6 +189,29 @@ public class Drivetrain extends SubsystemBase {
         setSwerveModuleStates(swerveModuleStates);
     }
 
+
+    public void driveBlue(Translation2d translation, double rotation, boolean fieldOriented, Translation2d centerOfRotation) {
+        if (fieldOriented)
+            currentMovement = translation;
+
+        ChassisSpeeds fieldRelativeSpeeds = new ChassisSpeeds(translation.getX(), translation.getY(), rotation);
+
+        ChassisSpeeds robotRelativeSpeeds;
+        if (fieldOriented) {
+            robotRelativeSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(fieldRelativeSpeeds, new Rotation2d(Math.toRadians(getHeadingBlue())));
+        } else {
+            robotRelativeSpeeds = fieldRelativeSpeeds;
+        }
+
+        currentDrivetrainSpeed = Math.sqrt(Math.pow(robotRelativeSpeeds.vxMetersPerSecond, 2)
+                                + Math.pow(robotRelativeSpeeds.vyMetersPerSecond, 2));
+
+        swerveModuleStates = DriveConstants.kKinematics.toSwerveModuleStates(robotRelativeSpeeds);
+        SwerveDriveKinematics.desaturateWheelSpeeds(swerveModuleStates, DriveConstants.kMaxModuleSpeed);
+        optimizeModuleStates();
+        setSwerveModuleStates(swerveModuleStates);
+    }
+
     /**
      * PLEASE ONLY USE THIS IN AUTONOMOUS
      * commands the robot to drive with the auto angle adjustment
@@ -198,7 +221,7 @@ public class Drivetrain extends SubsystemBase {
      * @param fieldOriented - whether the robot is field oriented (true) or robot oriented (false)
      * @param centerOfRotation - robot's center of rotation
      */
-    public void driveForceAdjust(Translation2d translation, double rotation, boolean fieldOriented, Translation2d centerOfRotation) {
+    public void driveBlueForceAdjust(Translation2d translation, double rotation, boolean fieldOriented, Translation2d centerOfRotation) {
         if (fieldOriented)
             currentMovement = translation;
 
@@ -206,7 +229,7 @@ public class Drivetrain extends SubsystemBase {
 
         ChassisSpeeds robotRelativeSpeeds;
         if (fieldOriented) {
-            Rotation2d rotation2d = new Rotation2d(Math.toRadians(getHeadingForceAdjust()));
+            Rotation2d rotation2d = new Rotation2d(Math.toRadians(getHeadingBlueForceAdjust()));
             robotRelativeSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(fieldRelativeSpeeds, rotation2d);
         } else {
             robotRelativeSpeeds = fieldRelativeSpeeds;
@@ -272,7 +295,7 @@ public class Drivetrain extends SubsystemBase {
         // if (DriverStation.isAutonomous())
         //     odometry.update(new Rotation2d(Math.toRadians(getHeadingBlueForceAdjust())), swerveModulePositions);
         // else
-        odometry.update(new Rotation2d(Math.toRadians(getHeadingNoAdjust())), swerveModulePositions);
+        odometry.update(new Rotation2d(Math.toRadians(getHeadingBlueNoAdjust())), swerveModulePositions);
     }
 
     /**
@@ -409,7 +432,7 @@ public class Drivetrain extends SubsystemBase {
      */
     public void setPose(Pose2d pose) {
         gyro.reset();
-        odometry.resetPosition(getHeadingAsRotation2d(), swerveModulePositions, pose);
+        odometry.resetPosition(new Rotation2d(Math.toRadians(getHeadingBlue())), swerveModulePositions, pose);
     }
 
     /**

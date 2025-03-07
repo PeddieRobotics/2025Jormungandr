@@ -5,33 +5,39 @@
     "data": {
       "commands": [
         {
-          "type": "path",
+          "type": "named",
           "data": {
-            "pathName": "Square Rotate 1"
+            "name": "L3L4_PRESTAGE"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Square Rotate 2"
+            "pathName": "Right Wall to E Align"
           }
         },
         {
-          "type": "path",
+          "type": "named",
           "data": {
-            "pathName": "Square Rotate 3"
+            "name": "L4_PREP"
           }
         },
         {
-          "type": "path",
+          "type": "named",
           "data": {
-            "pathName": "Square Rotate 4"
+            "name": "SET_ALGAE_REMOVAL"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "ALIGN_22_9_LEFT"
           }
         }
       ]
     }
   },
   "resetOdom": true,
-  "folder": "Test Autos",
+  "folder": null,
   "choreoAuto": false
 }

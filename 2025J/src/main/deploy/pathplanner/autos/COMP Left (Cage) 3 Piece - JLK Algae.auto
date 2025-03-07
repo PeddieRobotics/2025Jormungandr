@@ -7,7 +7,7 @@
         {
           "type": "named",
           "data": {
-            "name": "L4_PRESTAGE"
+            "name": "L3L4_PRESTAGE"
           }
         },
         {
@@ -19,25 +19,25 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Middle Right to E Align"
+            "pathName": "Left (Cage) to J Align"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "ALIGN_22_9_LEFT"
+            "name": "ALIGN_20_11_RIGHT"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "E to HP Align"
+            "pathName": "J to HP Align"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "ALIGN_TO_HP_LEFT"
+            "name": "ALIGN_TO_HP_13_1"
           }
         },
         {
@@ -49,13 +49,13 @@
         {
           "type": "named",
           "data": {
-            "name": "L4_PRESTAGE"
+            "name": "L3L4_PRESTAGE"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "HP to C Align"
+            "pathName": "HP to L Align"
           }
         },
         {
@@ -67,19 +67,19 @@
         {
           "type": "named",
           "data": {
-            "name": "ALIGN_17_8_LEFT"
+            "name": "ALIGN_19_6_RIGHT"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "C to HP Align"
+            "pathName": "L to HP Align"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "ALIGN_TO_HP_LEFT"
+            "name": "ALIGN_TO_HP_13_1"
           }
         },
         {
@@ -91,13 +91,13 @@
         {
           "type": "named",
           "data": {
-            "name": "L4_PRESTAGE"
+            "name": "L3L4_PRESTAGE"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "HP to D Align"
+            "pathName": "HP to K Align"
           }
         },
         {
@@ -109,13 +109,19 @@
         {
           "type": "named",
           "data": {
-            "name": "ALIGN_17_8_RIGHT"
+            "name": "SET_ALGAE_REMOVAL"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "ALIGN_19_6_LEFT"
           }
         }
       ]
     }
   },
   "resetOdom": true,
-  "folder": "Tape Starts",
+  "folder": null,
   "choreoAuto": false
 }

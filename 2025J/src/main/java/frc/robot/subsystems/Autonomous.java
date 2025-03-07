@@ -1,5 +1,7 @@
 package frc.robot.subsystems;
 
+import static frc.robot.subsystems.Superstructure.SuperstructureState.HP_INTAKE;
+
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.config.PIDConstants;
@@ -18,7 +20,6 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.commands.AutoCommands.*;
 import frc.robot.commands.ReefCommands.AlignToHP;
-import frc.robot.commands.ReefCommands.AlignToHPStationMegaTag;
 import frc.robot.commands.ReefCommands.AlignToReef;
 import frc.robot.subsystems.Superstructure.SuperstructureState;
 import frc.robot.utils.Constants;
@@ -109,7 +110,10 @@ public class Autonomous extends SubsystemBase {
                         new AlignToReef(Constants.AlignmentConstants.AlignmentDestination.LEFT, 2.0, blue, red),
                         new WaitCommand(0.3)
                     ),
-                    new WaitCommand(2)
+                    new SequentialCommandGroup(
+                        new WaitCommand(2),
+                        new InstantCommand(() -> superstructure.requestState(HP_INTAKE))
+                    )
                 )
             );
             NamedCommands.registerCommand(
@@ -119,7 +123,10 @@ public class Autonomous extends SubsystemBase {
                         new AlignToReef(Constants.AlignmentConstants.AlignmentDestination.RIGHT, 2.0, blue, red),
                         new WaitCommand(0.3)
                     ),
-                    new WaitCommand(2)
+                    new SequentialCommandGroup(
+                        new WaitCommand(2),
+                        new InstantCommand(() -> superstructure.requestState(HP_INTAKE))
+                    )
                 )
             );
         }
@@ -127,25 +134,24 @@ public class Autonomous extends SubsystemBase {
         NamedCommands.registerCommand("L1_PREP", new InstantCommand(() -> superstructure.requestState(SuperstructureState.L1_PREP)));
         NamedCommands.registerCommand("L2_PREP", new InstantCommand(() -> superstructure.requestState(SuperstructureState.L2_PREP)));
         NamedCommands.registerCommand("L3_PREP", new InstantCommand(() -> superstructure.requestState(SuperstructureState.L3_PREP)));
-        NamedCommands.registerCommand("L4_PRESTAGE", new InstantCommand(() -> superstructure.requestState(SuperstructureState.L4_PRESTAGE)));
+        NamedCommands.registerCommand("L3L4_PRESTAGE", new InstantCommand(() -> superstructure.requestState(SuperstructureState.L3L4_PRESTAGE)));
         NamedCommands.registerCommand("L4_PREP", new InstantCommand(() -> superstructure.requestState(SuperstructureState.L4_PREP)));
         NamedCommands.registerCommand("STOW", new InstantCommand(() -> superstructure.requestState(SuperstructureState.STOW)));
         NamedCommands.registerCommand("HP_INTAKE", new InstantCommand(() -> superstructure.requestState(SuperstructureState.HP_INTAKE)));
         NamedCommands.registerCommand("SEND_TO_SCORE", new InstantCommand(() -> superstructure.sendToScore()));
 
-        NamedCommands.registerCommand("ALIGN_TO_HP_LEFT", new ParallelRaceGroup(
-            new AlignToHP(HPAlign.kMaxSpeed, HPAlign.kLeftOffset, HPAlign.kBackOffset),
-            new WaitCommand(2)
+        NamedCommands.registerCommand("ALIGN_TO_HP_12_2", new ParallelRaceGroup(
+            new AlignToHP(HPAlign.kMaxSpeed, HPAlign.kLateralOffset, HPAlign.kBackOffset, 12, 2),
+            new WaitForCoral(), new WaitCommand(2)
         ));
-        NamedCommands.registerCommand("ALIGN_TO_HP_MIDDLE", new ParallelRaceGroup(
-            new AlignToHP(HPAlign.kMaxSpeed, HPAlign.kMiddleOffset, HPAlign.kBackOffset),
-            new WaitCommand(2)
+        NamedCommands.registerCommand("ALIGN_TO_HP_13_1", new ParallelRaceGroup(
+            new AlignToHP(HPAlign.kMaxSpeed, HPAlign.kLateralOffset, HPAlign.kBackOffset, 13, 1),
+            new WaitForCoral(), new WaitCommand(2)
         ));
-        NamedCommands.registerCommand("ALIGN_TO_HP_RIGHT", new ParallelRaceGroup(
-            new AlignToHP(HPAlign.kMaxSpeed, HPAlign.kRightOffset, HPAlign.kBackOffset),
-            new WaitCommand(2)
+
+        NamedCommands.registerCommand("WAIT_FOR_CORAL", new ParallelRaceGroup(
+            new WaitForCoral(), new WaitCommand(2)
         ));
-        NamedCommands.registerCommand("WAIT_FOR_CORAL", new WaitForCoral());
 
         NamedCommands.registerCommand("SET_ALGAE_REMOVAL", new InstantCommand(() -> {
             Superstructure.getInstance().setAutoRemoveAlgaeSwitch(true);

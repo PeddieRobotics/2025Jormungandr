@@ -12,7 +12,7 @@
         "y": 2.4065538747804407
       },
       "isLocked": false,
-      "linkedName": "EReef"
+      "linkedName": "ReefE"
     },
     {
       "anchor": {
@@ -25,7 +25,7 @@
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "BottomHP"
+      "linkedName": null
     }
   ],
   "rotationTargets": [
@@ -50,7 +50,7 @@
     "rotation": 54.0
   },
   "reversed": false,
-  "folder": "HP Intake",
+  "folder": "Reef to HP",
   "idealStartingState": {
     "velocity": 0,
     "rotation": 119.99999999999999

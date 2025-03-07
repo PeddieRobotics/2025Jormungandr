@@ -1,5 +1,12 @@
 package frc.robot.utils;
 
+import static frc.robot.subsystems.Superstructure.SuperstructureState.L2_PREP;
+import static frc.robot.subsystems.Superstructure.SuperstructureState.L3L4_PRESTAGE;
+import static frc.robot.subsystems.Superstructure.SuperstructureState.L3_PREP;
+import static frc.robot.subsystems.Superstructure.SuperstructureState.L4_PREP;
+
+import java.util.Arrays;
+
 import edu.wpi.first.wpilibj.PS4Controller;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -44,15 +51,19 @@ public class OperatorOI {
         circleButton.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.L2_PREP)));
 
         Trigger squareButton = new JoystickButton(controller, PS4Controller.Button.kSquare.value);
-        squareButton.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.L3_PREP)));
+        squareButton.onTrue(new InstantCommand(() -> {
+            if (Arrays.asList(L3L4_PRESTAGE, L2_PREP, L3_PREP, L4_PREP).contains(superstructure.getCurrentState()))
+                superstructure.requestState(SuperstructureState.L3_PREP);
+            else
+                superstructure.requestState(SuperstructureState.L3L4_PRESTAGE);
+        }));
 
         Trigger triangleButton = new JoystickButton(controller, PS4Controller.Button.kTriangle.value);
         triangleButton.onTrue(new InstantCommand(() -> {
-            if (superstructure.getCurrentState() == SuperstructureState.L4_PRESTAGE) {
+            if (Arrays.asList(L3L4_PRESTAGE, L2_PREP, L3_PREP, L4_PREP).contains(superstructure.getCurrentState()))
                 superstructure.requestState(SuperstructureState.L4_PREP);
-            } else {
-                superstructure.requestState(SuperstructureState.L4_PRESTAGE);
-            }
+            else
+                superstructure.requestState(SuperstructureState.L3L4_PRESTAGE);
         }));
 
         Trigger touchpadButton = new JoystickButton(controller, PS4Controller.Button.kTouchpad.value);

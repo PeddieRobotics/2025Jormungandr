@@ -7,6 +7,7 @@ package frc.robot.subsystems;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
@@ -15,6 +16,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.utils.Constants.ClawConstants;
 import frc.robot.utils.Constants.ScoreConstants;
 import frc.robot.utils.LiveData;
+import frc.robot.utils.Logger;
 import frc.robot.utils.OperatorOI;
 
 import static frc.robot.subsystems.Superstructure.SuperstructureState.*;
@@ -46,7 +48,7 @@ public class Superstructure extends SubsystemBase {
         L1_PREP,
         L2_PREP,
         L3_PREP,
-        L4_PRESTAGE,
+        L3L4_PRESTAGE,
         L4_PREP,
         L1_SCORE,
         L2_SCORE,
@@ -143,8 +145,7 @@ public class Superstructure extends SubsystemBase {
                         ALGAE_GROUND_INTAKE,
                         L1_PREP,
                         L2_PREP,
-                        L3_PREP,
-                        L4_PRESTAGE,
+                        L3L4_PRESTAGE,
                         BARGE_PRESTAGE,
                         PROCESSOR_PREP,
                         REEF1_ALGAE_INTAKE,
@@ -204,8 +205,10 @@ public class Superstructure extends SubsystemBase {
                     systemState = requestedSystemState;
                 }
 
-                if (requestedSystemState == L4_PREP && DriverStation.isAutonomous() && claw.bothCoralSensorsTriggered())
+                if ((requestedSystemState == L3_PREP || requestedSystemState == L4_PREP) &&
+                        DriverStation.isAutonomous() && claw.bothCoralSensorsTriggered()) {
                     systemState = requestedSystemState;
+                }
             }
 
             case ALGAE_GROUND_INTAKE -> {
@@ -226,8 +229,7 @@ public class Superstructure extends SubsystemBase {
                         HP_INTAKE,
                         L1_PREP,
                         L2_PREP,
-                        L3_PREP,
-                        L4_PRESTAGE,
+                        L3L4_PRESTAGE,
                         BARGE_PRESTAGE,
                         PROCESSOR_PREP,
                         REEF1_ALGAE_INTAKE,
@@ -241,7 +243,9 @@ public class Superstructure extends SubsystemBase {
 
             case L1_PREP -> {
                 // set prep angle
-                elevator.setElevatorPositionMotionMagicVoltage(ScoreConstants.kElevatorL1ScorePosition);
+                double position = SmartDashboard.getNumber("Tuning: L1Position", ScoreConstants.kElevatorL1ScorePosition);
+                // elevator.setElevatorPositionMotionMagicVoltage(ScoreConstants.kElevatorL1ScorePosition);
+                elevator.setElevatorPositionMotionMagicVoltage(position);
                 // arm.setArmPositionMotionMagicTorqueCurrentFOC(ScoreConstants.kArmL1ScorePosition);
 
                 //elevator.setElevatorPositionVoltage(ScoreConstants.kElevatorL1ScorePosition);
@@ -253,8 +257,7 @@ public class Superstructure extends SubsystemBase {
                         ALGAE_GROUND_INTAKE,
                         L1_SCORE,
                         L2_PREP,
-                        L3_PREP,
-                        L4_PRESTAGE,
+                        L3L4_PRESTAGE,
                         BARGE_PRESTAGE,
                         PROCESSOR_PREP,
                         REEF1_ALGAE_INTAKE,
@@ -288,7 +291,7 @@ public class Superstructure extends SubsystemBase {
                         L1_PREP,
                         L2_SCORE,
                         L3_PREP,
-                        L4_PRESTAGE,
+                        L4_PREP,
                         BARGE_PRESTAGE,
                         PROCESSOR_PREP,
                         REEF1_ALGAE_INTAKE,
@@ -323,7 +326,6 @@ public class Superstructure extends SubsystemBase {
                         L1_PREP,
                         L2_PREP,
                         L3_SCORE,
-                        L4_PRESTAGE,
                         L4_PREP,
                         BARGE_PRESTAGE,
                         PROCESSOR_PREP,
@@ -336,8 +338,8 @@ public class Superstructure extends SubsystemBase {
                 }
             }
 
-            case L4_PRESTAGE -> {
-                elevator.setElevatorPositionMotionMagicVoltage(ScoreConstants.kElevatorL4PrestagePosition);
+            case L3L4_PRESTAGE -> {
+                elevator.setElevatorPositionMotionMagicVoltage(ScoreConstants.kElevatorPrestagePosition);
                 // arm.setArmPositionMotionMagicTorqueCurrentFOC(ScoreConstants.kArmStowPosition);
 
                 //elevator.setElevatorPositionVoltage(ScoreConstants.kElevatorL4PrestagePosition);
@@ -395,7 +397,8 @@ public class Superstructure extends SubsystemBase {
                     claw.stopClaw();
                     requestState(HP_INTAKE);
                 } else {
-                    claw.outtakePiece(ClawConstants.kCoralL1OuttakeSpeed);
+                    double speed = SmartDashboard.getNumber("Tuning: L1Speed", ClawConstants.kCoralL1OuttakeSpeed);
+                    claw.outtakePiece(speed);
                 }
 
                 if (Arrays.asList(
@@ -493,8 +496,7 @@ public class Superstructure extends SubsystemBase {
                         ALGAE_GROUND_INTAKE,
                         L1_PREP,
                         L2_PREP,
-                        L3_PREP,
-                        L4_PRESTAGE,
+                        L3L4_PRESTAGE,
                         BARGE_PREP,
                         PROCESSOR_PREP,
                         REEF1_ALGAE_INTAKE,
@@ -524,8 +526,7 @@ public class Superstructure extends SubsystemBase {
                         ALGAE_GROUND_INTAKE,
                         L1_PREP,
                         L2_PREP,
-                        L3_PREP,
-                        L4_PRESTAGE,
+                        L3L4_PRESTAGE,
                         BARGE_PRESTAGE,
                         BARGE_SCORE,
                         PROCESSOR_PREP,
@@ -576,8 +577,7 @@ public class Superstructure extends SubsystemBase {
                         ALGAE_GROUND_INTAKE,
                         L1_PREP,
                         L2_PREP,
-                        L3_PREP,
-                        L4_PRESTAGE,
+                        L3L4_PRESTAGE,
                         BARGE_PRESTAGE,
                         PROCESSOR_SCORE,
                         REEF1_ALGAE_INTAKE,
@@ -627,8 +627,7 @@ public class Superstructure extends SubsystemBase {
                         ALGAE_GROUND_INTAKE,
                         L1_PREP,
                         L2_PREP,
-                        L3_PREP,
-                        L4_PRESTAGE,
+                        L3L4_PRESTAGE,
                         BARGE_PRESTAGE,
                         PROCESSOR_PREP,
                         REEF2_ALGAE_INTAKE,
@@ -657,8 +656,7 @@ public class Superstructure extends SubsystemBase {
                         ALGAE_GROUND_INTAKE,
                         L1_PREP,
                         L2_PREP,
-                        L3_PREP,
-                        L4_PRESTAGE,
+                        L3L4_PRESTAGE,
                         BARGE_PRESTAGE,
                         PROCESSOR_PREP,
                         REEF1_ALGAE_INTAKE,
@@ -683,8 +681,7 @@ public class Superstructure extends SubsystemBase {
                         ALGAE_GROUND_INTAKE,
                         L1_PREP,
                         L2_PREP,
-                        L3_PREP,
-                        L4_PRESTAGE,
+                        L3L4_PRESTAGE,
                         BARGE_PRESTAGE,
                         PROCESSOR_PREP,
                         REEF1_ALGAE_INTAKE,
@@ -709,8 +706,7 @@ public class Superstructure extends SubsystemBase {
                         ALGAE_GROUND_INTAKE,
                         L1_PREP,
                         L2_PREP,
-                        L3_PREP,
-                        L4_PRESTAGE,
+                        L3L4_PRESTAGE,
                         BARGE_PRESTAGE,
                         PROCESSOR_PREP,
                         REEF1_ALGAE_INTAKE,
@@ -742,10 +738,12 @@ public class Superstructure extends SubsystemBase {
     }
 
     public void sendToScore() {
+        Logger logger = Logger.getInstance();
         switch (systemState) {
             case L1_PREP -> {
                 if (arm.isAtPosition(ScoreConstants.kArmL1ScorePosition)
                         && elevator.isAtPosition(ScoreConstants.kElevatorL1ScorePosition)) {
+                    logger.logScoreEvent(1, elevator.getElevatorCANcoderPosition(), arm.getArmMotorEncoderPosition());  
                     requestState(L1_SCORE);
                     timer.reset();
                     timer.start();
@@ -755,6 +753,7 @@ public class Superstructure extends SubsystemBase {
             case L2_PREP -> {
                 if (arm.isAtPosition(ScoreConstants.kArmL2ScorePosition)
                         && elevator.isAtPosition(ScoreConstants.kElevatorL2ScorePosition)) {
+                    logger.logScoreEvent(2, elevator.getElevatorCANcoderPosition(), arm.getArmMotorEncoderPosition());  
                     requestState(L2_SCORE);
                     timer.reset();
                     timer.start();
@@ -764,6 +763,7 @@ public class Superstructure extends SubsystemBase {
             case L3_PREP -> {
                 if (arm.isAtPosition(ScoreConstants.kArmL3ScorePosition)
                         && elevator.isAtPosition(ScoreConstants.kElevatorL3ScorePosition)) {
+                    logger.logScoreEvent(3, elevator.getElevatorCANcoderPosition(), arm.getArmMotorEncoderPosition());  
                     requestState(L3_SCORE);
                     timer.reset();
                     timer.start();
@@ -773,6 +773,7 @@ public class Superstructure extends SubsystemBase {
             case L4_PREP -> {
                 if (arm.isAtPosition(ScoreConstants.kArmL4ScorePosition)
                         && elevator.isAtPosition(ScoreConstants.kElevatorL4ScorePosition)) {
+                    logger.logScoreEvent(4, elevator.getElevatorCANcoderPosition(), arm.getArmMotorEncoderPosition());  
                     requestState(L4_SCORE);
                     timer.reset();
                     timer.start();
@@ -801,10 +802,6 @@ public class Superstructure extends SubsystemBase {
             }
         }
     }
-
-    private final List<Integer> highAlgaeTags = Arrays.asList(
-        18, 20, 22, 7, 9, 11
-    );
     
     public void setAutoRemoveAlgaeSwitch(boolean value) {
         autoRemoveAlgaeSwitch = value;
@@ -819,17 +816,20 @@ public class Superstructure extends SubsystemBase {
         return OperatorOI.getInstance().getLeftBumperHeld();
     }
 
-    private boolean isHighAlgae() {
+    private final List<Integer> highAlgaeTags = Arrays.asList(
+        18, 20, 22, 7, 9, 11
+    );
+    private Optional<Boolean> isHighAlgae() {
         // return SmartDashboard.getBoolean("RemoveAlgae: high?", false);
         Limelight camera = LimelightFrontLeft.getInstance();
-        if (camera.getNumberOfTagsSeen() == 1 && highAlgaeTags.contains(camera.getTargetID()))
-            return true;
+        if (camera.getNumberOfTagsSeen() == 1)
+            return Optional.of(highAlgaeTags.contains(camera.getTargetID()));
 
         camera = LimelightFrontRight.getInstance();
-        if (camera.getNumberOfTagsSeen() == 1 && highAlgaeTags.contains(camera.getTargetID()))
-            return true;
+        if (camera.getNumberOfTagsSeen() == 1)
+            return Optional.of(highAlgaeTags.contains(camera.getTargetID()));
 
-        return false;
+        return Optional.empty();
     }
 
     private double getAlgaeRemovalSpeed() {
@@ -838,9 +838,14 @@ public class Superstructure extends SubsystemBase {
         // double slowThreshold = SmartDashboard.getNumber("RemoveAlgae: slow threshold", 1.0);
         // double thing = SmartDashboard.getNumber("RemoveAlgae: thing", 0.3);
 
-        double elevatorFast = -0.7, elevatorSlow = -0.3, slowThreshold = 0.8;
+        Optional<Boolean> high = isHighAlgae();
+        final double elevatorFast = -0.7, elevatorSlow = -0.3, slowThreshold = 0.8;
+
+        if (high.isEmpty())
+            return elevatorSlow;
+
         double elevatorPosition = elevator.getElevatorCANcoderPosition();
-        if (isHighAlgae()) {
+        if (high.get()) {
             if (Math.abs(elevatorPosition - (ScoreConstants.kElevatorReef2IntakePosition + 0.5)) <= slowThreshold)
                 return elevatorSlow;
             return elevatorFast;

@@ -5,39 +5,39 @@
     "data": {
       "commands": [
         {
-          "type": "path",
+          "type": "named",
           "data": {
-            "pathName": "Left Wall to J"
+            "name": "L3L4_PRESTAGE"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "J to HP"
+            "pathName": "Right Wall to E Align"
           }
         },
         {
-          "type": "path",
+          "type": "named",
           "data": {
-            "pathName": "HP to K"
+            "name": "L4_PREP"
           }
         },
         {
-          "type": "path",
+          "type": "named",
           "data": {
-            "pathName": "K to HP"
+            "name": "SET_ALGAE_REMOVAL"
           }
         },
         {
-          "type": "path",
+          "type": "named",
           "data": {
-            "pathName": "HP to L"
+            "name": "ALIGN_22_9_LEFT"
           }
         }
       ]
     }
   },
   "resetOdom": true,
-  "folder": "Wall Starts",
+  "folder": null,
   "choreoAuto": false
 }

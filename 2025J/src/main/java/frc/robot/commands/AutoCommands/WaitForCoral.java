@@ -27,6 +27,6 @@ public class WaitForCoral extends Command {
 
     @Override
     public boolean isFinished() {
-        return Claw.getInstance().bothCoralSensorsTriggered();// || Timer.getFPGATimestamp() - startTime >= 1;
+        return Claw.getInstance().bothCoralSensorsTriggered();// || Timer.getFPGATimestamp() - startTime >= 2.0;
     }
 }

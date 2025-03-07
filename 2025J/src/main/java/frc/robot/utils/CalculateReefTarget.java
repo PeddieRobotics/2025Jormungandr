@@ -179,7 +179,7 @@ public class CalculateReefTarget {
         // SmartDashboard.putNumber("key 1 id", tag1id);
 
         double tag0neededAngle = AlignmentConstants.kReefDesiredAngle.get(tag0id);
-        double tag0gyroError = drivetrain.getHeading() - tag0neededAngle;
+        double tag0gyroError = drivetrain.getHeadingBlue() - tag0neededAngle;
         if (tag0gyroError < -180)
             tag0gyroError += 360;
         if (tag0gyroError > 180)
@@ -207,7 +207,7 @@ public class CalculateReefTarget {
         }
 
         double bestTagNeededAngle = AlignmentConstants.kReefDesiredAngle.get(bestTag);
-        double bestTagError = drivetrain.getHeading() - bestTagNeededAngle;
+        double bestTagError = drivetrain.getHeadingBlue() - bestTagNeededAngle;
         if (bestTagError < -180)
             bestTagError += 360;
         if (bestTagError > 180)

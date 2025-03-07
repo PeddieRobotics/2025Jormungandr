@@ -7,7 +7,7 @@
         {
           "type": "named",
           "data": {
-            "name": "L4_PRESTAGE"
+            "name": "L3L4_PRESTAGE"
           }
         },
         {
@@ -19,7 +19,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Middle Right to E Align"
+            "pathName": "Right (Cage) to E Align"
           }
         },
         {
@@ -37,7 +37,7 @@
         {
           "type": "named",
           "data": {
-            "name": "ALIGN_TO_HP_LEFT"
+            "name": "ALIGN_TO_HP_12_2"
           }
         },
         {
@@ -49,7 +49,7 @@
         {
           "type": "named",
           "data": {
-            "name": "L4_PRESTAGE"
+            "name": "L3L4_PRESTAGE"
           }
         },
         {
@@ -79,7 +79,7 @@
         {
           "type": "named",
           "data": {
-            "name": "ALIGN_TO_HP_LEFT"
+            "name": "ALIGN_TO_HP_12_2"
           }
         },
         {
@@ -91,7 +91,7 @@
         {
           "type": "named",
           "data": {
-            "name": "L4_PRESTAGE"
+            "name": "L3L4_PRESTAGE"
           }
         },
         {
@@ -122,6 +122,6 @@
     }
   },
   "resetOdom": true,
-  "folder": "Tape Starts",
+  "folder": null,
   "choreoAuto": false
 }

@@ -5,39 +5,39 @@
     "data": {
       "commands": [
         {
-          "type": "path",
+          "type": "named",
           "data": {
-            "pathName": "Right Mid Cage to C"
+            "name": "L3L4_PRESTAGE"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "L4_PREP"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "C to Lollipop 1"
+            "pathName": "Right (Cage) to E Align"
           }
         },
         {
-          "type": "path",
+          "type": "named",
           "data": {
-            "pathName": "Lollipop 1 to B"
+            "name": "SET_ALGAE_REMOVAL"
           }
         },
         {
-          "type": "path",
+          "type": "named",
           "data": {
-            "pathName": "B to Lollipop 2"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "Lollipop2 to A"
+            "name": "ALIGN_22_9_LEFT"
           }
         }
       ]
     }
   },
   "resetOdom": true,
-  "folder": "Mid Start",
+  "folder": null,
   "choreoAuto": false
 }

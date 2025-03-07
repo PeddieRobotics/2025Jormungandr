@@ -12,7 +12,7 @@
         "y": 1.2561507935612055
       },
       "isLocked": false,
-      "linkedName": "RedWall"
+      "linkedName": "RightWallStart"
     },
     {
       "anchor": {
@@ -45,7 +45,7 @@
     "rotation": 119.99999999999999
   },
   "reversed": false,
-  "folder": "Starts",
+  "folder": "Start to Reef",
   "idealStartingState": {
     "velocity": 0,
     "rotation": 90.0

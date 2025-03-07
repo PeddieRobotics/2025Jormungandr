@@ -22,6 +22,7 @@ import frc.robot.utils.CalculateReefTarget;
 import frc.robot.utils.Constants.AlignmentConstants;
 import frc.robot.utils.Constants.AlignmentConstants.AlignmentDestination;
 import frc.robot.utils.Constants.AlignmentConstants.ReefAlign;
+import frc.robot.utils.Logger;
 
 public class AlignToReef extends Command {
     private Drivetrain drivetrain;
@@ -140,7 +141,7 @@ public class AlignToReef extends Command {
         else
             desiredTarget = LimelightFrontMiddle.getInstance().getTargetID();
 
-        // SmartDashboard.putNumber("Align: Desired Target", desiredTarget);
+        SmartDashboard.putNumber("Align: Desired Target", desiredTarget);
 
         if (!AlignmentConstants.kReefDesiredAngle.containsKey(desiredTarget)) {
             desiredPose = Optional.empty();
@@ -181,7 +182,7 @@ public class AlignToReef extends Command {
         
         LimelightFrontMiddle.getInstance().setLED(Limelight.LightMode.ON);
         LimelightBack.getInstance().setLED(Limelight.LightMode.ON);
-        // SmartDashboard.putBoolean("Align: Finished?", false);
+        Logger.getInstance().logEvent("Align to Reef, ID " + desiredTarget, true);
     }
     
     private Optional<Pose2d> getBestEstimatedPose() {
@@ -196,7 +197,7 @@ public class AlignToReef extends Command {
 
     private boolean translationDistanceGood() {
         // sqrt(xError^2 + yError^2) < threshold
-        
+
         double pythagSquare = xError * xError + yError * yError;
         if (Arrays.asList(SuperstructureState.L2_PREP, SuperstructureState.L3_PREP).contains(
                 Superstructure.getInstance().getCurrentState())) {
@@ -227,9 +228,9 @@ public class AlignToReef extends Command {
             return;
 
         if (DriverStation.isAutonomous())
-            rotationError = drivetrain.getHeadingForceAdjust() - desiredAngle;
+            rotationError = drivetrain.getHeadingBlueForceAdjust() - desiredAngle;
         else
-            rotationError = drivetrain.getHeading() - desiredAngle;
+            rotationError = drivetrain.getHeadingBlue() - desiredAngle;
 
         translatePIDController.setPID(translateP, translateI, translateD);
         if (Math.abs(rotationError) < rotationUseLowerPThreshold)
@@ -268,7 +269,10 @@ public class AlignToReef extends Command {
         double desaturatedY = Math.min(Math.abs(translateY), maxSpeed);
         translation = new Translation2d(translateX_sgn * desaturatedX, translateY_sgn * desaturatedY);
 
-        drivetrain.driveForceAdjust(translation, rotation, true, null);
+        if (DriverStation.isAutonomous())
+            drivetrain.driveBlueForceAdjust(translation, rotation, true, null);
+        else
+            drivetrain.driveBlue(translation, rotation, true, null);
 
         boolean autoScore = SmartDashboard.getBoolean("Align: Auto Score", true);
         if (Math.abs(rotationError) < rotationThreshold && translationDistanceGood() && autoScore) {
@@ -276,6 +280,8 @@ public class AlignToReef extends Command {
             LimelightBack.getInstance().setLED(Limelight.LightMode.OFF);
             Superstructure.getInstance().sendToScore();
         }
+
+        Logger.getInstance().logAlignToReef(xError, yError, rotationError);
 
         // {
         //     SmartDashboard.putNumber("Align: xError", xError);
@@ -294,7 +300,11 @@ public class AlignToReef extends Command {
         
         LimelightFrontMiddle.getInstance().setLED(Limelight.LightMode.OFF);
         LimelightBack.getInstance().setLED(Limelight.LightMode.OFF);
-        // SmartDashboard.putBoolean("Align: Finished?", true);
+        
+        Logger.getInstance().logEvent(
+            "Align to Reef ended with errors: x " + xError + ", y " + yError + ", rotation " + rotationError,
+            false
+        );
     }
 
     @Override

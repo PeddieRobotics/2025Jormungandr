@@ -45,7 +45,7 @@ public class Logger {
 
     private DataLog log = DataLogManager.getLog();
     private StringLogEntry commandEntry, superstructureCurrentStateEntry, superstructureRequestedStateEntry;
-    private BooleanLogEntry LLIntakeHasTargetEntry;
+    private BooleanLogEntry LLIntakeHasTargetEntry, clawTopSensorEntry, clawBottomSensorEntry, clawAlgaeSensorEntry;
     private DoubleLogEntry gyroAngleEntry, gyroAngleEntryBlue, driveTrainSpeedEntry, driveTrainAngleEntry, driveTrainXEntry,
             driveTrainYEntry, driveTrainXVelEntry, driveTrainZAccEntry,
             driveTrainYVelEntry, driveTrainXAccEntry, driveTrainYAccEntry, driveTrainAngleVelEntry,
@@ -59,7 +59,10 @@ public class Logger {
             leftClimberPositionEntry,
             rightClimberSupplyCurrentEntry, rightClimberStatorCurrentEntry, rightClimberTemperatureEntry,
             rightClimberPosition;
-
+    
+    private DoubleLogEntry reefAlignXErrorEntry, reefAlignYErrorEntry, reefAlignRotationErrorEntry;
+    private DoubleLogEntry HPAlignXErrorEntry, HPAlignYErrorEntry, HPAlignRotationErrorEntry;
+    
     private DoubleArrayLogEntry moduleSpeedsEntry, modulePositionsEntry;
     // private StructPublisher<Pose2d> fusedOdometryEntry;
 
@@ -110,6 +113,9 @@ public class Logger {
         clawVelocityEntry = new DoubleLogEntry(log, "/Claw/Claw Velocity");
         clawSupplyCurrentEntry = new DoubleLogEntry(log, "/Claw/Claw Motor Supply Current");
         clawStatorCurrentEntry = new DoubleLogEntry(log, "/Claw/Claw Motor Stator Current");
+        clawTopSensorEntry = new BooleanLogEntry(log, "/Claw/Top Sensor");
+        clawBottomSensorEntry = new BooleanLogEntry(log, "/Claw/Bottom Sensor");
+        clawAlgaeSensorEntry = new BooleanLogEntry(log, "Claw/Algae Sensor");
 
         // Elevator Logs
         elevatorPositionEntry = new DoubleLogEntry(log, "/Elevator/Elevator CANcoder Position");
@@ -173,9 +179,21 @@ public class Logger {
             limelightMT2Entry[i] = new DoubleArrayLogEntry(log, "/Limelight/" + cameraName + " MT2 Pose");
             limelightTargetEntry[i] = new DoubleLogEntry(log, "/Limelight/" + cameraName + " Best Target ID");
         }
+        
+        // Alignment Command Logs
+        reefAlignXErrorEntry = new DoubleLogEntry(log, "/Alignment/Reef X Error");
+        reefAlignYErrorEntry = new DoubleLogEntry(log, "/Alignment/Reef Y Error");
+        reefAlignRotationErrorEntry = new DoubleLogEntry(log, "/Alignment/Reef Rotation Error");
+
+        HPAlignXErrorEntry = new DoubleLogEntry(log, "/Alignment/HP X Error");
+        HPAlignYErrorEntry = new DoubleLogEntry(log, "/Alignment/HP Y Error");
+        HPAlignRotationErrorEntry = new DoubleLogEntry(log, "/Alignment/HP Rotation Error");
+
+        // Commands run
+        commandEntry = new StringLogEntry(log, "/Commands/Commands Run");
     }
 
-    public void logEvent(String event, Boolean isStart) {
+    public void logEvent(String event, boolean isStart) {
         commandEntry.append(event + (isStart ? " Started" : " Ended"));
     }
 
@@ -194,6 +212,9 @@ public class Logger {
         clawVelocityEntry.append(claw.getVelocity());
         clawSupplyCurrentEntry.append(claw.getMotorSupplyCurrent());
         clawStatorCurrentEntry.append(claw.getMotorStatorCurrent());
+        clawTopSensorEntry.append(claw.getTopSensor());
+        clawBottomSensorEntry.append(claw.getBottomSensor());
+        clawAlgaeSensorEntry.append(claw.getAlgaeSensor());
 
         // Elevator Logs
         elevatorPositionEntry.append(elevator.getElevatorCANcoderPosition());
@@ -237,16 +258,13 @@ public class Logger {
             limelightMT2Entry[i].append(pose2dToDoubleArray(limelights[i].getEstimatedPoseMT2()));
             limelightTargetEntry[i].append(limelights[i].getTargetID());
         }
-
-        // Commands run
-        commandEntry = new StringLogEntry(log, "/Commands/Commands Run");
     }
 
     private double[] pose2dToDoubleArray(Pose2d pose) {
         return new double[] {
             pose.getX(),
             pose.getY(),
-            pose.getRotation().getDegrees()
+            pose.getRotation().getRadians()
         };
     }
 
@@ -256,7 +274,7 @@ public class Logger {
         return new double[] {
             pose.get().getX(),
             pose.get().getY(),
-            pose.get().getRotation().getDegrees()
+            pose.get().getRotation().getRadians()
         };
     }
 
@@ -278,5 +296,20 @@ public class Logger {
         modulePositionsEntry.append(swerveModulePositions);
 
         fusedOdometryEntry.append(pose2dToDoubleArray(drivetrain.getPose()));
+    }
+    
+    public void logAlignToReef(double xError, double yError, double rotationError) {
+        reefAlignXErrorEntry.append(xError);
+        reefAlignYErrorEntry.append(yError);
+        reefAlignRotationErrorEntry.append(rotationError);
+    }
+    public void logAlignToHP(double xError, double yError, double rotationError) {
+        HPAlignXErrorEntry.append(xError);
+        HPAlignYErrorEntry.append(yError);
+        HPAlignRotationErrorEntry.append(rotationError);
+    }
+
+    public void logScoreEvent(int level, double elevator, double arm) {
+        logEvent("Score L" + level + " with elevator " + elevator + ", arm " + arm, false);
     }
 }

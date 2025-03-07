@@ -210,7 +210,7 @@ public final class Constants {
         public static final double kElevatorL1ScorePosition = 4.5;
         public static final double kElevatorL2ScorePosition = 3.7;
         public static final double kElevatorL3ScorePosition = 6.9;
-        public static final double kElevatorL4PrestagePosition = 3.7;
+        public static final double kElevatorPrestagePosition = 3.7;
         public static final double kElevatorL4ScorePosition = 12.40; 
         public static final double kElevatorBargePrestagePosition = 6.0;
         public static final double kElevatorBargeScorePosition = 12.5;
@@ -302,12 +302,12 @@ public final class Constants {
         public static final Map<Integer, Double> kReefDesiredAngle = new HashMap<>() {
             {
                 // red side
-                put(6, -60.0);
-                put(7, 0.0);
-                put(8, 60.0);
-                put(9, 120.0);
-                put(10, 180.0);
-                put(11, -120.0);
+                put(6, 120.0);
+                put(7, 180.0);
+                put(8, -120.0);
+                put(9, -60.0);
+                put(10, 0.0);
+                put(11, 60.0);
     
                 // blue side, same angles but opposite
                 put(17, 60.0);
@@ -368,7 +368,7 @@ public final class Constants {
             public static final double kTranslateI = 0;
             public static final double kTranslateD = 0;
             public static final double kTranslateFF = 0;
-            public static final double kTranslateDistanceThreshold = 0.07;
+            public static final double kTranslateThreshold = 0.02;
             public static final double kTranslateSetpoint = 0;
 
             public static final double kRotationP = 0.065;
@@ -379,13 +379,9 @@ public final class Constants {
             public static final double kRotationLowerP = 0.04;
             public static final double kRotationUseLowerPThreshold = 1.5;
             
-            // center of robot distance to tag -- back (+ = back, - = forwards)
-            public static final double kBackOffset = 0.42;
-
             // TODO
-            public static final double kLeftOffset = 0.15;
-            public static final double kMiddleOffset = 0.0;
-            public static final double kRightOffset = -0.15;
+            public static final double kBackOffset = 0.42;
+            public static final double kLateralOffset = 0;
             
             public static final double kMaxSpeed = 3.0;
         }
