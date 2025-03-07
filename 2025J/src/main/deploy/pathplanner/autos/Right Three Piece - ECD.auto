@@ -61,6 +61,12 @@
         {
           "type": "named",
           "data": {
+            "name": "L4_PREP"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
             "name": "ALIGN_17_8_LEFT"
           }
         },
@@ -97,6 +103,12 @@
         {
           "type": "named",
           "data": {
+            "name": "L4_PREP"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
             "name": "ALIGN_17_8_RIGHT"
           }
         }
@@ -104,6 +116,6 @@
     }
   },
   "resetOdom": true,
-  "folder": "Mid Start",
+  "folder": "Tape Starts",
   "choreoAuto": false
 }

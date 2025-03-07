@@ -1,5 +1,6 @@
 package frc.robot.commands.ReefCommands;
 
+import java.util.Arrays;
 import java.util.Optional;
 
 import edu.wpi.first.math.controller.PIDController;
@@ -194,8 +195,14 @@ public class AlignToReef extends Command {
     }
 
     private boolean translationDistanceGood() {
-        // sqrt(xError^2 + yError^2) < 0.04
-        return xError * xError + yError * yError < Math.pow(translateThreshold, 2);
+        // sqrt(xError^2 + yError^2) < threshold
+        
+        double pythagSquare = xError * xError + yError * yError;
+        if (Arrays.asList(SuperstructureState.L2_PREP, SuperstructureState.L3_PREP).contains(
+                Superstructure.getInstance().getCurrentState())) {
+            return pythagSquare < Math.pow(ReefAlign.kTranslateThresholdL2L3, 2);
+        }
+        return pythagSquare < Math.pow(translateThreshold, 2);
     }
 
     @Override

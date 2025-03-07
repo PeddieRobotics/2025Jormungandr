@@ -16,6 +16,7 @@ import frc.robot.subsystems.LimelightFrontLeft;
 import frc.robot.subsystems.LimelightFrontMiddle;
 import frc.robot.subsystems.LimelightFrontRight;
 import frc.robot.subsystems.Superstructure;
+import frc.robot.subsystems.Superstructure.SuperstructureState;
 import frc.robot.subsystems.Limelight;
 import frc.robot.subsystems.LimelightBack;
 import frc.robot.utils.CalculateHPTarget;
@@ -120,6 +121,8 @@ public class AlignToHP extends Command {
 
         LimelightFrontMiddle.getInstance().setLED(Limelight.LightMode.ON);
         SmartDashboard.putBoolean("HPAlign: Finished?", false);
+
+        Superstructure.getInstance().requestState(SuperstructureState.HP_INTAKE);
         
         {
             // TODO: use these values to determine what the path starting waypoint should be

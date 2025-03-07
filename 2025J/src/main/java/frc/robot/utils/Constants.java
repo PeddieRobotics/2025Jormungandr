@@ -211,7 +211,7 @@ public final class Constants {
         public static final double kElevatorL2ScorePosition = 3.7;
         public static final double kElevatorL3ScorePosition = 6.9;
         public static final double kElevatorL4PrestagePosition = 3.7;
-        public static final double kElevatorL4ScorePosition = 12.45; 
+        public static final double kElevatorL4ScorePosition = 12.40; 
         public static final double kElevatorBargePrestagePosition = 6.0;
         public static final double kElevatorBargeScorePosition = 12.5;
         public static final double kElevatorProcessorScorePosition = 0.0;
@@ -341,6 +341,7 @@ public final class Constants {
             public static final double kTranslateFF = 0;
             public static final double kTranslateThreshold = 0.03;
             public static final double kTranslateThresholdAuto = 0.035;
+            public static final double kTranslateThresholdL2L3 = 0.045;
             public static final double kTranslateSetpoint = 0;
 
             public static final double kRotationP = 0.05;

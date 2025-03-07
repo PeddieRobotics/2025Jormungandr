@@ -199,6 +199,9 @@ public class Superstructure extends SubsystemBase {
                         .contains(requestedSystemState)) {
                     systemState = requestedSystemState;
                 }
+
+                if (requestedSystemState == L4_PREP && DriverStation.isAutonomous() && claw.bothCoralSensorsTriggered())
+                    systemState = requestedSystemState;
             }
 
             case ALGAE_GROUND_INTAKE -> {
