@@ -38,6 +38,6 @@
     }
   },
   "resetOdom": true,
-  "folder": "Wall Starts",
+  "folder": null,
   "choreoAuto": false
 }

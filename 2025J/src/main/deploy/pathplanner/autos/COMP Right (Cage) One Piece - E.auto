@@ -19,7 +19,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Middle Right to E Align"
+            "pathName": "Right (Cage) to E Align"
           }
         },
         {
@@ -38,6 +38,6 @@
     }
   },
   "resetOdom": true,
-  "folder": "Cage Starts",
+  "folder": null,
   "choreoAuto": false
 }

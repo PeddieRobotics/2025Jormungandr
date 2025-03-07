@@ -12,7 +12,7 @@
         "y": 6.4892090834199525
       },
       "isLocked": false,
-      "linkedName": "AlignToHPRightTop"
+      "linkedName": "AlignedToHPTop"
     },
     {
       "anchor": {
@@ -52,7 +52,7 @@
     "rotation": -59.99999999999999
   },
   "reversed": false,
-  "folder": "HP Intake",
+  "folder": "HP to Reef",
   "idealStartingState": {
     "velocity": 0,
     "rotation": -55.0

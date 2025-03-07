@@ -3,16 +3,16 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 4.992000000000001,
+        "x": 4.992,
         "y": 5.234
       },
       "prevControl": null,
       "nextControl": {
-        "x": 4.49900831341958,
+        "x": 4.499008313419579,
         "y": 5.643449493615874
       },
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "ReefJ"
     },
     {
       "anchor": {
@@ -50,7 +50,7 @@
     "rotation": -54.0
   },
   "reversed": false,
-  "folder": "HP Intake",
+  "folder": "Reef to HP",
   "idealStartingState": {
     "velocity": 0,
     "rotation": -119.99999999999999

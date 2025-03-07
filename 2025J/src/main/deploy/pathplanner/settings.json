@@ -3,19 +3,11 @@
   "robotLength": 0.826,
   "holonomicMode": true,
   "pathFolders": [
-    "HP Intake",
-    "Test Paths",
-    "Score",
-    "Starts"
+    "HP to Reef",
+    "Start to Reef",
+    "Reef to HP"
   ],
-  "autoFolders": [
-    "Cage Starts",
-    "Jig Starts",
-    "Mid Start",
-    "Test Autos",
-    "Tape Starts",
-    "Wall Starts"
-  ],
+  "autoFolders": [],
   "defaultMaxVel": 4.0,
   "defaultMaxAccel": 6.0,
   "defaultMaxAngVel": 540.0,
