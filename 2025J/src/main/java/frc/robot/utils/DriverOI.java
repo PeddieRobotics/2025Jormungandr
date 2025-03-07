@@ -111,7 +111,7 @@ public class DriverOI {
         Trigger R3Trigger = new JoystickButton(controller, PS4Controller.Button.kR3.value);
         R3Trigger.whileTrue(new ConditionalCommand(
             new AlignToReef(AlignmentConstants.AlignmentDestination.RIGHT, ReefAlign.kMaxSpeed, 0, 0),
-            new AlignToHP(2.0, 0, 0.45),
+            new AlignToHP(3.0, 0, 0.45),
             // new AlignToHPStationMegaTag(),
             Claw.getInstance()::eitherCoralSensorTriggered
         ));
