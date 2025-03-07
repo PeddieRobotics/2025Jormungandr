@@ -9,6 +9,7 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.subsystems.Claw;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.LimelightFrontLeft;
 import frc.robot.subsystems.LimelightFrontMiddle;
@@ -56,7 +57,7 @@ public class AlignToHP extends Command {
         translateI = HPAlign.kTranslateI;
         translateD = HPAlign.kTranslateD;
         translateFF = HPAlign.kTranslateFF;
-        translateThreshold = HPAlign.kTranslateDistanceThreshold;
+        translateThreshold = HPAlign.kTranslateThreshold;
 
         rotationP = HPAlign.kRotationP;
         rotationI = HPAlign.kRotationI;

@@ -134,9 +134,11 @@ public class Autonomous extends SubsystemBase {
 
         NamedCommands.registerCommand("ALIGN_TO_HP", new ParallelRaceGroup(
             new AlignToHP(HPAlign.kMaxSpeed, HPAlign.kLateralOffset, HPAlign.kBackOffset),
-            new WaitCommand(2)
+            new WaitForCoral(), new WaitCommand(2)
         ));
-        NamedCommands.registerCommand("WAIT_FOR_CORAL", new WaitForCoral());
+        NamedCommands.registerCommand("WAIT_FOR_CORAL", new ParallelRaceGroup(
+            new WaitForCoral(), new WaitCommand(2)
+        ));
 
         NamedCommands.registerCommand("SET_ALGAE_REMOVAL", new InstantCommand(() -> {
             Superstructure.getInstance().setAutoRemoveAlgaeSwitch(true);
