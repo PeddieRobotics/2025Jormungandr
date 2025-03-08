@@ -195,6 +195,7 @@ public class AlignToReef extends Command {
         }
 
         return Optional.empty();
+        // return Optional.of(drivetrain.getPose());
     }
 
     private boolean translationDistanceGood() {
@@ -205,6 +206,7 @@ public class AlignToReef extends Command {
                 Superstructure.getInstance().getCurrentState())) {
             return pythagSquare < Math.pow(ReefAlign.kTranslateThresholdL2L3, 2);
         }
+
         return pythagSquare < Math.pow(translateThreshold, 2);
     }
 
