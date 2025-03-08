@@ -194,7 +194,8 @@ public class AlignToReef extends Command {
                 return Optional.of(measurement.get());
         }
 
-        // return Optional.empty();
+        if (DriverStation.isAutonomous())
+            return Optional.empty();
         return Optional.of(drivetrain.getPose());
     }
 
