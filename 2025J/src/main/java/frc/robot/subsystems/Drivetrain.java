@@ -7,6 +7,7 @@ package frc.robot.subsystems;
 import java.util.Arrays;
 
 import com.ctre.phoenix6.hardware.Pigeon2;
+import com.ctre.phoenix6.mechanisms.swerve.LegacySwerveModule.DriveRequestType;
 
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -191,8 +192,8 @@ public class Drivetrain extends SubsystemBase {
 
 
     public void driveBlue(Translation2d translation, double rotation, boolean fieldOriented, Translation2d centerOfRotation) {
-        if (fieldOriented)
-            currentMovement = translation;
+        // if (fieldOriented)
+        //     currentMovement = translation;
 
         ChassisSpeeds fieldRelativeSpeeds = new ChassisSpeeds(translation.getX(), translation.getY(), rotation);
 
@@ -222,8 +223,8 @@ public class Drivetrain extends SubsystemBase {
      * @param centerOfRotation - robot's center of rotation
      */
     public void driveBlueForceAdjust(Translation2d translation, double rotation, boolean fieldOriented, Translation2d centerOfRotation) {
-        if (fieldOriented)
-            currentMovement = translation;
+        // if (fieldOriented)
+        //     currentMovement = translation;
 
         ChassisSpeeds fieldRelativeSpeeds = new ChassisSpeeds(translation.getX(), translation.getY(), rotation);
 
@@ -408,7 +409,9 @@ public class Drivetrain extends SubsystemBase {
     }
     
     public Translation2d getCurrentMovement() {
-        return currentMovement;
+        if (DriverStation.getAlliance().isEmpty() || DriverStation.getAlliance().get() == DriverStation.Alliance.Blue)
+            return currentMovement;
+        return currentMovement.times(-1);
     }
 
     /**
