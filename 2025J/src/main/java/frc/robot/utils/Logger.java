@@ -61,7 +61,9 @@ public class Logger {
             rightClimberPosition;
     
     private DoubleLogEntry reefAlignXErrorEntry, reefAlignYErrorEntry, reefAlignRotationErrorEntry;
+    private DoubleLogEntry reefAlignXEntry, reefAlignYEntry, reefAlignRotationEntry;
     private DoubleLogEntry HPAlignXErrorEntry, HPAlignYErrorEntry, HPAlignRotationErrorEntry;
+    private DoubleLogEntry HPAlignXEntry, HPAlignYEntry, HPAlignRotationEntry;
     
     private DoubleArrayLogEntry moduleSpeedsEntry, modulePositionsEntry;
     // private StructPublisher<Pose2d> fusedOdometryEntry;
@@ -185,9 +187,17 @@ public class Logger {
         reefAlignYErrorEntry = new DoubleLogEntry(log, "/Alignment/Reef Y Error");
         reefAlignRotationErrorEntry = new DoubleLogEntry(log, "/Alignment/Reef Rotation Error");
 
+        reefAlignXEntry = new DoubleLogEntry(log, "/Alignment/Reef Commanded X");
+        reefAlignYEntry = new DoubleLogEntry(log, "/Alignment/Reef Commanded Y");
+        reefAlignRotationEntry = new DoubleLogEntry(log, "/Alignment/Reef Commanded Rotation");
+
         HPAlignXErrorEntry = new DoubleLogEntry(log, "/Alignment/HP X Error");
         HPAlignYErrorEntry = new DoubleLogEntry(log, "/Alignment/HP Y Error");
         HPAlignRotationErrorEntry = new DoubleLogEntry(log, "/Alignment/HP Rotation Error");
+
+        HPAlignXEntry = new DoubleLogEntry(log, "/Alignment/HP Commanded X");
+        HPAlignYEntry = new DoubleLogEntry(log, "/Alignment/HP Commanded Y");
+        HPAlignRotationEntry = new DoubleLogEntry(log, "/Alignment/HP Commanded Rotation");
 
         // Commands run
         commandEntry = new StringLogEntry(log, "/Commands/Commands Run");
@@ -298,15 +308,23 @@ public class Logger {
         fusedOdometryEntry.append(pose2dToDoubleArray(drivetrain.getPose()));
     }
     
-    public void logAlignToReef(double xError, double yError, double rotationError) {
+    public void logAlignToReef(double xError, double yError, double rotationError, double x, double y, double rot) {
         reefAlignXErrorEntry.append(xError);
         reefAlignYErrorEntry.append(yError);
         reefAlignRotationErrorEntry.append(rotationError);
+
+        reefAlignXEntry.append(x);
+        reefAlignYEntry.append(y);
+        reefAlignRotationEntry.append(rot);
     }
-    public void logAlignToHP(double xError, double yError, double rotationError) {
+    public void logAlignToHP(double xError, double yError, double rotationError, double x, double y, double rot) {
         HPAlignXErrorEntry.append(xError);
         HPAlignYErrorEntry.append(yError);
         HPAlignRotationErrorEntry.append(rotationError);
+        
+        HPAlignXEntry.append(x);
+        HPAlignYEntry.append(y);
+        HPAlignRotationEntry.append(rot);
     }
 
     public void logScoreEvent(int level, double elevator, double arm) {

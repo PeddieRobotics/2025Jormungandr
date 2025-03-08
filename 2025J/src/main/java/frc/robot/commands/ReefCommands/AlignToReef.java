@@ -283,7 +283,7 @@ public class AlignToReef extends Command {
             Superstructure.getInstance().sendToScore();
         }
 
-        Logger.getInstance().logAlignToReef(xError, yError, rotationError);
+        Logger.getInstance().logAlignToReef(xError, yError, rotationError, xTranslate, yTranslate, rotation);
 
         // {
         //     SmartDashboard.putNumber("Align: xError", xError);

@@ -227,7 +227,7 @@ public class AlignToHP extends Command {
         else
             drivetrain.driveBlue(translation, rotation, true, null);
 
-        Logger.getInstance().logAlignToHP(xError, yError, rotationError);
+        Logger.getInstance().logAlignToHP(xError, yError, rotationError, xTranslate, yTranslate, rotation);
 
         {
             SmartDashboard.putNumber("HPAlign: estimatedX", estimatedPose.getX());
