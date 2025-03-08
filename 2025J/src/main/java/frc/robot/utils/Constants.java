@@ -140,7 +140,7 @@ public final class Constants {
         public static final double kElevatorRotorToSensorRatio = kElevatorReduction;
         public static final double kElevatorSensortoMechanismRatio = 1.0;
 
-        public static final double kElevatorMagnetOffset = -1.580078;
+        public static final double kElevatorMagnetOffset = -0.636230;
 
         // Motion Magic Parameters
         public static final double kElevatorMaxCruiseVelocity = 14.0;
@@ -174,7 +174,7 @@ public final class Constants {
         public static final double kG = 0.255;
         public static final double kFF = 0.0;
 
-        public static final double kElevatorPositionEpsilon = 0.5;
+        public static final double kElevatorPositionEpsilon = 0.1;
         public static final double kElevatorNeutralModePositionEpsilon = 0.1;
         public static final double kElevatorL1Height = 0.0;
         public static final double kElevatorL2Height = 0.0;
@@ -208,16 +208,16 @@ public final class Constants {
         public static final double kElevatorHPIntakePosition = 0.0;
         public static final double kElevatorGroundIntakePosition = 0.0;
         // public static final double kElevatorL1ScorePosition = 4.5;
-        public static final double kElevatorL1ScorePosition = 3.7;
-        public static final double kElevatorL2ScorePosition = 3.7;
-        public static final double kElevatorL3ScorePosition = 6.9;
-        public static final double kElevatorPrestagePosition = 3.7;
-        public static final double kElevatorL4ScorePosition = 12.40; 
-        public static final double kElevatorBargePrestagePosition = 6.0;
-        public static final double kElevatorBargeScorePosition = 12.5;
+        public static final double kElevatorL1ScorePosition = 3.8;
+        public static final double kElevatorL2ScorePosition = 3.8;
+        public static final double kElevatorL3ScorePosition = 7.05;
+        public static final double kElevatorPrestagePosition = 3.8;
+        public static final double kElevatorL4ScorePosition = 12.45; 
+        public static final double kElevatorBargePrestagePosition = 6.2;
+        public static final double kElevatorBargeScorePosition = 12.7;
         public static final double kElevatorProcessorScorePosition = 0.0;
-        public static final double kElevatorReef1IntakePosition = 2.0;
-        public static final double kElevatorReef2IntakePosition = 5.25;
+        public static final double kElevatorReef1IntakePosition = 2.2;
+        public static final double kElevatorReef2IntakePosition = 5.45;
 
         public static final double kArmStowPosition = 0.25;
         public static final double kArmHPIntakePosition = 0.25;
