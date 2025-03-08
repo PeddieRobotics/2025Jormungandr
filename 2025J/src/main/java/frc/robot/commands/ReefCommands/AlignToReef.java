@@ -194,8 +194,8 @@ public class AlignToReef extends Command {
                 return Optional.of(measurement.get());
         }
 
-        return Optional.empty();
-        // return Optional.of(drivetrain.getPose());
+        // return Optional.empty();
+        return Optional.of(drivetrain.getPose());
     }
 
     private boolean translationDistanceGood() {
