@@ -108,10 +108,10 @@ public class Autonomous extends SubsystemBase {
                 new ParallelRaceGroup(
                     new SequentialCommandGroup(
                         new AlignToReef(Constants.AlignmentConstants.AlignmentDestination.LEFT, 2.0, blue, red),
-                        new WaitCommand(0.3)
+                        new WaitCommand(0.5)
                     ),
                     new SequentialCommandGroup(
-                        new WaitCommand(2),
+                        new WaitCommand(2.2),
                         new InstantCommand(() -> superstructure.requestState(HP_INTAKE))
                     )
                 )
@@ -121,10 +121,10 @@ public class Autonomous extends SubsystemBase {
                 new ParallelRaceGroup(
                     new SequentialCommandGroup(
                         new AlignToReef(Constants.AlignmentConstants.AlignmentDestination.RIGHT, 2.0, blue, red),
-                        new WaitCommand(0.3)
+                        new WaitCommand(0.5)
                     ),
                     new SequentialCommandGroup(
-                        new WaitCommand(2),
+                        new WaitCommand(2.2),
                         new InstantCommand(() -> superstructure.requestState(HP_INTAKE))
                     )
                 )
