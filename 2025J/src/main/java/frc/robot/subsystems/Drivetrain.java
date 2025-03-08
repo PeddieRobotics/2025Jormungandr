@@ -518,6 +518,10 @@ public class Drivetrain extends SubsystemBase {
         return false;
     }
 
+    public SwerveModule[] getSwerveModules() {
+        return swerveModules;
+    }
+
     @Override
     public void periodic() {
         // SmartDashboard.putBoolean("skid", isSkidding());

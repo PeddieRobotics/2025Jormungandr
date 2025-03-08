@@ -29,6 +29,7 @@ import frc.robot.subsystems.LimelightFrontLeft;
 import frc.robot.subsystems.LimelightFrontMiddle;
 import frc.robot.subsystems.LimelightFrontRight;
 import frc.robot.subsystems.Superstructure;
+import frc.robot.subsystems.SwerveModule;
 
 public class Logger {
     private static Logger instance;
@@ -46,7 +47,7 @@ public class Logger {
     private DataLog log = DataLogManager.getLog();
     private StringLogEntry commandEntry, superstructureCurrentStateEntry, superstructureRequestedStateEntry;
     private BooleanLogEntry LLIntakeHasTargetEntry, clawTopSensorEntry, clawBottomSensorEntry, clawAlgaeSensorEntry;
-    private DoubleLogEntry gyroAngleEntry, gyroAngleEntryBlue, driveTrainSpeedEntry, driveTrainAngleEntry, driveTrainXEntry,
+    private DoubleLogEntry gyroAngleEntry, gyroAngleEntryBlue, driveTrainSpeedDesiredEntry, driveTrainAngleEntry, driveTrainXEntry,
             driveTrainYEntry, driveTrainXVelEntry, driveTrainZAccEntry,
             driveTrainYVelEntry, driveTrainXAccEntry, driveTrainYAccEntry, driveTrainAngleVelEntry,
             armAngleEntry, armPositionEntry, armPositionSetpointEntry, armCANcoderPositionEntry,
@@ -65,7 +66,8 @@ public class Logger {
     private DoubleLogEntry HPAlignXErrorEntry, HPAlignYErrorEntry, HPAlignRotationErrorEntry;
     private DoubleLogEntry HPAlignXEntry, HPAlignYEntry, HPAlignRotationEntry;
     
-    private DoubleArrayLogEntry moduleSpeedsEntry, modulePositionsEntry;
+    private DoubleArrayLogEntry moduleSpeedsDesiredEntry, modulePositionsDesiredEntry;
+    private DoubleArrayLogEntry moduleSpeedsActualEntry, modulePositionsActualEntry;
     // private StructPublisher<Pose2d> fusedOdometryEntry;
 
     private DoubleArrayLogEntry fusedOdometryEntry;
@@ -106,9 +108,12 @@ public class Logger {
         driveTrainYAccEntry = new DoubleLogEntry(log, "/Drivetrain/Drivetrain Y Accel");
         driveTrainZAccEntry = new DoubleLogEntry(log, "/Drivetrain/Drivetrain Z Accel");
 
-        driveTrainSpeedEntry = new DoubleLogEntry(log, "/Drivetrain/Drivetrain Speed");
-        moduleSpeedsEntry = new DoubleArrayLogEntry(log, "/Drivetrain/Swerve Module Speeds");
-        modulePositionsEntry = new DoubleArrayLogEntry(log, "/Drivetrain/Swerve Module Positions");
+        driveTrainSpeedDesiredEntry = new DoubleLogEntry(log, "/Drivetrain/Drivetrain Desired Speed");
+        moduleSpeedsDesiredEntry = new DoubleArrayLogEntry(log, "/Drivetrain/Swerve Module Desired Speeds");
+        modulePositionsDesiredEntry = new DoubleArrayLogEntry(log, "/Drivetrain/Swerve Module Desired Positions");
+
+        moduleSpeedsActualEntry = new DoubleArrayLogEntry(log, "/Drivetrain/Swerve Module Actual Speeds");
+        modulePositionsActualEntry = new DoubleArrayLogEntry(log, "/Drivetrain/Swerve Module Actual Positions");
 
         // Claw logs
         clawPositionEntry = new DoubleLogEntry(log, "/Claw/Claw Position");
@@ -295,15 +300,24 @@ public class Logger {
         driveTrainXAccEntry.append(drivetrain.getGyroAccX());
         driveTrainYAccEntry.append(drivetrain.getGyroAccY());
         driveTrainZAccEntry.append(drivetrain.getGyroAccZ());
-        driveTrainSpeedEntry.append(drivetrain.getSpeed());
+        driveTrainSpeedDesiredEntry.append(drivetrain.getSpeed());
 
+        SwerveModule[] modules = drivetrain.getSwerveModules();
         SwerveModuleState[] moduleStates = drivetrain.getSwerveModuleStates();
         double[] swerveModulePositions = { moduleStates[0].angle.getDegrees(), moduleStates[1].angle.getDegrees(),
                 moduleStates[2].angle.getDegrees(), moduleStates[3].angle.getDegrees() };
         double[] swerveModuleSpeeds = { moduleStates[0].speedMetersPerSecond, moduleStates[1].speedMetersPerSecond,
                 moduleStates[2].speedMetersPerSecond, moduleStates[3].speedMetersPerSecond };
-        moduleSpeedsEntry.append(swerveModuleSpeeds);
-        modulePositionsEntry.append(swerveModulePositions);
+                
+        double[] swerveModulePositionsActual = { modules[0].getAngle(), modules[1].getAngle(),
+                modules[2].getAngle(), modules[3].getAngle() };
+        double[] swerveModuleSpeedsActual = { modules[0].getVelocity(), modules[1].getVelocity(),
+                modules[2].getVelocity(), modules[3].getVelocity() };
+
+        moduleSpeedsDesiredEntry.append(swerveModuleSpeeds);
+        modulePositionsDesiredEntry.append(swerveModulePositions);
+        moduleSpeedsActualEntry.append(swerveModuleSpeedsActual);
+        modulePositionsActualEntry.append(swerveModulePositionsActual);
 
         fusedOdometryEntry.append(pose2dToDoubleArray(drivetrain.getPose()));
     }
