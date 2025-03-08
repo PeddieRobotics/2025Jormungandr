@@ -616,7 +616,8 @@ public class Superstructure extends SubsystemBase {
                 // arm.setArmPositionMotionMagicTorqueCurrentFOC(ScoreConstants.kArmReef1IntakePosition);
                 
                 //elevator.setElevatorPositionVoltage(ScoreConstants.kElevatorReef1IntakePosition);
-                arm.setArmPositionVoltage(ScoreConstants.kArmReef1IntakePosition);
+                // arm.setArmPositionVoltage(ScoreConstants.kArmReef1IntakePosition);
+                arm.setArmPositionVoltage(0.19);
                 claw.intakePiece(ClawConstants.kAlgaeIntakeSpeed);
 
                 if (claw.getAlgaeSensor()) {
@@ -645,7 +646,8 @@ public class Superstructure extends SubsystemBase {
                 // arm.setArmPositionMotionMagicTorqueCurrentFOC(ScoreConstants.kArmReef2IntakePosition);
                 
                 //elevator.setElevatorPositionVoltage(ScoreConstants.kElevatorReef2IntakePosition);
-                arm.setArmPositionVoltage(ScoreConstants.kArmReef2IntakePosition);
+                // arm.setArmPositionVoltage(ScoreConstants.kArmReef2IntakePosition);
+                arm.setArmPositionVoltage(0.19);
                 claw.intakePiece(ClawConstants.kAlgaeIntakeSpeed);
 
                 if (claw.getAlgaeSensor()) {
