@@ -721,7 +721,7 @@ public class Superstructure extends SubsystemBase {
                 }
             }
             case REMOVING_ALGAE -> {
-                double armAngle = 0.21;
+                double armAngle = 0.20;
                 if (elevator.getElevatorCANcoderPosition() > 1.5) {
                     claw.setClaw(ClawConstants.kCoralIntakeSpeed);
                     arm.setArmPositionVoltage(armAngle);
