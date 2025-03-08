@@ -111,8 +111,9 @@ public class Autonomous extends SubsystemBase {
                         new WaitCommand(0.5)
                     ),
                     new SequentialCommandGroup(
-                        new WaitCommand(2.2),
-                        new InstantCommand(() -> superstructure.requestState(HP_INTAKE))
+                        new WaitCommand(2.0),
+                        new InstantCommand(() -> superstructure.sendToScore()),
+                        new WaitCommand(0.5)
                     )
                 )
             );
@@ -124,8 +125,9 @@ public class Autonomous extends SubsystemBase {
                         new WaitCommand(0.5)
                     ),
                     new SequentialCommandGroup(
-                        new WaitCommand(2.2),
-                        new InstantCommand(() -> superstructure.requestState(HP_INTAKE))
+                        new WaitCommand(2.0),
+                        new InstantCommand(() -> superstructure.sendToScore()),
+                        new WaitCommand(0.5)
                     )
                 )
             );
