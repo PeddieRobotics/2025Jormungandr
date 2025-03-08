@@ -1,7 +1,9 @@
 package frc.robot.utils;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import edu.wpi.first.math.geometry.Pose2d;
@@ -75,6 +77,11 @@ public class Logger {
     
     private DoubleLogEntry[] limelightTyDistanceEntry, limelightPoseDistanceEntry, limelightFilteredPoseDistanceEntry,
         limelightFilteredTyDistanceEntry, limelightNumOfApriltagEntry, limelightTxEntry, limelightTyEntry, limelightTargetEntry;
+
+    private Map<Integer, DoubleLogEntry> moduleDriveSupplyCurrentEntry, moduleSteerSupplyCurrentEntry;
+    private Map<Integer, DoubleLogEntry> moduleDriveStatorCurrentEntry, moduleSteerStatorCurrentEntry;
+    private Map<Integer, DoubleLogEntry> moduleCanCoderPositionEntry;
+
     // private List<StructPublisher<Pose2d>> limelightMT2Entry;
 
     public static Logger getInstance() {
@@ -206,6 +213,44 @@ public class Logger {
 
         // Commands run
         commandEntry = new StringLogEntry(log, "/Commands/Commands Run");
+
+        // Swerve Module Logs
+        moduleDriveSupplyCurrentEntry = new HashMap<>();
+        moduleSteerSupplyCurrentEntry = new HashMap<>();
+
+        moduleDriveSupplyCurrentEntry.put(12, new DoubleLogEntry(log, "/Modules/12 Drive Supply Current"));
+        moduleDriveSupplyCurrentEntry.put(22, new DoubleLogEntry(log, "/Modules/22 Drive Supply Current"));
+        moduleDriveSupplyCurrentEntry.put(32, new DoubleLogEntry(log, "/Modules/32 Drive Supply Current"));
+        moduleDriveSupplyCurrentEntry.put(42, new DoubleLogEntry(log, "/Modules/42 Drive Supply Current"));
+
+        moduleSteerSupplyCurrentEntry.put(12, new DoubleLogEntry(log, "/Modules/12 Steer Supply Current"));
+        moduleSteerSupplyCurrentEntry.put(22, new DoubleLogEntry(log, "/Modules/22 Steer Supply Current"));
+        moduleSteerSupplyCurrentEntry.put(32, new DoubleLogEntry(log, "/Modules/32 Steer Supply Current"));
+        moduleSteerSupplyCurrentEntry.put(42, new DoubleLogEntry(log, "/Modules/42 Steer Supply Current"));
+
+
+        
+        moduleDriveStatorCurrentEntry = new HashMap<>();
+        moduleSteerStatorCurrentEntry = new HashMap<>();
+
+        moduleDriveStatorCurrentEntry.put(12, new DoubleLogEntry(log, "/Modules/12 Drive Stator Current"));
+        moduleDriveStatorCurrentEntry.put(22, new DoubleLogEntry(log, "/Modules/22 Drive Stator Current"));
+        moduleDriveStatorCurrentEntry.put(32, new DoubleLogEntry(log, "/Modules/32 Drive Stator Current"));
+        moduleDriveStatorCurrentEntry.put(42, new DoubleLogEntry(log, "/Modules/42 Drive Stator Current"));
+
+        moduleSteerStatorCurrentEntry.put(12, new DoubleLogEntry(log, "/Modules/12 Steer Stator Current"));
+        moduleSteerStatorCurrentEntry.put(22, new DoubleLogEntry(log, "/Modules/22 Steer Stator Current"));
+        moduleSteerStatorCurrentEntry.put(32, new DoubleLogEntry(log, "/Modules/32 Steer Stator Current"));
+        moduleSteerStatorCurrentEntry.put(42, new DoubleLogEntry(log, "/Modules/42 Steer Stator Current"));
+
+
+
+        moduleCanCoderPositionEntry = new HashMap<>();
+
+        moduleCanCoderPositionEntry.put(12, new DoubleLogEntry(log, "Modules/12 CANCoder Position"));
+        moduleCanCoderPositionEntry.put(22, new DoubleLogEntry(log, "Modules/22 CANCoder Position"));
+        moduleCanCoderPositionEntry.put(32, new DoubleLogEntry(log, "Modules/32 CANCoder Position"));
+        moduleCanCoderPositionEntry.put(42, new DoubleLogEntry(log, "Modules/42 CANCoder Position"));
     }
 
     public void logEvent(String event, boolean isStart) {
@@ -339,6 +384,25 @@ public class Logger {
         HPAlignXEntry.append(x);
         HPAlignYEntry.append(y);
         HPAlignRotationEntry.append(rot);
+    }
+
+    public void logModuleSupplyCurrents(int module, double drive, double steer) {
+        if (moduleDriveSupplyCurrentEntry.containsKey(module))
+            moduleDriveSupplyCurrentEntry.get(module).append(drive);
+            
+        if (moduleSteerSupplyCurrentEntry.containsKey(module))
+            moduleSteerSupplyCurrentEntry.get(module).append(steer);
+    }
+    public void logModuleStatorCurrents(int module, double drive, double steer) {
+        if (moduleDriveStatorCurrentEntry.containsKey(module))
+            moduleDriveStatorCurrentEntry.get(module).append(drive);
+            
+        if (moduleSteerStatorCurrentEntry.containsKey(module))
+            moduleSteerStatorCurrentEntry.get(module).append(steer);
+    }
+    public void logModuleCANCoderPosition(int module, double position) {
+        if (moduleCanCoderPositionEntry.containsKey(module))
+            moduleCanCoderPositionEntry.get(module).append(position);
     }
 
     public void logScoreEvent(int level, double elevator, double arm) {
