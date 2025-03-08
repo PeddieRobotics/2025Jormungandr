@@ -93,8 +93,8 @@ public class RobotContainer {
         SmartDashboard.putNumber("L1AlignRight: back offset", 0.55);
         SmartDashboard.putNumber("L1AlignRight: angle offset", -20.0);
 
-        SmartDashboard.putNumber("Tuning: L1Position", ScoreConstants.kElevatorL1ScorePosition);
-        SmartDashboard.putNumber("Tuning: L1Speed", ClawConstants.kCoralL1OuttakeSpeed);
+        // SmartDashboard.putNumber("Tuning: L1Position", ScoreConstants.kElevatorL1ScorePosition);
+        // SmartDashboard.putNumber("Tuning: L1Speed", ClawConstants.kCoralL1OuttakeSpeed);
 
 
         // SmartDashboard.putBoolean("Use ", false)

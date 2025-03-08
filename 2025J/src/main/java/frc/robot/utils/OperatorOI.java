@@ -1,11 +1,13 @@
 package frc.robot.utils;
 
+import static frc.robot.subsystems.Superstructure.SuperstructureState.L1_PREP;
 import static frc.robot.subsystems.Superstructure.SuperstructureState.L2_PREP;
 import static frc.robot.subsystems.Superstructure.SuperstructureState.L3L4_PRESTAGE;
 import static frc.robot.subsystems.Superstructure.SuperstructureState.L3_PREP;
 import static frc.robot.subsystems.Superstructure.SuperstructureState.L4_PREP;
 
 import java.util.Arrays;
+import java.util.Optional;
 
 import edu.wpi.first.wpilibj.PS4Controller;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -52,7 +54,7 @@ public class OperatorOI {
 
         Trigger squareButton = new JoystickButton(controller, PS4Controller.Button.kSquare.value);
         squareButton.onTrue(new InstantCommand(() -> {
-            if (Arrays.asList(L3L4_PRESTAGE, L2_PREP, L3_PREP, L4_PREP).contains(superstructure.getCurrentState()))
+            if (Arrays.asList(L3L4_PRESTAGE, L1_PREP, L2_PREP, L3_PREP, L4_PREP).contains(superstructure.getCurrentState()))
                 superstructure.requestState(SuperstructureState.L3_PREP);
             else
                 superstructure.requestState(SuperstructureState.L3L4_PRESTAGE);
@@ -60,7 +62,7 @@ public class OperatorOI {
 
         Trigger triangleButton = new JoystickButton(controller, PS4Controller.Button.kTriangle.value);
         triangleButton.onTrue(new InstantCommand(() -> {
-            if (Arrays.asList(L3L4_PRESTAGE, L2_PREP, L3_PREP, L4_PREP).contains(superstructure.getCurrentState()))
+            if (Arrays.asList(L3L4_PRESTAGE, L1_PREP, L2_PREP, L3_PREP, L4_PREP).contains(superstructure.getCurrentState()))
                 superstructure.requestState(SuperstructureState.L4_PREP);
             else
                 superstructure.requestState(SuperstructureState.L3L4_PRESTAGE);
@@ -73,11 +75,19 @@ public class OperatorOI {
         Trigger muteButton = new JoystickButton(controller, 15);
         // enter climb mode
 
+        // DO NOT DO NOT BIND ANYTHING TO THIS
+        // THIS IS CHECKED FOR AUTOMATIC ALGAE REMOVAL FROM L4
         Trigger L1Bumper = new JoystickButton(controller, PS4Controller.Button.kL1.value);
         // L1Bumper.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.BARGE_PREP)));
 
         Trigger R1Bumper = new JoystickButton(controller, PS4Controller.Button.kR1.value);
-        // R1Bumper.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.L4_PREP)));
+        R1Bumper.onTrue(new InstantCommand(() -> {
+            Optional<Boolean> high = superstructure.isHighAlgae();
+            if (high.isEmpty() || high.get())
+                superstructure.requestState(SuperstructureState.REEF2_ALGAE_INTAKE);
+            else
+                superstructure.requestState(SuperstructureState.REEF1_ALGAE_INTAKE);
+        }));
 
         Trigger L2Trigger = new JoystickButton(controller, PS4Controller.Button.kL2.value);
         L2Trigger.whileTrue(new ManualElevatorControl());

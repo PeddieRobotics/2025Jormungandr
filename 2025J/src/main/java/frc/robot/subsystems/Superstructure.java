@@ -245,9 +245,8 @@ public class Superstructure extends SubsystemBase {
 
             case L1_PREP -> {
                 // set prep angle
-                double position = SmartDashboard.getNumber("Tuning: L1Position", ScoreConstants.kElevatorL1ScorePosition);
                 // elevator.setElevatorPositionMotionMagicVoltage(ScoreConstants.kElevatorL1ScorePosition);
-                elevator.setElevatorPositionMotionMagicVoltage(position);
+                elevator.setElevatorPositionMotionMagicVoltage(ScoreConstants.kElevatorL1ScorePosition);
                 // arm.setArmPositionMotionMagicTorqueCurrentFOC(ScoreConstants.kArmL1ScorePosition);
 
                 //elevator.setElevatorPositionVoltage(ScoreConstants.kElevatorL1ScorePosition);
@@ -259,7 +258,8 @@ public class Superstructure extends SubsystemBase {
                         ALGAE_GROUND_INTAKE,
                         L1_SCORE,
                         L2_PREP,
-                        L3L4_PRESTAGE,
+                        L3_PREP,
+                        L4_PREP,
                         BARGE_PRESTAGE,
                         PROCESSOR_PREP,
                         REEF1_ALGAE_INTAKE,
@@ -399,8 +399,8 @@ public class Superstructure extends SubsystemBase {
                     claw.stopClaw();
                     requestState(HP_INTAKE);
                 } else {
-                    double speed = SmartDashboard.getNumber("Tuning: L1Speed", ClawConstants.kCoralL1OuttakeSpeed);
-                    claw.outtakePiece(speed);
+                    // double speed = SmartDashboard.getNumber("Tuning: L1Speed", ClawConstants.kCoralL1OuttakeSpeed);
+                    claw.outtakePiece(ClawConstants.kCoralL1OuttakeSpeed);
                 }
 
                 if (Arrays.asList(
@@ -823,7 +823,7 @@ public class Superstructure extends SubsystemBase {
     private final List<Integer> highAlgaeTags = Arrays.asList(
         18, 20, 22, 7, 9, 11
     );
-    private Optional<Boolean> isHighAlgae() {
+    public Optional<Boolean> isHighAlgae() {
         // return SmartDashboard.getBoolean("RemoveAlgae: high?", false);
         Limelight camera = LimelightFrontLeft.getInstance();
         if (camera.getNumberOfTagsSeen() == 1)

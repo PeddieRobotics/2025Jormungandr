@@ -156,16 +156,18 @@ public class AlignToReef extends Command {
         tagBackMagnitude = SmartDashboard.getNumber(commandName + " back offset", tagBackMagnitude);
 
         if (Superstructure.getInstance().getCurrentState() == SuperstructureState.L1_PREP){
-            if (commandName.equals("left align")) {
-                tagLateralMagnitude = SmartDashboard.getNumber("L1AlignLeft: lateral offset", 0.1);
-                tagBackMagnitude = SmartDashboard.getNumber("L1AlignLeft: back offset", 0.55);
-                desiredAngle += SmartDashboard.getNumber("L1AlignLeft: angle offset", 20.0);
-            }
-            else if (commandName.equals("right align")) {
-                tagLateralMagnitude = SmartDashboard.getNumber("L1AlignRight: lateral offset", -0.1);
-                tagBackMagnitude = SmartDashboard.getNumber("L1AlignRight: back offset", 0.55);
-                desiredAngle += SmartDashboard.getNumber("L1AlignRight: angle offset", -20.0);
-            }
+            // if (commandName.equals("left align")) {
+            //     tagLateralMagnitude = SmartDashboard.getNumber("L1AlignLeft: lateral offset", 0.1);
+            //     tagBackMagnitude = SmartDashboard.getNumber("L1AlignLeft: back offset", 0.55);
+            //     desiredAngle += SmartDashboard.getNumber("L1AlignLeft: angle offset", 20.0);
+            // }
+            // else if (commandName.equals("right align")) {
+            //     tagLateralMagnitude = SmartDashboard.getNumber("L1AlignRight: lateral offset", -0.1);
+            //     tagBackMagnitude = SmartDashboard.getNumber("L1AlignRight: back offset", 0.55);
+            //     desiredAngle += SmartDashboard.getNumber("L1AlignRight: angle offset", -20.0);
+            // }
+
+            tagLateralMagnitude = 0.0;
         }
 
         desiredPose = Optional.of(new Pose2d(
