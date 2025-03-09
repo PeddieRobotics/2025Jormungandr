@@ -40,6 +40,8 @@ public class Elevator extends SubsystemBase {
         config.MagnetSensor.MagnetOffset = ElevatorConstants.kElevatorMagnetOffset;
         elevatorCANcoder.getConfigurator().apply(config); 
 
+        elevatorCANcoder.setPosition(0.0);
+
         elevatorMainMotor = new Kraken(RobotMap.ELEVATOR_MAIN_ID, RobotMap.CANIVORE_BUS);
         elevatorFollowerMotor = new Kraken(RobotMap.ELEVATOR_SECONDARY_ID, RobotMap.CANIVORE_BUS);
 
