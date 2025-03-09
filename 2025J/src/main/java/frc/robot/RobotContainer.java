@@ -97,7 +97,7 @@ public class RobotContainer {
         // SmartDashboard.putNumber("Tuning: L1Speed", ClawConstants.kCoralL1OuttakeSpeed);
 
 
-        // SmartDashboard.putBoolean("Use ", false)
+        SmartDashboard.putNumber("Scoring Pose Offset", 0);
     }
 
     public Command getAutonomousCommand() {
