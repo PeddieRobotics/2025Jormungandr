@@ -21,6 +21,7 @@ import frc.robot.subsystems.LimelightBack;
 import frc.robot.utils.CalculateHPTarget;
 import frc.robot.utils.CalculateReefTarget;
 import frc.robot.utils.Logger;
+import frc.robot.utils.MagnitudeCap;
 import frc.robot.utils.Constants.AlignmentConstants;
 import frc.robot.utils.Constants.AlignmentConstants.AlignmentDestination;
 import frc.robot.utils.Constants.AlignmentConstants.HPAlign;
@@ -215,13 +216,7 @@ public class AlignToHP extends Command {
         }
 
         Translation2d translation = new Translation2d(xTranslate, yTranslate);
-        double translateX = translation.getX();
-        double translateY = translation.getY();
-        double translateX_sgn = Math.signum(translateX);
-        double translateY_sgn = Math.signum(translateY);
-        double desaturatedX = Math.min(Math.abs(translateX), maxSpeed);
-        double desaturatedY = Math.min(Math.abs(translateY), maxSpeed);
-        translation = new Translation2d(translateX_sgn * desaturatedX, translateY_sgn * desaturatedY);
+        translation = MagnitudeCap.capMagnitude(translation, maxSpeed);
 
         if (DriverStation.isAutonomous())
             drivetrain.driveBlueForceAdjust(translation, rotation, true, null);
