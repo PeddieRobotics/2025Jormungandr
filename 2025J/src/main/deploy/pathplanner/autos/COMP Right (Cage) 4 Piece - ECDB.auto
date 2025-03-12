@@ -19,25 +19,25 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Left (Cage) to J Align"
+            "pathName": "Right (Cage) to E Align"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "ALIGN_20_11_RIGHT"
+            "name": "ALIGN_22_9_LEFT"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "J to HP Align"
+            "pathName": "E to HP Align"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "ALIGN_TO_HP_13_1"
+            "name": "ALIGN_TO_HP_12_2"
           }
         },
         {
@@ -55,7 +55,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "HP to L Align"
+            "pathName": "HP to C Align"
           }
         },
         {
@@ -67,19 +67,19 @@
         {
           "type": "named",
           "data": {
-            "name": "ALIGN_19_6_RIGHT"
+            "name": "ALIGN_17_8_LEFT"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "L to HP Align"
+            "pathName": "C to HP Align"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "ALIGN_TO_HP_13_1"
+            "name": "ALIGN_TO_HP_12_2"
           }
         },
         {
@@ -97,7 +97,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "HP to K Align"
+            "pathName": "HP to D Align"
           }
         },
         {
@@ -109,19 +109,13 @@
         {
           "type": "named",
           "data": {
-            "name": "SET_ALGAE_REMOVAL"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "ALIGN_19_6_LEFT"
+            "name": "ALIGN_17_8_RIGHT"
           }
         }
       ]
     }
   },
   "resetOdom": true,
-  "folder": "COMP",
+  "folder": "DEV",
   "choreoAuto": false
 }
