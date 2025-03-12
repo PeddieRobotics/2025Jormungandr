@@ -16,12 +16,12 @@
     },
     {
       "anchor": {
-        "x": 2.2,
-        "y": 1.7
+        "x": 2.35,
+        "y": 1.76
       },
       "prevControl": {
-        "x": 2.5343600551454126,
-        "y": 1.9014213919299858
+        "x": 2.684360055145412,
+        "y": 1.9614213919299859
       },
       "nextControl": null,
       "isLocked": false,
@@ -33,16 +33,16 @@
   "pointTowardsZones": [],
   "eventMarkers": [],
   "globalConstraints": {
-    "maxVelocity": 3.0,
-    "maxAcceleration": 4.0,
+    "maxVelocity": 4.0,
+    "maxAcceleration": 6.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0,
     "nominalVoltage": 12.0,
     "unlimited": false
   },
   "goalEndState": {
-    "velocity": 0,
-    "rotation": 52.82433039574438
+    "velocity": 3.0,
+    "rotation": 54.0
   },
   "reversed": false,
   "folder": "Reef to HP",

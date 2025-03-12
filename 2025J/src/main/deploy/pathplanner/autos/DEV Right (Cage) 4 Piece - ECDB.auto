@@ -43,12 +43,6 @@
         {
           "type": "named",
           "data": {
-            "name": "WAIT_FOR_CORAL"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
             "name": "L3L4_PRESTAGE"
           }
         },
@@ -56,12 +50,6 @@
           "type": "path",
           "data": {
             "pathName": "HP to C Align"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "L4_PREP"
           }
         },
         {
@@ -80,12 +68,6 @@
           "type": "named",
           "data": {
             "name": "ALIGN_TO_HP_12_2"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "WAIT_FOR_CORAL"
           }
         },
         {
@@ -110,6 +92,42 @@
           "type": "named",
           "data": {
             "name": "ALIGN_17_8_RIGHT"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "D to HP Align"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "ALIGN_TO_HP_12_2"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "L3L4_PRESTAGE"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "HP to B Align"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "L4_PREP"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "ALIGN_18_7_RIGHT"
           }
         }
       ]

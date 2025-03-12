@@ -370,6 +370,7 @@ public final class Constants {
             public static final double kTranslateD = 0;
             public static final double kTranslateFF = 0;
             public static final double kTranslateThreshold = 0.02;
+            public static final double kAutoTranslateThreshold = 0.05;
             public static final double kTranslateSetpoint = 0;
 
             public static final double kRotationP = 0.065;
@@ -382,7 +383,10 @@ public final class Constants {
             
             // TODO
             public static final double kBackOffset = 0.42;
-            public static final double kLateralOffset = 0;
+            public static final double kLateralOffset = 0.00;
+
+            public static final double kAutoRightLateralOffset = -0.045;
+            public static final double kAutoLeftLateralOffset = -0.045;
             
             public static final double kMaxSpeed = 3.0;
         }

@@ -8,20 +8,20 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.8847673681616106,
-        "y": 1.6022556162578105
+        "x": 1.742206777564046,
+        "y": 1.3552776874241435
       },
       "isLocked": false,
       "linkedName": "AlignedToHPBottom"
     },
     {
       "anchor": {
-        "x": 2.829,
-        "y": 2.353
+        "x": 3.15,
+        "y": 2.0554999999999994
       },
       "prevControl": {
-        "x": 2.2501201773054302,
-        "y": 1.8906915719710882
+        "x": 2.914336249835373,
+        "y": 1.9323227937714438
       },
       "nextControl": null,
       "isLocked": false,
@@ -34,14 +34,19 @@
   "eventMarkers": [
     {
       "name": "L4_PREP",
-      "waypointRelativePos": 0.752571190016675,
+      "waypointRelativePos": 0.5,
       "endWaypointRelativePos": null,
-      "command": null
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "L4_PREP"
+        }
+      }
     }
   ],
   "globalConstraints": {
-    "maxVelocity": 3.0,
-    "maxAcceleration": 4.0,
+    "maxVelocity": 3.5,
+    "maxAcceleration": 5.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0,
     "nominalVoltage": 12.0,

@@ -31,7 +31,7 @@ public class AlignToHP extends Command {
 
     private PIDController translatePIDController, rotationPIDController;
 
-    private double translateP, translateI, translateD, translateFF, translateThreshold;
+    private double translateP, translateI, translateD, translateFF, translateThreshold, autonomousTranslateThreshold;
     private double rotationP, rotationI, rotationD, rotationFF, rotationThreshold;
     private double rotationLowerP, rotationUseLowerPThreshold;
     private double maxSpeed;
@@ -60,6 +60,7 @@ public class AlignToHP extends Command {
         translateD = HPAlign.kTranslateD;
         translateFF = HPAlign.kTranslateFF;
         translateThreshold = HPAlign.kTranslateThreshold;
+        autonomousTranslateThreshold = HPAlign.kAutoTranslateThreshold;
 
         rotationP = HPAlign.kRotationP;
         rotationI = HPAlign.kRotationI;
@@ -162,6 +163,10 @@ public class AlignToHP extends Command {
         return xError * xError + yError * yError < Math.pow(translateThreshold, 2);
     }
 
+    public boolean translationDistanceGoodInAuto(){
+        return xError * xError + yError * yError < Math.pow(autonomousTranslateThreshold, 2);
+    }
+
     @Override
     public void execute() {
         // {
@@ -251,8 +256,14 @@ public class AlignToHP extends Command {
         );
     }
 
+    
     @Override
     public boolean isFinished() {
-        return Math.abs(rotationError) < rotationThreshold && translationDistanceGood();
+        // return Math.abs(rotationError) < rotationThreshold && translationDistanceGoodInAuto();
+        if(DriverStation.isAutonomousEnabled()){
+            return Math.abs(rotationError) < rotationThreshold && translationDistanceGoodInAuto();
+        } else {
+            return Math.abs(rotationError) < rotationThreshold && translationDistanceGood();
+        }
     }
 }
