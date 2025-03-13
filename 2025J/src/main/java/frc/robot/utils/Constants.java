@@ -214,7 +214,7 @@ public final class Constants {
         public static final double kElevatorPrestagePosition = 3.8;
         public static final double kElevatorL4ScorePosition = 12.45; 
         public static final double kElevatorBargePrestagePosition = 6.2;
-        public static final double kElevatorBargeScorePosition = 12.7;
+        public static final double kElevatorBargeScorePosition = 12.85;
         public static final double kElevatorProcessorScorePosition = 0.0;
         public static final double kElevatorReef1IntakePosition = 2.2;
         public static final double kElevatorReef2IntakePosition = 5.45;
@@ -227,7 +227,7 @@ public final class Constants {
         public static final double kArmL3ScorePosition = 0.25;
         public static final double kArmL4ScorePosition = 0.25;
         public static final double kArmBargeScorePosition = 0.25;
-        public static final double kArmProcessorScorePosition = 0.25;
+        public static final double kArmProcessorScorePosition = 0.095;
         public static final double kArmReef1IntakePosition = 0.21;
         public static final double kArmReef2IntakePosition = 0.21;
 
@@ -268,7 +268,7 @@ public final class Constants {
 
         // 
         public static final double kArmForwardSoftLimit = 0.25;
-        public static final double kArmReverseSoftLimit = 0.13;
+        public static final double kArmReverseSoftLimit = 0.09;
 
         // Motion Magic Parameters
         public static final double kArmMaxCruiseVelocity = 0.0;
