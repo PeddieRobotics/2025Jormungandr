@@ -1,6 +1,5 @@
 package frc.robot.commands.ReefCommands;
 
-import java.util.Arrays;
 import java.util.Optional;
 
 import edu.wpi.first.math.controller.PIDController;
@@ -23,6 +22,7 @@ import frc.robot.utils.Constants.AlignmentConstants;
 import frc.robot.utils.Constants.AlignmentConstants.AlignmentDestination;
 import frc.robot.utils.Constants.AlignmentConstants.ReefAlign;
 import frc.robot.utils.Logger;
+import frc.robot.utils.MagnitudeCap;
 
 public class AlignToReefBasisVector extends Command {
     private Drivetrain drivetrain;
@@ -87,7 +87,7 @@ public class AlignToReefBasisVector extends Command {
             }
         }
 
-        depthP = 0;
+        depthP = 2;
         depthI = 0;
         depthD = 0;
         depthFF = 0;
@@ -147,6 +147,8 @@ public class AlignToReefBasisVector extends Command {
             SmartDashboard.putNumber("Align: rotationThreshold", rotationThreshold);
             SmartDashboard.putNumber("Align: rotationLowerP", rotationLowerP);
             SmartDashboard.putNumber("Align: rotationUseLowerPThreshold", rotationUseLowerPThreshold);
+
+            SmartDashboard.putNumber("Align: maxSpeed", maxSpeed);
         }
     }
 
@@ -263,6 +265,8 @@ public class AlignToReefBasisVector extends Command {
             rotationThreshold = SmartDashboard.getNumber("Align: rotationThreshold", rotationThreshold);
             rotationLowerP = SmartDashboard.getNumber("Align: rotationLowerP", rotationLowerP);
             rotationUseLowerPThreshold = SmartDashboard.getNumber("Align: rotationUseLowerPThreshold", rotationUseLowerPThreshold);
+            
+            maxSpeed = SmartDashboard.getNumber("Align: maxSpeed", maxSpeed);
         }
         
         if (desiredPose.isEmpty())
@@ -306,6 +310,7 @@ public class AlignToReefBasisVector extends Command {
         }
 
         Translation2d translation = depthVector.times(depthMagnitude).plus(lateralVector.times(lateralMagnitude));
+        translation = MagnitudeCap.capMagnitude(translation, maxSpeed);
 
         if (DriverStation.isAutonomous())
             drivetrain.driveBlueForceAdjust(translation, rotation, true, null);
