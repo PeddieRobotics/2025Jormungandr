@@ -174,7 +174,7 @@ public final class Constants {
         public static final double kG = 0.255;
         public static final double kFF = 0.0;
 
-        public static final double kElevatorPositionEpsilon = 0.1;
+        public static final double kElevatorPositionEpsilon = 0.05;
         public static final double kElevatorNeutralModePositionEpsilon = 0.1;
         public static final double kElevatorL1Height = 0.0;
         public static final double kElevatorL2Height = 0.0;
@@ -212,7 +212,12 @@ public final class Constants {
         public static final double kElevatorL2ScorePosition = 3.8;
         public static final double kElevatorL3ScorePosition = 7.05;
         public static final double kElevatorPrestagePosition = 3.8;
-        public static final double kElevatorL4ScorePosition = 12.45; 
+
+        // Comp Height
+        // public static final double kElevatorL4ScorePosition = 12.45; 
+        // Lab Height
+        public static final double kElevatorL4ScorePosition = 12.35; 
+
         public static final double kElevatorBargePrestagePosition = 6.2;
         public static final double kElevatorBargeScorePosition = 12.85;
         public static final double kElevatorProcessorScorePosition = 0.0;
@@ -228,8 +233,8 @@ public final class Constants {
         public static final double kArmL4ScorePosition = 0.25;
         public static final double kArmBargeScorePosition = 0.25;
         public static final double kArmProcessorScorePosition = 0.095;
-        public static final double kArmReef1IntakePosition = 0.21;
-        public static final double kArmReef2IntakePosition = 0.21;
+        public static final double kArmReef1IntakePosition = 0.19;
+        public static final double kArmReef2IntakePosition = 0.19;
 
     }
 
@@ -336,7 +341,7 @@ public final class Constants {
         };
 
         public static final class ReefAlign {
-            public static final double kTranslateP = 2.3;
+            public static final double kTranslateP = 2.5;
             public static final double kTranslateI = 0;
             public static final double kTranslateD = 0;
             public static final double kTranslateFF = 0;
@@ -345,12 +350,12 @@ public final class Constants {
             public static final double kTranslateThresholdL2L3 = 0.065;
             public static final double kTranslateSetpoint = 0;
 
-            public static final double kRotationP = 0.05;
+            public static final double kRotationP = 0.06;
             public static final double kRotationI = 0;
             public static final double kRotationD = 0;
             public static final double kRotationFF = 0;
             public static final double kRotationThreshold = 0.5;
-            public static final double kRotationLowerP = 0.03;
+            public static final double kRotationLowerP = 0.05;
             public static final double kRotationUseLowerPThreshold = 1.5;
             
             // center of robot distance to tag -- back (+ = back, - = forwards)
@@ -365,9 +370,10 @@ public final class Constants {
         }
 
         public static final class HPAlign {
-            public static final double kTranslateP = 2.9;
+            public static final double kTranslateP = 3.0;
             public static final double kTranslateI = 0;
             public static final double kTranslateD = 0;
+
             public static final double kTranslateFF = 0;
             public static final double kTranslateThreshold = 0.02;
             public static final double kAutoTranslateThreshold = 0.05;
@@ -382,11 +388,11 @@ public final class Constants {
             public static final double kRotationUseLowerPThreshold = 1.5;
             
             // TODO
-            public static final double kBackOffset = 0.42;
+            public static final double kBackOffset = 0.45;
             public static final double kLateralOffset = 0.00;
 
             public static final double kAutoRightLateralOffset = -0.045;
-            public static final double kAutoLeftLateralOffset = -0.045;
+            public static final double kAutoLeftLateralOffset = 0.045;
             
             public static final double kMaxSpeed = 3.0;
         }

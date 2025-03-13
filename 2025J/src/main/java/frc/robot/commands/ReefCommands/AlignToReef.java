@@ -109,19 +109,19 @@ public class AlignToReef extends Command {
         addRequirements(drivetrain);
         
         // {
-        //     SmartDashboard.putNumber("Align: translateP", translateP);
-        //     SmartDashboard.putNumber("Align: translateI", translateI);
-        //     SmartDashboard.putNumber("Align: translateD", translateD);
-        //     SmartDashboard.putNumber("Align: translateFF", translateFF);
-        //     SmartDashboard.putNumber("Align: translateThreshold", translateThreshold);
+            // SmartDashboard.putNumber("Align: translateP", translateP);
+            // SmartDashboard.putNumber("Align: translateI", translateI);
+            // SmartDashboard.putNumber("Align: translateD", translateD);
+            // SmartDashboard.putNumber("Align: translateFF", translateFF);
+            // SmartDashboard.putNumber("Align: translateThreshold", translateThreshold);
             
-        //     SmartDashboard.putNumber("Align: rotationP", rotationP);
-        //     SmartDashboard.putNumber("Align: rotationI", rotationI);
-        //     SmartDashboard.putNumber("Align: rotationD", rotationD);
-        //     SmartDashboard.putNumber("Align: rotationFF", rotationFF);
-        //     SmartDashboard.putNumber("Align: rotationThreshold", rotationThreshold);
-        //     SmartDashboard.putNumber("Align: rotationLowerP", rotationLowerP);
-        //     SmartDashboard.putNumber("Align: rotationUseLowerPThreshold", rotationUseLowerPThreshold);
+            // SmartDashboard.putNumber("Align: rotationP", rotationP);
+            // SmartDashboard.putNumber("Align: rotationI", rotationI);
+            // SmartDashboard.putNumber("Align: rotationD", rotationD);
+            // SmartDashboard.putNumber("Align: rotationFF", rotationFF);
+            // SmartDashboard.putNumber("Align: rotationThreshold", rotationThreshold);
+            // SmartDashboard.putNumber("Align: rotationLowerP", rotationLowerP);
+            // SmartDashboard.putNumber("Align: rotationUseLowerPThreshold", rotationUseLowerPThreshold);
         // }
     }
 
@@ -216,19 +216,19 @@ public class AlignToReef extends Command {
     @Override
     public void execute() {
         // {
-        //     translateP = SmartDashboard.getNumber("Align: translateP", translateP);
-        //     translateI = SmartDashboard.getNumber("Align: translateI", translateI);
-        //     translateD = SmartDashboard.getNumber("Align: translateD", translateD);
-        //     translateFF = SmartDashboard.getNumber("Align: translateFF", translateFF);
-        //     translateThreshold = SmartDashboard.getNumber("Align: translateThreshold", translateThreshold);
+            // translateP = SmartDashboard.getNumber("Align: translateP", translateP);
+            // translateI = SmartDashboard.getNumber("Align: translateI", translateI);
+            // translateD = SmartDashboard.getNumber("Align: translateD", translateD);
+            // translateFF = SmartDashboard.getNumber("Align: translateFF", translateFF);
+            // translateThreshold = SmartDashboard.getNumber("Align: translateThreshold", translateThreshold);
 
-        //     rotationP = SmartDashboard.getNumber("Align: rotationP", rotationP);
-        //     rotationI = SmartDashboard.getNumber("Align: rotationI", rotationI);
-        //     rotationD = SmartDashboard.getNumber("Align: rotationD", rotationD);
-        //     rotationFF = SmartDashboard.getNumber("Align: rotationFF", rotationFF);
-        //     rotationThreshold = SmartDashboard.getNumber("Align: rotationThreshold", rotationThreshold);
-        //     rotationLowerP = SmartDashboard.getNumber("Align: rotationLowerP", rotationLowerP);
-        //     rotationUseLowerPThreshold = SmartDashboard.getNumber("Align: rotationUseLowerPThreshold", rotationUseLowerPThreshold);
+            // rotationP = SmartDashboard.getNumber("Align: rotationP", rotationP);
+            // rotationI = SmartDashboard.getNumber("Align: rotationI", rotationI);
+            // rotationD = SmartDashboard.getNumber("Align: rotationD", rotationD);
+            // rotationFF = SmartDashboard.getNumber("Align: rotationFF", rotationFF);
+            // rotationThreshold = SmartDashboard.getNumber("Align: rotationThreshold", rotationThreshold);
+            // rotationLowerP = SmartDashboard.getNumber("Align: rotationLowerP", rotationLowerP);
+            // rotationUseLowerPThreshold = SmartDashboard.getNumber("Align: rotationUseLowerPThreshold", rotationUseLowerPThreshold);
         // }
         
         if (desiredPose.isEmpty())
@@ -291,12 +291,12 @@ public class AlignToReef extends Command {
         Logger.getInstance().logAlignToReef(xError, yError, rotationError, xTranslate, yTranslate, rotation);
 
         // {
-        //     SmartDashboard.putNumber("Align: xError", xError);
-        //     SmartDashboard.putNumber("Align: yError", yError);
-        //     SmartDashboard.putNumber("Align: rotationError", rotationError);
+            // SmartDashboard.putNumber("Align: xError", xError);
+            // SmartDashboard.putNumber("Align: yError", yError);
+            // SmartDashboard.putNumber("Align: rotationError", rotationError);
 
-        //     SmartDashboard.putBoolean("Align: translation good?", translationDistanceGood());
-        //     SmartDashboard.putBoolean("Align: rotation good?", Math.abs(rotationError) < rotationThreshold);
+            // SmartDashboard.putBoolean("Align: translation good?", translationDistanceGood());
+            // SmartDashboard.putBoolean("Align: rotation good?", Math.abs(rotationError) < rotationThreshold);
         // }
     }
 

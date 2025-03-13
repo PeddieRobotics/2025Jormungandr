@@ -87,19 +87,19 @@ public class AlignToHP extends Command {
         addRequirements(drivetrain);
         
         // {
-        //     SmartDashboard.putNumber("HPAlign: translateP", translateP);
-        //     SmartDashboard.putNumber("HPAlign: translateI", translateI);
-        //     SmartDashboard.putNumber("HPAlign: translateD", translateD);
-        //     SmartDashboard.putNumber("HPAlign: translateFF", translateFF);
+            SmartDashboard.putNumber("HPAlign: translateP", translateP);
+            SmartDashboard.putNumber("HPAlign: translateI", translateI);
+            SmartDashboard.putNumber("HPAlign: translateD", translateD);
+            SmartDashboard.putNumber("HPAlign: translateFF", translateFF);
             SmartDashboard.putNumber("HPAlign: translateThreshold", translateThreshold);
             
-        //     SmartDashboard.putNumber("HPAlign: rotationP", rotationP);
-        //     SmartDashboard.putNumber("HPAlign: rotationI", rotationI);
-        //     SmartDashboard.putNumber("HPAlign: rotationD", rotationD);
-        //     SmartDashboard.putNumber("HPAlign: rotationFF", rotationFF);
-        //     SmartDashboard.putNumber("HPAlign: rotationThreshold", rotationThreshold);
-        //     SmartDashboard.putNumber("HPAlign: rotationLowerP", rotationLowerP);
-        //     SmartDashboard.putNumber("HPAlign: rotationUseLowerPThreshold", rotationUseLowerPThreshold);
+            SmartDashboard.putNumber("HPAlign: rotationP", rotationP);
+            SmartDashboard.putNumber("HPAlign: rotationI", rotationI);
+            SmartDashboard.putNumber("HPAlign: rotationD", rotationD);
+            SmartDashboard.putNumber("HPAlign: rotationFF", rotationFF);
+            SmartDashboard.putNumber("HPAlign: rotationThreshold", rotationThreshold);
+            SmartDashboard.putNumber("HPAlign: rotationLowerP", rotationLowerP);
+            SmartDashboard.putNumber("HPAlign: rotationUseLowerPThreshold", rotationUseLowerPThreshold);
         // }
     }
 
@@ -170,19 +170,19 @@ public class AlignToHP extends Command {
     @Override
     public void execute() {
         // {
-        //     translateP = SmartDashboard.getNumber("HPAlign: translateP", translateP);
-        //     translateI = SmartDashboard.getNumber("HPAlign: translateI", translateI);
-        //     translateD = SmartDashboard.getNumber("HPAlign: translateD", translateD);
-        //     translateFF = SmartDashboard.getNumber("HPAlign: translateFF", translateFF);
+            translateP = SmartDashboard.getNumber("HPAlign: translateP", translateP);
+            translateI = SmartDashboard.getNumber("HPAlign: translateI", translateI);
+            translateD = SmartDashboard.getNumber("HPAlign: translateD", translateD);
+            translateFF = SmartDashboard.getNumber("HPAlign: translateFF", translateFF);
             translateThreshold = SmartDashboard.getNumber("HPAlign: translateThreshold", translateThreshold);
 
-        //     rotationP = SmartDashboard.getNumber("HPAlign: rotationP", rotationP);
-        //     rotationI = SmartDashboard.getNumber("HPAlign: rotationI", rotationI);
-        //     rotationD = SmartDashboard.getNumber("HPAlign: rotationD", rotationD);
-        //     rotationFF = SmartDashboard.getNumber("HPAlign: rotationFF", rotationFF);
-        //     rotationThreshold = SmartDashboard.getNumber("HPAlign: rotationThreshold", rotationThreshold);
-        //     rotationLowerP = SmartDashboard.getNumber("HPAlign: rotationLowerP", rotationLowerP);
-        //     rotationUseLowerPThreshold = SmartDashboard.getNumber("HPAlign: rotationUseLowerPThreshold", rotationUseLowerPThreshold);
+            rotationP = SmartDashboard.getNumber("HPAlign: rotationP", rotationP);
+            rotationI = SmartDashboard.getNumber("HPAlign: rotationI", rotationI);
+            rotationD = SmartDashboard.getNumber("HPAlign: rotationD", rotationD);
+            rotationFF = SmartDashboard.getNumber("HPAlign: rotationFF", rotationFF);
+            rotationThreshold = SmartDashboard.getNumber("HPAlign: rotationThreshold", rotationThreshold);
+            rotationLowerP = SmartDashboard.getNumber("HPAlign: rotationLowerP", rotationLowerP);
+            rotationUseLowerPThreshold = SmartDashboard.getNumber("HPAlign: rotationUseLowerPThreshold", rotationUseLowerPThreshold);
         // }
         // maxSpeed = SmartDashboard.getNumber("HPAlign: max speed", maxSpeed);
         
