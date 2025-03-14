@@ -19,31 +19,25 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Left (Cage) to J Align"
+            "pathName": "Right (Cage) to E Align"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "ALIGN_20_11_RIGHT"
+            "name": "ALIGN_22_9_LEFT"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "J to HP Align"
+            "pathName": "E to HP Align"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "ALIGN_TO_HP_13_1"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "WAIT_FOR_CORAL"
+            "name": "ALIGN_TO_HP_12_2"
           }
         },
         {
@@ -55,37 +49,25 @@
         {
           "type": "path",
           "data": {
-            "pathName": "HP to L Align"
+            "pathName": "HP to C Align"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "L4_PREP"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "ALIGN_19_6_RIGHT"
+            "name": "ALIGN_17_8_LEFT"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "L to HP Align"
+            "pathName": "C to HP Align"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "ALIGN_TO_HP_13_1"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "WAIT_FOR_CORAL"
+            "name": "ALIGN_TO_HP_12_2"
           }
         },
         {
@@ -97,7 +79,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "HP to K Align"
+            "pathName": "HP to D Align"
           }
         },
         {
@@ -109,19 +91,49 @@
         {
           "type": "named",
           "data": {
-            "name": "SET_ALGAE_REMOVAL"
+            "name": "ALIGN_17_8_RIGHT"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "D to HP Align"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "ALIGN_19_6_LEFT"
+            "name": "ALIGN_TO_HP_12_2"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "L3L4_PRESTAGE"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "HP to B Align"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "L4_PREP"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "ALIGN_18_7_RIGHT"
           }
         }
       ]
     }
   },
   "resetOdom": true,
-  "folder": "COMP",
+  "folder": "DEV",
   "choreoAuto": false
 }

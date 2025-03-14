@@ -108,12 +108,12 @@ public class Autonomous extends SubsystemBase {
                 new ParallelRaceGroup(
                     new SequentialCommandGroup(
                         new AlignToReef(Constants.AlignmentConstants.AlignmentDestination.LEFT, 2.0, blue, red),
-                        new WaitCommand(0.5)
+                        new WaitCommand(0.30)
                     ),
                     new SequentialCommandGroup(
                         new WaitCommand(2.0),
                         new InstantCommand(() -> superstructure.sendToScore()),
-                        new WaitCommand(0.5)
+                        new WaitCommand(0.30)
                     )
                 )
             );
@@ -122,12 +122,12 @@ public class Autonomous extends SubsystemBase {
                 new ParallelRaceGroup(
                     new SequentialCommandGroup(
                         new AlignToReef(Constants.AlignmentConstants.AlignmentDestination.RIGHT, 2.0, blue, red),
-                        new WaitCommand(0.5)
+                        new WaitCommand(0.30)
                     ),
                     new SequentialCommandGroup(
                         new WaitCommand(2.0),
                         new InstantCommand(() -> superstructure.sendToScore()),
-                        new WaitCommand(0.5)
+                        new WaitCommand(0.30)
                     )
                 )
             );
@@ -143,7 +143,7 @@ public class Autonomous extends SubsystemBase {
         NamedCommands.registerCommand("SEND_TO_SCORE", new InstantCommand(() -> superstructure.sendToScore()));
 
         NamedCommands.registerCommand("ALIGN_TO_HP_12_2", new ParallelRaceGroup(
-            new AlignToHP(HPAlign.kMaxSpeed, HPAlign.kLateralOffset, HPAlign.kBackOffset, 12, 2),
+            new AlignToHP(HPAlign.kMaxSpeed, HPAlign.kAutoRightLateralOffset, HPAlign.kBackOffset, 12, 2),
             new WaitForCoral(), new WaitCommand(2)
         ));
         NamedCommands.registerCommand("ALIGN_TO_HP_13_1", new ParallelRaceGroup(
@@ -152,7 +152,7 @@ public class Autonomous extends SubsystemBase {
         ));
 
         NamedCommands.registerCommand("WAIT_FOR_CORAL", new ParallelRaceGroup(
-            new WaitForCoral(), new WaitCommand(2)
+            new WaitForCoral(), new WaitCommand(0.5)
         ));
 
         NamedCommands.registerCommand("SET_ALGAE_REMOVAL", new InstantCommand(() -> {

@@ -253,6 +253,7 @@ public class Superstructure extends SubsystemBase {
 
                 //elevator.setElevatorPositionVoltage(ScoreConstants.kElevatorL1ScorePosition);
                 arm.setArmPositionVoltage(ScoreConstants.kArmL1ScorePosition);
+                claw.stopClaw();
 
                 if (Arrays.asList(
                         STOW,
@@ -287,6 +288,7 @@ public class Superstructure extends SubsystemBase {
 
                 //elevator.setElevatorPositionVoltage(ScoreConstants.kElevatorL2ScorePosition);
                 arm.setArmPositionVoltage(ScoreConstants.kArmL2ScorePosition);
+                claw.stopClaw();
 
                 if (Arrays.asList(
                         STOW,
@@ -321,6 +323,7 @@ public class Superstructure extends SubsystemBase {
                 
                 //elevator.setElevatorPositionVoltage(ScoreConstants.kElevatorL3ScorePosition);
                 arm.setArmPositionVoltage(ScoreConstants.kArmL3ScorePosition);
+                claw.stopClaw();
 
 
                 if (Arrays.asList(
@@ -348,6 +351,7 @@ public class Superstructure extends SubsystemBase {
 
                 //elevator.setElevatorPositionVoltage(ScoreConstants.kElevatorL4PrestagePosition);
                 arm.setArmPositionVoltage(ScoreConstants.kArmStowPosition);
+                claw.stopClaw();
 
                 if (Arrays.asList(
                         STOW,
@@ -374,6 +378,8 @@ public class Superstructure extends SubsystemBase {
                 
                 //elevator.setElevatorPositionVoltage(ScoreConstants.kElevatorL4ScorePosition);
                 arm.setArmPositionVoltage(ScoreConstants.kArmL4ScorePosition);
+                claw.stopClaw();
+
 
                 if (Arrays.asList(
                         STOW,
@@ -492,6 +498,8 @@ public class Superstructure extends SubsystemBase {
 
                 if (claw.getAlgaeSensor()) {
                     claw.holdAlgae();
+                } else {
+                    claw.stopClaw();
                 }
 
                 if (Arrays.asList(
@@ -522,6 +530,8 @@ public class Superstructure extends SubsystemBase {
 
                 if (claw.getAlgaeSensor()) {
                     claw.holdAlgae();
+                } else {
+                    claw.stopClaw();
                 }
 
                 if (Arrays.asList(
@@ -572,6 +582,8 @@ public class Superstructure extends SubsystemBase {
 
                 if (claw.getAlgaeSensor()) {
                     claw.holdAlgae();
+                } else {
+                    claw.stopClaw();
                 }
 
 
@@ -618,12 +630,12 @@ public class Superstructure extends SubsystemBase {
                 // arm.setArmPositionMotionMagicTorqueCurrentFOC(ScoreConstants.kArmReef1IntakePosition);
                 
                 //elevator.setElevatorPositionVoltage(ScoreConstants.kElevatorReef1IntakePosition);
-                // arm.setArmPositionVoltage(ScoreConstants.kArmReef1IntakePosition);
-                arm.setArmPositionVoltage(0.19);
-                claw.intakePiece(ClawConstants.kAlgaeIntakeSpeed);
+                arm.setArmPositionVoltage(ScoreConstants.kArmReef1IntakePosition);
 
                 if (claw.getAlgaeSensor()) {
                     claw.holdAlgae();
+                } else {
+                    claw.intakePiece(ClawConstants.kAlgaeIntakeSpeed);
                 }
 
                 if (Arrays.asList(
@@ -648,12 +660,12 @@ public class Superstructure extends SubsystemBase {
                 // arm.setArmPositionMotionMagicTorqueCurrentFOC(ScoreConstants.kArmReef2IntakePosition);
                 
                 //elevator.setElevatorPositionVoltage(ScoreConstants.kElevatorReef2IntakePosition);
-                // arm.setArmPositionVoltage(ScoreConstants.kArmReef2IntakePosition);
-                arm.setArmPositionVoltage(0.19);
-                claw.intakePiece(ClawConstants.kAlgaeIntakeSpeed);
-
+                arm.setArmPositionVoltage(ScoreConstants.kArmReef2IntakePosition);
+                
                 if (claw.getAlgaeSensor()) {
                     claw.holdAlgae();
+                } else {
+                    claw.intakePiece(ClawConstants.kAlgaeIntakeSpeed);
                 }
 
                 if (Arrays.asList(

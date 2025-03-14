@@ -11,6 +11,8 @@ import frc.robot.subsystems.Superstructure;
 import edu.wpi.first.math.geometry.Translation2d;
 import frc.robot.subsystems.Superstructure.SuperstructureState;
 
+import java.util.Arrays;
+
 import edu.wpi.first.math.geometry.Rotation2d;
 import frc.robot.commands.ReefCommands.AlignToHP;
 import frc.robot.commands.ReefCommands.AlignToReef;
@@ -25,6 +27,12 @@ import frc.robot.utils.Constants.AlignmentConstants;
 import frc.robot.utils.Constants.AlignmentConstants.HPAlign;
 import frc.robot.utils.Constants.AlignmentConstants.ReefAlign;
 import frc.robot.utils.Constants.DriveConstants;
+
+import static frc.robot.subsystems.Superstructure.SuperstructureState.L1_PREP;
+import static frc.robot.subsystems.Superstructure.SuperstructureState.L2_PREP;
+import static frc.robot.subsystems.Superstructure.SuperstructureState.L3L4_PRESTAGE;
+import static frc.robot.subsystems.Superstructure.SuperstructureState.L3_PREP;
+import static frc.robot.subsystems.Superstructure.SuperstructureState.L4_PREP;
 
 public class DriverOI {
 
@@ -60,14 +68,28 @@ public class DriverOI {
         xButton.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.STOW)));
 
         Trigger circleButton = new JoystickButton(controller, PS4Controller.Button.kCircle.value);
-        circleButton.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.HP_INTAKE)));
+        // circleButton.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.HP_INTAKE)));
+        circleButton.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.L2_PREP)));
+
 
         Trigger squareButton = new JoystickButton(controller, PS4Controller.Button.kSquare.value);
+        squareButton.onTrue(new InstantCommand(() -> {
+            if (Arrays.asList(L3L4_PRESTAGE, L1_PREP, L2_PREP, L3_PREP, L4_PREP).contains(superstructure.getCurrentState()))
+                superstructure.requestState(SuperstructureState.L3_PREP);
+            else
+                superstructure.requestState(SuperstructureState.L3L4_PRESTAGE);
+        }));
 
         Trigger triangleButton = new JoystickButton(controller, PS4Controller.Button.kTriangle.value);
         // triangleButton.onTrue(new AlignAndScore(true)); //right align
-        triangleButton.onTrue(new InstantCommand(() -> superstructure.sendToScore()));
+        // triangleButton.onTrue(new InstantCommand(() -> superstructure.sendToScore()));
         // Claw.getInstance().stopClaw()));
+        triangleButton.onTrue(new InstantCommand(() -> {
+            if (Arrays.asList(L3L4_PRESTAGE, L1_PREP, L2_PREP, L3_PREP, L4_PREP).contains(superstructure.getCurrentState()))
+                superstructure.requestState(SuperstructureState.L4_PREP);
+            else
+                superstructure.requestState(SuperstructureState.L3L4_PRESTAGE);
+        }));
 
         Trigger muteButton = new JoystickButton(controller, 15);
         // Set to climb

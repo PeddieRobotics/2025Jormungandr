@@ -32,7 +32,7 @@ public class AlignToHP extends Command {
 
     private PIDController translatePIDController, rotationPIDController;
 
-    private double translateP, translateI, translateD, translateFF, translateThreshold;
+    private double translateP, translateI, translateD, translateFF, translateThreshold, autonomousTranslateThreshold;
     private double rotationP, rotationI, rotationD, rotationFF, rotationThreshold;
     private double rotationLowerP, rotationUseLowerPThreshold;
     private double maxSpeed;
@@ -61,6 +61,7 @@ public class AlignToHP extends Command {
         translateD = HPAlign.kTranslateD;
         translateFF = HPAlign.kTranslateFF;
         translateThreshold = HPAlign.kTranslateThreshold;
+        autonomousTranslateThreshold = HPAlign.kAutoTranslateThreshold;
 
         rotationP = HPAlign.kRotationP;
         rotationI = HPAlign.kRotationI;
@@ -87,19 +88,19 @@ public class AlignToHP extends Command {
         addRequirements(drivetrain);
         
         // {
-        //     SmartDashboard.putNumber("HPAlign: translateP", translateP);
-        //     SmartDashboard.putNumber("HPAlign: translateI", translateI);
-        //     SmartDashboard.putNumber("HPAlign: translateD", translateD);
-        //     SmartDashboard.putNumber("HPAlign: translateFF", translateFF);
+            SmartDashboard.putNumber("HPAlign: translateP", translateP);
+            SmartDashboard.putNumber("HPAlign: translateI", translateI);
+            SmartDashboard.putNumber("HPAlign: translateD", translateD);
+            SmartDashboard.putNumber("HPAlign: translateFF", translateFF);
             SmartDashboard.putNumber("HPAlign: translateThreshold", translateThreshold);
             
-        //     SmartDashboard.putNumber("HPAlign: rotationP", rotationP);
-        //     SmartDashboard.putNumber("HPAlign: rotationI", rotationI);
-        //     SmartDashboard.putNumber("HPAlign: rotationD", rotationD);
-        //     SmartDashboard.putNumber("HPAlign: rotationFF", rotationFF);
-        //     SmartDashboard.putNumber("HPAlign: rotationThreshold", rotationThreshold);
-        //     SmartDashboard.putNumber("HPAlign: rotationLowerP", rotationLowerP);
-        //     SmartDashboard.putNumber("HPAlign: rotationUseLowerPThreshold", rotationUseLowerPThreshold);
+            SmartDashboard.putNumber("HPAlign: rotationP", rotationP);
+            SmartDashboard.putNumber("HPAlign: rotationI", rotationI);
+            SmartDashboard.putNumber("HPAlign: rotationD", rotationD);
+            SmartDashboard.putNumber("HPAlign: rotationFF", rotationFF);
+            SmartDashboard.putNumber("HPAlign: rotationThreshold", rotationThreshold);
+            SmartDashboard.putNumber("HPAlign: rotationLowerP", rotationLowerP);
+            SmartDashboard.putNumber("HPAlign: rotationUseLowerPThreshold", rotationUseLowerPThreshold);
         // }
     }
 
@@ -163,22 +164,26 @@ public class AlignToHP extends Command {
         return xError * xError + yError * yError < Math.pow(translateThreshold, 2);
     }
 
+    public boolean translationDistanceGoodInAuto(){
+        return xError * xError + yError * yError < Math.pow(autonomousTranslateThreshold, 2);
+    }
+
     @Override
     public void execute() {
         // {
-        //     translateP = SmartDashboard.getNumber("HPAlign: translateP", translateP);
-        //     translateI = SmartDashboard.getNumber("HPAlign: translateI", translateI);
-        //     translateD = SmartDashboard.getNumber("HPAlign: translateD", translateD);
-        //     translateFF = SmartDashboard.getNumber("HPAlign: translateFF", translateFF);
+            translateP = SmartDashboard.getNumber("HPAlign: translateP", translateP);
+            translateI = SmartDashboard.getNumber("HPAlign: translateI", translateI);
+            translateD = SmartDashboard.getNumber("HPAlign: translateD", translateD);
+            translateFF = SmartDashboard.getNumber("HPAlign: translateFF", translateFF);
             translateThreshold = SmartDashboard.getNumber("HPAlign: translateThreshold", translateThreshold);
 
-        //     rotationP = SmartDashboard.getNumber("HPAlign: rotationP", rotationP);
-        //     rotationI = SmartDashboard.getNumber("HPAlign: rotationI", rotationI);
-        //     rotationD = SmartDashboard.getNumber("HPAlign: rotationD", rotationD);
-        //     rotationFF = SmartDashboard.getNumber("HPAlign: rotationFF", rotationFF);
-        //     rotationThreshold = SmartDashboard.getNumber("HPAlign: rotationThreshold", rotationThreshold);
-        //     rotationLowerP = SmartDashboard.getNumber("HPAlign: rotationLowerP", rotationLowerP);
-        //     rotationUseLowerPThreshold = SmartDashboard.getNumber("HPAlign: rotationUseLowerPThreshold", rotationUseLowerPThreshold);
+            rotationP = SmartDashboard.getNumber("HPAlign: rotationP", rotationP);
+            rotationI = SmartDashboard.getNumber("HPAlign: rotationI", rotationI);
+            rotationD = SmartDashboard.getNumber("HPAlign: rotationD", rotationD);
+            rotationFF = SmartDashboard.getNumber("HPAlign: rotationFF", rotationFF);
+            rotationThreshold = SmartDashboard.getNumber("HPAlign: rotationThreshold", rotationThreshold);
+            rotationLowerP = SmartDashboard.getNumber("HPAlign: rotationLowerP", rotationLowerP);
+            rotationUseLowerPThreshold = SmartDashboard.getNumber("HPAlign: rotationUseLowerPThreshold", rotationUseLowerPThreshold);
         // }
         // maxSpeed = SmartDashboard.getNumber("HPAlign: max speed", maxSpeed);
         
@@ -246,8 +251,14 @@ public class AlignToHP extends Command {
         );
     }
 
+    
     @Override
     public boolean isFinished() {
-        return Math.abs(rotationError) < rotationThreshold && translationDistanceGood();
+        // return Math.abs(rotationError) < rotationThreshold && translationDistanceGoodInAuto();
+        if(DriverStation.isAutonomousEnabled()){
+            return Math.abs(rotationError) < rotationThreshold && translationDistanceGoodInAuto();
+        } else {
+            return Math.abs(rotationError) < rotationThreshold && translationDistanceGood();
+        }
     }
 }
