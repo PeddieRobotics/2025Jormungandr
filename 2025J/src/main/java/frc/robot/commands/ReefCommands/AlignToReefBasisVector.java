@@ -87,24 +87,24 @@ public class AlignToReefBasisVector extends Command {
             }
         }
 
-        depthP = 2;
+        depthP = 2.75;
         depthI = 0;
         depthD = 0;
         depthFF = 0;
 
-        lateralP = 0;
+        lateralP = 3.0;
         lateralI = 0;
         lateralD = 0;
         lateralFF = 0;
         
         translateThreshold = ReefAlign.kTranslateThreshold;
 
-        rotationP = ReefAlign.kRotationP;
+        rotationP = 0.08; // ReefAlign.kRotationP;
         rotationI = ReefAlign.kRotationI;
         rotationD = ReefAlign.kRotationD;
         rotationFF = ReefAlign.kRotationFF;
         rotationThreshold = ReefAlign.kRotationThreshold;
-        rotationLowerP = ReefAlign.kRotationLowerP;
+        rotationLowerP = 0.06; // ReefAlign.kRotationLowerP;
         rotationUseLowerPThreshold = ReefAlign.kRotationUseLowerPThreshold;
         
         depthPIDController = new PIDController(depthP, depthI, depthD);
