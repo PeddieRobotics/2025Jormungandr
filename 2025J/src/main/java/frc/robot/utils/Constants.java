@@ -42,7 +42,7 @@ public final class Constants {
     }
 
     public static class ModuleConstants {
-        public static final double kDriveMotorSupplyCurrentLimit = 40;
+        public static final double kDriveMotorSupplyCurrentLimit = 60;
         public static final double kSteerMotorSupplyCurrentLimit = 40;
         // TODO: find and update these values!
         public static final double kDriveMotorStatorCurrentLimit = 0.0;
@@ -209,8 +209,8 @@ public final class Constants {
         public static final double kElevatorGroundIntakePosition = 0.0;
         // public static final double kElevatorL1ScorePosition = 4.5;
         public static final double kElevatorL1ScorePosition = 3.8;
-        public static final double kElevatorL2ScorePosition = 3.8;
-        public static final double kElevatorL3ScorePosition = 7.05;
+        public static final double kElevatorL2ScorePosition = 3.7; //3.8;
+        public static final double kElevatorL3ScorePosition = 7; // 7.05;
         public static final double kElevatorPrestagePosition = 3.8;
 
         // Comp Height
@@ -362,11 +362,11 @@ public final class Constants {
             public static final double kTagBackMagnitude = 0.43;
 
             // center of robot distance to tag -- left (+ = left, - = right)
-            public static final double kLeftOffset = 0.1896;
-            public static final double kMiddleOffset = 0.02;   
-            public static final double kRightOffset = -0.1651;
+            public static final double kLeftOffset = 0.199; // 0.1896;
+            public static final double kMiddleOffset = 0.01; //0.02;   
+            public static final double kRightOffset = -0.145; // -0.1651;
             
-            public static final double kMaxSpeed = 2.0;
+            public static final double kMaxSpeed = 2.5;
         }
 
         public static final class HPAlign {
