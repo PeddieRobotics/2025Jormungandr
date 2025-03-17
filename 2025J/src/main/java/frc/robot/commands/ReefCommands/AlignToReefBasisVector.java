@@ -36,7 +36,12 @@ public class AlignToReefBasisVector extends Command {
     private PIDController depthPIDController, lateralPIDController, rotationPIDController;
 
     private double depthP, depthI, depthD, depthFF;
+
+    private double depthThreshold, depthCloseThreshold, depthCloseAtL4Threshold;
+
     private double lateralP, lateralI, lateralD, lateralFF;
+
+    private double lateralThreshold, lateralCloseThreshold, lateralCloseAtL4Threshold;
 
     private double rotationP, rotationI, rotationD, rotationFF;
     private double rotationLowerP, rotationUseLowerPThreshold;
@@ -94,16 +99,24 @@ public class AlignToReefBasisVector extends Command {
             }
         }
 
-        depthP = 2.7;
-        depthI = 0;
-        depthD = 0;
-        depthFF = 0;
+        depthP = ReefAlign.kDepthP;
+        depthI = ReefAlign.kDepthI;
+        depthD = ReefAlign.kDepthD;
+        depthFF = ReefAlign.kDepthFF;
 
-        lateralP = 2.9;
-        lateralI = 0;
-        lateralD = 0;
-        lateralFF = 0;
+        depthThreshold = ReefAlign.kDepthThreshold;
+        depthCloseThreshold = ReefAlign.kDepthCloseThreshold;
+        depthCloseAtL4Threshold = ReefAlign.kDepthCloseAtL4Threshold;
+
+        lateralP = ReefAlign.kLateralP;
+        lateralI = ReefAlign.kLateralI;
+        lateralD = ReefAlign.kLateralD;
+        lateralFF = ReefAlign.kLateralFF;
         
+        lateralThreshold = ReefAlign.kLateralThreshold;
+        lateralCloseThreshold = ReefAlign.kLateralCloseThreshold;
+        lateralCloseAtL4Threshold = ReefAlign.kLateralCloseAtL4Threshold;
+
         rotationP = ReefAlign.kRotationP;
         rotationI = ReefAlign.kRotationI;
         rotationD = ReefAlign.kRotationD;
@@ -155,13 +168,25 @@ public class AlignToReefBasisVector extends Command {
         }
 
         SmartDashboard.putNumber("Align: Elapsed Time", 0.0);
-        SmartDashboard.putNumber("Align: depth close threshold", 0.45);
-        SmartDashboard.putNumber("Align: lateral close threshold", 0.35);
-        SmartDashboard.putNumber("Align: depth threshold", 0.03);
-        SmartDashboard.putNumber("Align: lateral threshold", 0.03);
+
+        SmartDashboard.putNumber("Align: depth close threshold", ReefAlign.kDepthCloseThreshold);
+        SmartDashboard.putNumber("Align: depth close at L4 threshold", ReefAlign.kDepthCloseAtL4Threshold);
+        SmartDashboard.putNumber("Align: lateral close threshold", ReefAlign.kLateralCloseThreshold);
+        SmartDashboard.putNumber("Align: lateral close at L4 threshold", ReefAlign.kLateralCloseAtL4Threshold);
+
+        SmartDashboard.putNumber("Align: depth threshold", ReefAlign.kDepthThreshold);
+        SmartDashboard.putNumber("Align: lateral threshold", ReefAlign.kLateralThreshold);
+
         SmartDashboard.putBoolean("Align: fire gamepiece", false);
+
         SmartDashboard.putNumber("Align: depthError", depthError);
         SmartDashboard.putNumber("Align: lateralError", lateralError);
+
+        SmartDashboard.putBoolean("HPAlign: rotation good", false);
+        SmartDashboard.putBoolean("HPAlign: depth good", false);
+        SmartDashboard.putBoolean("HPAlign: lateral good", false);
+        SmartDashboard.putBoolean("HPAlign: depth close", false);
+        SmartDashboard.putBoolean("HPAlign: lateral close", false);
 
     }
 
@@ -245,27 +270,53 @@ public class AlignToReefBasisVector extends Command {
         // return Optional.empty();
     }
 
-    private boolean depthAndLateralClose() {
+    private boolean depthClose(){
         if(Superstructure.getInstance().getCurrentState() == L4_PREP){
-            boolean depthErrorClose = Math.abs(depthError) < 0.05;
-            boolean lateralErrorClose = Math.abs(lateralError) < 0.05;
-            return depthErrorClose && lateralErrorClose;    
+            return Math.abs(depthError) < depthCloseAtL4Threshold;
         }
         else{
-            boolean depthErrorClose = Math.abs(depthError) < SmartDashboard.getNumber("Align: depth close threshold", 0.0);
-            boolean lateralErrorClose = Math.abs(lateralError) < SmartDashboard.getNumber("Align: lateral close threshold", 0.0);
-            return depthErrorClose && lateralErrorClose;
+            return Math.abs(depthError) < depthCloseThreshold;
+        }
+
+    }
+
+    private boolean lateralClose(){
+        if(Superstructure.getInstance().getCurrentState() == L4_PREP){
+            return Math.abs(lateralError) < lateralCloseAtL4Threshold;
+        }
+        else{
+            return Math.abs(depthError) < lateralCloseThreshold;
         }
     }
 
+    private boolean depthAndLateralClose() {
+        return depthClose() && lateralClose();
+    }
+
+    private boolean depthGood(){
+        return Math.abs(depthError) < depthThreshold;
+    }
+
+    private boolean lateralGood(){
+        return Math.abs(lateralError) < lateralThreshold;
+    }
+
     private boolean depthAndLateralGood() {
-        boolean depthErrorGood = Math.abs(depthError) < SmartDashboard.getNumber("Align: depth threshold", 0.0);
-        boolean lateralErrorGood = Math.abs(lateralError) < SmartDashboard.getNumber("Align: lateral threshold", 0.0);
-        return depthErrorGood && lateralErrorGood;
+        return depthGood() && lateralGood();
+    }
+
+    private boolean rotationGood(){
+        return Math.abs(rotationError) < rotationThreshold;
     }
 
     @Override
     public void execute() {
+        SmartDashboard.putBoolean("HPAlign: rotation good", rotationGood());
+        SmartDashboard.putBoolean("HPAlign: depth good", depthGood());
+        SmartDashboard.putBoolean("HPAlign: lateral good", lateralGood());
+        SmartDashboard.putBoolean("HPAlign: depth close", depthClose());
+        SmartDashboard.putBoolean("HPAlign: lateral close", lateralClose());
+
         {
             depthP = SmartDashboard.getNumber("Align: depthP", depthP);
             depthI = SmartDashboard.getNumber("Align: depthI", depthI);
@@ -286,6 +337,13 @@ public class AlignToReefBasisVector extends Command {
             rotationUseLowerPThreshold = SmartDashboard.getNumber("Align: rotationUseLowerPThreshold", rotationUseLowerPThreshold);
             
             maxSpeed = SmartDashboard.getNumber("Align: maxSpeed", maxSpeed);
+
+            depthCloseThreshold = SmartDashboard.getNumber("Align: depth close threshold", 0.0);
+            depthCloseAtL4Threshold = SmartDashboard.getNumber("Align: depth close at L4 threshold", 0.0);
+            lateralCloseThreshold = SmartDashboard.getNumber("Align: lateral close threshold", 0.0);
+            lateralCloseAtL4Threshold = SmartDashboard.getNumber("Align: lateral close at L4 threshold", 0.0);
+            depthThreshold = SmartDashboard.getNumber("Align: depth threshold", 0.0);
+            lateralThreshold = SmartDashboard.getNumber("Align: lateral threshold", 0.0);
         }
         
         if (desiredPose.isEmpty())
@@ -368,6 +426,6 @@ public class AlignToReefBasisVector extends Command {
     @Override
     public boolean isFinished() {
         return desiredPose.isEmpty() || ((Superstructure.getInstance().isReefScoringState() || Superstructure.getInstance().getCurrentState() == HP_INTAKE || Superstructure.getInstance().getCurrentState() == STOW) 
-        && Math.abs(rotationError) < rotationThreshold && depthAndLateralGood());
+        && rotationGood() && depthAndLateralGood());
     }
 }

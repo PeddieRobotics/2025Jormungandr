@@ -7,6 +7,8 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Claw;
@@ -45,6 +47,8 @@ public class AlignToHP extends Command {
     private double xError, yError, rotationError;
 
     private int blueTargetTag, redTargetTag;
+
+    private double initialTime;
 
     public AlignToHP(double maxSpeed, double lateralOffset, double backOffset, int blueTargetTag, int redTargetTag) {
         drivetrain = Drivetrain.getInstance();
@@ -101,11 +105,16 @@ public class AlignToHP extends Command {
             SmartDashboard.putNumber("HPAlign: rotationThreshold", rotationThreshold);
             SmartDashboard.putNumber("HPAlign: rotationLowerP", rotationLowerP);
             SmartDashboard.putNumber("HPAlign: rotationUseLowerPThreshold", rotationUseLowerPThreshold);
+
+            SmartDashboard.putNumber("HPAlign: Elapsed Time", 0.0);
+
         // }
     }
 
     @Override
     public void initialize() {
+        initialTime = Timer.getFPGATimestamp();
+
         int desiredTarget;
         if (DriverStation.isAutonomous()) {
             if (DriverStation.getAlliance().isEmpty() || DriverStation.getAlliance().get() == DriverStation.Alliance.Blue)
@@ -244,6 +253,9 @@ public class AlignToHP extends Command {
 
     @Override
     public void end(boolean interrupted) {
+        double elapsedTime = Timer.getFPGATimestamp()-initialTime;
+        SmartDashboard.putNumber("HPAlign: Elapsed Time", elapsedTime);
+
         LimelightFrontMiddle.getInstance().setLED(Limelight.LightMode.OFF);
         Logger.getInstance().logEvent(
             "Align to HP ended with errors: x " + xError + ", y " + yError + ", rotation " + rotationError,

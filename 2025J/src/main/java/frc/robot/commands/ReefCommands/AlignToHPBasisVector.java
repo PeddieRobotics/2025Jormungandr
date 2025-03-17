@@ -61,25 +61,25 @@ public class AlignToHPBasisVector extends Command {
             LimelightFrontMiddle.getInstance(),
         };
 
-        depthP = 2.7;
-        depthI = 0;
-        depthD = 0;
-        depthFF = 0;
+        depthP = HPAlign.kDepthP;
+        depthI = HPAlign.kDepthI;
+        depthD = HPAlign.kDepthD;
+        depthFF = HPAlign.kDepthFF;
 
-        lateralP = 2.9;
-        lateralI = 0;
-        lateralD = 0;
-        lateralFF = 0;
+        lateralP = HPAlign.kLateralP;
+        lateralI = HPAlign.kLateralI;
+        lateralD = HPAlign.kLateralD;
+        lateralFF = HPAlign.kLateralFF;
         
         translateThreshold = HPAlign.kTranslateThreshold;
         autonomousTranslateThreshold = HPAlign.kAutoTranslateThreshold;
 
-        rotationP = 0.08; // HPAlign.kRotationP;
+        rotationP = HPAlign.kRotationP;
         rotationI = HPAlign.kRotationI;
         rotationD = HPAlign.kRotationD;
         rotationFF = HPAlign.kRotationFF;
         rotationThreshold = HPAlign.kRotationThreshold;
-        rotationLowerP = 0.06; // HPAlign.kRotationLowerP;
+        rotationLowerP = HPAlign.kRotationLowerP;
         rotationUseLowerPThreshold = HPAlign.kRotationUseLowerPThreshold;
         
         depthPIDController = new PIDController(depthP, depthI, depthD);
@@ -329,9 +329,9 @@ public class AlignToHPBasisVector extends Command {
     @Override
     public boolean isFinished() {
         if(DriverStation.isAutonomousEnabled()){
-            return Math.abs(rotationError) < rotationThreshold && translationDistanceGoodInAuto();
+            return rotationGood() && translationDistanceGoodInAuto();
         } else {
-            return Math.abs(rotationError) < rotationThreshold && translationDistanceGood();
+            return rotationGood() && translationDistanceGood();
         }
     }
 }

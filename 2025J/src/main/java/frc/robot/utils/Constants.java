@@ -345,10 +345,29 @@ public final class Constants {
             public static final double kTranslateI = 0;
             public static final double kTranslateD = 0;
             public static final double kTranslateFF = 0;
+
             public static final double kTranslateThreshold = 0.03;
             public static final double kTranslateThresholdAuto = 0.035;
             public static final double kTranslateThresholdL2L3 = 0.065;
             public static final double kTranslateSetpoint = 0;
+
+            public static final double kDepthP = 2.7;
+            public static final double kDepthI = 0;
+            public static final double kDepthD = 0;
+            public static final double kDepthFF = 0;
+
+            public static final double kDepthThreshold = 0.03;
+            public static final double kDepthCloseThreshold = 0.45;
+            public static final double kDepthCloseAtL4Threshold = 0.05;
+
+            public static final double kLateralP = 2.9;
+            public static final double kLateralI = 0;
+            public static final double kLateralD = 0;
+            public static final double kLateralFF = 0;
+
+            public static final double kLateralThreshold = 0.03;
+            public static final double kLateralCloseThreshold = 0.35;
+            public static final double kLateralCloseAtL4Threshold = 0.05;
 
             public static final double kRotationP = 0.08;
             public static final double kRotationI = 0;
@@ -373,28 +392,38 @@ public final class Constants {
             public static final double kTranslateP = 3.0;
             public static final double kTranslateI = 0;
             public static final double kTranslateD = 0;
-
             public static final double kTranslateFF = 0;
+
             public static final double kTranslateThreshold = 0.02;
             public static final double kAutoTranslateThreshold = 0.05;
             public static final double kTranslateSetpoint = 0;
 
-            public static final double kRotationP = 0.065;
+            public static final double kDepthP = 3.3;
+            public static final double kDepthI = 0;
+            public static final double kDepthD = 0;
+            public static final double kDepthFF = 0;
+
+            public static final double kLateralP = 3.5;
+            public static final double kLateralI = 0;
+            public static final double kLateralD = 0;
+            public static final double kLateralFF = 0;
+
+            public static final double kRotationP = 0.08;
             public static final double kRotationI = 0;
             public static final double kRotationD = 0;
             public static final double kRotationFF = 0;
             public static final double kRotationThreshold = 0.8;
-            public static final double kRotationLowerP = 0.04;
+            public static final double kRotationLowerP = 0.06;
             public static final double kRotationUseLowerPThreshold = 1.5;
             
             // TODO
-            public static final double kBackOffset = 0.45;
-            public static final double kLateralOffset = 0.00;
+            public static final double kBackOffset = 0.46;
+            public static final double kLateralOffset = -0.02;
 
             public static final double kAutoRightLateralOffset = -0.045;
             public static final double kAutoLeftLateralOffset = 0.045;
             
-            public static final double kMaxSpeed = 3.0;
+            public static final double kMaxSpeed = 4.0;
         }
             
         public static final double kDefaultToClosestDistance = 1.5;
