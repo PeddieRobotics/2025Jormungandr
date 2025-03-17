@@ -20,11 +20,14 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.commands.AutoCommands.*;
 import frc.robot.commands.ReefCommands.AlignToHP;
+import frc.robot.commands.ReefCommands.AlignToHPBasisVector;
 import frc.robot.commands.ReefCommands.AlignToReef;
+import frc.robot.commands.ReefCommands.AlignToReefBasisVector;
 import frc.robot.subsystems.Superstructure.SuperstructureState;
 import frc.robot.utils.Constants;
 import frc.robot.utils.Constants.AlignmentConstants;
 import frc.robot.utils.Constants.AlignmentConstants.HPAlign;
+import frc.robot.utils.Constants.AlignmentConstants.ReefAlign;
 import frc.robot.utils.Constants.AutoConstants;
 
 public class Autonomous extends SubsystemBase {
@@ -107,7 +110,7 @@ public class Autonomous extends SubsystemBase {
                 "ALIGN_" + blue + "_" + red + "_LEFT",
                 new ParallelRaceGroup(
                     new SequentialCommandGroup(
-                        new AlignToReef(Constants.AlignmentConstants.AlignmentDestination.LEFT, 2.0, blue, red),
+                        new AlignToReefBasisVector(Constants.AlignmentConstants.AlignmentDestination.LEFT, ReefAlign.kMaxSpeed, blue, red),
                         new WaitCommand(0.30)
                     ),
                     new SequentialCommandGroup(
@@ -121,7 +124,7 @@ public class Autonomous extends SubsystemBase {
                 "ALIGN_" + blue + "_" + red + "_RIGHT",
                 new ParallelRaceGroup(
                     new SequentialCommandGroup(
-                        new AlignToReef(Constants.AlignmentConstants.AlignmentDestination.RIGHT, 2.0, blue, red),
+                        new AlignToReefBasisVector(Constants.AlignmentConstants.AlignmentDestination.RIGHT, ReefAlign.kMaxSpeed, blue, red),
                         new WaitCommand(0.30)
                     ),
                     new SequentialCommandGroup(
@@ -143,11 +146,11 @@ public class Autonomous extends SubsystemBase {
         NamedCommands.registerCommand("SEND_TO_SCORE", new InstantCommand(() -> superstructure.sendToScore()));
 
         NamedCommands.registerCommand("ALIGN_TO_HP_12_2", new ParallelRaceGroup(
-            new AlignToHP(HPAlign.kMaxSpeed, HPAlign.kAutoRightLateralOffset, HPAlign.kBackOffset, 12, 2),
+            new AlignToHPBasisVector(HPAlign.kMaxSpeed, HPAlign.kAutoRightLateralOffset, HPAlign.kAutoBackOffset, 12, 2),
             new WaitForCoral(), new WaitCommand(2)
         ));
         NamedCommands.registerCommand("ALIGN_TO_HP_13_1", new ParallelRaceGroup(
-            new AlignToHP(HPAlign.kMaxSpeed, HPAlign.kLateralOffset, HPAlign.kBackOffset, 13, 1),
+            new AlignToHPBasisVector(HPAlign.kMaxSpeed, HPAlign.kAutoLeftLateralOffset, HPAlign.kAutoBackOffset, 13, 1),
             new WaitForCoral(), new WaitCommand(2)
         ));
 

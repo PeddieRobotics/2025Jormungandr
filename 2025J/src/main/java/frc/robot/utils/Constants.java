@@ -174,7 +174,7 @@ public final class Constants {
         public static final double kG = 0.255;
         public static final double kFF = 0.0;
 
-        public static final double kElevatorPositionEpsilon = 0.05;
+        public static final double kElevatorPositionEpsilon = 0.03;
         public static final double kElevatorNeutralModePositionEpsilon = 0.1;
         public static final double kElevatorL1Height = 0.0;
         public static final double kElevatorL2Height = 0.0;
@@ -398,12 +398,15 @@ public final class Constants {
             public static final double kAutoTranslateThreshold = 0.05;
             public static final double kTranslateSetpoint = 0;
 
+            public static final double kDepthThreshold = 0.05;
+            public static final double kLateralThreshold = 0.02;
+
             public static final double kDepthP = 3.3;
             public static final double kDepthI = 0;
             public static final double kDepthD = 0;
             public static final double kDepthFF = 0;
 
-            public static final double kLateralP = 3.5;
+            public static final double kLateralP = 3.0;
             public static final double kLateralI = 0;
             public static final double kLateralD = 0;
             public static final double kLateralFF = 0;
@@ -418,10 +421,11 @@ public final class Constants {
             
             // TODO
             public static final double kBackOffset = 0.46;
-            public static final double kLateralOffset = -0.02;
+            public static final double kAutoBackOffset = 0.48;
+            public static final double kLateralOffset = -0.03;
 
-            public static final double kAutoRightLateralOffset = -0.045;
-            public static final double kAutoLeftLateralOffset = 0.045;
+            public static final double kAutoRightLateralOffset = -0.03;
+            public static final double kAutoLeftLateralOffset = -0.03;
             
             public static final double kMaxSpeed = 4.0;
         }

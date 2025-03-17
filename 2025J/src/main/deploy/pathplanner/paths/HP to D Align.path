@@ -16,12 +16,12 @@
     },
     {
       "anchor": {
-        "x": 3.15,
-        "y": 2.0164999999999997
+        "x": 3.130186551094586,
+        "y": 2.1270242629002074
       },
       "prevControl": {
-        "x": 1.6898234213431151,
-        "y": 1.2289488709786995
+        "x": 1.6700099724377013,
+        "y": 1.3394731338789074
       },
       "nextControl": null,
       "isLocked": false,
@@ -34,7 +34,7 @@
   "eventMarkers": [
     {
       "name": "L4_PREP",
-      "waypointRelativePos": 0.5,
+      "waypointRelativePos": 0.45,
       "endWaypointRelativePos": null,
       "command": {
         "type": "named",
@@ -45,7 +45,7 @@
     }
   ],
   "globalConstraints": {
-    "maxVelocity": 3.0,
+    "maxVelocity": 4.0,
     "maxAcceleration": 5.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0,
@@ -53,7 +53,7 @@
     "unlimited": false
   },
   "goalEndState": {
-    "velocity": 2.0,
+    "velocity": 2.5,
     "rotation": 59.99999999999999
   },
   "reversed": false,

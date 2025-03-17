@@ -35,6 +35,8 @@ public class AlignToHPBasisVector extends Command {
 
     private double translateThreshold, autonomousTranslateThreshold, rotationThreshold;
 
+    private double depthThreshold, lateralThreshold;
+
     private double maxSpeed;
 
     private Optional<Pose2d> desiredPose;
@@ -86,6 +88,9 @@ public class AlignToHPBasisVector extends Command {
         lateralPIDController = new PIDController(lateralP, lateralI, lateralD);
         rotationPIDController = new PIDController(rotationP, rotationI, rotationD);
         rotationPIDController.enableContinuousInput(-180.0, 180.0);
+
+        depthThreshold = HPAlign.kDepthThreshold;
+        lateralThreshold = HPAlign.kLateralThreshold;
         
         this.maxSpeed = maxSpeed;
         this.lateralOffset = lateralOffset;
@@ -136,10 +141,10 @@ public class AlignToHPBasisVector extends Command {
         SmartDashboard.putNumber("HPAlign: maxSpeed", maxSpeed);
 
         SmartDashboard.putNumber("HPAlign: Elapsed Time", 0.0);
-        SmartDashboard.putNumber("HPAlign: depth auto threshold", 0.225);
-        SmartDashboard.putNumber("HPAlign: lateral auto threshold", 0.1);
-        SmartDashboard.putNumber("HPAlign: depth threshold", 0.01);
-        SmartDashboard.putNumber("HPAlign: lateral threshold", 0.01);
+        SmartDashboard.putNumber("HPAlign: depth auto threshold", HPAlign.kDepthThreshold);
+        SmartDashboard.putNumber("HPAlign: lateral auto threshold", HPAlign.kLateralThreshold);
+        SmartDashboard.putNumber("HPAlign: depth threshold", HPAlign.kDepthThreshold);
+        SmartDashboard.putNumber("HPAlign: lateral threshold", HPAlign.kLateralThreshold);
     }
 
     @Override
@@ -207,18 +212,26 @@ public class AlignToHPBasisVector extends Command {
     // TODO: don't know how we want to do thresholding for HP Align, including whether pythagoras or by component
 
     private boolean translationDistanceGood() {
-        return xError * xError + yError * yError < Math.pow(translateThreshold, 2);
+        // return xError * xError + yError * yError < Math.pow(translateThreshold, 2);
         // non-pythagoras based / reef align code:
-        // boolean depthErrorGood = Math.abs(depthError) < SmartDashboard.getNumber("HPAlign: depth threshold", 0.0);
-        // boolean lateralErrorGood = Math.abs(lateralError) < SmartDashboard.getNumber("HPAlign: lateral threshold", 0.0);
-        // return depthErrorGood && lateralErrorGood;
+        boolean depthErrorGood = Math.abs(depthError) < depthThreshold;
+        boolean lateralErrorGood = Math.abs(lateralError) < lateralThreshold;
+        return depthErrorGood && lateralErrorGood;
     }
 
     public boolean translationDistanceGoodInAuto(){
-        return xError * xError + yError * yError < Math.pow(autonomousTranslateThreshold, 2);
-        //boolean depthErrorGood = Math.abs(depthError) < SmartDashboard.getNumber("HPAlign: depth auto threshold", 0.0);
-        //boolean lateralErrorGood = Math.abs(lateralError) < SmartDashboard.getNumber("HPAlign: lateral auto threshold", 0.0);
-        // return depthErrorGood && lateralErrorGood;
+        // return xError * xError + yError * yError < Math.pow(autonomousTranslateThreshold, 2);
+        boolean depthErrorGood = Math.abs(depthError) < depthThreshold;
+        boolean lateralErrorGood = Math.abs(lateralError) < lateralThreshold;
+        return depthErrorGood && lateralErrorGood;
+    }
+
+    public boolean depthGood(){
+        return Math.abs(depthError) < SmartDashboard.getNumber("HPAlign: depth threshold", 0.0);
+    }
+
+    public boolean lateralGood(){
+        return Math.abs(lateralError) < SmartDashboard.getNumber("HPAlign: lateral threshold", 0.0);
     }
 
     public boolean rotationGood(){
@@ -228,10 +241,18 @@ public class AlignToHPBasisVector extends Command {
     @Override
     public void execute() {
 
+        depthThreshold = SmartDashboard.getNumber("HPAlign: depth threshold", 0.0);
+        lateralThreshold = SmartDashboard.getNumber("HPAlign: lateral threshold", 0.0);
+
         SmartDashboard.putBoolean("HPAlign: rotation good", rotationGood());
         SmartDashboard.putBoolean("HPAlign: translation distance good", translationDistanceGood());
-        SmartDashboard.putNumber("HPAlign: depthError", depthError);
-        SmartDashboard.putNumber("HPAlign: lateralError", lateralError);
+
+        if(depthError != 10000 && lateralError != 10000){
+            SmartDashboard.putNumber("HPAlign: depthError", depthError);
+            SmartDashboard.putNumber("HPAlign: lateralError", lateralError);
+        }
+
+        SmartDashboard.putNumber("HPAlign: rotationError", rotationError);
 
         depthP = SmartDashboard.getNumber("HPAlign: depthP", depthP);
         depthI = SmartDashboard.getNumber("HPAlign: depthI", depthI);
@@ -290,13 +311,24 @@ public class AlignToHPBasisVector extends Command {
         SmartDashboard.putNumber("HPAlign: yError", yError);
 
         double depthMagnitude = 0, lateralMagnitude = 0;
-        if (!translationDistanceGood()) {
-            depthError = xError * Math.cos(tagAngle) + yError * Math.sin(tagAngle);
-            lateralError = xError * Math.sin(tagAngle) - yError * Math.cos(tagAngle);
+        lateralError = xError * Math.sin(tagAngle) - yError * Math.cos(tagAngle);
+        depthError = xError * Math.cos(tagAngle) + yError * Math.sin(tagAngle);
 
-            depthMagnitude = depthPIDController.calculate(depthError) + Math.signum(depthError) * depthFF;
+        if(!lateralGood()){
             lateralMagnitude = lateralPIDController.calculate(lateralError) + Math.signum(lateralError) * lateralFF;
         }
+
+        if (!depthGood()){
+            depthMagnitude = depthPIDController.calculate(depthError) + Math.signum(depthError) * depthFF;
+        }
+
+        // if (!translationDistanceGood()) {
+        //     depthError = xError * Math.cos(tagAngle) + yError * Math.sin(tagAngle);
+        //     lateralError = xError * Math.sin(tagAngle) - yError * Math.cos(tagAngle);
+
+        //     depthMagnitude = depthPIDController.calculate(depthError) + Math.signum(depthError) * depthFF;
+        //     lateralMagnitude = lateralPIDController.calculate(lateralError) + Math.signum(lateralError) * lateralFF;
+        // }
 
         SmartDashboard.putNumber("HPAlign: depthMagnitude", depthMagnitude);
         SmartDashboard.putNumber("HPAlign: lateralMagnitude", lateralMagnitude);
