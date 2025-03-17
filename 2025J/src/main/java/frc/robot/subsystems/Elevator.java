@@ -23,6 +23,8 @@ public class Elevator extends SubsystemBase {
     // private TunableConstant L1Setpoint, L2Setpoint, L3Setpoint, L4Setpoint, HPIntakeSetpoint, stowSetpoint, bargeSetpoint,
     //         algaeL1Setpoint, algaeL2Setpoint, processorSetpoint;
 
+    private double globalOffset = 0;
+
 
     private LiveData elevatorEncoderPosition, elevatorCanCoderPosition, elevatorSetpoint, mainMotorTemp, mainMotorStatorCurrent, mainMotorSupplyCurrent,
             followerMotorTemp, bottomSensorData, elevatorHeight, canCoderVelocity;
@@ -108,6 +110,7 @@ public class Elevator extends SubsystemBase {
 
         SmartDashboard.putBoolean("Elevator: Open Loop Control", false);
 
+        globalOffset = 0.0;
     }
 
     /**
@@ -143,10 +146,10 @@ public class Elevator extends SubsystemBase {
      * 
      * @param position - commanded motor position (motor encoder units)
      */
-    public void setElevatorPositionVoltage(double position) {
-        elevatorSetpoint.setNumber(position);
-        elevatorMainMotor.setPositionVoltage(position);
-    }
+    // public void setElevatorPositionVoltage(double position) {
+    //     elevatorSetpoint.setNumber(position);
+    //     elevatorMainMotor.setPositionVoltage(position);
+    // }
 
     /**
      * Commands elevatorMainMotor to a designated position with MotionMagic voltage
@@ -155,8 +158,8 @@ public class Elevator extends SubsystemBase {
      * @param position - commanded motor position (motor encoder units)
      */
     public void setElevatorPositionMotionMagicVoltage(double position) {
-        elevatorSetpoint.setNumber(position);
-        elevatorMainMotor.setPositionMotionMagicVoltage(position);
+        elevatorSetpoint.setNumber(position + globalOffset);
+        elevatorMainMotor.setPositionMotionMagicVoltage(position + globalOffset);
     }
 
     /**
@@ -165,10 +168,10 @@ public class Elevator extends SubsystemBase {
      * 
      * @param position - commanded motor position (motor encoder units)
      */
-    public void setElevatorPositionMotionMagicTorqueCurrentFOC(double position) {
-        elevatorSetpoint.setNumber(position);
-        elevatorMainMotor.setPositionMotionMagicTorqueCurrentFOC(position);
-    }
+    // public void setElevatorPositionMotionMagicTorqueCurrentFOC(double position) {
+    //     elevatorSetpoint.setNumber(position);
+    //     elevatorMainMotor.setPositionMotionMagicTorqueCurrentFOC(position);
+    // }
 
     public void setElevatorNeutralMode(){
         elevatorMainMotor.setNeutralControl();
@@ -187,12 +190,12 @@ public class Elevator extends SubsystemBase {
         return elevatorCANcoder.getVelocity().getValueAsDouble();
     }
 
+    // TODO: think about the effect of this change
     public boolean isAtPosition(double desiredPosition) {
-        return Math.abs(getElevatorCANcoderPosition() - desiredPosition) < ElevatorConstants.kElevatorPositionEpsilon;
+        return Math.abs(getElevatorCANcoderPosition() - (desiredPosition + globalOffset)) < ElevatorConstants.kElevatorPositionEpsilon;
     }
-
     public boolean isAtBottom() {
-        return Math.abs(getElevatorCANcoderPosition()) < ElevatorConstants.kElevatorNeutralModePositionEpsilon;
+        return Math.abs(getElevatorCANcoderPosition() - globalOffset) < ElevatorConstants.kElevatorNeutralModePositionEpsilon;
     }
 
     /**
@@ -297,7 +300,8 @@ public class Elevator extends SubsystemBase {
         mainMotorStatorCurrent.setNumber(getMainMotorStatorCurrent());
 
         canCoderVelocity.setNumber(getElevatorCANcoderVelocity());
-
+        
+        globalOffset = SmartDashboard.getNumber("Elevator: Global Offset", 0);
     }
 
     @Override

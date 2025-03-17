@@ -191,8 +191,6 @@ public class Superstructure extends SubsystemBase {
                     else
                         requestState(STOW);
                 } else if (claw.getTopSensor() && !claw.getBottomSensor()){
-                    LimelightFrontMiddle.getInstance().flashLED();
-                    LimelightBack.getInstance().flashLED();
                     claw.intakePiece(ClawConstants.kCoralSlowIntake);
                 } else {
                     claw.intakePiece(ClawConstants.kCoralIntakeSpeed);
@@ -636,6 +634,7 @@ public class Superstructure extends SubsystemBase {
 
                 if (claw.getAlgaeSensor()) {
                     claw.holdAlgae();
+                    requestState(PROCESSOR_PREP);
                 } else {
                     claw.intakePiece(ClawConstants.kAlgaeIntakeSpeed);
                 }
@@ -666,6 +665,7 @@ public class Superstructure extends SubsystemBase {
                 
                 if (claw.getAlgaeSensor()) {
                     claw.holdAlgae();
+                    requestState(PROCESSOR_PREP);
                 } else {
                     claw.intakePiece(ClawConstants.kAlgaeIntakeSpeed);
                 }

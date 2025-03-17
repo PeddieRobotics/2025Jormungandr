@@ -232,7 +232,7 @@ public final class Constants {
         public static final double kArmL3ScorePosition = 0.25;
         public static final double kArmL4ScorePosition = 0.25;
         public static final double kArmBargeScorePosition = 0.25;
-        public static final double kArmProcessorScorePosition = 0.095;
+        public static final double kArmProcessorScorePosition = 0.25;
         public static final double kArmReef1IntakePosition = 0.19;
         public static final double kArmReef2IntakePosition = 0.19;
 
