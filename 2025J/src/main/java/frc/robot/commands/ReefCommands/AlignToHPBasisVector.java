@@ -157,7 +157,7 @@ public class AlignToHPBasisVector extends Command {
             desiredTarget = CalculateHPTarget.calculateTargetID();
 
         Pose2d tagPose = Limelight.getAprilTagPose(desiredTarget);
-        double tagAngle = tagPose.getRotation().getRadians();
+        tagAngle = tagPose.getRotation().getRadians();
 
         SmartDashboard.putNumber("HPAlign: desired tag", desiredTarget);
         SmartDashboard.putNumber("HPAlign: tag angle", tagAngle);
