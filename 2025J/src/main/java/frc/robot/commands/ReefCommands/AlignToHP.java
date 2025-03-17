@@ -15,6 +15,7 @@ import frc.robot.subsystems.LimelightFrontLeft;
 import frc.robot.subsystems.LimelightFrontMiddle;
 import frc.robot.subsystems.LimelightFrontRight;
 import frc.robot.subsystems.Superstructure;
+import frc.robot.subsystems.Limelight.LightMode;
 import frc.robot.subsystems.Superstructure.SuperstructureState;
 import frc.robot.subsystems.Limelight;
 import frc.robot.subsystems.LimelightBack;
@@ -137,6 +138,8 @@ public class AlignToHP extends Command {
         rotationError = 10000;
 
         LimelightFrontMiddle.getInstance().setLED(Limelight.LightMode.ON);
+        LimelightBack.getInstance().setLED(Limelight.LightMode.ON);
+
         Logger.getInstance().logEvent("Align to HP, ID " + desiredTarget, true);
 
         Superstructure.getInstance().requestState(SuperstructureState.HP_INTAKE);
@@ -170,6 +173,9 @@ public class AlignToHP extends Command {
 
     @Override
     public void execute() {
+        LimelightFrontMiddle.getInstance().setLED(LightMode.BLINK);
+        LimelightBack.getInstance().setLED(LightMode.BLINK);
+        
         // {
             translateP = SmartDashboard.getNumber("HPAlign: translateP", translateP);
             translateI = SmartDashboard.getNumber("HPAlign: translateI", translateI);
@@ -244,7 +250,10 @@ public class AlignToHP extends Command {
 
     @Override
     public void end(boolean interrupted) {
+
         LimelightFrontMiddle.getInstance().setLED(Limelight.LightMode.OFF);
+        LimelightBack.getInstance().setLED(Limelight.LightMode.OFF);
+
         Logger.getInstance().logEvent(
             "Align to HP ended with errors: x " + xError + ", y " + yError + ", rotation " + rotationError,
             false
