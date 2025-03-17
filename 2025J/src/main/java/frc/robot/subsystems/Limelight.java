@@ -12,6 +12,7 @@ import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.networktables.StructPublisher;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -76,6 +77,8 @@ public abstract class Limelight extends SubsystemBase {
     private double cameraPitchRadians;
     private boolean isInverted;
 
+    public double initialFlashTime;
+
     private Field2d fieldMT2;
     // private StructPublisher<Pose2d> publisherMT2;
 
@@ -98,6 +101,8 @@ public abstract class Limelight extends SubsystemBase {
 
         fieldMT2 = new Field2d();
         SmartDashboard.putData(limelightName + " estimated pose (MT2)", fieldMT2);
+
+        initialFlashTime = 0.0;
 
         // publisherMT2 = NetworkTableInstance.getDefault().getStructTopic(
         //         limelightName + " estimated pose for advantagescope (MT2)", Pose2d.struct).publish();
@@ -127,6 +132,11 @@ public abstract class Limelight extends SubsystemBase {
     public void periodic() {
         updateRollingAverages();
         
+        double currentTime = Timer.getFPGATimestamp();
+        if(currentTime-initialFlashTime > 1.0){
+            setLED(LightMode.OFF);
+        }
+
         // limelight wants robot orientation in blue side degrees
         double gyro;
         if (DriverStation.isAutonomous())
@@ -395,5 +405,10 @@ public abstract class Limelight extends SubsystemBase {
                 LimelightHelpers.setLEDMode_ForceBlink(limelightName);
                 break;
         }
+    }
+
+    public void flashLED(){
+        initialFlashTime = Timer.getFPGATimestamp();
+        setLED(LightMode.BLINK);
     }
 }

@@ -191,6 +191,8 @@ public class Superstructure extends SubsystemBase {
                     else
                         requestState(STOW);
                 } else if (claw.getTopSensor() && !claw.getBottomSensor()){
+                    LimelightFrontMiddle.getInstance().flashLED();
+                    LimelightBack.getInstance().flashLED();
                     claw.intakePiece(ClawConstants.kCoralSlowIntake);
                 } else {
                     claw.intakePiece(ClawConstants.kCoralIntakeSpeed);

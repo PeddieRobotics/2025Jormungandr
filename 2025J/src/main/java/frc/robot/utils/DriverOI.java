@@ -15,6 +15,7 @@ import java.util.Arrays;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import frc.robot.commands.ReefCommands.AlignToHP;
+import frc.robot.commands.ReefCommands.AlignToHPBasisVector;
 import frc.robot.commands.ReefCommands.AlignToReef;
 import frc.robot.commands.ReefCommands.AlignToReefBasisVector;
 import frc.robot.commands.ReefCommands.OrbitReef;
@@ -121,16 +122,15 @@ public class DriverOI {
         Trigger L3Trigger = new JoystickButton(controller, PS4Controller.Button.kL3.value);
         L3Trigger.whileTrue(new ConditionalCommand(
             new AlignToReefBasisVector(AlignmentConstants.AlignmentDestination.LEFT, ReefAlign.kMaxSpeed, 0, 0),
-            new AlignToReefBasisVector(AlignmentConstants.AlignmentDestination.LEFT, ReefAlign.kMaxSpeed, 0, 0),
-            // new AlignToReefBasisVector(AlignmentConstants.AlignmentDestination.MIDDLE, ReefAlign.kMaxSpeed, 0, 0),
+            new AlignToReefBasisVector(AlignmentConstants.AlignmentDestination.MIDDLE, ReefAlign.kMaxSpeed, 0, 0),
             Claw.getInstance()::eitherCoralSensorTriggered
         ));
 
         Trigger R3Trigger = new JoystickButton(controller, PS4Controller.Button.kR3.value);
         R3Trigger.whileTrue(new ConditionalCommand(
             new AlignToReefBasisVector(AlignmentConstants.AlignmentDestination.RIGHT, ReefAlign.kMaxSpeed, 0, 0),
-            new AlignToReefBasisVector(AlignmentConstants.AlignmentDestination.RIGHT, ReefAlign.kMaxSpeed, 0, 0),
-            // new AlignToHP(HPAlign.kMaxSpeed, HPAlign.kLateralOffset, HPAlign.kBackOffset, 0, 0),
+            new AlignToHP(HPAlign.kMaxSpeed, HPAlign.kLateralOffset, HPAlign.kBackOffset, 0, 0),
+            // new AlignToHPBasisVector(HPAlign.kMaxSpeed, HPAlign.kLateralOffset, HPAlign.kBackOffset, 0, 0),
             Claw.getInstance()::eitherCoralSensorTriggered
         ));
 

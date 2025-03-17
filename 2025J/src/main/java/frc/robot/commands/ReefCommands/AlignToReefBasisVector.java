@@ -1,5 +1,9 @@
 package frc.robot.commands.ReefCommands;
 
+import static frc.robot.subsystems.Superstructure.SuperstructureState.HP_INTAKE;
+import static frc.robot.subsystems.Superstructure.SuperstructureState.L4_PREP;
+import static frc.robot.subsystems.Superstructure.SuperstructureState.STOW;
+
 import java.util.Optional;
 
 import edu.wpi.first.math.controller.PIDController;
@@ -37,7 +41,7 @@ public class AlignToReefBasisVector extends Command {
     private double rotationP, rotationI, rotationD, rotationFF;
     private double rotationLowerP, rotationUseLowerPThreshold;
 
-    private double translateThreshold, rotationThreshold;
+    private double rotationThreshold;
 
     private double maxSpeed;
 
@@ -90,7 +94,7 @@ public class AlignToReefBasisVector extends Command {
             }
         }
 
-        depthP = 2.6;
+        depthP = 2.7;
         depthI = 0;
         depthD = 0;
         depthFF = 0;
@@ -100,14 +104,12 @@ public class AlignToReefBasisVector extends Command {
         lateralD = 0;
         lateralFF = 0;
         
-        translateThreshold = ReefAlign.kTranslateThreshold;
-
-        rotationP = 0.08; // ReefAlign.kRotationP;
+        rotationP = ReefAlign.kRotationP;
         rotationI = ReefAlign.kRotationI;
         rotationD = ReefAlign.kRotationD;
         rotationFF = ReefAlign.kRotationFF;
         rotationThreshold = ReefAlign.kRotationThreshold;
-        rotationLowerP = 0.06; // ReefAlign.kRotationLowerP;
+        rotationLowerP = ReefAlign.kRotationLowerP;
         rotationUseLowerPThreshold = ReefAlign.kRotationUseLowerPThreshold;
         
         depthPIDController = new PIDController(depthP, depthI, depthD);
@@ -140,8 +142,6 @@ public class AlignToReefBasisVector extends Command {
             SmartDashboard.putNumber("Align: lateralI", lateralI);
             SmartDashboard.putNumber("Align: lateralD", lateralD);
             SmartDashboard.putNumber("Align: lateralFF", lateralFF);
-
-            SmartDashboard.putNumber("Align: translateThreshold", translateThreshold);
             
             SmartDashboard.putNumber("Align: rotationP", rotationP);
             SmartDashboard.putNumber("Align: rotationI", rotationI);
@@ -155,15 +155,20 @@ public class AlignToReefBasisVector extends Command {
         }
 
         SmartDashboard.putNumber("Align: Elapsed Time", 0.0);
-        SmartDashboard.putNumber("Align: depth close threshold", 0.225);
-        SmartDashboard.putNumber("Align: lateral close threshold", 0.1);
-        SmartDashboard.putNumber("Align: depth threshold", 0.01);
-        SmartDashboard.putNumber("Align: lateral threshold", 0.01);
+        SmartDashboard.putNumber("Align: depth close threshold", 0.45);
+        SmartDashboard.putNumber("Align: lateral close threshold", 0.35);
+        SmartDashboard.putNumber("Align: depth threshold", 0.03);
+        SmartDashboard.putNumber("Align: lateral threshold", 0.03);
+        SmartDashboard.putBoolean("Align: fire gamepiece", false);
+        SmartDashboard.putNumber("Align: depthError", depthError);
+        SmartDashboard.putNumber("Align: lateralError", lateralError);
+
     }
 
     @Override
     public void initialize() {
         initialTime = Timer.getFPGATimestamp();
+        SmartDashboard.putBoolean("Align: fire gamepiece", false);
 
         int desiredTarget;
         if (DriverStation.isAutonomous()) {
@@ -223,10 +228,6 @@ public class AlignToReefBasisVector extends Command {
         depthError = 10000;
         lateralError = 10000;
 
-        translateThreshold = DriverStation.isAutonomous() ? ReefAlign.kTranslateThresholdAuto : ReefAlign.kTranslateThreshold;
-        
-        LimelightFrontMiddle.getInstance().setLED(Limelight.LightMode.ON);
-        LimelightBack.getInstance().setLED(Limelight.LightMode.ON);
         Logger.getInstance().logEvent("Align to Reef, ID " + desiredTarget, true);
     }
     
@@ -244,35 +245,20 @@ public class AlignToReefBasisVector extends Command {
         // return Optional.empty();
     }
 
-    private boolean translationDistanceClose() {
-        // sqrt(xError^2 + yError^2) < threshold
-
-        // double pythagSquare = xError * xError + yError * yError;
-        // if (Arrays.asList(SuperstructureState.L2_PREP, SuperstructureState.L3_PREP).contains(
-        //         Superstructure.getInstance().getCurrentState())) {
-        //     return pythagSquare < Math.pow(ReefAlign.kTranslateThresholdL2L3, 2);
-        // }
-        boolean depthErrorClose = depthError < SmartDashboard.getNumber("Align: depth close threshold", 0.0);
-        boolean lateralErrorClose = lateralError < SmartDashboard.getNumber("Align: lateral close threshold", 0.0);
-        return depthErrorClose && lateralErrorClose;
-
-        //return pythagSquare-SmartDashboard.getNumber("Align: Close threshold", 0.0) < Math.pow(translateThreshold, 2);
+    private boolean depthAndLateralClose() {
+        if(Superstructure.getInstance().getCurrentState() == L4_PREP){
+            boolean depthErrorClose = Math.abs(depthError) < 0.05;
+            boolean lateralErrorClose = Math.abs(lateralError) < 0.05;
+            return depthErrorClose && lateralErrorClose;    
+        }
+        else{
+            boolean depthErrorClose = Math.abs(depthError) < SmartDashboard.getNumber("Align: depth close threshold", 0.0);
+            boolean lateralErrorClose = Math.abs(lateralError) < SmartDashboard.getNumber("Align: lateral close threshold", 0.0);
+            return depthErrorClose && lateralErrorClose;
+        }
     }
 
-    private boolean translationDistanceGood() {
-        // sqrt(xError^2 + yError^2) < threshold
-
-        //double pythagSquare = xError * xError + yError * yError;
-        // if (Arrays.asList(SuperstructureState.L2_PREP, SuperstructureState.L3_PREP).contains(
-        //         Superstructure.getInstance().getCurrentState())) {
-        //     return pythagSquare < Math.pow(ReefAlign.kTranslateThresholdL2L3, 2);
-        // }
-
-        //return pythagSquare < Math.pow(translateThreshold, 2);
-        // if(depthError == 0 || lateralError == 0){
-        //     return false;
-        // }
-
+    private boolean depthAndLateralGood() {
         boolean depthErrorGood = Math.abs(depthError) < SmartDashboard.getNumber("Align: depth threshold", 0.0);
         boolean lateralErrorGood = Math.abs(lateralError) < SmartDashboard.getNumber("Align: lateral threshold", 0.0);
         return depthErrorGood && lateralErrorGood;
@@ -290,8 +276,6 @@ public class AlignToReefBasisVector extends Command {
             lateralI = SmartDashboard.getNumber("Align: lateralI", lateralI);
             lateralD = SmartDashboard.getNumber("Align: lateralD", lateralD);
             lateralFF = SmartDashboard.getNumber("Align: lateralFF", lateralFF);
-
-            translateThreshold = SmartDashboard.getNumber("Align: translateThreshold", translateThreshold);
 
             rotationP = SmartDashboard.getNumber("Align: rotationP", rotationP);
             rotationI = SmartDashboard.getNumber("Align: rotationI", rotationI);
@@ -336,13 +320,15 @@ public class AlignToReefBasisVector extends Command {
         xError = estimatedPose.getX() - desiredPose.get().getX();
         yError = estimatedPose.getY() - desiredPose.get().getY();
         double depthMagnitude = 0, lateralMagnitude = 0;
-        if (!translationDistanceGood()) {
+        if (!depthAndLateralGood()) {
             depthError = xError * Math.cos(tagAngle) + yError * Math.sin(tagAngle);
             lateralError = xError * Math.sin(tagAngle) - yError * Math.cos(tagAngle);
 
             depthMagnitude = depthPIDController.calculate(depthError) + Math.signum(depthError) * depthFF;
             lateralMagnitude = lateralPIDController.calculate(lateralError) + Math.signum(lateralError) * lateralFF;
         }
+        SmartDashboard.putNumber("Align: depthError", depthError);
+        SmartDashboard.putNumber("Align: lateralError", lateralError);
 
         Translation2d translation = depthVector.times(depthMagnitude).plus(lateralVector.times(lateralMagnitude));
         translation = MagnitudeCap.capMagnitude(translation, maxSpeed);
@@ -354,35 +340,25 @@ public class AlignToReefBasisVector extends Command {
 
         boolean autoScore = SmartDashboard.getBoolean("Align: Auto Score", true);
 
-        if (Math.abs(rotationError) < rotationThreshold && translationDistanceClose() && autoScore) {
-            LimelightFrontMiddle.getInstance().setLED(Limelight.LightMode.OFF);
-            LimelightBack.getInstance().setLED(Limelight.LightMode.OFF);
+        double elapsedTime = Timer.getFPGATimestamp() - initialTime;
+        if (Math.abs(rotationError) < rotationThreshold && depthAndLateralClose() && autoScore && (elapsedTime > 0.3 || depthAndLateralGood())) {
             Superstructure.getInstance().sendToScore();
+            SmartDashboard.putBoolean("Align: fire gamepiece", true);
+            if(Superstructure.getInstance().isReefScoringState()){
+                LimelightFrontMiddle.getInstance().flashLED();
+                LimelightBack.getInstance().flashLED();
+                SmartDashboard.putNumber("Align: Elapsed Time", elapsedTime);
+            }
         }
 
         Logger.getInstance().logAlignToReef(xError, yError, rotationError, depthMagnitude, lateralMagnitude, rotation);
-
-        // {
-        //     SmartDashboard.putNumber("Align: xError", xError);
-        //     SmartDashboard.putNumber("Align: yError", yError);
-        //     SmartDashboard.putNumber("Align: rotationError", rotationError);
-
-        //     SmartDashboard.putBoolean("Align: translation good?", translationDistanceGood());
-        //     SmartDashboard.putBoolean("Align: rotation good?", Math.abs(rotationError) < rotationThreshold);
-        // }
     }
 
     @Override
     public void end(boolean interrupted) {
         if (desiredPose.isPresent())
             drivetrain.drive(new Translation2d(0,0), 0, false, null);
-        
-        LimelightFrontMiddle.getInstance().setLED(Limelight.LightMode.OFF);
-        LimelightBack.getInstance().setLED(Limelight.LightMode.OFF);
-        
-        double elapsedTime = Timer.getFPGATimestamp()-initialTime;
-        SmartDashboard.putNumber("Align: Elapsed Time", elapsedTime);
-
+  
         Logger.getInstance().logEvent(
             "Align to Reef ended with errors: x " + xError + ", y " + yError + ", rotation " + rotationError,
             false
@@ -391,6 +367,7 @@ public class AlignToReefBasisVector extends Command {
 
     @Override
     public boolean isFinished() {
-        return desiredPose.isEmpty() || Superstructure.getInstance().isReefScoringState() || (Math.abs(rotationError) < rotationThreshold && translationDistanceGood());
+        return desiredPose.isEmpty() || ((Superstructure.getInstance().isReefScoringState() || Superstructure.getInstance().getCurrentState() == HP_INTAKE || Superstructure.getInstance().getCurrentState() == STOW) 
+        && Math.abs(rotationError) < rotationThreshold && depthAndLateralGood());
     }
 }

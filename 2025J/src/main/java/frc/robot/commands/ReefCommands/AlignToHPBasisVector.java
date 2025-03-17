@@ -18,7 +18,6 @@ import frc.robot.subsystems.Limelight;
 import frc.robot.subsystems.LimelightBack;
 import frc.robot.utils.CalculateHPTarget;
 import frc.robot.utils.Constants.AlignmentConstants.HPAlign;
-import frc.robot.utils.Constants.AlignmentConstants.ReefAlign;
 import frc.robot.utils.Logger;
 import frc.robot.utils.MagnitudeCap;
 
@@ -38,7 +37,7 @@ public class AlignToHPBasisVector extends Command {
 
     private double maxSpeed;
 
-    private Pose2d desiredPose;
+    private Optional<Pose2d> desiredPose;
     private double desiredAngle;
     
     private double tagAngle;
@@ -62,7 +61,7 @@ public class AlignToHPBasisVector extends Command {
             LimelightFrontMiddle.getInstance(),
         };
 
-        depthP = 2.6;
+        depthP = 2.7;
         depthI = 0;
         depthD = 0;
         depthFF = 0;
@@ -75,13 +74,13 @@ public class AlignToHPBasisVector extends Command {
         translateThreshold = HPAlign.kTranslateThreshold;
         autonomousTranslateThreshold = HPAlign.kAutoTranslateThreshold;
 
-        rotationP = 0.08; // ReefAlign.kRotationP;
-        rotationI = ReefAlign.kRotationI;
-        rotationD = ReefAlign.kRotationD;
-        rotationFF = ReefAlign.kRotationFF;
-        rotationThreshold = ReefAlign.kRotationThreshold;
-        rotationLowerP = 0.06; // ReefAlign.kRotationLowerP;
-        rotationUseLowerPThreshold = ReefAlign.kRotationUseLowerPThreshold;
+        rotationP = 0.08; // HPAlign.kRotationP;
+        rotationI = HPAlign.kRotationI;
+        rotationD = HPAlign.kRotationD;
+        rotationFF = HPAlign.kRotationFF;
+        rotationThreshold = HPAlign.kRotationThreshold;
+        rotationLowerP = 0.06; // HPAlign.kRotationLowerP;
+        rotationUseLowerPThreshold = HPAlign.kRotationUseLowerPThreshold;
         
         depthPIDController = new PIDController(depthP, depthI, depthD);
         lateralPIDController = new PIDController(lateralP, lateralI, lateralD);
@@ -103,6 +102,15 @@ public class AlignToHPBasisVector extends Command {
         // TODO: tune values! especially: depthP, lateralP, translateThreshold, autonomousTranslateThreshold, maxSpeed
         SmartDashboard.putNumber("HPAlign: lateral offset", lateralOffset);
         SmartDashboard.putNumber("HPAlign: back offset", backOffset);
+
+        SmartDashboard.putNumber("HPAlign: depthError", 0);
+        SmartDashboard.putNumber("HPAlign: lateralError", 0);
+        SmartDashboard.putNumber("HPAlign: depthMagnitude", 0);
+        SmartDashboard.putNumber("HPAlign: lateralMagnitude", 0);
+
+
+        SmartDashboard.putBoolean("HPAlign: rotation good", false);
+        SmartDashboard.putBoolean("HPAlign: translation distance good", false);
         
         SmartDashboard.putNumber("HPAlign: depthP", depthP);
         SmartDashboard.putNumber("HPAlign: depthI", depthI);
@@ -157,12 +165,15 @@ public class AlignToHPBasisVector extends Command {
         lateralOffset = SmartDashboard.getNumber("HPAlign: lateral offset", lateralOffset);
         backOffset = SmartDashboard.getNumber("HPAlign: back offset", backOffset);
 
-        desiredPose = new Pose2d(
+        desiredPose = Optional.of(new Pose2d(
             tagPose.getX() + backOffset * Math.cos(tagAngle) + lateralOffset * Math.sin(tagAngle),
             tagPose.getY() + backOffset * Math.sin(tagAngle) - lateralOffset * Math.cos(tagAngle),
             new Rotation2d(0)
-        );
+        ));
         desiredAngle = tagPose.getRotation().getDegrees();
+
+        SmartDashboard.putNumber("HPAlign: desired pose X", desiredPose.get().getX());
+        SmartDashboard.putNumber("HPAlign: desired pose Y", desiredPose.get().getY());
 
         xError = 10000;
         yError = 10000;
@@ -170,15 +181,15 @@ public class AlignToHPBasisVector extends Command {
         depthError = 10000;
         lateralError = 10000;
 
-        translateThreshold = DriverStation.isAutonomous() ? ReefAlign.kTranslateThresholdAuto : ReefAlign.kTranslateThreshold;
-        
-        LimelightFrontMiddle.getInstance().setLED(Limelight.LightMode.ON);
-        LimelightBack.getInstance().setLED(Limelight.LightMode.ON);
+        translateThreshold = HPAlign.kTranslateThreshold;
 
+        depthVector = new Translation2d(Math.cos(tagAngle), Math.sin(tagAngle));
+        lateralVector = new Translation2d(Math.sin(tagAngle), -Math.cos(tagAngle));
+        
         Logger.getInstance().logEvent("Align to HP, ID " + desiredTarget, true);
 
-        SmartDashboard.putNumber("HPAlign: target x", desiredPose.getX());
-        SmartDashboard.putNumber("HPAlign: target y", desiredPose.getY());
+        SmartDashboard.putNumber("HPAlign: target x", desiredPose.get().getX());
+        SmartDashboard.putNumber("HPAlign: target y", desiredPose.get().getY());
     }
     
     private Optional<Pose2d> getBestEstimatedPose() {
@@ -205,13 +216,23 @@ public class AlignToHPBasisVector extends Command {
 
     public boolean translationDistanceGoodInAuto(){
         return xError * xError + yError * yError < Math.pow(autonomousTranslateThreshold, 2);
-        // boolean depthErrorGood = Math.abs(depthError) < SmartDashboard.getNumber("HPAlign: depth auto threshold", 0.0);
-        // boolean lateralErrorGood = Math.abs(lateralError) < SmartDashboard.getNumber("HPAlign: lateral auto threshold", 0.0);
+        //boolean depthErrorGood = Math.abs(depthError) < SmartDashboard.getNumber("HPAlign: depth auto threshold", 0.0);
+        //boolean lateralErrorGood = Math.abs(lateralError) < SmartDashboard.getNumber("HPAlign: lateral auto threshold", 0.0);
         // return depthErrorGood && lateralErrorGood;
+    }
+
+    public boolean rotationGood(){
+        return Math.abs(rotationError) < rotationThreshold;
     }
 
     @Override
     public void execute() {
+
+        SmartDashboard.putBoolean("HPAlign: rotation good", rotationGood());
+        SmartDashboard.putBoolean("HPAlign: translation distance good", translationDistanceGood());
+        SmartDashboard.putNumber("HPAlign: depthError", depthError);
+        SmartDashboard.putNumber("HPAlign: lateralError", lateralError);
+
         depthP = SmartDashboard.getNumber("HPAlign: depthP", depthP);
         depthI = SmartDashboard.getNumber("HPAlign: depthI", depthI);
         depthD = SmartDashboard.getNumber("HPAlign: depthD", depthD);
@@ -234,20 +255,22 @@ public class AlignToHPBasisVector extends Command {
         
         maxSpeed = SmartDashboard.getNumber("HPAlign: maxSpeed", maxSpeed);
         
-        if (DriverStation.isAutonomous())
+        if (DriverStation.isAutonomous()){
             rotationError = drivetrain.getHeadingBlueForceAdjust() - desiredAngle;
-        else
+        } else {
             rotationError = drivetrain.getHeadingBlue() - desiredAngle;
+        }
 
         depthPIDController.setPID(depthP, depthI, depthD);
         lateralPIDController.setPID(lateralP, lateralI, lateralD);
 
-        if (Math.abs(rotationError) < rotationUseLowerPThreshold)
+        if (Math.abs(rotationError) < rotationUseLowerPThreshold){
             rotationPIDController.setP(rotationLowerP);
-        else
+        } else {
             rotationPIDController.setP(rotationP);
-        rotationPIDController.setI(rotationI);
-        rotationPIDController.setD(rotationD);
+            rotationPIDController.setI(rotationI);
+            rotationPIDController.setD(rotationD);
+        }
 
         double rotation = 0;
         if (Math.abs(rotationError) > rotationThreshold)
@@ -260,8 +283,11 @@ public class AlignToHPBasisVector extends Command {
         }
         Pose2d estimatedPose = estimatedPoseOptional.get();
         
-        xError = estimatedPose.getX() - desiredPose.getX();
-        yError = estimatedPose.getY() - desiredPose.getY();
+        xError = estimatedPose.getX() - desiredPose.get().getX();
+        yError = estimatedPose.getY() - desiredPose.get().getY();
+
+        SmartDashboard.putNumber("HPAlign: xError", xError);
+        SmartDashboard.putNumber("HPAlign: yError", yError);
 
         double depthMagnitude = 0, lateralMagnitude = 0;
         if (!translationDistanceGood()) {
@@ -272,8 +298,14 @@ public class AlignToHPBasisVector extends Command {
             lateralMagnitude = lateralPIDController.calculate(lateralError) + Math.signum(lateralError) * lateralFF;
         }
 
+        SmartDashboard.putNumber("HPAlign: depthMagnitude", depthMagnitude);
+        SmartDashboard.putNumber("HPAlign: lateralMagnitude", lateralMagnitude);
+
         Translation2d translation = depthVector.times(depthMagnitude).plus(lateralVector.times(lateralMagnitude));
         translation = MagnitudeCap.capMagnitude(translation, maxSpeed);
+
+        SmartDashboard.putNumber("HPAlign: translation output X", translation.getX());
+        SmartDashboard.putNumber("HPAlign: translation output Y", translation.getY());
 
         if (DriverStation.isAutonomous())
             drivetrain.driveBlueForceAdjust(translation, rotation, true, null);
@@ -285,9 +317,6 @@ public class AlignToHPBasisVector extends Command {
 
     @Override
     public void end(boolean interrupted) {
-        LimelightFrontMiddle.getInstance().setLED(Limelight.LightMode.OFF);
-        LimelightBack.getInstance().setLED(Limelight.LightMode.OFF);
-        
         double elapsedTime = Timer.getFPGATimestamp()-initialTime;
         SmartDashboard.putNumber("HPAlign: Elapsed Time", elapsedTime);
 
