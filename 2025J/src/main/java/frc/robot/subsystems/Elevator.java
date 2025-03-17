@@ -32,7 +32,7 @@ public class Elevator extends SubsystemBase {
     public Elevator() {
         elevatorCANcoder = new CANcoder(RobotMap.ELEVATOR_CANCODER_ID, RobotMap.CANIVORE_BUS);
         CANcoderConfiguration config = new CANcoderConfiguration();
-        config.MagnetSensor.AbsoluteSensorDiscontinuityPoint = 1; // Setting this to 1 makes the absolute position
+        config.MagnetSensor.AbsoluteSensorDiscontinuityPoint = 0.5; // Setting this to 1 makes the absolute position
                                                                   // unsigned [0, 1)
                                                                   // Setting this to 0.5 makes the absolute position
                                                                   // signed [-0.5, 0.5)
@@ -177,6 +177,25 @@ public class Elevator extends SubsystemBase {
         elevatorMainMotor.setNeutralControl();
     }
 
+    public void disableSoftLimits(){
+        elevatorMainMotor.setSoftLimits(false, ElevatorConstants.kElevatorForwardSoftLimit, ElevatorConstants.kElevatorReverseSoftLimit);
+    }
+
+    public void enableSoftLimits(){
+        elevatorMainMotor.setSoftLimits(true, ElevatorConstants.kElevatorForwardSoftLimit, ElevatorConstants.kElevatorReverseSoftLimit);
+    }
+
+    /**
+     * resets encoder on main elevator motor
+     */
+    public void resetElevatorPosition() {
+        elevatorMainMotor.resetEncoder();
+    }
+
+    public void resetElevatorCANCoder(){
+        elevatorCANcoder.setPosition(0);
+    }
+
     // Accessor methods
 
     /**
@@ -204,13 +223,6 @@ public class Elevator extends SubsystemBase {
      */
     public double getElevatorMotorEncoderPosition() {
         return elevatorMainMotor.getPosition();
-    }
-
-    /**
-     * resets encoder on main elevator motor
-     */
-    public void resetElevatorPosition() {
-        elevatorMainMotor.resetEncoder();
     }
 
     /**
@@ -284,8 +296,15 @@ public class Elevator extends SubsystemBase {
         return elevatorFollowerMotor.getMotorTemperature();
     }
 
+    public double getCANCoderVelocity(){
+        return elevatorCANcoder.getVelocity().getValueAsDouble();
+    }
+
     @Override
     public void periodic() {
+        SmartDashboard.putNumber("ELEVATOR CANCODER VELOCITY", getCANCoderVelocity());
+
+
         if(SmartDashboard.getBoolean("Elevator: Open Loop Control", false)){
             setElevatorPercentOutput(DriverOI.getInstance().getRightForward() * 0.3);
         }

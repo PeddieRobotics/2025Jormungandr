@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.subsystems.Claw;
+import frc.robot.commands.HomeElevator;
 import frc.robot.commands.ManualArmControl;
 import frc.robot.commands.ManualElevatorControl;
 import frc.robot.subsystems.Superstructure;
@@ -120,7 +121,7 @@ public class OperatorOI {
         dpadDownTrigger.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.PROCESSOR_PREP)));
 
         Trigger optionButton = new JoystickButton(controller, PS4Controller.Button.kOptions.value);
-        // TODO: home elevator
+        optionButton.onTrue(new HomeElevator());
         
         Trigger shareButton = new JoystickButton(controller, PS4Controller.Button.kShare.value);
         // TODO: home arm

@@ -140,7 +140,7 @@ public final class Constants {
         public static final double kElevatorRotorToSensorRatio = kElevatorReduction;
         public static final double kElevatorSensortoMechanismRatio = 1.0;
 
-        public static final double kElevatorMagnetOffset = 0.361084;
+        public static final double kElevatorMagnetOffset = 0.357422;
 
         // Motion Magic Parameters
         public static final double kElevatorMaxCruiseVelocity = 14.0;
@@ -193,6 +193,10 @@ public final class Constants {
         public static final double kAlgaeL1Setpoint = 0.0;
         public static final double kAlgaeL2Setpoint = 0.0;
         public static final double kProcessorSetpoint = 0.0;
+
+        public static final double kMinHomeTime = 0.25;
+        public static final double kHomeSpeed = -0.1;
+        public static final double kHomingSpeedThreshold = 0.01;
     }
 
     public static final class ScoreConstants {
