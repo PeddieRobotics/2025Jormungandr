@@ -96,6 +96,7 @@ public class RobotContainer {
         // SmartDashboard.putNumber("Tuning: L1Position", ScoreConstants.kElevatorL1ScorePosition);
         // SmartDashboard.putNumber("Tuning: L1Speed", ClawConstants.kCoralL1OuttakeSpeed);
 
+        SmartDashboard.putNumber("Elevator: Global Offset", 0);
 
         SmartDashboard.putNumber("Scoring Pose Offset", 0);
     }
