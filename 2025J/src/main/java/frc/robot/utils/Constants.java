@@ -390,6 +390,8 @@ public final class Constants {
             public static final double kRightOffset = -0.135; // -0.1651;
             
             public static final double kMaxSpeed = 2.5;
+
+            public static final double kMaxScoringSpeed = 1.0;
         }
 
         public static final class HPAlign {

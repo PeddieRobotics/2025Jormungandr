@@ -398,7 +398,7 @@ public class AlignToReefBasisVector extends Command {
         boolean autoScore = SmartDashboard.getBoolean("Align: Auto Score", true);
 
         double elapsedTime = Timer.getFPGATimestamp() - initialTime;
-        if (Math.abs(rotationError) < rotationThreshold && depthAndLateralClose() && autoScore && (elapsedTime > 0.3 || depthAndLateralGood())) {
+        if (Math.abs(rotationError) < rotationThreshold && depthAndLateralClose() && autoScore && (elapsedTime > 0.3 || depthAndLateralGood()) && Math.abs(drivetrain.getDrivetrainCurrentVelocity()) < ReefAlign.kMaxScoringSpeed) {
             Superstructure.getInstance().sendToScore();
             SmartDashboard.putBoolean("Align: fire gamepiece", true);
             if(Superstructure.getInstance().isReefScoringState()){

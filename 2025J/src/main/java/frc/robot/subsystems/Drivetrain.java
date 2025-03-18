@@ -439,6 +439,63 @@ public class Drivetrain extends SubsystemBase {
         return currentDrivetrainSpeed;
     }
 
+        /**
+     * @return returns current robot relative chassis speeds by getting the state of each module and 
+     * then converting to chassis speeds
+     */
+    public ChassisSpeeds getRobotRelativeSpeeds() {
+        return DriveConstants.kKinematics.toChassisSpeeds(
+            frontLeftModule.getState(),
+            frontRightModule.getState(),
+            backLeftModule.getState(),
+            backRightModule.getState()
+        );
+    }
+
+    public void setAutoAdjustHeading(double angleOffset){
+        autoAdjustHeading = angleOffset;
+    }
+
+    public double getDrivetrainCurrentVelocity(){
+        //gets rotational velocity of the whole robot
+        double currentRotationalVelocity = -getRotationalVelocity()*2*Math.PI/360;
+
+
+        if (Math.abs(currentRotationalVelocity)<0.05){
+            currentRotationalVelocity = 0;
+        }
+
+        //gets rotational velocity of each module
+        ChassisSpeeds rotationalVelocity = new ChassisSpeeds(0,0, currentRotationalVelocity);
+        SwerveModuleState pureRotationalStates[] = DriveConstants.kSkidKinematics.toSwerveModuleStates(rotationalVelocity);
+     
+        //gets rotational and translational velocity of each module
+        SwerveModuleState[] moduleStates = Arrays.copyOf(swerveModuleStates, 4);
+
+        Translation2d[] fullModuleStates = new Translation2d[4];
+        Translation2d[] pureTranslationalStates = new Translation2d[4];
+
+
+        for (int i = 0; i<4; i++){
+            fullModuleStates[i] = new Translation2d(moduleStates[i].speedMetersPerSecond, moduleStates[i].angle);
+
+            Translation2d pureRotation = new Translation2d(pureRotationalStates[i].speedMetersPerSecond, pureRotationalStates[i].angle);
+
+            //subtracts rotational velocity from full states, leaving only translational velocity
+            pureTranslationalStates[i] = fullModuleStates[i].minus(pureRotation);
+        }
+
+        double averageModuleSpeed = 0;
+
+        for(Translation2d moduleSpeed : pureTranslationalStates){
+            double moduleSpeedMagnitude = moduleSpeed.getNorm();
+
+            averageModuleSpeed += moduleSpeedMagnitude / 4.0;
+        }
+
+        return averageModuleSpeed;
+    }
+
     /**
      * @return returns current pose as a pose2d, which containts both translational and rotational
      */
@@ -467,24 +524,6 @@ public class Drivetrain extends SubsystemBase {
     public void resetPureOdometryTranslation(Translation2d translation) {
         pureOdometry.resetTranslation(translation);
     }
-
-    /**
-     * @return returns current robot relative chassis speeds by getting the state of each module and 
-     * then converting to chassis speeds
-     */
-    public ChassisSpeeds getRobotRelativeSpeeds() {
-        return DriveConstants.kKinematics.toChassisSpeeds(
-            frontLeftModule.getState(),
-            frontRightModule.getState(),
-            backLeftModule.getState(),
-            backRightModule.getState()
-        );
-    }
-
-    public void setAutoAdjustHeading(double angleOffset){
-        autoAdjustHeading = angleOffset;
-    }
-
 
     /**
      * Checks if the robot is skidding. Skid is when modules' translational velocities 
@@ -542,6 +581,8 @@ public class Drivetrain extends SubsystemBase {
 
     @Override
     public void periodic() {
+        SmartDashboard.putNumber("Drivetrain Current Velocity", getDrivetrainCurrentVelocity());
+
         // SmartDashboard.putBoolean("skid", isSkidding());
         updateModulePositions();
         updateOdometry();
