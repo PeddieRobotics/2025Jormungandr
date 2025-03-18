@@ -31,7 +31,7 @@ public final class Constants {
         public static final double kTranslationI = 0.0;
         public static final double kTranslationD = 0.0;
 
-        public static final double kThetaP = 5.0;
+        public static final double kThetaP = 3.0;
         public static final double kThetaI = 0.0;
         public static final double kThetaD = 0.0;
     }
@@ -174,7 +174,7 @@ public final class Constants {
         public static final double kG = 0.255;
         public static final double kFF = 0.0;
 
-        public static final double kElevatorPositionEpsilon = 0.03;
+        public static final double kElevatorPositionEpsilon = 0.05;
         public static final double kElevatorNeutralModePositionEpsilon = 0.1;
         public static final double kElevatorL1Height = 0.0;
         public static final double kElevatorL2Height = 0.0;
@@ -220,7 +220,7 @@ public final class Constants {
         // Comp Height
         // public static final double kElevatorL4ScorePosition = 12.45; 
         // Lab Height
-        public static final double kElevatorL4ScorePosition = 12.35; 
+        public static final double kElevatorL4ScorePosition = 12.32; 
 
         public static final double kElevatorBargePrestagePosition = 6.2;
         public static final double kElevatorBargeScorePosition = 12.85;
@@ -285,7 +285,7 @@ public final class Constants {
         public static final double kArmMaxCruiseJerk = 0.0;
 
         public static final double kArmAngleEpsilon = 0.0; // TODO: define
-        public static final double kArmPositionEpsilon = 0.05; // TODO: define
+        public static final double kArmPositionEpsilon = 0.5; // TODO: define
 
         public static final double kArmHPIntakeAngle = 0.0; // TODO: define
         public static final double kArmL1ScoreAngle = 0.0;
@@ -355,7 +355,7 @@ public final class Constants {
             public static final double kTranslateThresholdL2L3 = 0.065;
             public static final double kTranslateSetpoint = 0;
 
-            public static final double kDepthP = 2.9;
+            public static final double kDepthP = 2.825; // went from 2.9
             public static final double kDepthI = 0;
             public static final double kDepthD = 0;
             public static final double kDepthFF = 0;
@@ -382,7 +382,7 @@ public final class Constants {
             public static final double kRotationUseLowerPThreshold = 1.5;
             
             // center of robot distance to tag -- back (+ = back, - = forwards)
-            public static final double kTagBackMagnitude = 0.45;
+            public static final double kTagBackMagnitude = 0.46; // from 0.45
 
             // center of robot distance to tag -- left (+ = left, - = right)
             public static final double kLeftOffset = 0.199; // 0.1896;
@@ -402,10 +402,10 @@ public final class Constants {
             public static final double kAutoTranslateThreshold = 0.05;
             public static final double kTranslateSetpoint = 0;
 
-            public static final double kDepthThreshold = 0.05;
+            public static final double kDepthThreshold = 0.08;
             public static final double kLateralThreshold = 0.02;
 
-            public static final double kDepthP = 3.05;
+            public static final double kDepthP = 2.95;
             public static final double kDepthI = 0;
             public static final double kDepthD = 0;
             public static final double kDepthFF = 0;
@@ -428,8 +428,8 @@ public final class Constants {
             public static final double kAutoBackOffset = 0.48;
             public static final double kLateralOffset = -0.03;
 
-            public static final double kAutoRightLateralOffset = -0.03;
-            public static final double kAutoLeftLateralOffset = -0.03;
+            public static final double kAutoRightLateralOffset = 0.0;
+            public static final double kAutoLeftLateralOffset = 0.0;
             
             public static final double kMaxSpeed = 4.0;
         }

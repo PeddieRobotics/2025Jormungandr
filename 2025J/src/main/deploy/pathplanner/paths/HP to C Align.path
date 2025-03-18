@@ -16,12 +16,12 @@
     },
     {
       "anchor": {
-        "x": 2.828955206953462,
-        "y": 2.297285457414757
+        "x": 2.6717910274015715,
+        "y": 2.1008302329748925
       },
       "prevControl": {
-        "x": 2.593291456788835,
-        "y": 2.1741082511862015
+        "x": 2.4361272772369444,
+        "y": 1.9776530267463368
       },
       "nextControl": null,
       "isLocked": false,
@@ -34,7 +34,7 @@
   "eventMarkers": [
     {
       "name": "L4_PREP",
-      "waypointRelativePos": 0.45,
+      "waypointRelativePos": 0.55,
       "endWaypointRelativePos": null,
       "command": {
         "type": "named",
@@ -54,7 +54,7 @@
   },
   "goalEndState": {
     "velocity": 2.5,
-    "rotation": 59.99999999999999
+    "rotation": 54.63753811293089
   },
   "reversed": false,
   "folder": "HP to Reef",
