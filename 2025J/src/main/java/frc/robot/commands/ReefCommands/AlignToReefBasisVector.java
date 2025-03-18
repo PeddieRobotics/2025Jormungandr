@@ -182,12 +182,11 @@ public class AlignToReefBasisVector extends Command {
         SmartDashboard.putNumber("Align: depthError", depthError);
         SmartDashboard.putNumber("Align: lateralError", lateralError);
 
-        SmartDashboard.putBoolean("HPAlign: rotation good", false);
-        SmartDashboard.putBoolean("HPAlign: depth good", false);
-        SmartDashboard.putBoolean("HPAlign: lateral good", false);
-        SmartDashboard.putBoolean("HPAlign: depth close", false);
-        SmartDashboard.putBoolean("HPAlign: lateral close", false);
-
+        SmartDashboard.putBoolean("Align: rotation good", false);
+        SmartDashboard.putBoolean("Align: depth good", false);
+        SmartDashboard.putBoolean("Align: lateral good", false);
+        SmartDashboard.putBoolean("Align: depth close", false);
+        SmartDashboard.putBoolean("Align: lateral close", false);
     }
 
     @Override
@@ -311,11 +310,11 @@ public class AlignToReefBasisVector extends Command {
 
     @Override
     public void execute() {
-        SmartDashboard.putBoolean("HPAlign: rotation good", rotationGood());
-        SmartDashboard.putBoolean("HPAlign: depth good", depthGood());
-        SmartDashboard.putBoolean("HPAlign: lateral good", lateralGood());
-        SmartDashboard.putBoolean("HPAlign: depth close", depthClose());
-        SmartDashboard.putBoolean("HPAlign: lateral close", lateralClose());
+        SmartDashboard.putBoolean("Align: rotation good", rotationGood());
+        SmartDashboard.putBoolean("Align: depth good", depthGood());
+        SmartDashboard.putBoolean("Align: lateral good", lateralGood());
+        SmartDashboard.putBoolean("Align: depth close", depthClose());
+        SmartDashboard.putBoolean("Align: lateral close", lateralClose());
 
         {
             depthP = SmartDashboard.getNumber("Align: depthP", depthP);
@@ -414,6 +413,8 @@ public class AlignToReefBasisVector extends Command {
 
     @Override
     public void end(boolean interrupted) {
+        SmartDashboard.putNumber("Align: Elapsed Time", Timer.getFPGATimestamp() - initialTime);
+
         if (desiredPose.isPresent())
             drivetrain.drive(new Translation2d(0,0), 0, false, null);
   

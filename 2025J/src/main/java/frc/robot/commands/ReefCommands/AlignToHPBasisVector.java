@@ -330,9 +330,6 @@ public class AlignToHPBasisVector extends Command {
         //     lateralMagnitude = lateralPIDController.calculate(lateralError) + Math.signum(lateralError) * lateralFF;
         // }
 
-        SmartDashboard.putNumber("HPAlign: depthMagnitude", depthMagnitude);
-        SmartDashboard.putNumber("HPAlign: lateralMagnitude", lateralMagnitude);
-
         Translation2d translation = depthVector.times(depthMagnitude).plus(lateralVector.times(lateralMagnitude));
         translation = MagnitudeCap.capMagnitude(translation, maxSpeed);
 

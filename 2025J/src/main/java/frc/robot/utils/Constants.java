@@ -355,7 +355,7 @@ public final class Constants {
             public static final double kTranslateThresholdL2L3 = 0.065;
             public static final double kTranslateSetpoint = 0;
 
-            public static final double kDepthP = 2.7;
+            public static final double kDepthP = 2.9;
             public static final double kDepthI = 0;
             public static final double kDepthD = 0;
             public static final double kDepthFF = 0;
@@ -405,12 +405,12 @@ public final class Constants {
             public static final double kDepthThreshold = 0.05;
             public static final double kLateralThreshold = 0.02;
 
-            public static final double kDepthP = 3.3;
+            public static final double kDepthP = 3.05;
             public static final double kDepthI = 0;
             public static final double kDepthD = 0;
             public static final double kDepthFF = 0;
 
-            public static final double kLateralP = 3.0;
+            public static final double kLateralP = 3.1;
             public static final double kLateralI = 0;
             public static final double kLateralD = 0;
             public static final double kLateralFF = 0;
