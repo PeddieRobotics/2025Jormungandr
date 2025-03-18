@@ -48,7 +48,7 @@ public final class Constants {
         public static final double kDriveMotorStatorCurrentLimit = 0.0;
         public static final double kSteerMotorStatorCurrentLimit = 0.0;
 
-        public static final double kWheelDiameterInches = 3.906;
+        public static final double kWheelDiameterInches = 3.82;
         public static final double kDriveMotorReduction = 7.13;
         public static final double kDriveEncoderPositionFactor = (Math.PI * Units.inchesToMeters(kWheelDiameterInches))
                 / kDriveMotorReduction;

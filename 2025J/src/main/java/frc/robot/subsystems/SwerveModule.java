@@ -9,6 +9,7 @@ import com.ctre.phoenix6.hardware.CANcoder;
 import com.ctre.phoenix6.signals.FeedbackSensorSourceValue;
 import com.ctre.phoenix6.signals.SensorDirectionValue;
 import com.ctre.phoenix6.signals.StaticFeedforwardSignValue;
+import com.pathplanner.lib.config.ModuleConfig;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
@@ -124,6 +125,10 @@ public class SwerveModule extends SubsystemBase {
      */
     public SwerveModulePosition getPosition(){
         return new SwerveModulePosition(driveMotor.getPosition() * ModuleConstants.kDriveEncoderPositionFactor, new Rotation2d(getCANCoderReading()));
+    }
+
+    public double getPositionRadians(){
+        return driveMotor.getPosition() / ModuleConstants.kDriveMotorReduction * 2 * Math.PI;
     }
 
     /**

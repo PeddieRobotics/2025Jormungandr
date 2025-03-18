@@ -38,6 +38,7 @@ public class Drivetrain extends SubsystemBase {
 
     private SwerveModuleState[] swerveModuleStates;
     private SwerveModulePosition[] swerveModulePositions;
+    private double[] swerveModulePositionsRadians;
     private SwerveDrivePoseEstimator odometry, pureOdometry;
 
     private double currentDrivetrainSpeed = 0;
@@ -77,6 +78,11 @@ public class Drivetrain extends SubsystemBase {
         gyro = new Pigeon2(RobotMap.GYRO_ID, RobotMap.CANIVORE_BUS);
         gyro.setYaw(0);
         autoAdjustHeading = 0.0;
+
+        swerveModulePositionsRadians = new double[]{
+            frontLeftModule.getPositionRadians(), frontRightModule.getPositionRadians(),
+            backLeftModule.getPositionRadians(), backRightModule.getPositionRadians()
+        };
 
         odometry = new SwerveDrivePoseEstimator(DriveConstants.kKinematics, getHeadingAsRotation2d(), swerveModulePositions, new Pose2d());
         pureOdometry = new SwerveDrivePoseEstimator(DriveConstants.kKinematics, getHeadingAsRotation2d(), swerveModulePositions, new Pose2d());
@@ -158,6 +164,10 @@ public class Drivetrain extends SubsystemBase {
      */
     public static int getPipelineNumber(){
         return pipelineNumber;
+    }
+
+    public double[] getSwerveModulePositionsRadians(){
+        return swerveModulePositionsRadians;
     }
 
     /**
@@ -278,6 +288,7 @@ public class Drivetrain extends SubsystemBase {
     public void updateModulePositions() {
         for (int i = 0; i < swerveModulePositions.length; i++) {
             swerveModulePositions[i] = swerveModules[i].getPosition();
+            swerveModulePositionsRadians[i] = swerveModules[i].getPositionRadians();
         }
     }
 
@@ -307,6 +318,13 @@ public class Drivetrain extends SubsystemBase {
         for (int i = 0; i < desiredModuleStates.length; i++) {
             swerveModules[i].setDesiredState(desiredModuleStates[i]);
         }
+    }
+
+    /**
+     * @return returns yaw in degrees, does not wrap, used for WheelRadiusCharacterization
+     */
+    public double getYaw(){
+        return gyro.getYaw().getValueAsDouble();
     }
 
     /**

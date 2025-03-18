@@ -15,6 +15,7 @@ import java.util.Arrays;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import frc.robot.commands.HomeElevator;
+import frc.robot.commands.WheelRadiusCharacterization;
 import frc.robot.commands.ReefCommands.AlignToHP;
 import frc.robot.commands.ReefCommands.AlignToHPBasisVector;
 import frc.robot.commands.ReefCommands.AlignToReef;
@@ -71,7 +72,8 @@ public class DriverOI {
         xButton.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.STOW)));
 
         Trigger circleButton = new JoystickButton(controller, PS4Controller.Button.kCircle.value);
-        circleButton.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.HP_INTAKE)));
+        circleButton.whileTrue(new WheelRadiusCharacterization());
+        // circleButton.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.HP_INTAKE)));
         // circleButton.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.L2_PREP)));
 
         Trigger squareButton = new JoystickButton(controller, PS4Controller.Button.kSquare.value);
