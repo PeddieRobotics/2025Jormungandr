@@ -41,14 +41,17 @@ public class Superstructure extends SubsystemBase {
     
     private boolean autoRemoveAlgaeSwitch;
 
+    // flag used for align
+    private ScoringFlag scoringFlag;
+
     public enum SuperstructureState {
         STOW,
         HP_INTAKE,
         ALGAE_GROUND_INTAKE,
+        PRESTAGE,
         L1_PREP,
         L2_PREP,
         L3_PREP,
-        L3L4_PRESTAGE,
         L4_PREP,
         L1_SCORE,
         L2_SCORE,
@@ -66,9 +69,17 @@ public class Superstructure extends SubsystemBase {
         REMOVING_ALGAE
     }
 
+    public enum ScoringFlag {
+        L2FLAG,
+        L3FLAG,
+        L4FLAG
+    }
+
     public Superstructure() {
         systemState = STOW;
         requestedSystemState = STOW;
+
+        scoringFlag = ScoringFlag.L4FLAG;
 
         arm = Arm.getInstance();
         claw = Claw.getInstance();
@@ -113,6 +124,21 @@ public class Superstructure extends SubsystemBase {
         isManualControl = isTrue;
     }
 
+    public void setL2Flag(){
+        scoringFlag = ScoringFlag.L2FLAG;
+    }
+
+    public void setL3Flag(){
+        scoringFlag = ScoringFlag.L3FLAG;
+    }
+
+    public void setL4Flag(){
+        scoringFlag = ScoringFlag.L4FLAG;
+    }
+
+    public ScoringFlag getScoringFlag(){
+        return scoringFlag;
+    }
 
     @Override
     public void periodic() {
@@ -147,7 +173,7 @@ public class Superstructure extends SubsystemBase {
                         ALGAE_GROUND_INTAKE,
                         L1_PREP,
                         L2_PREP,
-                        L3L4_PRESTAGE,
+                        PRESTAGE,
                         BARGE_PRESTAGE,
                         PROCESSOR_PREP,
                         REEF1_ALGAE_INTAKE,
@@ -189,7 +215,7 @@ public class Superstructure extends SubsystemBase {
                     if (DriverStation.isAutonomous())
                         systemState = requestedSystemState;
                     else
-                        requestState(STOW);
+                        requestState(PRESTAGE);
                 } else if (claw.getTopSensor() && !claw.getBottomSensor()){
                     claw.intakePiece(ClawConstants.kCoralSlowIntake);
                 } else {
@@ -201,6 +227,7 @@ public class Superstructure extends SubsystemBase {
                         STOW,
                         ALGAE_GROUND_INTAKE,
                         PROCESSOR_PREP,
+                        PRESTAGE,
                         EJECT_ALGAE,
                         EJECT_CORAL,
                         REEF1_ALGAE_INTAKE,
@@ -233,7 +260,7 @@ public class Superstructure extends SubsystemBase {
                         HP_INTAKE,
                         L1_PREP,
                         L2_PREP,
-                        L3L4_PRESTAGE,
+                        PRESTAGE,
                         BARGE_PRESTAGE,
                         PROCESSOR_PREP,
                         REEF1_ALGAE_INTAKE,
@@ -345,7 +372,7 @@ public class Superstructure extends SubsystemBase {
                 }
             }
 
-            case L3L4_PRESTAGE -> {
+            case PRESTAGE -> {
                 elevator.setElevatorPositionMotionMagicVoltage(ScoreConstants.kElevatorPrestagePosition + manualOffset);
                 // arm.setArmPositionMotionMagicTorqueCurrentFOC(ScoreConstants.kArmStowPosition);
 
@@ -360,6 +387,7 @@ public class Superstructure extends SubsystemBase {
                         L1_PREP,
                         L2_PREP,
                         L3_PREP,
+                        PRESTAGE,
                         L4_PREP,
                         BARGE_PRESTAGE,
                         PROCESSOR_PREP,
@@ -508,7 +536,7 @@ public class Superstructure extends SubsystemBase {
                         ALGAE_GROUND_INTAKE,
                         L1_PREP,
                         L2_PREP,
-                        L3L4_PRESTAGE,
+                        PRESTAGE,
                         BARGE_PREP,
                         PROCESSOR_PREP,
                         REEF1_ALGAE_INTAKE,
@@ -540,7 +568,7 @@ public class Superstructure extends SubsystemBase {
                         ALGAE_GROUND_INTAKE,
                         L1_PREP,
                         L2_PREP,
-                        L3L4_PRESTAGE,
+                        PRESTAGE,
                         BARGE_PRESTAGE,
                         BARGE_SCORE,
                         PROCESSOR_PREP,
@@ -593,7 +621,7 @@ public class Superstructure extends SubsystemBase {
                         ALGAE_GROUND_INTAKE,
                         L1_PREP,
                         L2_PREP,
-                        L3L4_PRESTAGE,
+                        PRESTAGE,
                         BARGE_PRESTAGE,
                         PROCESSOR_SCORE,
                         REEF1_ALGAE_INTAKE,
@@ -645,7 +673,7 @@ public class Superstructure extends SubsystemBase {
                         ALGAE_GROUND_INTAKE,
                         L1_PREP,
                         L2_PREP,
-                        L3L4_PRESTAGE,
+                        PRESTAGE,
                         BARGE_PRESTAGE,
                         PROCESSOR_PREP,
                         REEF2_ALGAE_INTAKE,
@@ -676,7 +704,7 @@ public class Superstructure extends SubsystemBase {
                         ALGAE_GROUND_INTAKE,
                         L1_PREP,
                         L2_PREP,
-                        L3L4_PRESTAGE,
+                        PRESTAGE,
                         BARGE_PRESTAGE,
                         PROCESSOR_PREP,
                         REEF1_ALGAE_INTAKE,
@@ -701,7 +729,7 @@ public class Superstructure extends SubsystemBase {
                         ALGAE_GROUND_INTAKE,
                         L1_PREP,
                         L2_PREP,
-                        L3L4_PRESTAGE,
+                        PRESTAGE,
                         BARGE_PRESTAGE,
                         PROCESSOR_PREP,
                         REEF1_ALGAE_INTAKE,
@@ -726,7 +754,7 @@ public class Superstructure extends SubsystemBase {
                         ALGAE_GROUND_INTAKE,
                         L1_PREP,
                         L2_PREP,
-                        L3L4_PRESTAGE,
+                        PRESTAGE,
                         BARGE_PRESTAGE,
                         PROCESSOR_PREP,
                         REEF1_ALGAE_INTAKE,
@@ -885,5 +913,9 @@ public class Superstructure extends SubsystemBase {
 
     public boolean isReefScoringState() {
         return requestedSystemState == L1_SCORE || requestedSystemState == L2_SCORE || requestedSystemState == L3_SCORE || requestedSystemState == L4_SCORE;
+    }
+
+    public boolean isReefPrepState(){
+        return requestedSystemState == L1_PREP || requestedSystemState == L2_PREP || requestedSystemState == L3_PREP || requestedSystemState == L4_PREP;
     }
 }

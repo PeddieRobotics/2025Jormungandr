@@ -14,6 +14,8 @@ import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.LimelightFrontLeft;
 import frc.robot.subsystems.LimelightFrontMiddle;
 import frc.robot.subsystems.LimelightFrontRight;
+import frc.robot.subsystems.Superstructure;
+import frc.robot.subsystems.Superstructure.SuperstructureState;
 import frc.robot.subsystems.Limelight;
 import frc.robot.subsystems.LimelightBack;
 import frc.robot.utils.CalculateHPTarget;
@@ -195,6 +197,8 @@ public class AlignToHPBasisVector extends Command {
 
         SmartDashboard.putNumber("HPAlign: target x", desiredPose.get().getX());
         SmartDashboard.putNumber("HPAlign: target y", desiredPose.get().getY());
+
+        Superstructure.getInstance().requestState(SuperstructureState.HP_INTAKE);
     }
     
     private Optional<Pose2d> getBestEstimatedPose() {

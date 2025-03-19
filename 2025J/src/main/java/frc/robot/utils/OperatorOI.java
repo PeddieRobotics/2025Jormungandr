@@ -2,7 +2,7 @@ package frc.robot.utils;
 
 import static frc.robot.subsystems.Superstructure.SuperstructureState.L1_PREP;
 import static frc.robot.subsystems.Superstructure.SuperstructureState.L2_PREP;
-import static frc.robot.subsystems.Superstructure.SuperstructureState.L3L4_PRESTAGE;
+import static frc.robot.subsystems.Superstructure.SuperstructureState.PRESTAGE;
 import static frc.robot.subsystems.Superstructure.SuperstructureState.L3_PREP;
 import static frc.robot.subsystems.Superstructure.SuperstructureState.L4_PREP;
 
@@ -48,25 +48,25 @@ public class OperatorOI {
         controller = new PS4Controller(1);
 
         Trigger xButton = new JoystickButton(controller, PS4Controller.Button.kCross.value);
-        xButton.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.L1_PREP)));
+        xButton.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.HP_INTAKE)));
 
         Trigger circleButton = new JoystickButton(controller, PS4Controller.Button.kCircle.value);
         circleButton.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.L2_PREP)));
 
         Trigger squareButton = new JoystickButton(controller, PS4Controller.Button.kSquare.value);
         squareButton.onTrue(new InstantCommand(() -> {
-            if (Arrays.asList(L3L4_PRESTAGE, L1_PREP, L2_PREP, L3_PREP, L4_PREP).contains(superstructure.getCurrentState()))
+            if (Arrays.asList(PRESTAGE, L1_PREP, L2_PREP, L3_PREP, L4_PREP).contains(superstructure.getCurrentState()))
                 superstructure.requestState(SuperstructureState.L3_PREP);
             else
-                superstructure.requestState(SuperstructureState.L3L4_PRESTAGE);
+                superstructure.requestState(SuperstructureState.PRESTAGE);
         }));
 
         Trigger triangleButton = new JoystickButton(controller, PS4Controller.Button.kTriangle.value);
         triangleButton.onTrue(new InstantCommand(() -> {
-            if (Arrays.asList(L3L4_PRESTAGE, L1_PREP, L2_PREP, L3_PREP, L4_PREP).contains(superstructure.getCurrentState()))
+            if (Arrays.asList(PRESTAGE, L1_PREP, L2_PREP, L3_PREP, L4_PREP).contains(superstructure.getCurrentState()))
                 superstructure.requestState(SuperstructureState.L4_PREP);
             else
-                superstructure.requestState(SuperstructureState.L3L4_PRESTAGE);
+                superstructure.requestState(SuperstructureState.PRESTAGE);
         }));
 
         Trigger touchpadButton = new JoystickButton(controller, PS4Controller.Button.kTouchpad.value);

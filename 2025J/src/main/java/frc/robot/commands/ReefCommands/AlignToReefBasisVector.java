@@ -19,6 +19,7 @@ import frc.robot.subsystems.LimelightFrontLeft;
 import frc.robot.subsystems.LimelightFrontMiddle;
 import frc.robot.subsystems.LimelightFrontRight;
 import frc.robot.subsystems.Superstructure;
+import frc.robot.subsystems.Superstructure.ScoringFlag;
 import frc.robot.subsystems.Superstructure.SuperstructureState;
 import frc.robot.subsystems.Limelight;
 import frc.robot.subsystems.LimelightBack;
@@ -37,11 +38,11 @@ public class AlignToReefBasisVector extends Command {
 
     private double depthP, depthI, depthD, depthFF;
 
-    private double depthThreshold, depthCloseThreshold, depthCloseAtL4Threshold;
+    private double depthThreshold, depthCloseThreshold, depthCloseAtL4Threshold, depthL3PrestageThreshold, depthL4PrestageThreshold;
 
     private double lateralP, lateralI, lateralD, lateralFF;
 
-    private double lateralThreshold, lateralCloseThreshold, lateralCloseAtL4Threshold;
+    private double lateralThreshold, lateralCloseThreshold, lateralCloseAtL4Threshold, lateralL3PrestageThreshold, lateralL4PrestageThreshold;
 
     private double rotationP, rotationI, rotationD, rotationFF;
     private double rotationLowerP, rotationUseLowerPThreshold;
@@ -108,6 +109,9 @@ public class AlignToReefBasisVector extends Command {
         depthCloseThreshold = ReefAlign.kDepthCloseThreshold;
         depthCloseAtL4Threshold = ReefAlign.kDepthCloseAtL4Threshold;
 
+        depthL3PrestageThreshold = ReefAlign.kDepthL3PrestageThreshold;
+        depthL4PrestageThreshold = ReefAlign.kDepthL4PrestageThreshold;
+
         lateralP = ReefAlign.kLateralP;
         lateralI = ReefAlign.kLateralI;
         lateralD = ReefAlign.kLateralD;
@@ -116,6 +120,9 @@ public class AlignToReefBasisVector extends Command {
         lateralThreshold = ReefAlign.kLateralThreshold;
         lateralCloseThreshold = ReefAlign.kLateralCloseThreshold;
         lateralCloseAtL4Threshold = ReefAlign.kLateralCloseAtL4Threshold;
+
+        lateralL3PrestageThreshold = ReefAlign.kLateralL3PrestageThreshold;
+        lateralL4PrestageThreshold = ReefAlign.kLateralL4PrestageThreshold;
 
         rotationP = ReefAlign.kRotationP;
         rotationI = ReefAlign.kRotationI;
@@ -171,8 +178,13 @@ public class AlignToReefBasisVector extends Command {
 
         SmartDashboard.putNumber("Align: depth close threshold", ReefAlign.kDepthCloseThreshold);
         SmartDashboard.putNumber("Align: depth close at L4 threshold", ReefAlign.kDepthCloseAtL4Threshold);
+        SmartDashboard.putNumber("Align: depth L3 prestage threshold", ReefAlign.kDepthL3PrestageThreshold);
+        SmartDashboard.putNumber("Align: depth L4 prestage threshold", ReefAlign.kDepthL4PrestageThreshold);
+
         SmartDashboard.putNumber("Align: lateral close threshold", ReefAlign.kLateralCloseThreshold);
         SmartDashboard.putNumber("Align: lateral close at L4 threshold", ReefAlign.kLateralCloseAtL4Threshold);
+        SmartDashboard.putNumber("Align: lateral L3 prestage threshold", ReefAlign.kLateralL3PrestageThreshold);
+        SmartDashboard.putNumber("Align: lateral L4 prestage threshold", ReefAlign.kLateralL4PrestageThreshold);
 
         SmartDashboard.putNumber("Align: depth threshold", ReefAlign.kDepthThreshold);
         SmartDashboard.putNumber("Align: lateral threshold", ReefAlign.kLateralThreshold);
@@ -308,6 +320,14 @@ public class AlignToReefBasisVector extends Command {
         return Math.abs(rotationError) < rotationThreshold;
     }
 
+    private boolean l3PrepSafe(){
+        return Math.abs(depthError) < depthL3PrestageThreshold && Math.abs(lateralError) < lateralL3PrestageThreshold;
+    }
+
+    private boolean l4PrepSafe(){
+        return Math.abs(depthError) < depthL4PrestageThreshold && Math.abs(lateralError) < lateralL4PrestageThreshold;
+    }
+
     @Override
     public void execute() {
         SmartDashboard.putBoolean("Align: rotation good", rotationGood());
@@ -315,6 +335,9 @@ public class AlignToReefBasisVector extends Command {
         SmartDashboard.putBoolean("Align: lateral good", lateralGood());
         SmartDashboard.putBoolean("Align: depth close", depthClose());
         SmartDashboard.putBoolean("Align: lateral close", lateralClose());
+
+        SmartDashboard.putBoolean("Align: l3PrepSafe", l3PrepSafe());
+        SmartDashboard.putBoolean("Align: l4PrepSafe", l4PrepSafe());
 
         {
             depthP = SmartDashboard.getNumber("Align: depthP", depthP);
@@ -343,6 +366,12 @@ public class AlignToReefBasisVector extends Command {
             lateralCloseAtL4Threshold = SmartDashboard.getNumber("Align: lateral close at L4 threshold", 0.0);
             depthThreshold = SmartDashboard.getNumber("Align: depth threshold", 0.0);
             lateralThreshold = SmartDashboard.getNumber("Align: lateral threshold", 0.0);
+
+            depthL3PrestageThreshold = SmartDashboard.getNumber("Align: depth L3 prestage threshold", 0.0);
+            depthL4PrestageThreshold = SmartDashboard.getNumber("Align: depth L4 prestage threshold", 0.0);
+
+            lateralL3PrestageThreshold = SmartDashboard.getNumber("Align: lateral L3 prestage threshold", 0.0);
+            lateralL4PrestageThreshold = SmartDashboard.getNumber("Align: lateral L4 prestage threshold", 0.0);
         }
         
         if (desiredPose.isEmpty())
@@ -395,10 +424,30 @@ public class AlignToReefBasisVector extends Command {
         else
             drivetrain.driveBlue(translation, rotation, true, null);
 
+        double elapsedTime = Timer.getFPGATimestamp() - initialTime;
+
+        // Auto Prep State Logic
+        // TODO: create "auto prep" boolean logic
+        // boolean autoPrep = ;
+
+        if(!DriverStation.isAutonomousEnabled()){
+            if(elapsedTime > 0.05 && (Superstructure.getInstance().getCurrentState() == SuperstructureState.PRESTAGE || Superstructure.getInstance().isReefPrepState()) && Superstructure.getInstance().getScoringFlag() == ScoringFlag.L2FLAG){
+                Superstructure.getInstance().requestState(SuperstructureState.L2_PREP);
+            }
+
+            if(elapsedTime > 0.05 && l3PrepSafe() && (Superstructure.getInstance().getCurrentState() == SuperstructureState.PRESTAGE || Superstructure.getInstance().isReefPrepState()) && Superstructure.getInstance().getScoringFlag() == ScoringFlag.L3FLAG){
+                Superstructure.getInstance().requestState(SuperstructureState.L3_PREP);
+            }
+
+            if(elapsedTime > 0.05 && l4PrepSafe() && (Superstructure.getInstance().getCurrentState() == SuperstructureState.PRESTAGE || Superstructure.getInstance().isReefPrepState()) && Superstructure.getInstance().getScoringFlag() == ScoringFlag.L4FLAG){
+                Superstructure.getInstance().requestState(SuperstructureState.L4_PREP);
+            }
+        }
+
+        // Auto Score Logic
         boolean autoScore = SmartDashboard.getBoolean("Align: Auto Score", true);
 
-        double elapsedTime = Timer.getFPGATimestamp() - initialTime;
-        if (Math.abs(rotationError) < rotationThreshold && depthAndLateralClose() && autoScore && (elapsedTime > 0.3 || depthAndLateralGood()) && Math.abs(drivetrain.getDrivetrainCurrentVelocity()) < ReefAlign.kMaxScoringSpeed) {
+        if (Math.abs(rotationError) < rotationThreshold && depthAndLateralClose() && autoScore && (elapsedTime > 0.3 || depthAndLateralGood()) && Math.abs(drivetrain.getDrivetrainCurrentVelocity()) < 0.5) {
             Superstructure.getInstance().sendToScore();
             SmartDashboard.putBoolean("Align: fire gamepiece", true);
             if(Superstructure.getInstance().isReefScoringState()){
@@ -407,6 +456,7 @@ public class AlignToReefBasisVector extends Command {
                 SmartDashboard.putNumber("Align: Elapsed Time", elapsedTime);
             }
         }
+            
 
         Logger.getInstance().logAlignToReef(xError, yError, rotationError, depthMagnitude, lateralMagnitude, rotation);
     }

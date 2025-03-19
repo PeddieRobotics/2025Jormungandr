@@ -7,7 +7,7 @@
         {
           "type": "named",
           "data": {
-            "name": "L3L4_PRESTAGE"
+            "name": "PRESTAGE"
           }
         },
         {
@@ -37,7 +37,7 @@
         {
           "type": "named",
           "data": {
-            "name": "L3L4_PRESTAGE"
+            "name": "PRESTAGE"
           }
         },
         {
@@ -67,7 +67,7 @@
         {
           "type": "named",
           "data": {
-            "name": "L3L4_PRESTAGE"
+            "name": "L4_PRESTAGE"
           }
         },
         {
@@ -103,7 +103,7 @@
         {
           "type": "named",
           "data": {
-            "name": "L3L4_PRESTAGE"
+            "name": "PRESTAGE"
           }
         },
         {

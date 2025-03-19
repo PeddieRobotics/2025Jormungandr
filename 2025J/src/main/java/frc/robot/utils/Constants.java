@@ -363,6 +363,8 @@ public final class Constants {
             public static final double kDepthThreshold = 0.03;
             public static final double kDepthCloseThreshold = 0.45;
             public static final double kDepthCloseAtL4Threshold = 0.05;
+            public static final double kDepthL3PrestageThreshold = 1.3;
+            public static final double kDepthL4PrestageThreshold = 1.3;
 
             public static final double kLateralP = 2.9;
             public static final double kLateralI = 0;
@@ -372,6 +374,8 @@ public final class Constants {
             public static final double kLateralThreshold = 0.03;
             public static final double kLateralCloseThreshold = 0.35;
             public static final double kLateralCloseAtL4Threshold = 0.05;
+            public static final double kLateralL3PrestageThreshold = 1;
+            public static final double kLateralL4PrestageThreshold = 1;
 
             public static final double kRotationP = 0.08;
             public static final double kRotationI = 0;

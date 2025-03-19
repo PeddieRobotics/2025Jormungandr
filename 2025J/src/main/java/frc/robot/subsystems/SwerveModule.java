@@ -96,7 +96,7 @@ public class SwerveModule extends SubsystemBase {
      * @return returns current cancoder reading from number of rotations to radians
      */
     public double getCANCoderReading(){
-        return    2 * Math.PI * canCoder.getAbsolutePosition().getValueAsDouble();
+        return 2 * Math.PI * canCoder.getAbsolutePosition().getValueAsDouble();
     }
 
     /**
