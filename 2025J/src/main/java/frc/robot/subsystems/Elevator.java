@@ -5,6 +5,7 @@ import com.ctre.phoenix6.hardware.CANcoder;
 import com.ctre.phoenix6.signals.FeedbackSensorSourceValue;
 import com.ctre.phoenix6.signals.GravityTypeValue;
 import com.ctre.phoenix6.signals.SensorDirectionValue;
+import com.ctre.phoenix6.signals.StaticFeedforwardSignValue;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -72,7 +73,7 @@ public class Elevator extends SubsystemBase {
         elevatorMainMotor.setPIDValues(ElevatorConstants.kS, ElevatorConstants.kV,
                 ElevatorConstants.kA,
                 ElevatorConstants.kP, ElevatorConstants.kI, ElevatorConstants.kD,
-                ElevatorConstants.kFF, ElevatorConstants.kG, GravityTypeValue.Elevator_Static);
+                ElevatorConstants.kFF, ElevatorConstants.kG, GravityTypeValue.Elevator_Static, StaticFeedforwardSignValue.UseVelocitySign);
 
         elevatorMainMotor.setMotionMagicParameters(ElevatorConstants.kElevatorMaxCruiseVelocity,
                 ElevatorConstants.kElevatorMaxCruiseAcceleration, ElevatorConstants.kElevatorMaxCruiseJerk);

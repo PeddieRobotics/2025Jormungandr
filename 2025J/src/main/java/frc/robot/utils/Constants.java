@@ -201,7 +201,7 @@ public final class Constants {
 
     public static final class ScoreConstants {
         // TODO: NOT DEFINED YET!!!!
-        public static final double kL1ScoreTimeout = 1.0;
+        public static final double kL1ScoreTimeout = 2.0;
         public static final double kL2ScoreTimeout = 1.0; 
         public static final double kL3ScoreTimeout = 1.0; 
         public static final double kL4ScoreTimeout = 1.0; 
@@ -210,9 +210,8 @@ public final class Constants {
 
         public static final double kElevatorStowPosition = 0.0;
         public static final double kElevatorHPIntakePosition = 0.0;
-        public static final double kElevatorGroundIntakePosition = 0.0;
-        // public static final double kElevatorL1ScorePosition = 4.5;
-        public static final double kElevatorL1ScorePosition = 3.8;
+        public static final double kElevatorGroundIntakePosition = 0.77;
+        public static final double kElevatorL1ScorePosition = 1.5;
         public static final double kElevatorL2ScorePosition = 3.7; //3.8;
         public static final double kElevatorL3ScorePosition = 7.05;
         public static final double kElevatorPrestagePosition = 3.8;
@@ -230,15 +229,16 @@ public final class Constants {
 
         public static final double kArmStowPosition = 0.25;
         public static final double kArmHPIntakePosition = 0.25;
-        public static final double kArmGroundIntakePosition = 0.25;
-        public static final double kArmL1ScorePosition = 0.25;
+        public static final double kArmGroundIntakePosition = 0.0;
+        // public static final double kArmL1ScorePosition = 0.25;
+        public static final double kArmL1ScorePosition = 0.0;
         public static final double kArmL2ScorePosition = 0.25;
         public static final double kArmL3ScorePosition = 0.25;
         public static final double kArmL4ScorePosition = 0.25;
         public static final double kArmBargeScorePosition = 0.25;
-        public static final double kArmProcessorScorePosition = 0.25;
-        public static final double kArmReef1IntakePosition = 0.19;
-        public static final double kArmReef2IntakePosition = 0.19;
+        public static final double kArmProcessorScorePosition = 0.09;
+        public static final double kArmReef1IntakePosition = 0.17;
+        public static final double kArmReef2IntakePosition = 0.17;
 
     }
 
@@ -252,40 +252,39 @@ public final class Constants {
         public static final double kArmRotorToSensorRatio = kArmReduction / 0.96;
         public static final double kArmSensortoMechanismRatio = 0.96;
 
-        // public static final double kArmMagnetOffset = 0.052246 - 0.25 * kArmSensortoMechanismRatio;
-        public static final double kArmMagnetOffset = -0.052979 + 0.25 * kArmSensortoMechanismRatio;
+        // public static final double kArmMagnetOffset = -0.052979 + 0.25 * kArmSensortoMechanismRatio;
+        public static final double kArmMagnetOffset = 0.146729 + 0.25 * kArmSensortoMechanismRatio;
 
-        // public static final double kS = 0.2;
+        // public static final double kS = 0.0;
         // public static final double kV = 0.0;
         // public static final double kA = 0.0;
-        // public static final double kP = 100.0;
+        // public static final double kP = 50.0;
         // public static final double kI = 0.0;
-        // public static final double kD = 5.0;
+        // public static final double kD = 1.0;
         // public static final double kFF = 0.0;
         // public static final double kIZone = 0.0;
-        // public static final double kG = 0.13;
+        // public static final double kG = 0.45;
 
-        public static final double kS = 0.0;
+        public static final double kS = 0.3;
         public static final double kV = 0.0;
         public static final double kA = 0.0;
-        public static final double kP = 50.0;
+        public static final double kP = 100.0;
         public static final double kI = 0.0;
-        public static final double kD = 1.0;
+        public static final double kD = 5.0;
         public static final double kFF = 0.0;
         public static final double kIZone = 0.0;
-        public static final double kG = 0.45;
+        public static final double kG = 0.39;
 
-        // 
         public static final double kArmForwardSoftLimit = 0.25;
-        public static final double kArmReverseSoftLimit = 0.09;
+        public static final double kArmReverseSoftLimit = 0.0;
 
         // Motion Magic Parameters
-        public static final double kArmMaxCruiseVelocity = 0.0;
-        public static final double kArmMaxCruiseAcceleration = 0.0;
-        public static final double kArmMaxCruiseJerk = 0.0;
+        public static final double kArmMaxCruiseVelocity = 1.0;
+        public static final double kArmMaxCruiseAcceleration = 1.0;
+        public static final double kArmMaxCruiseJerk = 20.0;
 
         public static final double kArmAngleEpsilon = 0.0; // TODO: define
-        public static final double kArmPositionEpsilon = 0.5; // TODO: define
+        public static final double kArmPositionEpsilon = 0.05; // TODO: define
 
         public static final double kArmHPIntakeAngle = 0.0; // TODO: define
         public static final double kArmL1ScoreAngle = 0.0;
@@ -452,8 +451,11 @@ public final class Constants {
     }
 
     public static final class ClawConstants {
-        public static final double kClawSupplyCurrentLimit = 40.0;
-        public static final double kClawStatorCurrentLimit = 40.0;
+        public static final double kClawCoralSupplyCurrentLimit = 30.0;
+        public static final double kClawCoralStatorCurrentLimit = 30.0;
+
+        public static final double kClawAlgaeSupplyCurrentLimit = 60.0;
+        public static final double kClawAlgaeStatorCurrentLimit = 60.0;
 
         public static final double kP = 1.0;
         public static final double kI = 0.0;
@@ -492,7 +494,7 @@ public final class Constants {
         public static final double kCoralOuttakeSpeed = 0.75;
         public static final double kCoralSlowIntake = 0.4;
         // public static final double kCoralL1OuttakeSpeed = 0.4;
-        public static final double kCoralL1OuttakeSpeed = 0.75;
+        public static final double kCoralL1OuttakeSpeed = -0.8;
 
         public static final double kAlgaeIntakeSpeed = 1.0;
         public static final double kAlgaeOuttakeSpeed = -1.0;

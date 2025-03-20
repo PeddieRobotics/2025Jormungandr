@@ -54,7 +54,7 @@ public class Logger {
             driveTrainYVelEntry, driveTrainXAccEntry, driveTrainYAccEntry, driveTrainAngleVelEntry,
             armAngleEntry, armPositionEntry, armPositionSetpointEntry, armCANcoderPositionEntry,
             armSupplyCurrentEntry, armStatorCurrentEntry, armTorqueCurrentEntry, armVelocityEntry,
-            clawPositionEntry, clawVelocityEntry, clawSupplyCurrentEntry, clawStatorCurrentEntry,
+            clawCoralMotorPositionEntry, clawCoralMotorVelocityEntry, clawCoralMotorSupplyCurrentEntry, clawCoralMotorStatorCurrentEntry,
             elevatorPositionEntry, elevatorVelocityEntry, elevatorPositionSetpointEntry,
             elevatorMainMotorSupplyCurrentEntry, elevatorMainMotorStatorCurrentEntry, elevatorMainMotorTorqueCurrentEntry,
             elevatorFollowerMotorSupplyCurrentEntry, elevatorFollowerMotorStatorCurrentEntry, elevatorFollowerMotorTorqueCurrentEntry,
@@ -123,10 +123,10 @@ public class Logger {
         modulePositionsActualEntry = new DoubleArrayLogEntry(log, "/Drivetrain/Swerve Module Actual Positions");
 
         // Claw logs
-        clawPositionEntry = new DoubleLogEntry(log, "/Claw/Claw Position");
-        clawVelocityEntry = new DoubleLogEntry(log, "/Claw/Claw Velocity");
-        clawSupplyCurrentEntry = new DoubleLogEntry(log, "/Claw/Claw Motor Supply Current");
-        clawStatorCurrentEntry = new DoubleLogEntry(log, "/Claw/Claw Motor Stator Current");
+        clawCoralMotorPositionEntry = new DoubleLogEntry(log, "/Claw/Coral Motor Position");
+        clawCoralMotorVelocityEntry = new DoubleLogEntry(log, "/Claw/Coral Motor Velocity");
+        clawCoralMotorSupplyCurrentEntry = new DoubleLogEntry(log, "/Claw/Coral Motor Supply Current");
+        clawCoralMotorStatorCurrentEntry = new DoubleLogEntry(log, "/Claw/Coral Motor Stator Current");
         clawTopSensorEntry = new BooleanLogEntry(log, "/Claw/Top Sensor");
         clawBottomSensorEntry = new BooleanLogEntry(log, "/Claw/Bottom Sensor");
         clawAlgaeSensorEntry = new BooleanLogEntry(log, "Claw/Algae Sensor");
@@ -267,11 +267,10 @@ public class Logger {
         superstructureRequestedStateEntry.append(superstructure.getRequestedState().toString());
 
         // Claw logs
-        clawPositionEntry.append(claw.getPosition());
-        // clawAccEntry.append(claw.getAcc());
-        clawVelocityEntry.append(claw.getVelocity());
-        clawSupplyCurrentEntry.append(claw.getMotorSupplyCurrent());
-        clawStatorCurrentEntry.append(claw.getMotorStatorCurrent());
+        clawCoralMotorPositionEntry.append(claw.getCoralMotorPosition());
+        clawCoralMotorVelocityEntry.append(claw.getCoralMotorVelocity());
+        clawCoralMotorSupplyCurrentEntry.append(claw.getCoralMotorSupplyCurrent());
+        clawCoralMotorStatorCurrentEntry.append(claw.getCoralMotorStatorCurrent());
         clawTopSensorEntry.append(claw.getTopSensor());
         clawBottomSensorEntry.append(claw.getBottomSensor());
         clawAlgaeSensorEntry.append(claw.getAlgaeSensor());

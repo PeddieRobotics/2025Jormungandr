@@ -159,10 +159,11 @@ public class Superstructure extends SubsystemBase {
                     } else{
                         elevator.setElevatorPositionMotionMagicVoltage(ScoreConstants.kElevatorStowPosition);
                     }
-                    arm.setArmPositionVoltage(ScoreConstants.kArmStowPosition);
+                    arm.setArmPositionMotionMagicVoltage(ScoreConstants.kArmStowPosition);
 
                     if (claw.getAlgaeSensor()) {
                         claw.holdAlgae();
+                        claw.stopCoralMotor();
                     } else {
                         claw.stopClaw();
                     }
@@ -198,7 +199,7 @@ public class Superstructure extends SubsystemBase {
                 // arm.setArmPositionMotionMagicTorqueCurrentFOC(ScoreConstants.kArmHPIntakePosition);
 
                 //elevator.setElevatorPositionVoltage(ScoreConstants.kElevatorHPIntakePosition);
-                arm.setArmPositionVoltage(ScoreConstants.kArmHPIntakePosition);
+                arm.setArmPositionMotionMagicVoltage(ScoreConstants.kArmHPIntakePosition);
 
                 // add gate to check elevator height and arm angle ?
 
@@ -209,7 +210,7 @@ public class Superstructure extends SubsystemBase {
                         hasJustRemovedAlgae = false;
                         startedOuttakingRemovedAlgaeTime = 0;
                     }
-                    claw.intakePiece(ClawConstants.kAlgaeOuttakeSpeed);
+                    claw.intakeCoral(ClawConstants.kCoralIntakeSpeed);
                 } else if(claw.bothCoralSensorsTriggered()) {
                     claw.stopClaw();
                     if (DriverStation.isAutonomous())
@@ -217,9 +218,15 @@ public class Superstructure extends SubsystemBase {
                     else
                         requestState(PRESTAGE);
                 } else if (claw.getTopSensor() && !claw.getBottomSensor()){
-                    claw.intakePiece(ClawConstants.kCoralSlowIntake);
+                    claw.intakeCoral(ClawConstants.kCoralSlowIntake);
                 } else {
-                    claw.intakePiece(ClawConstants.kCoralIntakeSpeed);
+                    claw.intakeCoral(ClawConstants.kCoralIntakeSpeed);
+                }
+
+                if(claw.getAlgaeSensor()){
+                    claw.holdAlgae();
+                } else {
+                    claw.stopAlgaeMotor();
                 }
 
 
@@ -248,12 +255,20 @@ public class Superstructure extends SubsystemBase {
                 // arm.setArmPositionMotionMagicTorqueCurrentFOC(ScoreConstants.kArmGroundIntakePosition);
                 
                 //elevator.setElevatorPositionVoltage(ScoreConstants.kElevatorGroundIntakePosition);
-                arm.setArmPositionVoltage(ScoreConstants.kArmGroundIntakePosition);
+                if(elevator.isAtPosition(ScoreConstants.kElevatorGroundIntakePosition)){
+                    arm.setArmPositionMotionMagicVoltage(ScoreConstants.kArmGroundIntakePosition);
+                }
 
-                // if (algaeIndex) {
-                //     claw.holdAlgae();
-                //     requestState(HP_INTAKE);
-                // }
+                claw.intakeAlgae();
+                claw.stopCoralMotor();
+
+                if (claw.getAlgaeSensor()) {
+                    claw.holdAlgae();
+                    arm.setArmPositionMotionMagicVoltage(0.17);
+                    if(arm.isAtPosition(0.17)){
+                        requestState(STOW);
+                    }
+                }
 
                 if (Arrays.asList(
                         STOW,
@@ -279,7 +294,10 @@ public class Superstructure extends SubsystemBase {
                 // arm.setArmPositionMotionMagicTorqueCurrentFOC(ScoreConstants.kArmL1ScorePosition);
 
                 //elevator.setElevatorPositionVoltage(ScoreConstants.kElevatorL1ScorePosition);
-                arm.setArmPositionVoltage(ScoreConstants.kArmL1ScorePosition);
+                if(elevator.isAtPosition(ScoreConstants.kElevatorL1ScorePosition)){
+                    arm.setArmPositionMotionMagicVoltage(ScoreConstants.kArmL1ScorePosition);
+                }
+
                 claw.stopClaw();
 
                 if (Arrays.asList(
@@ -314,7 +332,7 @@ public class Superstructure extends SubsystemBase {
                 // arm.setArmPositionMotionMagicTorqueCurrentFOC(ScoreConstants.kArmL2ScorePosition);
 
                 //elevator.setElevatorPositionVoltage(ScoreConstants.kElevatorL2ScorePosition);
-                arm.setArmPositionVoltage(ScoreConstants.kArmL2ScorePosition);
+                arm.setArmPositionMotionMagicVoltage(ScoreConstants.kArmL2ScorePosition);
                 claw.stopClaw();
 
                 if (Arrays.asList(
@@ -349,7 +367,7 @@ public class Superstructure extends SubsystemBase {
                 // arm.setArmPositionMotionMagicTorqueCurrentFOC(ScoreConstants.kArmL3ScorePosition);
                 
                 //elevator.setElevatorPositionVoltage(ScoreConstants.kElevatorL3ScorePosition);
-                arm.setArmPositionVoltage(ScoreConstants.kArmL3ScorePosition);
+                arm.setArmPositionMotionMagicVoltage(ScoreConstants.kArmL3ScorePosition);
                 claw.stopClaw();
 
 
@@ -377,8 +395,14 @@ public class Superstructure extends SubsystemBase {
                 // arm.setArmPositionMotionMagicTorqueCurrentFOC(ScoreConstants.kArmStowPosition);
 
                 //elevator.setElevatorPositionVoltage(ScoreConstants.kElevatorL4PrestagePosition);
-                arm.setArmPositionVoltage(ScoreConstants.kArmStowPosition);
-                claw.stopClaw();
+                arm.setArmPositionMotionMagicVoltage(ScoreConstants.kArmStowPosition);
+
+                claw.stopCoralMotor();
+                if(claw.getAlgaeSensor()){
+                    claw.holdAlgae();
+                } else {
+                    claw.stopClaw();
+                }
 
                 if (Arrays.asList(
                         STOW,
@@ -405,7 +429,7 @@ public class Superstructure extends SubsystemBase {
                 // arm.setArmPositionMotionMagicTorqueCurrentFOC(ScoreConstants.kArmL4ScorePosition);
                 
                 //elevator.setElevatorPositionVoltage(ScoreConstants.kElevatorL4ScorePosition);
-                arm.setArmPositionVoltage(ScoreConstants.kArmL4ScorePosition);
+                arm.setArmPositionMotionMagicVoltage(ScoreConstants.kArmL4ScorePosition);
                 claw.stopClaw();
 
 
@@ -429,14 +453,17 @@ public class Superstructure extends SubsystemBase {
             }
 
             case L1_SCORE -> {
-
-                if (timer.hasElapsed(ScoreConstants.kL1ScoreTimeout) || !claw.eitherCoralSensorTriggered()){
+                if (timer.hasElapsed(ScoreConstants.kL1ScoreTimeout) && !claw.eitherCoralSensorTriggered()){
                     timer.reset();
                     claw.stopClaw();
-                    requestState(HP_INTAKE);
+                    arm.setArmPositionVoltage(0.17);
+                    if (arm.isAtPosition(0.17)){
+                        requestState(HP_INTAKE);
+                    }
                 } else {
                     // double speed = SmartDashboard.getNumber("Tuning: L1Speed", ClawConstants.kCoralL1OuttakeSpeed);
-                    claw.outtakePiece(ClawConstants.kCoralL1OuttakeSpeed);
+                    claw.intakeAlgae();
+                    claw.outtakeCoralL1();
                 }
 
                 if (Arrays.asList(
@@ -457,7 +484,8 @@ public class Superstructure extends SubsystemBase {
                     claw.stopClaw();
                     requestState(HP_INTAKE);
                 } else {
-                    claw.outtakePiece(ClawConstants.kCoralOuttakeSpeed);
+                    claw.stopAlgaeMotor();
+                    claw.outtakeCoral();
                 }
 
                 if (Arrays.asList(
@@ -477,7 +505,8 @@ public class Superstructure extends SubsystemBase {
                     claw.stopClaw();
                     requestState(HP_INTAKE);
                 } else {
-                    claw.outtakePiece(ClawConstants.kCoralOuttakeSpeed);
+                    claw.stopAlgaeMotor();
+                    claw.outtakeCoral();
                 }
 
                 if (Arrays.asList(
@@ -501,7 +530,8 @@ public class Superstructure extends SubsystemBase {
                         requestState(HP_INTAKE);
                     }
                 } else {
-                    claw.outtakePiece(ClawConstants.kCoralOuttakeSpeed);
+                    claw.stopAlgaeMotor();
+                    claw.outtakeCoral();
                 }
 
                 if (Arrays.asList(
@@ -522,10 +552,11 @@ public class Superstructure extends SubsystemBase {
                 // arm.setArmPositionMotionMagicTorqueCurrentFOC(ScoreConstants.kArmStowPosition);
 
                 //elevator.setElevatorPositionVoltage(ScoreConstants.kElevatorBargePrestagePosition);
-                arm.setArmPositionVoltage(ScoreConstants.kArmStowPosition);
+                arm.setArmPositionMotionMagicVoltage(ScoreConstants.kArmStowPosition);
 
                 if (claw.getAlgaeSensor()) {
                     claw.holdAlgae();
+                    claw.stopCoralMotor();
                 } else {
                     claw.stopClaw();
                 }
@@ -554,10 +585,11 @@ public class Superstructure extends SubsystemBase {
                 // arm.setArmPositionMotionMagicTorqueCurrentFOC(ScoreConstants.kArmBargeScorePosition);
 
                 //elevator.setElevatorPositionVoltage(ScoreConstants.kElevatorBargeScorePosition);
-                arm.setArmPositionVoltage(ScoreConstants.kArmBargeScorePosition);
+                arm.setArmPositionMotionMagicVoltage(ScoreConstants.kArmBargeScorePosition);
 
                 if (claw.getAlgaeSensor()) {
                     claw.holdAlgae();
+                    claw.stopCoralMotor();
                 } else {
                     claw.stopClaw();
                 }
@@ -587,7 +619,8 @@ public class Superstructure extends SubsystemBase {
                     claw.stopClaw();
                     requestState(HP_INTAKE);
                 } else {
-                    claw.outtakePiece(ClawConstants.kAlgaeOuttakeSpeed);
+                    claw.outtakeAlgae();
+                    claw.stopCoralMotor();
                 }
 
                 if (Arrays.asList(
@@ -606,10 +639,11 @@ public class Superstructure extends SubsystemBase {
                 //arm.setArmPositionMotionMagicTorqueCurrentFOC(ScoreConstants.kArmProcessorScorePosition);
                 
                 //elevator.setElevatorPositionVoltage(ScoreConstants.kElevatorProcessorScorePosition);
-                arm.setArmPositionVoltage(ScoreConstants.kArmProcessorScorePosition);
+                arm.setArmPositionMotionMagicVoltage(ScoreConstants.kArmProcessorScorePosition);
 
                 if (claw.getAlgaeSensor()) {
                     claw.holdAlgae();
+                    claw.stopCoralMotor();
                 } else {
                     claw.stopClaw();
                 }
@@ -639,7 +673,8 @@ public class Superstructure extends SubsystemBase {
                     claw.stopClaw();
                     requestState(HP_INTAKE);
                 } else {
-                    claw.outtakePiece(ClawConstants.kAlgaeOuttakeSpeed);
+                    claw.outtakeAlgae();
+                    claw.stopCoralMotor();
                 }
 
                 if (Arrays.asList(
@@ -658,13 +693,14 @@ public class Superstructure extends SubsystemBase {
                 // arm.setArmPositionMotionMagicTorqueCurrentFOC(ScoreConstants.kArmReef1IntakePosition);
                 
                 //elevator.setElevatorPositionVoltage(ScoreConstants.kElevatorReef1IntakePosition);
-                arm.setArmPositionVoltage(ScoreConstants.kArmReef1IntakePosition);
+                arm.setArmPositionMotionMagicVoltage(ScoreConstants.kArmReef1IntakePosition);
 
                 if (claw.getAlgaeSensor()) {
                     claw.holdAlgae();
-                    requestState(PROCESSOR_PREP);
+                    // requestState(PROCESSOR_PREP);
                 } else {
-                    claw.intakePiece(ClawConstants.kAlgaeIntakeSpeed);
+                    claw.intakeAlgae();
+                    claw.stopCoralMotor();
                 }
 
                 if (Arrays.asList(
@@ -689,13 +725,14 @@ public class Superstructure extends SubsystemBase {
                 // arm.setArmPositionMotionMagicTorqueCurrentFOC(ScoreConstants.kArmReef2IntakePosition);
                 
                 //elevator.setElevatorPositionVoltage(ScoreConstants.kElevatorReef2IntakePosition);
-                arm.setArmPositionVoltage(ScoreConstants.kArmReef2IntakePosition);
+                arm.setArmPositionMotionMagicVoltage(ScoreConstants.kArmReef2IntakePosition);
                 
                 if (claw.getAlgaeSensor()) {
                     claw.holdAlgae();
-                    requestState(PROCESSOR_PREP);
+                    // requestState(PROCESSOR_PREP);
                 } else {
-                    claw.intakePiece(ClawConstants.kAlgaeIntakeSpeed);
+                    claw.intakeAlgae();
+                    claw.stopCoralMotor();
                 }
 
                 if (Arrays.asList(
@@ -716,7 +753,8 @@ public class Superstructure extends SubsystemBase {
             }
 
             case EJECT_ALGAE -> {
-                claw.outtakePiece(ClawConstants.kAlgaeOuttakeSpeed);
+                claw.outtakeAlgae();
+                claw.stopCoralMotor();
                 
                 // if (!claw.hasAlgae()) {
                 //     claw.stopClaw();
@@ -741,7 +779,8 @@ public class Superstructure extends SubsystemBase {
             }
 
             case EJECT_CORAL -> {
-                claw.outtakePiece(ClawConstants.kCoralOuttakeSpeed);
+                claw.outtakeCoral();
+                claw.stopAlgaeMotor();
 
                 // if (!claw.eitherCoralSensorTriggered()) {
                 //     claw.stopClaw();
@@ -767,12 +806,13 @@ public class Superstructure extends SubsystemBase {
             case REMOVING_ALGAE -> {
                 double armAngle = 0.20;
                 if (elevator.getElevatorCANcoderPosition() > 1.5) {
-                    claw.setClaw(ClawConstants.kCoralIntakeSpeed);
-                    arm.setArmPositionVoltage(armAngle);
+                    claw.intakeAlgae();
+                    claw.stopCoralMotor();
+                    arm.setArmPositionMotionMagicVoltage(armAngle);
                     elevator.setElevatorPercentOutput(getAlgaeRemovalSpeed());
                 }
                 else {
-                    arm.setArmPositionVoltage(0.25);
+                    arm.setArmPositionMotionMagicVoltage(0.25);
                     hasJustRemovedAlgae = true;
                     requestState(STOW);
                 }
@@ -863,7 +903,9 @@ public class Superstructure extends SubsystemBase {
             autoRemoveAlgaeSwitch = false;
             return value;
         }
-        return OperatorOI.getInstance().getLeftBumperHeld();
+        // return OperatorOI.getInstance().getLeftBumperHeld();
+        // for now
+        return false;
     }
 
     private final List<Integer> highAlgaeTags = Arrays.asList(

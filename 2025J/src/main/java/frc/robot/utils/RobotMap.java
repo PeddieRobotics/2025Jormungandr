@@ -13,7 +13,9 @@ public class RobotMap {
     public static final int ARM_CANCODER_ID = 5;
 
     // CLAW
-    public static final int CLAW_MOTOR_ID = 6;
+    public static final int CLAW_CORAL_MOTOR_ID = 6;
+    public static final int CLAW_ALGAE_MOTOR_ID = 13;
+
     public static final int CLAW_TOP_SENSOR_ID = 7;
     public static final int CLAW_BOTTOM_SENSOR_ID = 8;
     public static final int CLAW_ALGAE_SENSOR_ID = 9;

@@ -58,7 +58,7 @@ public class Arm extends SubsystemBase {
         armMotor.setPIDValues(ArmConstants.kS, ArmConstants.kV,
                 ArmConstants.kA,
                 ArmConstants.kP, ArmConstants.kI, ArmConstants.kD,
-                ArmConstants.kFF, ArmConstants.kG, GravityTypeValue.Arm_Cosine, StaticFeedforwardSignValue.UseClosedLoopSign);
+                ArmConstants.kFF, ArmConstants.kG, GravityTypeValue.Arm_Cosine, StaticFeedforwardSignValue.UseVelocitySign);
         armMotor.setMotionMagicParameters(ArmConstants.kArmMaxCruiseVelocity, ArmConstants.kArmMaxCruiseAcceleration,
                 ArmConstants.kArmMaxCruiseJerk);
 

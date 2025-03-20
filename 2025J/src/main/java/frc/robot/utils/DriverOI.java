@@ -4,7 +4,9 @@ import edu.wpi.first.wpilibj.PS4Controller;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.subsystems.Superstructure;
@@ -12,6 +14,7 @@ import edu.wpi.first.math.geometry.Translation2d;
 import frc.robot.subsystems.Superstructure.SuperstructureState;
 
 import java.util.Arrays;
+import java.util.Optional;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import frc.robot.commands.HomeElevator;
@@ -109,7 +112,8 @@ public class DriverOI {
         L1Bumper.onTrue(new InstantCommand(() -> superstructure.sendToScore()));
 
         Trigger R1Bumper = new JoystickButton(controller, PS4Controller.Button.kR1.value);
-        R1Bumper.whileTrue(new OrbitReef());
+        R1Bumper.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.ALGAE_GROUND_INTAKE)));
+        // R1Bumper.whileTrue(new OrbitReef());
 
         Trigger L2Trigger = new JoystickButton(controller, PS4Controller.Button.kL2.value);
 
@@ -117,14 +121,56 @@ public class DriverOI {
 
         Trigger L3Trigger = new JoystickButton(controller, PS4Controller.Button.kL3.value);
         L3Trigger.whileTrue(new ConditionalCommand(
-            new AlignToReefBasisVector(AlignmentConstants.AlignmentDestination.LEFT, ReefAlign.kMaxSpeed, 0, 0),
-            new AlignToReefBasisVector(AlignmentConstants.AlignmentDestination.MIDDLE, ReefAlign.kMaxSpeed, 0, 0),
+            new SequentialCommandGroup(
+                new AlignToReefBasisVector(AlignmentConstants.AlignmentDestination.LEFT, ReefAlign.kMaxSpeed, 0, 0),
+                new ConditionalCommand(
+                    new SequentialCommandGroup(
+                        new WaitCommand(0.5),
+                        new ParallelCommandGroup(
+                            new AlignToReefBasisVector(AlignmentConstants.AlignmentDestination.MIDDLE, ReefAlign.kMaxSpeed, 0, 0),
+                            new SequentialCommandGroup(
+                                new WaitCommand(0.25),
+                                new InstantCommand(() -> {
+                                    Optional<Boolean> high = superstructure.isHighAlgae();
+                                    if (high.isEmpty() || high.get())
+                                        superstructure.requestState(SuperstructureState.REEF2_ALGAE_INTAKE);
+                                    else
+                                        superstructure.requestState(SuperstructureState.REEF1_ALGAE_INTAKE);
+                                })
+                            )
+                        )
+                    ), 
+                    new InstantCommand(), 
+                    OperatorOI.getInstance()::getLeftBumperHeld)
+            ),
+            new AlignToReefBasisVector(AlignmentConstants.AlignmentDestination.MIDDLE, ReefAlign.kMaxSpeed, 0, 0), 
             Claw.getInstance()::eitherCoralSensorTriggered
         ));
 
         Trigger R3Trigger = new JoystickButton(controller, PS4Controller.Button.kR3.value);
         R3Trigger.whileTrue(new ConditionalCommand(
-            new AlignToReefBasisVector(AlignmentConstants.AlignmentDestination.RIGHT, ReefAlign.kMaxSpeed, 0, 0),
+            new SequentialCommandGroup(
+                new AlignToReefBasisVector(AlignmentConstants.AlignmentDestination.RIGHT, ReefAlign.kMaxSpeed, 0, 0),
+                new ConditionalCommand(
+                    new SequentialCommandGroup(
+                        new WaitCommand(0.5),
+                        new ParallelCommandGroup(
+                            new AlignToReefBasisVector(AlignmentConstants.AlignmentDestination.MIDDLE, ReefAlign.kMaxSpeed, 0, 0),
+                            new SequentialCommandGroup(
+                                new WaitCommand(0.25), 
+                                new InstantCommand(() -> {
+                                    Optional<Boolean> high = superstructure.isHighAlgae();
+                                    if (high.isEmpty() || high.get())
+                                        superstructure.requestState(SuperstructureState.REEF2_ALGAE_INTAKE);
+                                    else
+                                        superstructure.requestState(SuperstructureState.REEF1_ALGAE_INTAKE);
+                                })
+                            )
+                        )
+                    ),
+                new InstantCommand(),
+                OperatorOI.getInstance()::getLeftBumperHeld)
+            ),
             new AlignToHPBasisVector(HPAlign.kMaxSpeed, HPAlign.kLateralOffset, HPAlign.kBackOffset, 0, 0),
             Claw.getInstance()::eitherCoralSensorTriggered
         ));

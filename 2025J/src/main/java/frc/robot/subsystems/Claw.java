@@ -16,7 +16,7 @@ import frc.robot.utils.RobotMap;
 public class Claw extends SubsystemBase {
 
     private static Claw claw;
-    private Kraken clawMotor;
+    private Kraken coralMotor, algaeMotor;
     private CANrange topSensor, bottomSensor, algaeSensor;
     private CANrangeConfiguration clawTopSensorConfig, clawBottomSensorConfig, clawAlgaeSensorConfig;
 
@@ -25,7 +25,8 @@ public class Claw extends SubsystemBase {
         position, velocity, hasAlgae;  
 
     public Claw() {
-        clawMotor = new Kraken(RobotMap.CLAW_MOTOR_ID, RobotMap.RIO_BUS);
+        coralMotor = new Kraken(RobotMap.CLAW_CORAL_MOTOR_ID, RobotMap.RIO_BUS);
+        algaeMotor = new Kraken(RobotMap.CLAW_ALGAE_MOTOR_ID, RobotMap.RIO_BUS);
 
         topSensor = new CANrange(RobotMap.CLAW_TOP_SENSOR_ID, RobotMap.RIO_BUS);
         clawTopSensorConfig = new CANrangeConfiguration();
@@ -36,11 +37,16 @@ public class Claw extends SubsystemBase {
         algaeSensor = new CANrange(RobotMap.CLAW_ALGAE_SENSOR_ID, RobotMap.RIO_BUS);
         clawAlgaeSensorConfig = new CANrangeConfiguration();
 
-        clawMotor.setInverted(false);
-        clawMotor.setSupplyCurrentLimit(ClawConstants.kClawSupplyCurrentLimit);
-        clawMotor.setStatorCurrentLimit(ClawConstants.kClawStatorCurrentLimit);
-        clawMotor.setBrake();
-        clawMotor.setPIDValues(ClawConstants.kP, ClawConstants.kI, ClawConstants.kD, ClawConstants.kFF);
+        coralMotor.setInverted(false);
+        coralMotor.setSupplyCurrentLimit(ClawConstants.kClawCoralSupplyCurrentLimit);
+        coralMotor.setStatorCurrentLimit(ClawConstants.kClawCoralStatorCurrentLimit);
+        coralMotor.setBrake();
+        coralMotor.setPIDValues(ClawConstants.kP, ClawConstants.kI, ClawConstants.kD, ClawConstants.kFF);
+
+        algaeMotor.setInverted(true);
+        algaeMotor.setSupplyCurrentLimit(ClawConstants.kClawAlgaeSupplyCurrentLimit);
+        algaeMotor.setStatorCurrentLimit(ClawConstants.kClawAlgaeStatorCurrentLimit);
+        algaeMotor.setBrake();
 
         configureCANrange(topSensor, clawTopSensorConfig, Constants.ClawConstants.kTopSensorSignalStrength,
                 Constants.ClawConstants.kTopSensorProximityThreshold,
@@ -73,10 +79,10 @@ public class Claw extends SubsystemBase {
                 topSensorDistance = new LiveData(getTopSensorDistance(), "Claw: Top Sensor Distance");
                 bottomSensorDistance = new LiveData(getBottomSensorDistance(), "Claw: Bottom Sensor Distance");
         
-                motorTemp = new LiveData(clawMotor.getMotorTemperature(), "Claw: Motor Temp"); 
-                motorCurrent = new LiveData(clawMotor.getSupplyCurrent(), "Claw: Motor Supply Current");
-                position = new LiveData(getPosition(), "Claw: position");
-                velocity = new LiveData(getVelocity(), "Claw: Velocity RPM");
+                motorTemp = new LiveData(coralMotor.getMotorTemperature(), "Claw: Coral Motor Temp"); 
+                motorCurrent = new LiveData(coralMotor.getSupplyCurrent(), "Claw: Coral Motor Supply Current");
+                position = new LiveData(getCoralMotorPosition(), "Claw: position");
+                velocity = new LiveData(getCoralMotorVelocity(), "Claw: Velocity RPM");
                 hasAlgae = new LiveData(getAlgaeSensor(), "Claw: Has Algae");
                 // hasCoral = new LiveData(hasCoral(), "Claw Has Coral");
                 // coralIndexed = new LiveData(coralIndexed(), "Claw Coral is Indexed");
@@ -121,32 +127,59 @@ public class Claw extends SubsystemBase {
      * 
      * @param speed - Percent of clawMotor's speed (-1.0 to 1.0)
      */
-    public void setClaw(double speed) {
-        clawMotor.setPercentOutput(speed);
+    public void setCoralMotor(double speed) {
+        coralMotor.setPercentOutput(speed);
+    }
+
+
+    public void setAlgaeMotor(double speed) {
+        algaeMotor.setPercentOutput(speed);
     }
 
     public void stopClaw() {
-        setClaw(0);
+        setCoralMotor(0);
+        setAlgaeMotor(0);
+    }
+
+    public void stopCoralMotor(){
+        setCoralMotor(0);
+    }
+
+    public void stopAlgaeMotor(){
+        setAlgaeMotor(0);
     }
 
     /**
      * Sets clawMotor speed to the designated percent output listed in the
      * ClawConstants class
      */
-    public void outtakePiece(double speed){
-        setClaw(speed);
+    public void outtakeCoral(){
+        setCoralMotor(ClawConstants.kCoralOuttakeSpeed);
     }
 
-    public void intakePiece(double speed){
-        setClaw(speed);
+    public void outtakeCoralL1(){
+        setCoralMotor(ClawConstants.kCoralL1OuttakeSpeed);
+    }
+
+    // speed argument used for fast and slow coral intake speeds
+    public void intakeCoral(double speed){
+        setCoralMotor(speed);
+    }
+
+    public void outtakeAlgae(){
+        setAlgaeMotor(ClawConstants.kAlgaeOuttakeSpeed);
+    }
+
+    public void intakeAlgae(){
+        setAlgaeMotor(ClawConstants.kAlgaeIntakeSpeed);
     }
 
     public void holdAlgae() {
-        setClaw(ClawConstants.kAlgaeHoldSpeed);
+        setAlgaeMotor(ClawConstants.kAlgaeHoldSpeed);
     }
 
     public void incrementClaw() {
-        clawMotor.setPositionVoltage(clawMotor.getPosition() + ClawConstants.kCoralPositionIncrement);
+        coralMotor.setPositionVoltage(coralMotor.getPosition() + ClawConstants.kCoralPositionIncrement);
     }
 
     // Accessor methods
@@ -188,29 +221,45 @@ public class Claw extends SubsystemBase {
     /**
      * @return claw motor stator current draw (amps)
      */
-    public double getMotorStatorCurrent() {
-        return clawMotor.getStatorCurrent();
+    public double getCoralMotorStatorCurrent() {
+        return coralMotor.getStatorCurrent();
+    }
+
+    public double getAlgaeMotorStatorCurrent(){
+        return algaeMotor.getStatorCurrent();
     }
 
     /**
      * @return claw motor supply current draw (amps)
      */
-    public double getMotorSupplyCurrent() {
-        return clawMotor.getSupplyCurrent();
+    public double getCoralMotorSupplyCurrent() {
+        return coralMotor.getSupplyCurrent();
+    }
+
+    public double getAlgaeMotorSupplyCurrent(){
+        return algaeMotor.getSupplyCurrent();
     }
 
     /**
      * @return position of clawMotor encoder (mechanism rotations)
      */
-    public double getPosition() {
-        return clawMotor.getPosition();
+    public double getCoralMotorPosition() {
+        return coralMotor.getPosition();
+    }
+
+    public double getAlgaeMotorPosition(){
+        return algaeMotor.getPosition();
     }
 
     /**
      * @return velocity of clawMotor encoder (rotor rotations per minute)
      */
-    public double getVelocity() {
-        return clawMotor.getRPM();
+    public double getCoralMotorVelocity() {
+        return coralMotor.getRPM();
+    }
+
+    public double getAlgaeMotorVelocity(){
+        return algaeMotor.getRPM();
     }
 
     /**
@@ -228,8 +277,12 @@ public class Claw extends SubsystemBase {
         return getBottomSensor() && getTopSensor();
     }
 
-    public double getClawMotorTemperature() {
-        return clawMotor.getMotorTemperature();
+    public double getCoralMotorTemperature() {
+        return coralMotor.getMotorTemperature();
+    }
+
+    public double getAlgaeMotorTemperature() {
+        return algaeMotor.getMotorTemperature();
     }
 
     @Override
@@ -238,10 +291,10 @@ public class Claw extends SubsystemBase {
         bottomSensorData.setBoolean(getBottomSensor()); 
         topSensorDistance.setNumber(getTopSensorDistance());
         bottomSensorDistance.setNumber(getBottomSensorDistance());
-        motorTemp.setNumber(getClawMotorTemperature()); 
-        motorCurrent.setNumber(getMotorSupplyCurrent());
-        position.setNumber(getPosition()); 
-        velocity.setNumber(getVelocity());
+        motorTemp.setNumber(getCoralMotorTemperature()); 
+        motorCurrent.setNumber(getCoralMotorSupplyCurrent());
+        position.setNumber(getCoralMotorPosition()); 
+        velocity.setNumber(getCoralMotorVelocity());
         hasAlgae.setBoolean(getAlgaeSensor()); 
         SmartDashboard.putNumber("Algae Sensor Distance", getAlgaeSensorDistance());
     }
