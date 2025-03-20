@@ -113,7 +113,7 @@ public class OperatorOI {
 
         Trigger dpadUpTrigger = new Trigger(() -> controller.getPOV() == 0);
         dpadUpTrigger.onTrue(new InstantCommand(() -> {
-            if (Arrays.asList(PRESTAGE, BARGE_PRESTAGE, L1_PREP, L2_PREP, L3_PREP, L4_PREP).contains(superstructure.getCurrentState()))
+            if (Arrays.asList(BARGE_PRESTAGE, L3_PREP, L4_PREP).contains(superstructure.getCurrentState()))
                     superstructure.requestState(SuperstructureState.BARGE_PREP);
                 else
                     superstructure.requestState(SuperstructureState.BARGE_PRESTAGE);
