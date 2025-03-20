@@ -70,6 +70,7 @@ public class Superstructure extends SubsystemBase {
     }
 
     public enum ScoringFlag {
+        L1FLAG,
         L2FLAG,
         L3FLAG,
         L4FLAG
@@ -124,16 +125,36 @@ public class Superstructure extends SubsystemBase {
         isManualControl = isTrue;
     }
 
+    public void setL1Flag(){
+        scoringFlag = ScoringFlag.L1FLAG;
+        SmartDashboard.putBoolean("L1 Flag", true);
+        SmartDashboard.putBoolean("L2 Flag", false);
+        SmartDashboard.putBoolean("L3 Flag", false);
+        SmartDashboard.putBoolean("L4 Flag", false);   
+    }
+
     public void setL2Flag(){
         scoringFlag = ScoringFlag.L2FLAG;
+        SmartDashboard.putBoolean("L1 Flag", false);
+        SmartDashboard.putBoolean("L2 Flag", true);
+        SmartDashboard.putBoolean("L3 Flag", false);
+        SmartDashboard.putBoolean("L4 Flag", false); 
     }
 
     public void setL3Flag(){
         scoringFlag = ScoringFlag.L3FLAG;
+        SmartDashboard.putBoolean("L1 Flag", false);
+        SmartDashboard.putBoolean("L2 Flag", false);
+        SmartDashboard.putBoolean("L3 Flag", true);
+        SmartDashboard.putBoolean("L4 Flag", false); 
     }
 
     public void setL4Flag(){
         scoringFlag = ScoringFlag.L4FLAG;
+        SmartDashboard.putBoolean("L1 Flag", false);
+        SmartDashboard.putBoolean("L2 Flag", false);
+        SmartDashboard.putBoolean("L3 Flag", false);
+        SmartDashboard.putBoolean("L4 Flag", true); 
     }
 
     public ScoringFlag getScoringFlag(){
@@ -697,7 +718,7 @@ public class Superstructure extends SubsystemBase {
 
                 if (claw.getAlgaeSensor()) {
                     claw.holdAlgae();
-                    // requestState(PROCESSOR_PREP);
+                    requestState(STOW);
                 } else {
                     claw.intakeAlgae();
                     claw.stopCoralMotor();
@@ -729,7 +750,7 @@ public class Superstructure extends SubsystemBase {
                 
                 if (claw.getAlgaeSensor()) {
                     claw.holdAlgae();
-                    // requestState(PROCESSOR_PREP);
+                    requestState(STOW);
                 } else {
                     claw.intakeAlgae();
                     claw.stopCoralMotor();

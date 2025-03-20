@@ -428,9 +428,9 @@ public class AlignToReefBasisVector extends Command {
 
         // Auto Prep State Logic
         // TODO: create "auto prep" boolean logic
-        // boolean autoPrep = ;
+        boolean autoPrep = SmartDashboard.getBoolean("Align: Auto Prep", true);
 
-        if(!DriverStation.isAutonomousEnabled()){
+        if(!DriverStation.isAutonomousEnabled() && autoPrep){
             if(elapsedTime > 0.05 && (Superstructure.getInstance().getCurrentState() == SuperstructureState.PRESTAGE || Superstructure.getInstance().isReefPrepState()) && Superstructure.getInstance().getScoringFlag() == ScoringFlag.L2FLAG){
                 Superstructure.getInstance().requestState(SuperstructureState.L2_PREP);
             }

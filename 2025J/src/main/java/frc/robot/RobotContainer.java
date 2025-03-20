@@ -78,6 +78,12 @@ public class RobotContainer {
 
         SmartDashboard.putBoolean("Align: Smart Target Finding", true);
         SmartDashboard.putBoolean("Align: Auto Score", true);
+        SmartDashboard.putBoolean("Align: Auto Prep", true);
+
+        SmartDashboard.putBoolean("L1 Flag", false);
+        SmartDashboard.putBoolean("L2 Flag", false);
+        SmartDashboard.putBoolean("L3 Flag", false);
+        SmartDashboard.putBoolean("L4 Flag", true);
 
         // SmartDashboard.putNumber("RemoveAlgae: elevator fast", -0.6);
         // SmartDashboard.putNumber("RemoveAlgae: elevator slow", -0.3);

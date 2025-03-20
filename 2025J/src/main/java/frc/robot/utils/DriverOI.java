@@ -72,51 +72,35 @@ public class DriverOI {
         PSButton.onTrue(new InstantCommand(() -> Drivetrain.getInstance().resetGyro()));
 
         Trigger xButton = new JoystickButton(controller, PS4Controller.Button.kCross.value);
-        xButton.onTrue(new InstantCommand(() -> {
-            if (Arrays.asList(SuperstructureState.STOW).contains(superstructure.getCurrentState()))
-                superstructure.requestState(SuperstructureState.HP_INTAKE);
-            else
-                superstructure.requestState(SuperstructureState.STOW);
-        }));
+        xButton.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.STOW)));
 
         Trigger circleButton = new JoystickButton(controller, PS4Controller.Button.kCircle.value);
-        circleButton.onTrue(new InstantCommand(() -> superstructure.setL2Flag()));
-        // circleButton.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.L2_PREP)));
+        circleButton.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.HP_INTAKE)));
 
         Trigger squareButton = new JoystickButton(controller, PS4Controller.Button.kSquare.value);
-        squareButton.onTrue(new InstantCommand(() -> superstructure.setL3Flag()));
+        squareButton.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.ALGAE_GROUND_INTAKE)));
 
         Trigger triangleButton = new JoystickButton(controller, PS4Controller.Button.kTriangle.value);
-        // triangleButton.onTrue(new AlignAndScore(true)); //right align
-        triangleButton.onTrue(new InstantCommand(() -> superstructure.setL4Flag()));
-        // Claw.getInstance().stopClaw()));
+        triangleButton.onTrue(new InstantCommand(() -> superstructure.sendToScore()));
 
         Trigger muteButton = new JoystickButton(controller, 15);
-        // Set to climb
         muteButton.onTrue(new InstantCommand(() -> {
             Drivetrain.getInstance().resetTranslation(LimelightFrontMiddle.getInstance().getEstimatedPoseMT2().get().getTranslation());
         }));
 
         Trigger touchpadButton = new JoystickButton(controller, PS4Controller.Button.kTouchpad.value);
         touchpadButton.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.PRESTAGE)));
-        // touchpadButton.onTrue(new SequentialCommandGroup(
-        //     new InstantCommand(() -> {
-        //         SmartDashboard.putBoolean("is inside bad hexagon", CalculateReefTarget.insideBadHexagon(Drivetrain.getInstance().getPose()));
-        //     }),
-        //     new InstantCommand(() -> {
-        //         SmartDashboard.putNumber("align to tag", CalculateReefTarget.calculateTargetID());
-        //     })
-        // ));
 
+        // TODO: Set binding to enter climb mode
         Trigger L1Bumper = new JoystickButton(controller, PS4Controller.Button.kL1.value);
-        L1Bumper.onTrue(new InstantCommand(() -> superstructure.sendToScore()));
 
+        // TODO: Set binding to climb
         Trigger R1Bumper = new JoystickButton(controller, PS4Controller.Button.kR1.value);
-        R1Bumper.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.ALGAE_GROUND_INTAKE)));
-        // R1Bumper.whileTrue(new OrbitReef());
 
+        // DO NOT BIND: USED FOR ROTATION OF DRIVETRAIN
         Trigger L2Trigger = new JoystickButton(controller, PS4Controller.Button.kL2.value);
 
+        // DO NOT BIND: USED FOR ROTATION OF DRIVETRAIN
         Trigger R2Trigger = new JoystickButton(controller, PS4Controller.Button.kR2.value);
 
         Trigger L3Trigger = new JoystickButton(controller, PS4Controller.Button.kL3.value);

@@ -2,6 +2,7 @@ package frc.robot.utils;
 
 import static frc.robot.subsystems.Superstructure.SuperstructureState.L1_PREP;
 import static frc.robot.subsystems.Superstructure.SuperstructureState.L2_PREP;
+import static frc.robot.subsystems.Superstructure.SuperstructureState.BARGE_PRESTAGE;
 import static frc.robot.subsystems.Superstructure.SuperstructureState.PRESTAGE;
 import static frc.robot.subsystems.Superstructure.SuperstructureState.L3_PREP;
 import static frc.robot.subsystems.Superstructure.SuperstructureState.L4_PREP;
@@ -11,6 +12,7 @@ import java.util.Optional;
 
 import edu.wpi.first.wpilibj.PS4Controller;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -48,26 +50,34 @@ public class OperatorOI {
         controller = new PS4Controller(1);
 
         Trigger xButton = new JoystickButton(controller, PS4Controller.Button.kCross.value);
-        xButton.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.L1_PREP)));
+        xButton.onTrue(new ConditionalCommand(new InstantCommand(() -> superstructure.setL1Flag()), 
+            new InstantCommand(() -> superstructure.requestState(SuperstructureState.L1_PREP)), 
+            this::isAutoPrep));
 
         Trigger circleButton = new JoystickButton(controller, PS4Controller.Button.kCircle.value);
-        circleButton.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.L2_PREP)));
+        circleButton.onTrue(new ConditionalCommand(new InstantCommand(() -> superstructure.setL2Flag()), 
+            new InstantCommand(() -> superstructure.requestState(SuperstructureState.L2_PREP)), 
+            this::isAutoPrep));
 
         Trigger squareButton = new JoystickButton(controller, PS4Controller.Button.kSquare.value);
-        squareButton.onTrue(new InstantCommand(() -> {
-            if (Arrays.asList(PRESTAGE, L1_PREP, L2_PREP, L3_PREP, L4_PREP).contains(superstructure.getCurrentState()))
-                superstructure.requestState(SuperstructureState.L3_PREP);
-            else
-                superstructure.requestState(SuperstructureState.PRESTAGE);
-        }));
+        squareButton.onTrue(new ConditionalCommand(new InstantCommand(() -> superstructure.setL3Flag()), 
+            new InstantCommand(() -> {
+                if (Arrays.asList(PRESTAGE, L1_PREP, L2_PREP, L3_PREP, L4_PREP).contains(superstructure.getCurrentState()))
+                    superstructure.requestState(SuperstructureState.L3_PREP);
+                else
+                    superstructure.requestState(SuperstructureState.PRESTAGE);
+            }), 
+            this::isAutoPrep));
 
         Trigger triangleButton = new JoystickButton(controller, PS4Controller.Button.kTriangle.value);
-        triangleButton.onTrue(new InstantCommand(() -> {
-            if (Arrays.asList(PRESTAGE, L1_PREP, L2_PREP, L3_PREP, L4_PREP).contains(superstructure.getCurrentState()))
-                superstructure.requestState(SuperstructureState.L4_PREP);
-            else
-                superstructure.requestState(SuperstructureState.PRESTAGE);
-        }));
+        triangleButton.onTrue(new ConditionalCommand(new InstantCommand(() -> superstructure.setL4Flag()), 
+            new InstantCommand(() -> {
+                if (Arrays.asList(PRESTAGE, L1_PREP, L2_PREP, L3_PREP, L4_PREP).contains(superstructure.getCurrentState()))
+                    superstructure.requestState(SuperstructureState.L4_PREP);
+                else
+                    superstructure.requestState(SuperstructureState.PRESTAGE);
+            }), 
+            this::isAutoPrep));
 
         Trigger touchpadButton = new JoystickButton(controller, PS4Controller.Button.kTouchpad.value);
         touchpadButton.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.STOW)));
@@ -79,7 +89,6 @@ public class OperatorOI {
         // DO NOT DO NOT BIND ANYTHING TO THIS
         // THIS IS CHECKED FOR AUTOMATIC ALGAE REMOVAL FROM L4
         Trigger L1Bumper = new JoystickButton(controller, PS4Controller.Button.kL1.value);
-        // L1Bumper.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.BARGE_PREP)));
 
         Trigger R1Bumper = new JoystickButton(controller, PS4Controller.Button.kR1.value);
         R1Bumper.onTrue(new InstantCommand(() -> {
@@ -104,11 +113,10 @@ public class OperatorOI {
 
         Trigger dpadUpTrigger = new Trigger(() -> controller.getPOV() == 0);
         dpadUpTrigger.onTrue(new InstantCommand(() -> {
-            if (superstructure.getCurrentState() == SuperstructureState.BARGE_PRESTAGE) {
-                superstructure.requestState(SuperstructureState.BARGE_PREP);
-            } else {
-                superstructure.requestState(SuperstructureState.BARGE_PRESTAGE);
-            }
+            if (Arrays.asList(PRESTAGE, BARGE_PRESTAGE, L1_PREP, L2_PREP, L3_PREP, L4_PREP).contains(superstructure.getCurrentState()))
+                    superstructure.requestState(SuperstructureState.BARGE_PREP);
+                else
+                    superstructure.requestState(SuperstructureState.BARGE_PRESTAGE);
         }));
 
         Trigger dpadLeftTrigger = new Trigger(() -> controller.getPOV() == 270);
@@ -185,6 +193,10 @@ public class OperatorOI {
 
     public boolean dPadDownHeld() {
         return controller.getPOV() == 180;
+    }
+
+    public boolean isAutoPrep() {
+        return SmartDashboard.getBoolean("Align: Auto Prep", true);
     }
 
 }
