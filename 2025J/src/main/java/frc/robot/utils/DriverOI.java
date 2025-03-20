@@ -48,6 +48,11 @@ public class DriverOI {
     private Superstructure superstructure;
     private PS4Controller controller;
 
+    public enum DPadDirection {
+        NONE, FORWARDS, LEFT, RIGHT, BACKWARDS
+    };
+
+
     public DriverOI() {
         controller = new PS4Controller(0);
 
@@ -217,10 +222,6 @@ public class DriverOI {
         return controller.getR3Button();
     }
 
-    public boolean dPadDownHeld() {
-        return controller.getPOV() == 180;
-    }
-
     public double getForward() {
         double val = -controller.getRawAxis(PS4Controller.Axis.kLeftY.value);
         return Math.abs(val) < 0.1 ? 0 : val;
@@ -282,6 +283,41 @@ public class DriverOI {
 
     public Translation2d fromPolar(Rotation2d direction, double magnitude) {
         return new Translation2d(direction.getCos() * magnitude, direction.getSin() * magnitude);
+    }
+
+    public DPadDirection getDriverDPadInput() {
+        switch (controller.getPOV()) {
+            case 0:
+                return DPadDirection.FORWARDS;
+            case 90:
+                return DPadDirection.RIGHT;
+            case 270:
+                return DPadDirection.LEFT;
+            case 180:
+                return DPadDirection.BACKWARDS;
+            default:
+                return DPadDirection.NONE;
+        }
+    }
+
+    public Translation2d getCardinalDirection() {
+        switch (getDriverDPadInput()) {
+            case FORWARDS:
+                return new Translation2d(DriveConstants.kCardinalDirectionSpeedScale * DriveConstants.kMaxFloorSpeed,
+                        0.0);
+            case RIGHT:
+                return new Translation2d(0.0,
+                        -DriveConstants.kCardinalDirectionSpeedScale * DriveConstants.kMaxFloorSpeed);
+            case LEFT:
+                return new Translation2d(0.0,
+                        DriveConstants.kCardinalDirectionSpeedScale * DriveConstants.kMaxFloorSpeed);
+            case BACKWARDS:
+                return new Translation2d(-DriveConstants.kCardinalDirectionSpeedScale * DriveConstants.kMaxFloorSpeed,
+                        0.0);
+            default:
+                return new Translation2d(0.0, 0.0);
+        }
+
     }
 
 }

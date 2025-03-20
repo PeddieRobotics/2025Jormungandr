@@ -11,6 +11,7 @@ import frc.robot.subsystems.SwerveModule;
 import frc.robot.utils.Constants;
 import frc.robot.utils.Constants.FieldConstants;
 import frc.robot.utils.DriverOI;
+import frc.robot.utils.DriverOI.DPadDirection;
 
 import com.ctre.phoenix6.signals.PIDRefPIDErr_ClosedLoopModeValue;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -82,7 +83,12 @@ public class AlignToBarge extends Command {
             rotation = rotationPidController.calculate(rotationError) + Math.signum(rotationError) * rotationFF;
 
         
-        drivetrain.drive(DriverOI.getInstance().getSwerveTranslation(), rotation, false, null);
+        Translation2d translation = DriverOI.getInstance().getSwerveTranslation();
+
+        if (DriverOI.getInstance().getDriverDPadInput() != DPadDirection.NONE) {
+            translation = DriverOI.getInstance().getCardinalDirection();
+        }
+        drivetrain.drive(translation, rotation, false, null);
 
     }
 

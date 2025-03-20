@@ -119,6 +119,8 @@ public final class Constants {
         public static final double kSkidThreshold = 0.2;
         public static final double kDrivingDeadband = 0.05;
 
+        public static final double kCardinalDirectionSpeedScale = 0.1;
+
     }
 
     public static class IntakeConstants {
