@@ -42,8 +42,6 @@ public class RobotMap {
     public static final int ELEVATOR_CANCODER_ID = 52;
 
     // CLIMBER
-    public static final int CLIMBER_MAIN_MOTOR_ID = 60;
-    public static final int CLIMBER_SECONDARY_MOTOR_ID = 61;
-    
+    public static final int CLIMBER_MAIN_MOTOR_ID = 60;    
 
 }
