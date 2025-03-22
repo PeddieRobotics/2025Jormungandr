@@ -213,10 +213,10 @@ public final class Constants {
         public static final double kElevatorStowPosition = 0.0;
         public static final double kElevatorHPIntakePosition = 0.0;
         public static final double kElevatorGroundIntakePosition = 0.77;
-        public static final double kElevatorL1ScorePosition = 1.5;
+        public static final double kElevatorL1ScorePosition = 1.75;
         public static final double kElevatorL2ScorePosition = 3.7; //3.8;
         public static final double kElevatorL3ScorePosition = 7.05;
-        public static final double kElevatorPrestagePosition = 3.8;
+        public static final double kElevatorPrestagePosition = 3.3;
 
         // Comp Height
         // public static final double kElevatorL4ScorePosition = 12.45; 
@@ -496,7 +496,7 @@ public final class Constants {
         public static final double kCoralOuttakeSpeed = 0.75;
         public static final double kCoralSlowIntake = 0.4;
         // public static final double kCoralL1OuttakeSpeed = 0.4;
-        public static final double kCoralL1OuttakeSpeed = -0.8;
+        public static final double kCoralL1OuttakeSpeed = -0.7;
 
         public static final double kAlgaeIntakeSpeed = 1.0;
         public static final double kAlgaeOuttakeSpeed = -1.0;
@@ -512,6 +512,12 @@ public final class Constants {
         public static final double kClimberSupplyCurrentLimit = 40.0;
 
         public static final double kClimberReduction = 120.0 / 1.0;
+
+        //TODO: set values
+        public static final double kClimberRetractedPosition = 0.0;
+        public static final double kClimberDeployedPosition = 0.0;
+        public static final double kClimberRetractedPercentOutput = 0.0;
+        public static final double kClimberDeployedPercentOutput = 0.0;
 
     }
 

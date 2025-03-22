@@ -20,6 +20,9 @@ public class Climber extends SubsystemBase {
         climberMotor = new Kraken(RobotMap.CLIMBER_MAIN_MOTOR_ID, RobotMap.CANIVORE_BUS);
         climberMotor.setEncoder(0.0);
 
+        climberMotor.setSupplyCurrentLimit(40.0);
+        climberMotor.setStatorCurrentLimit(40.0);
+
         climberMotor.setInverted(false);
         climberMotor.setBrake();
 
@@ -33,8 +36,34 @@ public class Climber extends SubsystemBase {
         return instance;
     }
 
+    public void retractClimber(){
+        if(climbRetracted()){
+           setSpeed(0.0); 
+        }else{
+            setSpeed(ClimberConstants.kClimberRetractedPercentOutput);
+        }
+    }
+
+    public void deployClimber(){
+        if(climbDeployed()){
+            setSpeed(ClimberConstants.kClimberDeployedPercentOutput);
+        }else{
+            setSpeed(0.0);
+        }
+    }
+
+    public boolean climbRetracted(){
+        return getClimberPosition() < ClimberConstants.kClimberRetractedPosition;
+
+    }
+
+    public boolean climbDeployed(){
+        return getClimberPosition() > ClimberConstants.kClimberDeployedPosition;
+    }
+
     /**
-     * Sets leftClimberMotor speed to a designated percent output (open loop control)
+     * Sets leftClimberMotor spe
+     * ed to a designated percent output (open loop control)
      * ex: input of 0.5 will run 50% of its max speed forward
      * 
      * @param speed - Percent of leftClimberMotor's speed [-1.0, 1.0]

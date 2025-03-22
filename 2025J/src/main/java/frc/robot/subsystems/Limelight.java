@@ -173,14 +173,19 @@ public abstract class Limelight extends SubsystemBase {
     //                 Pose/Translation Getters
     // ========================================================
 
-    private Optional<PoseEstimate> getPoseEstimateMT1() {
-        PoseEstimate poseEstimate = LimelightHelpers.getBotPoseEstimate_wpiBlue(limelightName);
-        return poseEstimate == null ? Optional.empty() : Optional.of(poseEstimate);
-    }
+    // private Optional<PoseEstimate> getPoseEstimateMT1() {
+    //     PoseEstimate poseEstimate = LimelightHelpers.getBotPoseEstimate_wpiBlue(limelightName);
+    //     return poseEstimate == null ? Optional.empty() : Optional.of(poseEstimate);
+    // }
 
-    public Optional<Pose2d> getEstimatedPoseMT1() {
-        PoseEstimate poseEstimate = LimelightHelpers.getBotPoseEstimate_wpiBlue(limelightName);
-        return poseEstimate == null ? Optional.empty() : Optional.of(poseEstimate.pose);
+    // public Optional<Pose2d> getEstimatedPoseMT1() {
+    //     PoseEstimate poseEstimate = LimelightHelpers.getBotPoseEstimate_wpiBlue(limelightName);
+    //     return poseEstimate == null ? Optional.empty() : Optional.of(poseEstimate.pose);
+    // }
+
+    private Optional<PoseEstimate> getPoseEstimateMT2() {
+        PoseEstimate poseEstimate = LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2(limelightName);
+        return poseEstimate == null ? Optional.empty() : Optional.of(poseEstimate);
     }
 
     public Optional<Pose2d> getEstimatedPoseMT2() {
@@ -192,7 +197,7 @@ public abstract class Limelight extends SubsystemBase {
         if (!hasTarget())
             return;
 
-        Optional<PoseEstimate> estimatedPoseEstimate = getPoseEstimateMT1();
+        Optional<PoseEstimate> estimatedPoseEstimate = getPoseEstimateMT2();
         if (!estimatedPoseEstimate.isPresent())
             return;
         Pose2d estimatedPose = estimatedPoseEstimate.get().pose;
@@ -257,7 +262,7 @@ public abstract class Limelight extends SubsystemBase {
 
         Pose2d tag = aprilTagPose.get().toPose2d();
 
-        Optional<PoseEstimate> estimatedPoseEstimate = getPoseEstimateMT1();
+        Optional<PoseEstimate> estimatedPoseEstimate = getPoseEstimateMT2();
         if (!estimatedPoseEstimate.isPresent())
             return 0;
         Pose2d robotPose = estimatedPoseEstimate.get().pose;

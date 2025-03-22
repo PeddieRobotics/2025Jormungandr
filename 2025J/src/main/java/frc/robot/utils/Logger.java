@@ -28,7 +28,6 @@ import frc.robot.subsystems.HPIntake;
 import frc.robot.subsystems.Limelight;
 import frc.robot.subsystems.LimelightBack;
 import frc.robot.subsystems.LimelightFrontLeft;
-import frc.robot.subsystems.LimelightFrontMiddle;
 import frc.robot.subsystems.LimelightFrontRight;
 import frc.robot.subsystems.Superstructure;
 import frc.robot.subsystems.SwerveModule;
@@ -166,7 +165,7 @@ public class Logger {
         // Limelight Logs
         limelights = new Limelight[] { 
             LimelightFrontLeft.getInstance(),
-            LimelightFrontMiddle.getInstance(),
+            // LimelightFrontMiddle.getInstance(),
             LimelightFrontRight.getInstance(),
             LimelightBack.getInstance()
         };

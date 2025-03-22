@@ -18,6 +18,7 @@ import java.util.Optional;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import frc.robot.commands.AlignToBarge;
+import frc.robot.commands.AlignToCage;
 import frc.robot.commands.HomeElevator;
 import frc.robot.commands.WheelRadiusCharacterization;
 import frc.robot.commands.ReefCommands.AlignToHP;
@@ -30,7 +31,8 @@ import frc.robot.commands.ReefCommands.OrbitReef;
 // import frc.robot.commands.ScoreCommands.AlignAndScore;
 import frc.robot.subsystems.Claw;
 import frc.robot.subsystems.Drivetrain;
-import frc.robot.subsystems.LimelightFrontMiddle;
+import frc.robot.subsystems.HPIntake;
+import frc.robot.subsystems.LimelightFrontLeft;
 import frc.robot.utils.Constants.AlignmentConstants;
 import frc.robot.utils.Constants.AlignmentConstants.HPAlign;
 import frc.robot.utils.Constants.AlignmentConstants.ReefAlign;
@@ -91,7 +93,8 @@ public class DriverOI {
 
         Trigger muteButton = new JoystickButton(controller, 15);
         muteButton.onTrue(new InstantCommand(() -> {
-            Drivetrain.getInstance().resetTranslation(LimelightFrontMiddle.getInstance().getEstimatedPoseMT2().get().getTranslation());
+            Drivetrain.getInstance().resetTranslation(LimelightFrontLeft.getInstance().getEstimatedPoseMT2().get().getTranslation());
+            // Drivetrain.getInstance().resetTranslation(LimelightFrontMiddle.getInstance().getEstimatedPoseMT2().get().getTranslation());
         }));
 
         Trigger touchpadButton = new JoystickButton(controller, PS4Controller.Button.kTouchpad.value);
@@ -99,9 +102,12 @@ public class DriverOI {
 
         // TODO: Set binding to enter climb mode
         Trigger L1Bumper = new JoystickButton(controller, PS4Controller.Button.kL1.value);
+        L1Bumper.onTrue(new InstantCommand(() -> HPIntake.getInstance().extendLinearActuator()));
 
         // TODO: Set binding to climb
         Trigger R1Bumper = new JoystickButton(controller, PS4Controller.Button.kR1.value);
+        R1Bumper.onTrue(new InstantCommand(() -> HPIntake.getInstance().retractLinearActuator()));
+        // R1Bumper.whileTrue(new AlignToCage());
 
         // DO NOT BIND: USED FOR ROTATION OF DRIVETRAIN
         Trigger L2Trigger = new JoystickButton(controller, PS4Controller.Button.kL2.value);
@@ -110,38 +116,37 @@ public class DriverOI {
         Trigger R2Trigger = new JoystickButton(controller, PS4Controller.Button.kR2.value);
 
         Trigger L3Trigger = new JoystickButton(controller, PS4Controller.Button.kL3.value);
-        L3Trigger.whileTrue(
+        L3Trigger.whileTrue(new ConditionalCommand(
+            new AlignToBarge(), 
             new ConditionalCommand(
-                new AlignToBarge(), 
-                new ConditionalCommand(
-                    new SequentialCommandGroup(
-                        new AlignToReefBasisVector(AlignmentConstants.AlignmentDestination.LEFT, ReefAlign.kMaxSpeed, 0, 0),
-                            new ConditionalCommand(
+                new SequentialCommandGroup(
+                    new AlignToReefBasisVector(AlignmentConstants.AlignmentDestination.LEFT, ReefAlign.kMaxSpeed, 0, 0),
+                    new ConditionalCommand(
+                        new SequentialCommandGroup(
+                            new WaitCommand(0.5),
+                            new ParallelCommandGroup(
+                                new AlignToReefBasisVector(AlignmentConstants.AlignmentDestination.MIDDLE, ReefAlign.kMaxSpeed, 0, 0),
                                 new SequentialCommandGroup(
-                                    new WaitCommand(0.5),
-                                    new ParallelCommandGroup(
-                                        new AlignToReefBasisVector(AlignmentConstants.AlignmentDestination.MIDDLE, ReefAlign.kMaxSpeed, 0, 0),
-                                        new SequentialCommandGroup(
-                                            new WaitCommand(0.25),
-                                            new InstantCommand(() -> {
-                                                Optional<Boolean> high = superstructure.isHighAlgae();
-                                                if (high.isEmpty() || high.get())
-                                                    superstructure.requestState(SuperstructureState.REEF2_ALGAE_INTAKE);
-                                                else
-                                                    superstructure.requestState(SuperstructureState.REEF1_ALGAE_INTAKE);
-                                            })
-                                        )
-                                    )
-                                ), 
-                                new InstantCommand(), 
-                                OperatorOI.getInstance()::getLeftBumperHeld)
-                    ),
+                                    new WaitCommand(0.25),
+                                    new InstantCommand(() -> {
+                                        Optional<Boolean> high = superstructure.isHighAlgae();
+                                        if (high.isEmpty() || high.get())
+                                            superstructure.requestState(SuperstructureState.REEF2_ALGAE_INTAKE);
+                                        else
+                                            superstructure.requestState(SuperstructureState.REEF1_ALGAE_INTAKE);
+                                    })
+                                )
+                            )
+                        ), 
+                        new InstantCommand(), 
+                        OperatorOI.getInstance()::getLeftBumperHeld
+                    )
+                ),
                 new AlignToReefBasisVector(AlignmentConstants.AlignmentDestination.MIDDLE, ReefAlign.kMaxSpeed, 0, 0), 
                 Claw.getInstance()::eitherCoralSensorTriggered
             ),
             Claw.getInstance()::getAlgaeSensor
-            )
-        );
+        ));
 
         Trigger R3Trigger = new JoystickButton(controller, PS4Controller.Button.kR3.value);
         R3Trigger.whileTrue(new ConditionalCommand(
@@ -164,8 +169,9 @@ public class DriverOI {
                             )
                         )
                     ),
-                new InstantCommand(),
-                OperatorOI.getInstance()::getLeftBumperHeld)
+                    new InstantCommand(),
+                    OperatorOI.getInstance()::getLeftBumperHeld
+                )
             ),
             new AlignToHPBasisVector(HPAlign.kMaxSpeed, HPAlign.kLateralOffset, HPAlign.kBackOffset, 0, 0),
             Claw.getInstance()::eitherCoralSensorTriggered

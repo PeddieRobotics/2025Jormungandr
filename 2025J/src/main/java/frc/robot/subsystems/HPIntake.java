@@ -16,15 +16,6 @@ public class HPIntake extends SubsystemBase{
     public HPIntake() {
         linearActuator = new Servo(RobotMap.HP_INTAKE_SERVO_ID);
         linearActuator.setBoundsMicroseconds(2000, 1800, 1500, 1200, 1000);
-
-        // rollerMotorStatorCurrent = new LiveData(getRollerMotorStatorCurrent(), "HP Intake Roller Motor Stator Current");
-        // rollerMotorTemperature = new LiveData(rollerMotor.getMotorTemperature(), "HP Intake Roller Motor Temp");
-        // pivotMotorStatorCurrent = new LiveData(getPivotMotorStatorCurrent(), "HP Intake Pivot Motor Stator Current");
-        // pivotMotorTemperature = new LiveData(pivotMotor.getMotorTemperature(), "HP Pivot Motor Temp");
-        // intakePosition = new LiveData(getIntakePosition(), "HP Intake Position");
-        // intakeVelocity = new LiveData(getIntakeVelocity(), "HP Intake Velocity");
-        // rollerMotorSupplyCurrent = new LiveData(getRollerMotorSupplyCurrent(), "HP Intake Roller Supply Current"); 
-        // pivotMotorSupplyCurrent = new LiveData(getPivotMotorSupplyCurrent(), "HP Intake Pivot Motor Supply Current"); 
     }
 
     /**

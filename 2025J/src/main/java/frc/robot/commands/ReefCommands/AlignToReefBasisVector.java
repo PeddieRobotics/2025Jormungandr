@@ -16,7 +16,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.LimelightFrontLeft;
-import frc.robot.subsystems.LimelightFrontMiddle;
 import frc.robot.subsystems.LimelightFrontRight;
 import frc.robot.subsystems.Superstructure;
 import frc.robot.subsystems.Superstructure.ScoringFlag;
@@ -74,7 +73,7 @@ public class AlignToReefBasisVector extends Command {
             case LEFT -> {
                 cameras = new Limelight[] {
                     LimelightFrontRight.getInstance(),
-                    LimelightFrontMiddle.getInstance(),
+                    // LimelightFrontMiddle.getInstance(),
                     LimelightFrontLeft.getInstance(),
                 };
                 commandName = "left align";
@@ -82,7 +81,7 @@ public class AlignToReefBasisVector extends Command {
             }
             case MIDDLE -> {
                 cameras = new Limelight[] {
-                    LimelightFrontMiddle.getInstance(),
+                    // LimelightFrontMiddle.getInstance(),
                     LimelightFrontLeft.getInstance(),
                     LimelightFrontRight.getInstance(),
                 };
@@ -92,7 +91,7 @@ public class AlignToReefBasisVector extends Command {
             case RIGHT -> {
                 cameras = new Limelight[] {
                     LimelightFrontLeft.getInstance(),
-                    LimelightFrontMiddle.getInstance(),
+                    // LimelightFrontMiddle.getInstance(),
                     LimelightFrontRight.getInstance(),
                 };
                 commandName = "right align";
@@ -218,7 +217,7 @@ public class AlignToReefBasisVector extends Command {
             desiredTarget = CalculateReefTarget.calculateTargetID();
         }
         else
-            desiredTarget = LimelightFrontMiddle.getInstance().getTargetID();
+            desiredTarget = LimelightFrontLeft.getInstance().getTargetID();
 
         SmartDashboard.putNumber("Align: Desired Target", desiredTarget);
 
@@ -451,7 +450,7 @@ public class AlignToReefBasisVector extends Command {
             Superstructure.getInstance().sendToScore();
             SmartDashboard.putBoolean("Align: fire gamepiece", true);
             if(Superstructure.getInstance().isReefScoringState()){
-                LimelightFrontMiddle.getInstance().flashLED();
+                // LimelightFrontMiddle.getInstance().flashLED();
                 LimelightBack.getInstance().flashLED();
                 SmartDashboard.putNumber("Align: Elapsed Time", elapsedTime);
             }

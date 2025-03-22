@@ -325,9 +325,14 @@ public class Superstructure extends SubsystemBase {
                         EJECT_ALGAE,
                         EJECT_CORAL)
                         .contains(requestedSystemState)) {
-                    arm.setArmPositionMotionMagicVoltage(0.17);
-                    if(arm.isAtPosition(0.17)){
+
+                    if(requestedSystemState == L1_SCORE){
                         systemState = requestedSystemState;
+                    } else{
+                        arm.setArmPositionMotionMagicVoltage(0.17);
+                        if(arm.isAtPosition(0.17)){
+                            systemState = requestedSystemState;
+                        }
                     }
                 }
             }
@@ -643,10 +648,15 @@ public class Superstructure extends SubsystemBase {
                         EJECT_ALGAE,
                         EJECT_CORAL)
                         .contains(requestedSystemState)) {
-                    arm.setArmPositionMotionMagicVoltage(0.17);
-                    if(arm.isAtPosition(0.17)){
+
+                    if(requestedSystemState == PROCESSOR_SCORE){
                         systemState = requestedSystemState;
-                    }                
+                    } else{
+                        arm.setArmPositionMotionMagicVoltage(0.17);
+                        if(arm.isAtPosition(0.17)){
+                            systemState = requestedSystemState;
+                        }       
+                    }         
                 }
             }
 

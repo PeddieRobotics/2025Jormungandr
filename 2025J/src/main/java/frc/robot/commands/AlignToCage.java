@@ -1,200 +1,122 @@
-// // Copyright (c) FIRST and other WPILib contributors.
-// // Open Source Software; you can modify and/or share it under the terms of
-// // the WPILib BSD license file in the root directory of this project.
+package frc.robot.commands;
 
-// package frc.robot.commands;
+import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.LimelightFrontMiddle;
+import frc.robot.utils.DriverOI;
 
-// import frc.robot.subsystems.Drivetrain;
-// import frc.robot.subsystems.Limelight;
-// import frc.robot.subsystems.LimelightFrontMiddle;
-// import frc.robot.subsystems.SwerveModule;
-// import frc.robot.utils.Constants;
-// import frc.robot.utils.Constants.FieldConstants;
-// import frc.robot.utils.DriverOI;
+public class AlignToCage extends Command {
+    private Drivetrain drivetrain;
+    private LimelightFrontMiddle ll;
 
-// import com.ctre.phoenix6.signals.PIDRefPIDErr_ClosedLoopModeValue;
-// import com.fasterxml.jackson.databind.DeserializationFeature;
+    private PIDController rotationController, yController;
+    private double rotationP, rotationI, rotationD, rotationFF, rotationLowerP, rotationUseLowerPThreshold;
+    private double yP, yI, yD, yFF;
+    private double rotationThreshold, yThreshold;
+    private double desiredAngle, desiredY;
+    private double rotationError;
 
-// import edu.wpi.first.math.controller.PIDController;
-// import edu.wpi.first.math.geometry.Translation2d;
-// import edu.wpi.first.wpilibj.Timer;
-// import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-// import edu.wpi.first.wpilibj2.command.Command;
+    public AlignToCage() {
+        drivetrain = Drivetrain.getInstance();
+        ll = LimelightFrontMiddle.getInstance();
 
-// /** An example command that uses an example subsystem. */
-// public class AlignToCage extends Command {
-//     private Drivetrain drivetrain;
-//     private DriverOI oi;
-//     //TODO: not right camera
-//     private LimelightFrontMiddle shooterCam;
+        rotationP = 0.08;
+        rotationI = 0.0;
+        rotationD = 0.0;
+        rotationFF = 0.0;
+        rotationThreshold = 0.5;
+        rotationLowerP = 0.06;
+        rotationUseLowerPThreshold = 1.5;
+        rotationController = new PIDController(rotationP, rotationI, rotationD);
+        rotationController.enableContinuousInput(-180.0, 180.0);
 
-//     private PIDController rotationPidController, translationPidController, distancePidController;
-//     private double rotationUseLowerPThreshold, rotationThresholdP;
-//     private double translationThreshold, rotationThreshold;
-//     private double desiredAngle;
-//     private double translationP, translationI, translationD, translationFF;
-//     private double rotationP, rotationI, rotationD, rotationFF;
-//     private double txValue, rotationError, distanceError;
-//     private double startTime;
-//     private double desiredTranslation;
-//     private Translation2d translation;
-//     private boolean isAuto;
+        yP = 0.25;
+        yI = 0.0;
+        yD = 0.0;
+        yFF = 0.0;
+        yThreshold = 0.1;
+        yController = new PIDController(yP, yI, yD);
 
-//     // private Logger logger;
+        desiredAngle = 180.0;
+        desiredY = 0.0;
+
+        rotationError = 1000;
+
+        SmartDashboard.putNumber("CageAlign: rotationP", rotationP);
+        SmartDashboard.putNumber("CageAlign: rotationI", rotationI);
+        SmartDashboard.putNumber("CageAlign: rotationD", rotationD);
+        SmartDashboard.putNumber("CageAlign: rotationFF", rotationFF);
+        SmartDashboard.putNumber("CageAlign: rotationThreshold", rotationThreshold);
+        SmartDashboard.putNumber("CageAlign: rotationLowerP", rotationLowerP);
+        SmartDashboard.putNumber("CageAlign: rotationUseLowerPThreshold", rotationUseLowerPThreshold);
+
+        SmartDashboard.putNumber("CageAlign: yP", yP);
+        SmartDashboard.putNumber("CageAlign: yI", yI);
+        SmartDashboard.putNumber("CageAlign: yD", yD);
+        SmartDashboard.putNumber("CageAlign: yFF", yFF);
+        SmartDashboard.putNumber("CageAlign: yThreshold", yThreshold);
+
+        SmartDashboard.putNumber("CageAlign: desiredAngle", desiredAngle);
+        SmartDashboard.putNumber("CageAlign: desiredY", desiredY);
+    }
+
+    @Override
+    public void initialize() {
+
+    }
+
+    @Override
+    public void execute() {
+        rotationP = SmartDashboard.getNumber("CageAlign: rotationP", rotationP);
+        rotationI = SmartDashboard.getNumber("CageAlign: rotationI", rotationI);
+        rotationD = SmartDashboard.getNumber("CageAlign: rotationD", rotationD);
+        rotationFF = SmartDashboard.getNumber("CageAlign: rotationFF", rotationFF);
+        rotationThreshold = SmartDashboard.getNumber("CageAlign: rotationThreshold", rotationThreshold);
+        rotationLowerP = SmartDashboard.getNumber("CageAlign: rotationLowerP", rotationLowerP);
+        rotationUseLowerPThreshold = SmartDashboard.getNumber("CageAlign: rotationUseLowerPThreshold", rotationUseLowerPThreshold);
+
+        yP = SmartDashboard.getNumber("CageAlign: yP", yP);
+        yI = SmartDashboard.getNumber("CageAlign: yI", yI);
+        yD = SmartDashboard.getNumber("CageAlign: yD", yD);
+        yFF = SmartDashboard.getNumber("CageAlign: yFF", yFF);
+        yThreshold = SmartDashboard.getNumber("CageAlign: yThreshold", yThreshold);
+
+        desiredAngle = SmartDashboard.getNumber("CageAlign: desiredAngle", desiredAngle);
+        desiredY = SmartDashboard.getNumber("CageAlign: desiredY", desiredY);
+
+        yController.setPID(yP, yI, yD);
     
-//     //private double constantSpeedAuto;
+        if (Math.abs(rotationError) < rotationUseLowerPThreshold)
+            rotationController.setP(rotationLowerP);
+        else
+            rotationController.setP(rotationP);
+        rotationController.setI(rotationI);
+        rotationController.setD(rotationD);
 
-//     /**
-//      * Creates a new ExampleCommand.
-//      *
-//      * @param subsystem The subsystem used by this command.
-//      */
-//     public AlignToCage(boolean isAuto) {
-//         this.isAuto = isAuto;
+        rotationError = drivetrain.getHeading() - desiredAngle;
 
-//         drivetrain = Drivetrain.getInstance();
-//         shooterCam = LimelightFrontMiddle.getInstance();
-//         //logger = Logger.getInstance();
+        double rotation = 0;
+        if (Math.abs(rotationError) > rotationThreshold)
+          rotation = rotationController.calculate(rotationError) + Math.signum(rotationError) * rotationFF;
 
-//         desiredAngle = 0;
-//         desiredTranslation = 0.07;
-        
-//         translationP = 0.25;
-//         translationI = 0;
-//         translationD = 0;
-//         translationFF = 0.001;
-//         translationPidController = new PIDController(translationP, translationI , translationD);
+        double tx = ll.getTx(), yInput = 0;
+        if (Math.abs(tx) > yThreshold)
+            yInput = yController.calculate(tx) + Math.signum(tx) * yFF;
+  
+        double xDriverInput = DriverOI.getInstance().getForward();
+        drivetrain.drive(new Translation2d(xDriverInput, yInput), rotation, false, null);
+    }
 
-//         rotationP = 0.1;
-//         rotationI = 0.0;
-//         rotationD = 0.0;
-//         rotationFF = 0.0;
-//         rotationThresholdP = 0.04;
-//         rotationPidController = new PIDController(rotationP, rotationI, rotationD);
+    @Override
+    public void end(boolean interrupted) {
 
-//         rotationThreshold = 1;
-//         translationThreshold = 0.0254;
-//         rotationUseLowerPThreshold = 1.5;
-    
+    }
 
-//         translation = new Translation2d(0, 0);
-
-//         //constantSpeedAuto = 0.5;
-
-//         //SmartDashboard.putNumber("Constant Speed Auto", constantSpeedAuto);
-
-//         // Use addRequirements() here to declare subsystem dependencies.
-//         addRequirements(drivetrain);
-//     }
-
-//     // Called when the command is initially scheduled.
-//     @Override
-//     public void initialize() {
-//         oi = DriverOI.getInstance();
-
-//         desiredAngle = FieldConstants.kCageDesiredAngle;
-
-//         translation = new Translation2d(0, 0);
-
-//         startTime = Timer.getFPGATimestamp();
-//     }
-
-
-//     // Called every time the scheduler runs while the command is scheduled.
-//     @Override
-//     public void execute() {
-//         shooterCam.setPipeline(drivetrain.getPipelineNumber());
-//         double distanceFromCage = shooterCam.getFilteredDistanceTy();
-
-//         //TODO: getHeading is in clockwise positive, should be counterclockwise on 2025j
-//         rotationError = desiredAngle + drivetrain.getHeading();
-//         double desiredTx = drivetrain.getHeading() - desiredAngle; // = gyro - desiredAngle
-    
-//         // set rotation PID controller
-//         if(Math.abs(rotationError) < rotationUseLowerPThreshold)
-//             rotationPidController.setP(rotationThresholdP);
-//         else
-//             rotationPidController.setP(rotationP);
-//         rotationPidController.setI(rotationI);
-//         rotationPidController.setD(rotationD);
-
-//         // set translation PID controller
-//         translationPidController.setPID(translationP, translationI, translationD);
-        
-//         double horizontalTranslation = 0;
-//         double forBackTranslation = oi.getForward();
-//         if (shooterCam.hasTarget()) {
-//             txValue = shooterCam.getTx();
-            
-//             double translationError =    txValue - desiredTx;
-            
-//             SmartDashboard.putNumber("Translation Error", translationError);
-
-//             if (Math.abs(translationError) > translationThreshold)
-//                 horizontalTranslation = translationPidController.calculate(translationError) + Math.signum(translationError) * translationFF;
-
-//             translation = new Translation2d(forBackTranslation, horizontalTranslation/5);
-
-//             //logger.cmdTranslationEntry.append(translationError);
-//         }
-
-//         SmartDashboard.putNumber("Rotation Error", rotationError);
-//         //logger.cmdRotationEntry.append(rotationError);
-
-//         // calculate rotation
-//         double rotation = 0;
-//         if (Math.abs(rotationError) > rotationThreshold)
-//             rotation = rotationPidController.calculate(rotationError) + Math.signum(rotationError) * rotationFF;
-
-//         // calculate forward-backward translation (a dot b)
-//         // double b1 = -oi.getStrafe();
-//         // double b2 = oi.getForward();
-//         // double forBackTranslation = (a1*b1 + a2*b2) * Constants.DriveConstants.kMaxFloorSpeed;
-
-//         //constantSpeedAuto = SmartDashboard.getNumber("Constant Speed Auto", constantSpeedAuto);
-
-//         // logger.cmdCommandXEntry.append(translation.getX());
-//         // logger.cmdCommandYEntry.append(translation.getY());
-//         // logger.cmdCommandRotationEntry.append(rotation);
-        
-//         // double translateX = translation.getX();
-//         // double translateY = translation.getY();
-//         //
-//         // double translateX_sgn = Math.signum(translateX);
-//         // double translateY_sgn = Math.signum(translateY);
-//         // double desaturatedX = Math.min(Math.abs(translateX), 1);
-//         // double desaturatedY = Math.min(Math.abs(translateY), 1);
-//         // translation = new Translation2d(translateX_sgn * desaturatedX, translateY_sgn * desaturatedY);
-
-//         drivetrain.drive(translation, rotation, false, null);
-
-//     }
-
-//     // Called once the command ends or is interrupted.
-//     @Override
-//     public void end(boolean interrupted) {
-//         double elapsedTime = Timer.getFPGATimestamp() - SmartDashboard.getNumber("Forward start", startTime);
-//         SmartDashboard.putNumber("time elapsed since start", elapsedTime);
-
-//         drivetrain.drive(new Translation2d(0,0), 0, false, null);
-//     }
-
-//     // Returns true when the command should end.
-//     @Override
-//     public boolean isFinished() {
-//         // |Tx| < .5 degree
-//         // |Gyro error| < 1 degreee
-//         // return false;
-//         if (!isAuto)
-//             return false;
-//         double elapsed = Timer.getFPGATimestamp() - startTime;
-//         if (elapsed >= 20) {
-//             SmartDashboard.putBoolean("ended by time", true);
-//             return true;
-//         }
-
-//         SmartDashboard.putBoolean("ended by time", false);
-//         //FYI rotationerror will never be >1000, just hacky so it doesn't care about rotation error
-//         return Math.abs(txValue) < 1 && Math.abs(rotationError) < 1000 && Math.abs(distanceError) < 1 && elapsed >= 0.1;
-//     }
-// }
+    @Override
+    public boolean isFinished() {
+        return false;
+    }
+}
