@@ -269,6 +269,9 @@ public class AlignToReefBasisVector extends Command {
         lateralError = 10000;
 
         Logger.getInstance().logEvent("Align to Reef, ID " + desiredTarget, true);
+
+        SmartDashboard.putNumber("Align: target x", desiredPose.get().getX());
+        SmartDashboard.putNumber("Align: target y", desiredPose.get().getY());
     }
     
     private Optional<Pose2d> getBestEstimatedPose() {
