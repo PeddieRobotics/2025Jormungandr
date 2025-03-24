@@ -128,6 +128,19 @@ public class Autonomous extends SubsystemBase {
     public void registerNamedCommands(){
         for (int blue = 17; blue <= 22; blue++) {
             int red = AlignmentConstants.kBlueToRedReefTag.get(blue);
+
+            Translation2d poseBlueLeft = kReefScoringLocationLeft.get(blue);
+            double poseBlueLeftX = poseBlueLeft.getX();
+            double poseBlueLeftY = poseBlueLeft.getY();
+            double poseRedLeftX = 17.55 - poseBlueLeftX;
+            double poseRedLeftY = 8.05 - poseBlueLeftY;
+
+            Translation2d poseBlueRight = kReefScoringLocationRight.get(blue);
+            double poseBlueRightX = poseBlueRight.getX();
+            double poseBlueRightY = poseBlueRight.getY();
+            double poseRedRightX = 17.55 - poseBlueRightX;
+            double poseRedRightY = 8.05 - poseBlueRightY;
+
             NamedCommands.registerCommand(
                 "ALIGN_" + blue + "_" + red + "_LEFT",
                 new SequentialCommandGroup(
@@ -145,21 +158,34 @@ public class Autonomous extends SubsystemBase {
                             new WaitCommand(0.30)
                         )
                     ),
-                    reset odometry
+                    new InstantCommand(() -> {
+                        if (DriverStation.getAlliance().isEmpty() || DriverStation.getAlliance().get() == DriverStation.Alliance.Blue)
+                            drivetrain.resetTranslation(new Translation2d(poseBlueLeftX, poseBlueLeftY));
+                        else
+                            drivetrain.resetTranslation(new Translation2d(poseRedLeftX, poseRedLeftY));
+                    })        
                 )
             );
             NamedCommands.registerCommand(
                 "ALIGN_" + blue + "_" + red + "_RIGHT",
-                new ParallelRaceGroup(
-                    new SequentialCommandGroup(
-                        new AlignToReefBasisVector(Constants.AlignmentConstants.AlignmentDestination.RIGHT, ReefAlign.kMaxSpeed, blue, red),
-                        new WaitCommand(0.30)
+                new SequentialCommandGroup(
+                    new ParallelRaceGroup(
+                        new SequentialCommandGroup(
+                            new AlignToReefBasisVector(Constants.AlignmentConstants.AlignmentDestination.RIGHT, ReefAlign.kMaxSpeed, blue, red),
+                            new WaitCommand(0.30)
+                        ),
+                        new SequentialCommandGroup(
+                            new WaitCommand(2.0),
+                            new InstantCommand(() -> superstructure.sendToScore()),
+                            new WaitCommand(0.30)
+                        )
                     ),
-                    new SequentialCommandGroup(
-                        new WaitCommand(2.0),
-                        new InstantCommand(() -> superstructure.sendToScore()),
-                        new WaitCommand(0.30)
-                    )
+                    new InstantCommand(() -> {
+                        if (DriverStation.getAlliance().isEmpty() || DriverStation.getAlliance().get() == DriverStation.Alliance.Blue)
+                            drivetrain.resetTranslation(new Translation2d(poseBlueRightX, poseBlueRightY));
+                        else
+                            drivetrain.resetTranslation(new Translation2d(poseRedRightX, poseRedRightY));
+                    }) 
                 )
             );
         }
