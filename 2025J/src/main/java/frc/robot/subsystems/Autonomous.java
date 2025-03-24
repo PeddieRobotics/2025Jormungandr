@@ -159,9 +159,17 @@ public class Autonomous extends SubsystemBase {
                     drivetrain.resetTranslation(new Translation2d(16.452, 7.055));
             })
         ));
-        NamedCommands.registerCommand("ALIGN_TO_HP_13_1", new ParallelRaceGroup(
-            new AlignToHPBasisVector(HPAlign.kMaxSpeed, HPAlign.kAutoLeftLateralOffset, HPAlign.kAutoBackOffset, 13, 1),
-            new WaitForCoral(), new WaitCommand(2)
+        NamedCommands.registerCommand("ALIGN_TO_HP_13_1", new SequentialCommandGroup(
+            new ParallelRaceGroup(
+                new AlignToHPBasisVector(HPAlign.kMaxSpeed, HPAlign.kAutoLeftLateralOffset, HPAlign.kAutoBackOffset, 13, 1),
+                new WaitForCoral(), new WaitCommand(2)
+            ),
+            new InstantCommand(() -> {
+                if (DriverStation.getAlliance().isEmpty() || DriverStation.getAlliance().get() == DriverStation.Alliance.Blue)
+                    drivetrain.resetTranslation(new Translation2d(1.098, 7.055));
+                else
+                    drivetrain.resetTranslation(new Translation2d(16.452, 0.995));
+            })
         ));
 
         NamedCommands.registerCommand("WAIT_FOR_CORAL", new ParallelRaceGroup(
