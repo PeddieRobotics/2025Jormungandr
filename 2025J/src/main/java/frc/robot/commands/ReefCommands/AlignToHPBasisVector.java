@@ -69,7 +69,7 @@ public class AlignToHPBasisVector extends Command {
         depthD = HPAlign.kDepthD;
         depthFF = HPAlign.kDepthFF;
 
-        lateralP = HPAlign.kLateralP;
+        lateralP = 3.0;
         lateralI = HPAlign.kLateralI;
         lateralD = HPAlign.kLateralD;
         lateralFF = HPAlign.kLateralFF;

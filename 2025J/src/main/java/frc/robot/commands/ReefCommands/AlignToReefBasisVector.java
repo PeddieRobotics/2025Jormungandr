@@ -24,6 +24,7 @@ import frc.robot.subsystems.Limelight;
 import frc.robot.subsystems.LimelightBack;
 import frc.robot.utils.CalculateReefTarget;
 import frc.robot.utils.Constants.AlignmentConstants;
+import frc.robot.utils.Constants.AutoConstants;
 import frc.robot.utils.Constants.AlignmentConstants.AlignmentDestination;
 import frc.robot.utils.Constants.AlignmentConstants.ReefAlign;
 import frc.robot.utils.Logger;
@@ -231,7 +232,11 @@ public class AlignToReefBasisVector extends Command {
         tagAngle = tagPose.getRotation().getRadians();
 
         tagLateralMagnitude = SmartDashboard.getNumber(commandName + " lateral offset", tagLateralMagnitude);
-        tagBackMagnitude = SmartDashboard.getNumber(commandName + " back offset", tagBackMagnitude);
+
+        if (DriverStation.isAutonomous())
+            tagBackMagnitude = ReefAlign.kAutoTagBackMagnitude;
+        else
+            tagBackMagnitude = SmartDashboard.getNumber(commandName + " back offset", tagBackMagnitude);
 
         if (Superstructure.getInstance().getCurrentState() == SuperstructureState.L1_PREP){
             // if (commandName.equals("left align")) {
@@ -464,6 +469,7 @@ public class AlignToReefBasisVector extends Command {
     public void end(boolean interrupted) {
         SmartDashboard.putNumber("Align: Elapsed Time", Timer.getFPGATimestamp() - initialTime);
 
+        Superstructure.getInstance().sendToScore();
         if (desiredPose.isPresent())
             drivetrain.drive(new Translation2d(0,0), 0, false, null);
   

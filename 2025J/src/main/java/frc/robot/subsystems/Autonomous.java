@@ -8,10 +8,12 @@ import com.pathplanner.lib.config.PIDConstants;
 import com.pathplanner.lib.config.RobotConfig;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
 import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
@@ -135,7 +137,7 @@ public class Autonomous extends SubsystemBase {
                 )
             );
         }
-
+        
         NamedCommands.registerCommand("L1_PREP", new InstantCommand(() -> superstructure.requestState(SuperstructureState.L1_PREP)));
         NamedCommands.registerCommand("L2_PREP", new InstantCommand(() -> superstructure.requestState(SuperstructureState.L2_PREP)));
         NamedCommands.registerCommand("L3_PREP", new InstantCommand(() -> superstructure.requestState(SuperstructureState.L3_PREP)));
@@ -145,9 +147,17 @@ public class Autonomous extends SubsystemBase {
         NamedCommands.registerCommand("HP_INTAKE", new InstantCommand(() -> superstructure.requestState(SuperstructureState.HP_INTAKE)));
         NamedCommands.registerCommand("SEND_TO_SCORE", new InstantCommand(() -> superstructure.sendToScore()));
 
-        NamedCommands.registerCommand("ALIGN_TO_HP_12_2", new ParallelRaceGroup(
-            new AlignToHPBasisVector(HPAlign.kMaxSpeed, HPAlign.kAutoRightLateralOffset, HPAlign.kAutoBackOffset, 12, 2),
-            new WaitForCoral(), new WaitCommand(2)
+        NamedCommands.registerCommand("ALIGN_TO_HP_12_2", new SequentialCommandGroup(
+            new ParallelRaceGroup(
+                new AlignToHPBasisVector(HPAlign.kMaxSpeed, HPAlign.kAutoRightLateralOffset, HPAlign.kAutoBackOffset, 12, 2),
+                new WaitForCoral(), new WaitCommand(2)
+            ),
+            new InstantCommand(() -> {
+                if (DriverStation.getAlliance().isEmpty() || DriverStation.getAlliance().get() == DriverStation.Alliance.Blue)
+                    drivetrain.resetTranslation(new Translation2d(1.098, 0.995));
+                else
+                    drivetrain.resetTranslation(new Translation2d(16.452, 7.055));
+            })
         ));
         NamedCommands.registerCommand("ALIGN_TO_HP_13_1", new ParallelRaceGroup(
             new AlignToHPBasisVector(HPAlign.kMaxSpeed, HPAlign.kAutoLeftLateralOffset, HPAlign.kAutoBackOffset, 13, 1),

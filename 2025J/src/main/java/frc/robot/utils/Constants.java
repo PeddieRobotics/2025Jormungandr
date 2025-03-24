@@ -388,6 +388,7 @@ public final class Constants {
             
             // center of robot distance to tag -- back (+ = back, - = forwards)
             public static final double kTagBackMagnitude = 0.46; // from 0.45
+            public static final double kAutoTagBackMagnitude = 0.48; // from 0.45
 
             // center of robot distance to tag -- left (+ = left, - = right)
             public static final double kLeftOffset = 0.199; // 0.1896;
@@ -432,7 +433,7 @@ public final class Constants {
             
             // TODO
             public static final double kBackOffset = 0.46;
-            public static final double kAutoBackOffset = 0.50;
+            public static final double kAutoBackOffset = 0.48;
             public static final double kLateralOffset = -0.03;
 
             public static final double kAutoRightLateralOffset = 0.0;

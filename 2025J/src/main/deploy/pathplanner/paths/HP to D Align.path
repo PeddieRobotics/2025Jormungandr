@@ -8,20 +8,20 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.05496282397538,
-        "y": 1.498610455725054
+        "x": 2.0529834931901125,
+        "y": 1.5516359370479071
       },
       "isLocked": false,
       "linkedName": "AlignedToHPBottom"
     },
     {
       "anchor": {
-        "x": 3.1803314799215654,
-        "y": 2.144758294118192
+        "x": 2.9,
+        "y": 2.1
       },
       "prevControl": {
-        "x": 1.7623943445644759,
-        "y": 1.3519702652539463
+        "x": 1.645931652720453,
+        "y": 1.3271849568666
       },
       "nextControl": null,
       "isLocked": false,
@@ -34,7 +34,7 @@
   "eventMarkers": [
     {
       "name": "L4_PREP",
-      "waypointRelativePos": 0.55,
+      "waypointRelativePos": 0.9034117660473887,
       "endWaypointRelativePos": null,
       "command": {
         "type": "named",
