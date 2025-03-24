@@ -93,6 +93,7 @@ public abstract class Limelight extends SubsystemBase {
         this.cameraPitchRadians = Math.toRadians(cameraPitchDegrees);
         this.isInverted = isInverted;
 
+        // txAverage = LinearFilter.singlePoleIIR(0.24, 0.02);
         txAverage = new RollingAverage();
         tyAverage = new RollingAverage();
 
@@ -167,6 +168,9 @@ public abstract class Limelight extends SubsystemBase {
         targetID.setNumber(getTargetID());
         hasTargetData.setBoolean(hasTarget());
         currentPriority.setNumber(LimelightHelpers.getLimelightNTDouble(limelightName, "priorityid"));
+
+        SmartDashboard.putNumber(limelightName + " tx", getTx());
+        SmartDashboard.putNumber(limelightName + " tx average", getTxAverage());
     }
 
     // ========================================================

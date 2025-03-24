@@ -19,6 +19,7 @@ import java.util.Optional;
 import edu.wpi.first.math.geometry.Rotation2d;
 import frc.robot.commands.AlignToBarge;
 import frc.robot.commands.AlignToCage;
+import frc.robot.commands.AlignToProcessor;
 import frc.robot.commands.HomeElevator;
 import frc.robot.commands.WheelRadiusCharacterization;
 import frc.robot.commands.ReefCommands.AlignToHP;
@@ -83,7 +84,8 @@ public class DriverOI {
         xButton.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.STOW)));
 
         Trigger circleButton = new JoystickButton(controller, PS4Controller.Button.kCircle.value);
-        circleButton.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.HP_INTAKE)));
+        // circleButton.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.HP_INTAKE)));
+        circleButton.whileTrue(new AlignToProcessor(1.0));
 
         Trigger squareButton = new JoystickButton(controller, PS4Controller.Button.kSquare.value);
         squareButton.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.ALGAE_GROUND_INTAKE)));
@@ -106,8 +108,8 @@ public class DriverOI {
 
         // TODO: Set binding to climb
         Trigger R1Bumper = new JoystickButton(controller, PS4Controller.Button.kR1.value);
-        R1Bumper.onTrue(new InstantCommand(() -> HPIntake.getInstance().retractLinearActuator()));
-        // R1Bumper.whileTrue(new AlignToCage());
+        // R1Bumper.onTrue(new InstantCommand(() -> HPIntake.getInstance().retractLinearActuator()));
+        R1Bumper.whileTrue(new AlignToCage());
 
         // DO NOT BIND: USED FOR ROTATION OF DRIVETRAIN
         Trigger L2Trigger = new JoystickButton(controller, PS4Controller.Button.kL2.value);

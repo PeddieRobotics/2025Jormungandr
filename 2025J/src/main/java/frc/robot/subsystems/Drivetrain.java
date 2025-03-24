@@ -55,6 +55,8 @@ public class Drivetrain extends SubsystemBase {
     private static int pipelineNumber;
 
     private LiveData odometryX, odometryY, headingData, fusedOdometryData; 
+    
+    private boolean useMegaTag;
 
     public Drivetrain() {
         frontLeftModule = new SwerveModule(RobotMap.CANIVORE_BUS, RobotMap.FRONT_LEFT_MODULE_DRIVE_ID,
@@ -123,6 +125,11 @@ public class Drivetrain extends SubsystemBase {
 
         configureAutoSetupSelector();
         
+        useMegaTag = true;
+    }
+    
+    public void setUseMegaTag(boolean useMegaTag) {
+        this.useMegaTag = useMegaTag;
     }
 
     /**
@@ -296,8 +303,8 @@ public class Drivetrain extends SubsystemBase {
      * updates odometry, where the robot thinks it is, using cameras and our current odometry
      */
     public void updateOdometry() {
-        if (!DriverStation.isAutonomous()) {
-            // LimelightBack.getInstance().fuseEstimatedPose(odometry);
+        if (!DriverStation.isAutonomous() && useMegaTag) {
+            LimelightBack.getInstance().fuseEstimatedPose(odometry);
             LimelightFrontLeft.getInstance().fuseEstimatedPose(odometry);
             // LimelightFrontMiddle.getInstance().fuseEstimatedPose(odometry);
             LimelightFrontRight.getInstance().fuseEstimatedPose(odometry);
