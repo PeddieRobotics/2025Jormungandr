@@ -2,12 +2,16 @@ package frc.robot.subsystems;
 
 import static frc.robot.subsystems.Superstructure.SuperstructureState.HP_INTAKE;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.config.PIDConstants;
 import com.pathplanner.lib.config.RobotConfig;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -103,21 +107,44 @@ public class Autonomous extends SubsystemBase {
         return autoChooser;
     }
 
+    private static final Map<Integer, Translation2d> kReefScoringLocationLeft = new HashMap<>() {{
+        put(17, new Translation2d(3.672, 3.007));
+        put(18, new Translation2d(3.198, 4.225));
+        put(19, new Translation2d(4.016, 5.243));
+        put(20, new Translation2d(5.307, 5.044));
+        put(21, new Translation2d(5.781, 3.827));
+        put(22, new Translation2d(4.962, 2.808));
+    }};
+    private static final Map<Integer, Translation2d> kReefScoringLocationRight = new HashMap<>() {{
+        put(17, new Translation2d(3.961, 2.840));
+        put(18, new Translation2d(3.198, 3.891));
+        put(19, new Translation2d(3.727, 5.076));
+        put(20, new Translation2d(5.018, 5.211));
+        put(21, new Translation2d(5.781, 4.161));
+        put(22, new Translation2d(5.252, 2.975));
+    }};
+
     public void registerNamedCommands(){
         for (int blue = 17; blue <= 22; blue++) {
             int red = AlignmentConstants.kBlueToRedReefTag.get(blue);
             NamedCommands.registerCommand(
                 "ALIGN_" + blue + "_" + red + "_LEFT",
-                new ParallelRaceGroup(
-                    new SequentialCommandGroup(
-                        new AlignToReefBasisVector(Constants.AlignmentConstants.AlignmentDestination.LEFT, ReefAlign.kMaxSpeed, blue, red),
-                        new WaitCommand(0.30)
+                new SequentialCommandGroup(
+                    new ParallelRaceGroup(
+                        new SequentialCommandGroup(
+                            new AlignToReefBasisVector(
+                                Constants.AlignmentConstants.AlignmentDestination.LEFT,
+                                ReefAlign.kMaxSpeed, blue, red
+                            ),
+                            new WaitCommand(0.30)
+                        ),
+                        new SequentialCommandGroup(
+                            new WaitCommand(2.0),
+                            new InstantCommand(() -> superstructure.sendToScore()),
+                            new WaitCommand(0.30)
+                        )
                     ),
-                    new SequentialCommandGroup(
-                        new WaitCommand(2.0),
-                        new InstantCommand(() -> superstructure.sendToScore()),
-                        new WaitCommand(0.30)
-                    )
+                    reset odometry
                 )
             );
             NamedCommands.registerCommand(
