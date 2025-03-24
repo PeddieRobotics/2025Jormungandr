@@ -84,8 +84,7 @@ public class DriverOI {
         xButton.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.STOW)));
 
         Trigger circleButton = new JoystickButton(controller, PS4Controller.Button.kCircle.value);
-        // circleButton.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.HP_INTAKE)));
-        circleButton.whileTrue(new AlignToProcessor(1.0));
+        circleButton.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.HP_INTAKE)));
 
         Trigger squareButton = new JoystickButton(controller, PS4Controller.Button.kSquare.value);
         squareButton.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.ALGAE_GROUND_INTAKE)));
@@ -152,31 +151,35 @@ public class DriverOI {
 
         Trigger R3Trigger = new JoystickButton(controller, PS4Controller.Button.kR3.value);
         R3Trigger.whileTrue(new ConditionalCommand(
-            new SequentialCommandGroup(
-                new AlignToReefBasisVector(AlignmentConstants.AlignmentDestination.RIGHT, ReefAlign.kMaxSpeed, 0, 0),
-                new ConditionalCommand(
-                    new SequentialCommandGroup(
-                        new WaitCommand(0.5),
-                        new ParallelCommandGroup(
-                            new AlignToReefBasisVector(AlignmentConstants.AlignmentDestination.MIDDLE, ReefAlign.kMaxSpeed, 0, 0),
-                            new SequentialCommandGroup(
-                                new WaitCommand(0.25), 
-                                new InstantCommand(() -> {
-                                    Optional<Boolean> high = superstructure.isHighAlgae();
-                                    if (high.isEmpty() || high.get())
-                                        superstructure.requestState(SuperstructureState.REEF2_ALGAE_INTAKE);
-                                    else
-                                        superstructure.requestState(SuperstructureState.REEF1_ALGAE_INTAKE);
-                                })
+            new AlignToProcessor(2),
+            new ConditionalCommand(
+                new SequentialCommandGroup(
+                    new AlignToReefBasisVector(AlignmentConstants.AlignmentDestination.RIGHT, ReefAlign.kMaxSpeed, 0, 0),
+                    new ConditionalCommand(
+                        new SequentialCommandGroup(
+                            new WaitCommand(0.5),
+                            new ParallelCommandGroup(
+                                new AlignToReefBasisVector(AlignmentConstants.AlignmentDestination.MIDDLE, ReefAlign.kMaxSpeed, 0, 0),
+                                new SequentialCommandGroup(
+                                    new WaitCommand(0.25), 
+                                    new InstantCommand(() -> {
+                                        Optional<Boolean> high = superstructure.isHighAlgae();
+                                        if (high.isEmpty() || high.get())
+                                            superstructure.requestState(SuperstructureState.REEF2_ALGAE_INTAKE);
+                                        else
+                                            superstructure.requestState(SuperstructureState.REEF1_ALGAE_INTAKE);
+                                    })
+                                )
                             )
-                        )
-                    ),
-                    new InstantCommand(),
-                    OperatorOI.getInstance()::getLeftBumperHeld
-                )
+                        ),
+                        new InstantCommand(),
+                        OperatorOI.getInstance()::getLeftBumperHeld
+                    )
+                ),
+                new AlignToHPBasisVector(HPAlign.kMaxSpeed, HPAlign.kLateralOffset, HPAlign.kBackOffset, 0, 0),
+                Claw.getInstance()::eitherCoralSensorTriggered
             ),
-            new AlignToHPBasisVector(HPAlign.kMaxSpeed, HPAlign.kLateralOffset, HPAlign.kBackOffset, 0, 0),
-            Claw.getInstance()::eitherCoralSensorTriggered
+            Claw.getInstance()::getAlgaeSensor
         ));
 
         Trigger optionButton = new JoystickButton(controller, PS4Controller.Button.kOptions.value);
