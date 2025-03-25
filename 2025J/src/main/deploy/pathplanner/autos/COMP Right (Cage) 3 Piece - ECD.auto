@@ -11,15 +11,9 @@
           }
         },
         {
-          "type": "named",
-          "data": {
-            "name": "L4_PREP"
-          }
-        },
-        {
           "type": "path",
           "data": {
-            "pathName": "Right (Cage) to E Align"
+            "pathName": "SLOW Right (Cage) to E Align"
           }
         },
         {
@@ -31,7 +25,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "E to HP Align"
+            "pathName": "SLOW E to HP Align"
           }
         },
         {
@@ -55,7 +49,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "HP to C Align"
+            "pathName": "SLOW HP to C Align"
           }
         },
         {
@@ -73,7 +67,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "C to HP Align"
+            "pathName": "SLOW C to HP Align"
           }
         },
         {
@@ -97,7 +91,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "HP to D Align"
+            "pathName": "SLOW HP to D Align"
           }
         },
         {

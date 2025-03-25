@@ -8,20 +8,20 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.742115925653096,
-        "y": 6.694779686413917
+        "x": 2.0890342545953415,
+        "y": 6.477084451647486
       },
       "isLocked": false,
       "linkedName": "AlignedToHPTop"
     },
     {
       "anchor": {
-        "x": 2.672,
-        "y": 5.949
+        "x": 3.177,
+        "y": 5.865
       },
       "prevControl": {
-        "x": 2.4362590943872764,
-        "y": 6.072216173536159
+        "x": 1.732429704586041,
+        "y": 6.68172782677406
       },
       "nextControl": null,
       "isLocked": false,
@@ -34,19 +34,14 @@
   "eventMarkers": [
     {
       "name": "L4_PREP",
-      "waypointRelativePos": 0.9,
+      "waypointRelativePos": 0.45,
       "endWaypointRelativePos": null,
-      "command": {
-        "type": "named",
-        "data": {
-          "name": "L4_PREP"
-        }
-      }
+      "command": null
     }
   ],
   "globalConstraints": {
-    "maxVelocity": 4.0,
-    "maxAcceleration": 5.0,
+    "maxVelocity": 3.0,
+    "maxAcceleration": 4.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0,
     "nominalVoltage": 12.0,
@@ -54,7 +49,7 @@
   },
   "goalEndState": {
     "velocity": 2.5,
-    "rotation": -54.638
+    "rotation": -59.99999999999999
   },
   "reversed": false,
   "folder": "HP to Reef",

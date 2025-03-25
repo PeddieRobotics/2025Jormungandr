@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.135,
-        "y": 7.008
+        "x": 1.098,
+        "y": 7.055
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.1260342545953415,
-        "y": 6.430084451647486
+        "x": 2.0526645131518135,
+        "y": 6.498546347546706
       },
       "isLocked": false,
       "linkedName": "AlignedToHPTop"
     },
     {
       "anchor": {
-        "x": 3.177,
-        "y": 5.865
+        "x": 2.9,
+        "y": 5.95
       },
       "prevControl": {
-        "x": 1.732429704586041,
-        "y": 6.68172782677406
+        "x": 1.6459858321152503,
+        "y": 6.722772584105
       },
       "nextControl": null,
       "isLocked": false,
@@ -34,9 +34,14 @@
   "eventMarkers": [
     {
       "name": "L4_PREP",
-      "waypointRelativePos": 0.45,
+      "waypointRelativePos": 0.9,
       "endWaypointRelativePos": null,
-      "command": null
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "L4_PREP"
+        }
+      }
     }
   ],
   "globalConstraints": {
