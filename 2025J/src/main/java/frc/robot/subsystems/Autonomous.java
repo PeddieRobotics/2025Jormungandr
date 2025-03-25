@@ -244,7 +244,7 @@ public class Autonomous extends SubsystemBase {
             Superstructure.getInstance().setAutoRemoveAlgaeSwitch(true);
         }));
 
-        NamedCommands.registerCommand("REMOVE_ALGAE", new ParallelCommandGroup(
+        NamedCommands.registerCommand("REMOVE_ALGAE_LEFT", new ParallelCommandGroup(
                                 new AlignToReefBasisVector(AlignmentConstants.AlignmentDestination.MIDDLE, ReefAlign.kMaxSpeed, 0, ReefAlign.kTagBackMagnitude,  0, 0),
                                 new SequentialCommandGroup(
                                     new WaitCommand(0.25),
@@ -257,5 +257,21 @@ public class Autonomous extends SubsystemBase {
                                     })
                                 )
                             ));
+
+        NamedCommands.registerCommand("REMOVE_ALGAE_RIGHT", new ParallelCommandGroup(
+                                new AlignToReefBasisVector(AlignmentConstants.AlignmentDestination.MIDDLE, ReefAlign.kMaxSpeed, 0, ReefAlign.kTagBackMagnitude,  19, 6),
+                                new SequentialCommandGroup(
+                                    new WaitCommand(0.25),
+                                    new InstantCommand(() -> {
+                                        Optional<Boolean> high = superstructure.isHighAlgae();
+                                        if (high.isEmpty() || high.get())
+                                            superstructure.requestState(SuperstructureState.REEF2_ALGAE_INTAKE);
+                                        else
+                                            superstructure.requestState(SuperstructureState.REEF1_ALGAE_INTAKE);
+                                    })
+                                )
+                            ));
+
+        
     }
 }

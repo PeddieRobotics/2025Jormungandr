@@ -109,13 +109,13 @@
         {
           "type": "named",
           "data": {
-            "name": "SET_ALGAE_REMOVAL"
+            "name": "ALIGN_19_6_LEFT"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "ALIGN_19_6_LEFT"
+            "name": "REMOVE_ALGAE_LEFT"
           }
         }
       ]
