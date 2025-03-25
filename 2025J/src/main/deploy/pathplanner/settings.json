@@ -1,6 +1,6 @@
 {
-  "robotWidth": 0.826,
-  "robotLength": 0.826,
+  "robotWidth": 0.895,
+  "robotLength": 0.895,
   "holonomicMode": true,
   "pathFolders": [
     "HP to Reef",
@@ -37,6 +37,6 @@
   "bumperOffsetX": 0.0,
   "bumperOffsetY": 0.0,
   "robotFeatures": [
-    "{\"name\":\"Rectangle\",\"type\":\"rounded_rect\",\"data\":{\"center\":{\"x\":0.0,\"y\":0.0},\"size\":{\"width\":0.71755,\"length\":0.71755},\"borderRadius\":0.05,\"strokeWidth\":0.02,\"filled\":false}}"
+    "{\"name\":\"Rectangle\",\"type\":\"rounded_rect\",\"data\":{\"center\":{\"x\":0.0,\"y\":0.0},\"size\":{\"width\":0.718,\"length\":0.71755},\"borderRadius\":0.05,\"strokeWidth\":0.02,\"filled\":false}}"
   ]
 }
