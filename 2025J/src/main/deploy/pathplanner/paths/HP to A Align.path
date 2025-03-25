@@ -8,20 +8,20 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.742115925653096,
-        "y": 6.694779686413917
+        "x": 1.5463770047376106,
+        "y": 6.236802553400141
       },
       "isLocked": false,
-      "linkedName": "AlignedToHPTop"
+      "linkedName": null
     },
     {
       "anchor": {
-        "x": 2.672,
-        "y": 5.949
+        "x": 2.3,
+        "y": 4.35
       },
       "prevControl": {
-        "x": 2.4362590943872764,
-        "y": 6.072216173536159
+        "x": 1.1372470522837812,
+        "y": 4.373970452170216
       },
       "nextControl": null,
       "isLocked": false,
@@ -46,21 +46,21 @@
   ],
   "globalConstraints": {
     "maxVelocity": 4.0,
-    "maxAcceleration": 5.0,
+    "maxAcceleration": 6.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0,
     "nominalVoltage": 12.0,
     "unlimited": false
   },
   "goalEndState": {
-    "velocity": 2.5,
-    "rotation": -54.638
+    "velocity": 0,
+    "rotation": 0.0
   },
   "reversed": false,
   "folder": "HP to Reef",
   "idealStartingState": {
-    "velocity": 0,
+    "velocity": 0.0,
     "rotation": -55.0
   },
-  "useDefaultConstraints": false
+  "useDefaultConstraints": true
 }
