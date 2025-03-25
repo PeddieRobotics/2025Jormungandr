@@ -129,8 +129,8 @@ public final class Constants {
     }
 
     public static class ElevatorConstants {
-        public static final double kElevatorMotorSupplyCurrentLimit = 40.0;
-        public static final double kElevatorMotorStatorCurrentLimit = 40.0;
+        public static final double kElevatorMotorSupplyCurrentLimit = 60.0;
+        public static final double kElevatorMotorStatorCurrentLimit = 60.0;
 
         public static final double kElevatorForwardTorqueCurrentLimit = 40;
         public static final double kElevatorReverseTorqueCurrentLimit = -40;
@@ -170,9 +170,9 @@ public final class Constants {
         public static final double kS = 0.085;
         public static final double kV = 0.0;
         public static final double kA = 0.0;
-        public static final double kP = 20.0;
+        public static final double kP = 40.0;
         public static final double kI = 0.0;
-        public static final double kD = 1.0;
+        public static final double kD = 2.0;
         public static final double kG = 0.255;
         public static final double kFF = 0.0;
 
