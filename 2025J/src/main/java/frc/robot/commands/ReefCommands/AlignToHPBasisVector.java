@@ -168,8 +168,10 @@ public class AlignToHPBasisVector extends Command {
         SmartDashboard.putNumber("HPAlign: desired tag", desiredTarget);
         SmartDashboard.putNumber("HPAlign: tag angle", tagAngle);
 
-        lateralOffset = SmartDashboard.getNumber("HPAlign: lateral offset", lateralOffset);
-        backOffset = SmartDashboard.getNumber("HPAlign: back offset", backOffset);
+        if (!DriverStation.isAutonomous()) {
+            lateralOffset = SmartDashboard.getNumber("HPAlign: lateral offset", lateralOffset);
+            backOffset = SmartDashboard.getNumber("HPAlign: back offset", backOffset);
+        }
 
         desiredPose = Optional.of(new Pose2d(
             tagPose.getX() + backOffset * Math.cos(tagAngle) + lateralOffset * Math.sin(tagAngle),

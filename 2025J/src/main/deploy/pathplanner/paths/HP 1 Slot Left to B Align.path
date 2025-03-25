@@ -8,20 +8,20 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.747413934426229,
-        "y": 1.7402684426229502
+        "x": 1.5309535693283425,
+        "y": 1.2345001418830148
       },
       "isLocked": false,
       "linkedName": "AlignedToHPBottom1SlotLeft"
     },
     {
       "anchor": {
-        "x": 2.3,
-        "y": 3.7
+        "x": 2.6612704918032786,
+        "y": 3.287756147540983
       },
       "prevControl": {
-        "x": 1.1371926229508202,
-        "y": 3.6760245901639355
+        "x": 2.4379826882132876,
+        "y": 3.175317022820281
       },
       "nextControl": null,
       "isLocked": false,
