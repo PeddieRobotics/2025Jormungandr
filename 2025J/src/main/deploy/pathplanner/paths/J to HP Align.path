@@ -16,12 +16,12 @@
     },
     {
       "anchor": {
-        "x": 2.2010220855924114,
-        "y": 6.322
+        "x": 3.3,
+        "y": 6.439
       },
       "prevControl": {
-        "x": 2.9670163022735387,
-        "y": 5.866281329854373
+        "x": 4.285308311863108,
+        "y": 5.63454271053494
       },
       "nextControl": null,
       "isLocked": false,
@@ -47,7 +47,7 @@
   },
   "goalEndState": {
     "velocity": 4.0,
-    "rotation": -54.0
+    "rotation": -59.99999999999999
   },
   "reversed": false,
   "folder": "Reef to HP",

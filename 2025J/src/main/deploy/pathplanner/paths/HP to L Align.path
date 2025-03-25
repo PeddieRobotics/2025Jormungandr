@@ -8,20 +8,20 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.909792370364833,
-        "y": 6.4234198576172385
+        "x": 1.7421159256530958,
+        "y": 6.694779686413917
       },
       "isLocked": false,
       "linkedName": "AlignedToHPTop"
     },
     {
       "anchor": {
-        "x": 2.829,
-        "y": 5.697
+        "x": 2.617,
+        "y": 5.949
       },
       "prevControl": {
-        "x": 2.2407071381514205,
-        "y": 6.165560345174032
+        "x": 2.3812590943872762,
+        "y": 6.072216173536159
       },
       "nextControl": null,
       "isLocked": false,
@@ -34,9 +34,14 @@
   "eventMarkers": [
     {
       "name": "L4_PREP",
-      "waypointRelativePos": 0.45,
+      "waypointRelativePos": 0.9,
       "endWaypointRelativePos": null,
-      "command": null
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "L4_PREP"
+        }
+      }
     }
   ],
   "globalConstraints": {
@@ -49,7 +54,7 @@
   },
   "goalEndState": {
     "velocity": 2.5,
-    "rotation": -59.99999999999999
+    "rotation": -54.638
   },
   "reversed": false,
   "folder": "HP to Reef",
