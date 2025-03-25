@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.135,
-        "y": 1.042
+        "x": 1.299,
+        "y": 0.922
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.0899834931901125,
-        "y": 1.598635937047907
+        "x": 1.6892140050824733,
+        "y": 1.2640970633377342
       },
       "isLocked": false,
-      "linkedName": "AlignedToHPBottom"
+      "linkedName": "AlignedToHPBottom1SlotLeft"
     },
     {
       "anchor": {
-        "x": 2.9,
-        "y": 2.1
+        "x": 2.6717910274015715,
+        "y": 2.1008302329748925
       },
       "prevControl": {
-        "x": 1.645931652720453,
-        "y": 1.3271849568666
+        "x": 2.2874837587568093,
+        "y": 1.7800581146912138
       },
       "nextControl": null,
       "isLocked": false,
@@ -34,7 +34,7 @@
   "eventMarkers": [
     {
       "name": "L4_PREP",
-      "waypointRelativePos": 0.9034117660473887,
+      "waypointRelativePos": 0.9015294129355679,
       "endWaypointRelativePos": null,
       "command": {
         "type": "named",
@@ -54,10 +54,10 @@
   },
   "goalEndState": {
     "velocity": 2.5,
-    "rotation": 59.99999999999999
+    "rotation": 54.63753811293089
   },
   "reversed": false,
-  "folder": "HP to Reef",
+  "folder": "HP 1 Slot Left to Reef",
   "idealStartingState": {
     "velocity": 0,
     "rotation": 55.0

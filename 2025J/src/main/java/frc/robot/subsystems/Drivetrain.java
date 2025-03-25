@@ -28,6 +28,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.utils.Constants.DriveConstants;
 import frc.robot.utils.LiveData;
+import frc.robot.utils.Logger;
 import frc.robot.utils.RobotMap;
 
 public class Drivetrain extends SubsystemBase {
@@ -526,6 +527,7 @@ public class Drivetrain extends SubsystemBase {
      * @param translation - Translation 2D
      */
     public void resetTranslation(Translation2d translation) {
+        Logger.getInstance().logEvent("Reset Translation to (" + translation.getX() + ", " + translation.getY() + ")", true);
         odometry.resetTranslation(translation);
     }
     public void resetPureOdometryTranslation(Translation2d translation) {

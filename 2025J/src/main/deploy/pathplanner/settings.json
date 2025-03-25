@@ -4,8 +4,9 @@
   "holonomicMode": true,
   "pathFolders": [
     "HP to Reef",
-    "Start to Reef",
-    "Reef to HP"
+    "HP 1 Slot Left to Reef",
+    "Reef to HP",
+    "Start to Reef"
   ],
   "autoFolders": [
     "DEV",

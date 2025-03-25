@@ -3,16 +3,16 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.135,
-        "y": 1.042
+        "x": 1.299,
+        "y": 0.922
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.0899834931901125,
-        "y": 1.598635937047907
+        "x": 2.174124522724342,
+        "y": 1.5466305178273136
       },
       "isLocked": false,
-      "linkedName": "AlignedToHPBottom"
+      "linkedName": "AlignedToHPBottom1SlotLeft"
     },
     {
       "anchor": {
@@ -20,8 +20,8 @@
         "y": 2.1
       },
       "prevControl": {
-        "x": 1.645931652720453,
-        "y": 1.3271849568666
+        "x": 1.7564582151768684,
+        "y": 1.274789962216305
       },
       "nextControl": null,
       "isLocked": false,
@@ -57,7 +57,7 @@
     "rotation": 59.99999999999999
   },
   "reversed": false,
-  "folder": "HP to Reef",
+  "folder": "HP 1 Slot Left to Reef",
   "idealStartingState": {
     "velocity": 0,
     "rotation": 55.0

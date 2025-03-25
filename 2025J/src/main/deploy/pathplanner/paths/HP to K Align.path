@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.098,
-        "y": 7.055
+        "x": 1.135,
+        "y": 7.008
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.0890342545953415,
-        "y": 6.477084451647486
+        "x": 2.1260342545953415,
+        "y": 6.430084451647486
       },
       "isLocked": false,
       "linkedName": "AlignedToHPTop"
