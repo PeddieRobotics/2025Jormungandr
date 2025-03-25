@@ -4,6 +4,7 @@ import static frc.robot.subsystems.Superstructure.SuperstructureState.HP_INTAKE;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
@@ -18,6 +19,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
 import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
@@ -241,5 +243,19 @@ public class Autonomous extends SubsystemBase {
         NamedCommands.registerCommand("SET_ALGAE_REMOVAL", new InstantCommand(() -> {
             Superstructure.getInstance().setAutoRemoveAlgaeSwitch(true);
         }));
+
+        NamedCommands.registerCommand("REMOVE_ALGAE", new ParallelCommandGroup(
+                                new AlignToReefBasisVector(AlignmentConstants.AlignmentDestination.MIDDLE, ReefAlign.kMaxSpeed, 0, ReefAlign.kTagBackMagnitude,  0, 0),
+                                new SequentialCommandGroup(
+                                    new WaitCommand(0.25),
+                                    new InstantCommand(() -> {
+                                        Optional<Boolean> high = superstructure.isHighAlgae();
+                                        if (high.isEmpty() || high.get())
+                                            superstructure.requestState(SuperstructureState.REEF2_ALGAE_INTAKE);
+                                        else
+                                            superstructure.requestState(SuperstructureState.REEF1_ALGAE_INTAKE);
+                                    })
+                                )
+                            ));
     }
 }

@@ -19,7 +19,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Left (Cage) to J Align"
+            "pathName": "SLOW Left (Cage) to J Align"
           }
         },
         {
@@ -31,7 +31,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "J to HP Align"
+            "pathName": "SLOW J to HP Align"
           }
         },
         {
@@ -55,7 +55,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "HP to L Align"
+            "pathName": "SLOW HP to L Align"
           }
         },
         {
@@ -73,7 +73,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "L to HP Align"
+            "pathName": "SLOW L to HP Align"
           }
         },
         {
@@ -97,7 +97,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "HP to K Align"
+            "pathName": "SLOW HP to K Align"
           }
         },
         {
