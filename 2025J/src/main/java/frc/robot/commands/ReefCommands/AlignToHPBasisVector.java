@@ -344,7 +344,7 @@ public class AlignToHPBasisVector extends Command {
         else
             drivetrain.driveBlue(translation, rotation, true, null);
 
-        Logger.getInstance().logAlignToHP(lateralError, depthError, rotationError, depthMagnitude, lateralMagnitude, rotation);
+        Logger.getInstance().logAlignToHP(lateralError, depthError, rotationError, lateralMagnitude, depthMagnitude, rotation);
     }
 
     @Override

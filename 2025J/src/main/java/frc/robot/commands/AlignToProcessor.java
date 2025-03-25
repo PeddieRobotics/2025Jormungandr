@@ -42,8 +42,6 @@ public class AlignToProcessor extends Command {
     private double desiredX, desiredAngle;
     private double xError, rotationError;
 
-    private double initialTime;
-    
     private double sendToScoreLocation;
 
     public AlignToProcessor(double maxSpeed) {
@@ -101,8 +99,6 @@ public class AlignToProcessor extends Command {
 
     @Override
     public void initialize() {
-        initialTime = Timer.getFPGATimestamp();
-        
         int desiredTarget;
         if (DriverStation.getAlliance().isEmpty() || DriverStation.getAlliance().get() == DriverStation.Alliance.Blue) {
             desiredTarget = 16;
@@ -125,6 +121,8 @@ public class AlignToProcessor extends Command {
         SmartDashboard.putNumber("ProcessorAlign: desired tag", desiredTarget);
         SmartDashboard.putNumber("ProcessorAlign: desired pose X", desiredX);
         SmartDashboard.putNumber("ProcessorAlign: desired angle", desiredAngle);
+        
+        Logger.getInstance().logEvent("Align to Processor ID " + desiredTarget, true);
 
         xError = 10000;
         rotationError = 10000;
@@ -169,9 +167,9 @@ public class AlignToProcessor extends Command {
             rotationPIDController.setP(rotationLowerP);
         } else {
             rotationPIDController.setP(rotationP);
-            rotationPIDController.setI(rotationI);
-            rotationPIDController.setD(rotationD);
         }
+        rotationPIDController.setI(rotationI);
+        rotationPIDController.setD(rotationD);
 
         double rotation = 0;
         if (Math.abs(rotationError) > rotationThreshold)
@@ -202,6 +200,7 @@ public class AlignToProcessor extends Command {
         translation = MagnitudeCap.capMagnitude(translation, maxSpeed);
         
         if (superstructure.getCurrentState() == SuperstructureState.PROCESSOR_PREP) {
+            Logger.getInstance().logEvent("Align to Processor score", true);
             if (DriverStation.getAlliance().isEmpty() || DriverStation.getAlliance().get() == DriverStation.Alliance.Blue) {
                 if (estimatedPose.getY() <= sendToScoreLocation)
                     superstructure.sendToScore();
@@ -213,10 +212,12 @@ public class AlignToProcessor extends Command {
         }
 
         drivetrain.driveBlue(translation, rotation, true, null);
+        Logger.getInstance().logAlignToProcessor(xError, rotationError, strafe, xInput, rotation);
     }
 
     @Override
     public void end(boolean interrupted) {
+        Logger.getInstance().logEvent("Align to Processor", false);
     }
 
     @Override

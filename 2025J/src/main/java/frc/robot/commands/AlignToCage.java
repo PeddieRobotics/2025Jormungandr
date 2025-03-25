@@ -9,6 +9,7 @@ import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Limelight;
 import frc.robot.subsystems.LimelightFrontMiddle;
 import frc.robot.utils.DriverOI;
+import frc.robot.utils.Logger;
 
 public class AlignToCage extends Command {
     private Drivetrain drivetrain;
@@ -69,6 +70,7 @@ public class AlignToCage extends Command {
     public void initialize() {
         ll.setPipeline(1); 
         drivetrain.setUseMegaTag(false);
+        Logger.getInstance().logEvent("Align to Cage", true);
     }
 
     @Override
@@ -112,11 +114,14 @@ public class AlignToCage extends Command {
   
         double xDriverInput = DriverOI.getInstance().getForward();
         drivetrain.drive(new Translation2d(xDriverInput, yInput), rotation, false, null);
+        
+        Logger.getInstance().logAlignToCage(tx, yInput, rotationError, rotation);
     }
 
     @Override
     public void end(boolean interrupted) {
         drivetrain.setUseMegaTag(true);
+        Logger.getInstance().logEvent("Align to Cage", false);
     }
 
     @Override

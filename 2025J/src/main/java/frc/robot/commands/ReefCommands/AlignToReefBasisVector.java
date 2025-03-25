@@ -470,7 +470,7 @@ public class AlignToReefBasisVector extends Command {
             }
         }
 
-        Logger.getInstance().logAlignToReef(lateralError, depthError, rotationError, depthMagnitude, lateralMagnitude, rotation);
+        Logger.getInstance().logAlignToReef(lateralError, depthError, rotationError, lateralMagnitude, depthMagnitude, rotation);
     }
 
     @Override

@@ -66,6 +66,10 @@ public class Logger {
     private DoubleLogEntry reefAlignLateralEntry, reefAlignDepthEntry, reefAlignRotationEntry;
     private DoubleLogEntry HPAlignLateralErrorEntry, HPAlignDepthErrorEntry, HPAlignRotationErrorEntry;
     private DoubleLogEntry HPAlignLateralEntry, HPAlignDepthEntry, HPAlignRotationEntry;
+    private DoubleLogEntry processorAlignXErrorEntry, processorAlignXEntry, processorAlignStrafeEntry;
+    private DoubleLogEntry processorAlignRotationErrorEntry, processorAlignRotationEntry;
+    private DoubleLogEntry cageAlignTxEntry, cageAlignYEntry;
+    private DoubleLogEntry cageAlignRotationErrorEntry, cageAlignRotationEntry;
     
     private DoubleArrayLogEntry moduleSpeedsDesiredEntry, modulePositionsDesiredEntry;
     private DoubleArrayLogEntry moduleSpeedsActualEntry, modulePositionsActualEntry;
@@ -209,6 +213,17 @@ public class Logger {
         HPAlignLateralEntry = new DoubleLogEntry(log, "/Alignment/HP Commanded Lateral");
         HPAlignDepthEntry = new DoubleLogEntry(log, "/Alignment/HP Commanded Depth");
         HPAlignRotationEntry = new DoubleLogEntry(log, "/Alignment/HP Commanded Rotation");
+        
+        processorAlignXErrorEntry = new DoubleLogEntry(log, "/Alignment/Processor X Error");
+        processorAlignXEntry = new DoubleLogEntry(log, "/Alignment/Processor X Command");
+        processorAlignStrafeEntry = new DoubleLogEntry(log, "/Alignment/Processor Strafe");
+        processorAlignRotationErrorEntry = new DoubleLogEntry(log, "/Alignment/Processor Rotation Error");
+        processorAlignRotationEntry = new DoubleLogEntry(log, "/Alignment/Processor Rotation Command");
+
+        cageAlignTxEntry = new DoubleLogEntry(log, "/Alignment/Cage Tx Average");
+        cageAlignYEntry = new DoubleLogEntry(log, "/Alignment/Cage Y Command");
+        cageAlignRotationErrorEntry = new DoubleLogEntry(log, "/Alignment/Cage Rotation Error");
+        cageAlignRotationEntry = new DoubleLogEntry(log, "/Alignment/Cage Rotation Command");
 
         // Commands run
         commandEntry = new StringLogEntry(log, "/Commands/Commands Run");
@@ -365,23 +380,36 @@ public class Logger {
         fusedOdometryEntry.append(pose2dToDoubleArray(drivetrain.getPose()));
     }
     
-    public void logAlignToReef(double lateralError, double depthError, double rotationError, double x, double y, double rot) {
+    public void logAlignToReef(double lateralError, double depthError, double rotationError, double lateral, double depth, double rot) {
         reefAlignLateralErrorEntry.append(lateralError);
         reefAlignDepthErrorEntry.append(depthError);
         reefAlignRotationErrorEntry.append(rotationError);
 
-        reefAlignLateralEntry.append(x);
-        reefAlignDepthEntry.append(y);
+        reefAlignLateralEntry.append(lateral);
+        reefAlignDepthEntry.append(depth);
         reefAlignRotationEntry.append(rot);
     }
-    public void logAlignToHP(double lateralError, double depthError, double rotationError, double x, double y, double rot) {
+    public void logAlignToHP(double lateralError, double depthError, double rotationError, double lateral, double depth, double rot) {
         HPAlignLateralErrorEntry.append(lateralError);
         HPAlignDepthErrorEntry.append(depthError);
         HPAlignRotationErrorEntry.append(rotationError);
         
-        HPAlignLateralEntry.append(x);
-        HPAlignDepthEntry.append(y);
+        HPAlignLateralEntry.append(lateral);
+        HPAlignDepthEntry.append(depth);
         HPAlignRotationEntry.append(rot);
+    }
+    public void logAlignToProcessor(double xError, double rotationError, double strafe, double x, double rotation) {
+        processorAlignXErrorEntry.append(xError);
+        processorAlignXEntry.append(x);
+        processorAlignStrafeEntry.append(strafe);
+        processorAlignRotationErrorEntry.append(rotationError);
+        processorAlignRotationEntry.append(rotation);
+    }
+    public void logAlignToCage(double txAverage, double y, double rotationError, double rotation) {
+        cageAlignTxEntry.append(txAverage);
+        cageAlignYEntry.append(y);
+        cageAlignRotationErrorEntry.append(rotationError);
+        cageAlignRotationEntry.append(rotation);
     }
 
     public void logModuleSupplyCurrents(int module, double drive, double steer) {
