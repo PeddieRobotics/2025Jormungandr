@@ -7,6 +7,7 @@ import com.ctre.phoenix6.signals.GravityTypeValue;
 import com.ctre.phoenix6.signals.SensorDirectionValue;
 import com.ctre.phoenix6.signals.StaticFeedforwardSignValue;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.utils.Constants.ArmConstants;
@@ -210,9 +211,13 @@ public class Elevator extends SubsystemBase {
         return elevatorCANcoder.getVelocity().getValueAsDouble();
     }
 
-    // TODO: think about the effect of this change
     public boolean isAtPosition(double desiredPosition) {
-        return Math.abs(getElevatorCANcoderPosition() - (desiredPosition + globalOffset)) < ElevatorConstants.kElevatorPositionEpsilon;
+        double epsilon;
+        if (DriverStation.isAutonomous())
+            epsilon = ElevatorConstants.kElevatorPositionEpsilonAuto;
+        else
+            epsilon = ElevatorConstants.kElevatorPositionEpsilon;
+        return Math.abs(getElevatorCANcoderPosition() - (desiredPosition + globalOffset)) < epsilon;
     }
     public boolean isAtBottom() {
         return Math.abs(getElevatorCANcoderPosition() - globalOffset) < ElevatorConstants.kElevatorNeutralModePositionEpsilon;

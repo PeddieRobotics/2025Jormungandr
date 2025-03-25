@@ -177,6 +177,7 @@ public final class Constants {
         public static final double kFF = 0.0;
 
         public static final double kElevatorPositionEpsilon = 0.05;
+        public static final double kElevatorPositionEpsilonAuto = 0.3;
         public static final double kElevatorNeutralModePositionEpsilon = 0.1;
         public static final double kElevatorL1Height = 0.0;
         public static final double kElevatorL2Height = 0.0;
@@ -218,7 +219,7 @@ public final class Constants {
         public static final double kElevatorL3ScorePosition = 7.05;
         public static final double kElevatorPrestagePosition = 3.3;
 
-        // Comp Height
+        // Seneca Height
         // public static final double kElevatorL4ScorePosition = 12.45; 
         // Lab Height
         public static final double kElevatorL4ScorePosition = 12.32; 

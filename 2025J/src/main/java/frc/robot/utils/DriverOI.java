@@ -16,6 +16,7 @@ import frc.robot.subsystems.Superstructure.SuperstructureState;
 import java.util.Arrays;
 import java.util.Optional;
 
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import frc.robot.commands.AlignToBarge;
 import frc.robot.commands.AlignToCage;
@@ -94,7 +95,9 @@ public class DriverOI {
 
         Trigger muteButton = new JoystickButton(controller, 15);
         muteButton.onTrue(new InstantCommand(() -> {
-            Drivetrain.getInstance().resetTranslation(LimelightFrontLeft.getInstance().getEstimatedPoseMT2().get().getTranslation());
+            Optional<Pose2d> pose = LimelightFrontLeft.getInstance().getEstimatedPoseMT2();
+            if (pose.isPresent())
+                Drivetrain.getInstance().resetTranslation(pose.get().getTranslation());
             // Drivetrain.getInstance().resetTranslation(LimelightFrontMiddle.getInstance().getEstimatedPoseMT2().get().getTranslation());
         }));
 
@@ -107,8 +110,8 @@ public class DriverOI {
 
         // TODO: Set binding to climb
         Trigger R1Bumper = new JoystickButton(controller, PS4Controller.Button.kR1.value);
-        // R1Bumper.onTrue(new InstantCommand(() -> HPIntake.getInstance().retractLinearActuator()));
-        R1Bumper.whileTrue(new AlignToCage());
+        R1Bumper.onTrue(new InstantCommand(() -> HPIntake.getInstance().retractLinearActuator()));
+        // R1Bumper.whileTrue(new AlignToCage());
 
         // DO NOT BIND: USED FOR ROTATION OF DRIVETRAIN
         Trigger L2Trigger = new JoystickButton(controller, PS4Controller.Button.kL2.value);
@@ -121,12 +124,12 @@ public class DriverOI {
             new AlignToBarge(), 
             new ConditionalCommand(
                 new SequentialCommandGroup(
-                    new AlignToReefBasisVector(AlignmentConstants.AlignmentDestination.LEFT, ReefAlign.kMaxSpeed, 0, 0),
+                    new AlignToReefBasisVector(AlignmentConstants.AlignmentDestination.LEFT, ReefAlign.kMaxSpeed, 0, ReefAlign.kTagBackMagnitude, 0, 0),
                     new ConditionalCommand(
                         new SequentialCommandGroup(
                             new WaitCommand(0.5),
                             new ParallelCommandGroup(
-                                new AlignToReefBasisVector(AlignmentConstants.AlignmentDestination.MIDDLE, ReefAlign.kMaxSpeed, 0, 0),
+                                new AlignToReefBasisVector(AlignmentConstants.AlignmentDestination.MIDDLE, ReefAlign.kMaxSpeed, 0, ReefAlign.kTagBackMagnitude,  0, 0),
                                 new SequentialCommandGroup(
                                     new WaitCommand(0.25),
                                     new InstantCommand(() -> {
@@ -143,23 +146,22 @@ public class DriverOI {
                         OperatorOI.getInstance()::getLeftBumperHeld
                     )
                 ),
-                new AlignToReefBasisVector(AlignmentConstants.AlignmentDestination.MIDDLE, ReefAlign.kMaxSpeed, 0, 0), 
+                new AlignToReefBasisVector(AlignmentConstants.AlignmentDestination.MIDDLE, ReefAlign.kMaxSpeed, 0, ReefAlign.kTagBackMagnitude, 0, 0), 
                 Claw.getInstance()::eitherCoralSensorTriggered
             ),
             Claw.getInstance()::getAlgaeSensor
         ));
 
         Trigger R3Trigger = new JoystickButton(controller, PS4Controller.Button.kR3.value);
-        R3Trigger.whileTrue(new ConditionalCommand(
-            new AlignToProcessor(2),
+        R3Trigger.whileTrue(
             new ConditionalCommand(
                 new SequentialCommandGroup(
-                    new AlignToReefBasisVector(AlignmentConstants.AlignmentDestination.RIGHT, ReefAlign.kMaxSpeed, 0, 0),
+                    new AlignToReefBasisVector(AlignmentConstants.AlignmentDestination.RIGHT, ReefAlign.kMaxSpeed, 0, ReefAlign.kTagBackMagnitude, 0, 0),
                     new ConditionalCommand(
                         new SequentialCommandGroup(
                             new WaitCommand(0.5),
                             new ParallelCommandGroup(
-                                new AlignToReefBasisVector(AlignmentConstants.AlignmentDestination.MIDDLE, ReefAlign.kMaxSpeed, 0, 0),
+                                new AlignToReefBasisVector(AlignmentConstants.AlignmentDestination.MIDDLE, ReefAlign.kMaxSpeed, 0, ReefAlign.kTagBackMagnitude, 0, 0),
                                 new SequentialCommandGroup(
                                     new WaitCommand(0.25), 
                                     new InstantCommand(() -> {
@@ -178,8 +180,6 @@ public class DriverOI {
                 ),
                 new AlignToHPBasisVector(HPAlign.kMaxSpeed, HPAlign.kLateralOffset, HPAlign.kBackOffset, 0, 0),
                 Claw.getInstance()::eitherCoralSensorTriggered
-            ),
-            Claw.getInstance()::getAlgaeSensor
         ));
 
         Trigger optionButton = new JoystickButton(controller, PS4Controller.Button.kOptions.value);

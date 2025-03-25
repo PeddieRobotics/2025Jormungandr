@@ -125,7 +125,7 @@ public class Autonomous extends SubsystemBase {
         put(22, new Translation2d(5.252, 2.975));
     }};
 
-    public void registerNamedCommands(){
+    public void registerReefAlignments(String namePrefix, double backOffset, double postScoreDelay) {
         for (int blue = 17; blue <= 22; blue++) {
             int red = AlignmentConstants.kBlueToRedReefTag.get(blue);
 
@@ -142,20 +142,21 @@ public class Autonomous extends SubsystemBase {
             double poseRedRightY = 8.05 - poseBlueRightY;
 
             NamedCommands.registerCommand(
-                "ALIGN_" + blue + "_" + red + "_LEFT",
+                namePrefix + "ALIGN_" + blue + "_" + red + "_LEFT",
                 new SequentialCommandGroup(
                     new ParallelRaceGroup(
                         new SequentialCommandGroup(
                             new AlignToReefBasisVector(
                                 Constants.AlignmentConstants.AlignmentDestination.LEFT,
-                                ReefAlign.kMaxSpeed, blue, red
+                                ReefAlign.kMaxSpeed, backOffset, ReefAlign.kTagBackMagnitude,
+                                blue, red
                             ),
-                            new WaitCommand(0.30)
+                            new WaitCommand(postScoreDelay)
                         ),
                         new SequentialCommandGroup(
                             new WaitCommand(2.0),
                             new InstantCommand(() -> superstructure.sendToScore()),
-                            new WaitCommand(0.30)
+                            new WaitCommand(postScoreDelay)
                         )
                     ),
                     new InstantCommand(() -> {
@@ -167,17 +168,21 @@ public class Autonomous extends SubsystemBase {
                 )
             );
             NamedCommands.registerCommand(
-                "ALIGN_" + blue + "_" + red + "_RIGHT",
+                namePrefix + "ALIGN_" + blue + "_" + red + "_RIGHT",
                 new SequentialCommandGroup(
                     new ParallelRaceGroup(
                         new SequentialCommandGroup(
-                            new AlignToReefBasisVector(Constants.AlignmentConstants.AlignmentDestination.RIGHT, ReefAlign.kMaxSpeed, blue, red),
-                            new WaitCommand(0.30)
+                            new AlignToReefBasisVector(
+                                Constants.AlignmentConstants.AlignmentDestination.RIGHT,
+                                ReefAlign.kMaxSpeed, backOffset, ReefAlign.kTagBackMagnitude,
+                                blue, red
+                            ),
+                            new WaitCommand(postScoreDelay)
                         ),
                         new SequentialCommandGroup(
                             new WaitCommand(2.0),
                             new InstantCommand(() -> superstructure.sendToScore()),
-                            new WaitCommand(0.30)
+                            new WaitCommand(postScoreDelay)
                         )
                     ),
                     new InstantCommand(() -> {
@@ -189,7 +194,12 @@ public class Autonomous extends SubsystemBase {
                 )
             );
         }
+    }
         
+    private void registerNamedCommands() {
+        registerReefAlignments("", ReefAlign.kAutoTagBackMagnitude + 0.01, 0.2);
+        registerReefAlignments("CLOSE_", ReefAlign.kAutoTagBackMagnitude - 0.01, 0.3);
+
         NamedCommands.registerCommand("L1_PREP", new InstantCommand(() -> superstructure.requestState(SuperstructureState.L1_PREP)));
         NamedCommands.registerCommand("L2_PREP", new InstantCommand(() -> superstructure.requestState(SuperstructureState.L2_PREP)));
         NamedCommands.registerCommand("L3_PREP", new InstantCommand(() -> superstructure.requestState(SuperstructureState.L3_PREP)));
@@ -202,7 +212,7 @@ public class Autonomous extends SubsystemBase {
         NamedCommands.registerCommand("ALIGN_TO_HP_12_2", new SequentialCommandGroup(
             new ParallelRaceGroup(
                 new AlignToHPBasisVector(HPAlign.kMaxSpeed, HPAlign.kAutoRightLateralOffset, HPAlign.kAutoBackOffset, 12, 2),
-                new WaitForCoral(), new WaitCommand(2)
+                new WaitForCoral(), new WaitCommand(1.5)
             ),
             new InstantCommand(() -> {
                 if (DriverStation.getAlliance().isEmpty() || DriverStation.getAlliance().get() == DriverStation.Alliance.Blue)
@@ -214,7 +224,7 @@ public class Autonomous extends SubsystemBase {
         NamedCommands.registerCommand("ALIGN_TO_HP_13_1", new SequentialCommandGroup(
             new ParallelRaceGroup(
                 new AlignToHPBasisVector(HPAlign.kMaxSpeed, HPAlign.kAutoLeftLateralOffset, HPAlign.kAutoBackOffset, 13, 1),
-                new WaitForCoral(), new WaitCommand(2)
+                new WaitForCoral(), new WaitCommand(1.5)
             ),
             new InstantCommand(() -> {
                 if (DriverStation.getAlliance().isEmpty() || DriverStation.getAlliance().get() == DriverStation.Alliance.Blue)

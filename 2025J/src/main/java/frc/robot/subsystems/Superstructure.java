@@ -427,7 +427,6 @@ public class Superstructure extends SubsystemBase {
                 arm.setArmPositionMotionMagicVoltage(ScoreConstants.kArmL4ScorePosition);
                 claw.stopClaw();
 
-
                 if (Arrays.asList(
                         STOW,
                         HP_INTAKE,

@@ -14,16 +14,12 @@ public class AlignToCage extends Command {
     private Drivetrain drivetrain;
     private LimelightFrontMiddle ll;
 
-    private PIDController rotationController, yController, lockedController;
+    private PIDController rotationController, yController;
     private double rotationP, rotationI, rotationD, rotationFF, rotationLowerP, rotationUseLowerPThreshold;
     private double yP, yI, yD, yFF;
-    private double lockedP, lockedI, lockedD, lockedFF;
-    private double rotationThreshold, yThreshold, lockedThreshold;
+    private double rotationThreshold, yThreshold;
     private double desiredAngle, desiredY;
     private double rotationError;
-
-    private double startTime;
-    private double minOdometryY, maxOdometryY;
 
     public AlignToCage() {
         drivetrain = Drivetrain.getInstance();
@@ -46,13 +42,6 @@ public class AlignToCage extends Command {
         yThreshold = 1;
         yController = new PIDController(yP, yI, yD);
 
-        lockedP = 0.05;
-        lockedI = 0.0;
-        lockedD = 0.0;
-        lockedFF = 0.0;
-        lockedThreshold = 0.01;
-        lockedController = new PIDController(lockedP, lockedI, lockedD);
-
         desiredAngle = 180.0;
         desiredY = 0.0;
 
@@ -72,24 +61,13 @@ public class AlignToCage extends Command {
         SmartDashboard.putNumber("CageAlign: yFF", yFF);
         SmartDashboard.putNumber("CageAlign: yThreshold", yThreshold);
 
-        SmartDashboard.putNumber("CageAlign: lockedP", lockedP);
-        SmartDashboard.putNumber("CageAlign: lockedI", lockedI);
-        SmartDashboard.putNumber("CageAlign: lockedD", lockedD);
-        SmartDashboard.putNumber("CageAlign: lockedFF", lockedFF);
-        SmartDashboard.putNumber("CageAlign: lockedThreshold", lockedThreshold);
-
         SmartDashboard.putNumber("CageAlign: desiredAngle", desiredAngle);
         SmartDashboard.putNumber("CageAlign: desiredY", desiredY);
     }
 
     @Override
     public void initialize() {
-        startTime = 0;
         ll.setPipeline(1); 
-
-        minOdometryY = 10000;
-        maxOdometryY = -10000;
-        
         drivetrain.setUseMegaTag(false);
     }
 
@@ -109,17 +87,10 @@ public class AlignToCage extends Command {
         yFF = SmartDashboard.getNumber("CageAlign: yFF", yFF);
         yThreshold = SmartDashboard.getNumber("CageAlign: yThreshold", yThreshold);
 
-        lockedP = SmartDashboard.getNumber("CageAlign: lockedP", lockedP);
-        lockedI = SmartDashboard.getNumber("CageAlign: lockedI", lockedI);
-        lockedD = SmartDashboard.getNumber("CageAlign: lockedD", lockedD);
-        lockedFF = SmartDashboard.getNumber("CageAlign: lockedFF", lockedFF);
-        lockedThreshold = SmartDashboard.getNumber("CageAlign: lockedThreshold", lockedThreshold);
-
         desiredAngle = SmartDashboard.getNumber("CageAlign: desiredAngle", desiredAngle);
         desiredY = SmartDashboard.getNumber("CageAlign: desiredY", desiredY);
         
         yController.setPID(yP, yI, yD);
-        lockedController.setPID(lockedP, lockedI, lockedD);
     
         if (Math.abs(rotationError) < rotationUseLowerPThreshold)
             rotationController.setP(rotationLowerP);
@@ -133,22 +104,11 @@ public class AlignToCage extends Command {
         if (Math.abs(rotationError) > rotationThreshold)
             rotation = rotationController.calculate(rotationError) + Math.signum(rotationError) * rotationFF;
 
-        double currentTime = Timer.getFPGATimestamp();
         double yInput = 0;
         
-        double odometryY = drivetrain.getPose().getTranslation().getY();
-        SmartDashboard.putNumber("CageAlign: minOdometryY", minOdometryY);
-        SmartDashboard.putNumber("CageAlign: maxOdometryY", maxOdometryY);
-        SmartDashboard.putNumber("CageAlign: odometryY", odometryY);
-        SmartDashboard.putNumber("CageAlign: startTime", startTime);
-        SmartDashboard.putNumber("CageAlign: currentTime", currentTime);
-
         double tx = ll.getTxAverage();
         if (Math.abs(tx) > yThreshold && ll.hasTarget())
             yInput = yController.calculate(tx) + Math.signum(tx) * yFF;
-
-        // if (DriverOI.getInstance().getLeftBumperHeld())
-        //     yInput = 0;
   
         double xDriverInput = DriverOI.getInstance().getForward();
         drivetrain.drive(new Translation2d(xDriverInput, yInput), rotation, false, null);

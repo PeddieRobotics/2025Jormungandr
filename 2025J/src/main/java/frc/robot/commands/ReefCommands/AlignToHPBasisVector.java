@@ -292,9 +292,9 @@ public class AlignToHPBasisVector extends Command {
             rotationPIDController.setP(rotationLowerP);
         } else {
             rotationPIDController.setP(rotationP);
-            rotationPIDController.setI(rotationI);
-            rotationPIDController.setD(rotationD);
         }
+        rotationPIDController.setI(rotationI);
+        rotationPIDController.setD(rotationD);
 
         double rotation = 0;
         if (Math.abs(rotationError) > rotationThreshold)
@@ -344,7 +344,7 @@ public class AlignToHPBasisVector extends Command {
         else
             drivetrain.driveBlue(translation, rotation, true, null);
 
-        Logger.getInstance().logAlignToHP(xError, yError, rotationError, depthMagnitude, lateralMagnitude, rotation);
+        Logger.getInstance().logAlignToHP(lateralError, depthError, rotationError, depthMagnitude, lateralMagnitude, rotation);
     }
 
     @Override
