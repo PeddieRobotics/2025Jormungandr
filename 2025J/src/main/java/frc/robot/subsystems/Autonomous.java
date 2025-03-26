@@ -235,6 +235,7 @@ public class Autonomous extends SubsystemBase {
                     drivetrain.resetTranslation(new Translation2d(16.251, 7.128));
             })
         ));
+
         NamedCommands.registerCommand("ALIGN_TO_HP_13_1", new SequentialCommandGroup(
             new ParallelRaceGroup(
                 new AlignToHPBasisVector(HPAlign.kMaxSpeed, 0, HPAlign.kAutoBackOffset, 13, 1),
@@ -245,6 +246,19 @@ public class Autonomous extends SubsystemBase {
                     drivetrain.resetTranslation(new Translation2d(1.135, 7.008));
                 else
                     drivetrain.resetTranslation(new Translation2d(16.415, 1.042));
+            })
+        ));
+        NamedCommands.registerCommand("RIGHT_1_ALIGN_TO_HP_13_1", new SequentialCommandGroup(
+            new ParallelRaceGroup(
+                new AlignToHPBasisVector(HPAlign.kMaxSpeed, -8 * 2.54 / 100, HPAlign.kAutoBackOffset, 13, 1),
+                new WaitForCoral(), new WaitCommand(1.5)
+            ),
+            new InstantCommand(() -> {
+                // TODO: find actual numbers
+                if (DriverStation.getAlliance().isEmpty() || DriverStation.getAlliance().get() == DriverStation.Alliance.Blue)
+                    drivetrain.resetTranslation(new Translation2d(9.999, 9.999));
+                else
+                    drivetrain.resetTranslation(new Translation2d(9.999, 9.999));
             })
         ));
 
