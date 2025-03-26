@@ -8,20 +8,20 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.5309535693283425,
-        "y": 1.2345001418830148
+        "x": 1.7009292003795013,
+        "y": 1.8682339808327098
       },
       "isLocked": false,
       "linkedName": "AlignedToHPBottom1SlotLeft"
     },
     {
       "anchor": {
-        "x": 2.6612704918032786,
-        "y": 3.287756147540983
+        "x": 2.4,
+        "y": 3.0
       },
       "prevControl": {
-        "x": 2.4379826882132876,
-        "y": 3.175317022820281
+        "x": 1.9659836065573768,
+        "y": 2.3647028688524587
       },
       "nextControl": null,
       "isLocked": false,
@@ -54,7 +54,7 @@
   },
   "goalEndState": {
     "velocity": 2.5,
-    "rotation": 0.0
+    "rotation": 4.0
   },
   "reversed": false,
   "folder": "HP 1 Slot Left to Reef",

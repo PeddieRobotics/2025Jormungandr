@@ -484,7 +484,7 @@ public class AlignToReefBasisVector extends Command {
             drivetrain.drive(new Translation2d(0,0), 0, false, null);
   
         Logger.getInstance().logEvent(
-            "Align to Reef ended with errors: x " + xError + ", y " + yError + ", rotation " + rotationError,
+            "Align to Reef ended with errors: lateral " + lateralError + ", depth " + depthError + ", rotation " + rotationError,
             false
         );
     }

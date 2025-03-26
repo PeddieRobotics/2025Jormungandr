@@ -8,20 +8,20 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 5.988400638954457,
-        "y": 2.7518596534034767
+        "x": 6.034934819137731,
+        "y": 2.8608110332877548
       },
       "isLocked": false,
       "linkedName": "RightJigCageStart"
     },
     {
       "anchor": {
-        "x": 5.873975409836065,
-        "y": 2.686
+        "x": 6.3534836065573765,
+        "y": 2.8082479508196716
       },
       "prevControl": {
-        "x": 6.289118728918504,
-        "y": 2.684159421228272
+        "x": 6.828049118504847,
+        "y": 2.7499298697987724
       },
       "nextControl": null,
       "isLocked": false,
@@ -34,7 +34,7 @@
   "eventMarkers": [
     {
       "name": "L4_PREP",
-      "waypointRelativePos": 0.49870584700576925,
+      "waypointRelativePos": 0.9007597340930718,
       "endWaypointRelativePos": null,
       "command": {
         "type": "named",
@@ -54,7 +54,7 @@
   },
   "goalEndState": {
     "velocity": 2.0,
-    "rotation": 117.636134773314
+    "rotation": 119.99999999999999
   },
   "reversed": false,
   "folder": "Start to Reef",

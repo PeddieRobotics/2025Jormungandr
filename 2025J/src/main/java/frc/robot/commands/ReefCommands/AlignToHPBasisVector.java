@@ -59,7 +59,7 @@ public class AlignToHPBasisVector extends Command {
 
         // TODO: MEGA IMPORTANT REENABLE THE BACK LIMELIGHT!!!!!!!!!
         cameras = new Limelight[] {
-            // LimelightBack.getInstance(),
+            LimelightBack.getInstance(),
             LimelightFrontRight.getInstance(),
             LimelightFrontLeft.getInstance(),
             // LimelightFrontMiddle.getInstance(),
