@@ -169,7 +169,6 @@ public class Logger {
         // Limelight Logs
         limelights = new Limelight[] { 
             LimelightFrontLeft.getInstance(),
-            // LimelightFrontMiddle.getInstance(),
             LimelightFrontRight.getInstance(),
             LimelightBack.getInstance()
         };

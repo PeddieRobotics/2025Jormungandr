@@ -545,16 +545,16 @@ public final class Constants {
         // public static final double kFrontLeftCamForward = 7.7188 * 0.0254;
         // public static final double kFrontLeftCamLeftOffset = 6.625 * 0.0254;
         public static final double kFrontLeftCamUpOffset = 6.9909 * 0.0254;
-        public static final double kFrontLeftCamPitchDeg = 6;
+        public static final double kFrontLeftCamPitchDeg = 17;
         // public static final double kFrontLeftCamYawDeg = 0;
         // public static final int kFrontLeftCamPipeline = 0;
 
         // 3: 10.58.95.12
-        public static final String kFrontMiddleCamName = "limelight-middle";
+        public static final String kBackClimbCamName = "limelight-back-climb";
         // public static final double kFrontMiddleCamForward = 7.7188 * 0.0254;
         // public static final double kFrontMiddleCamLeftOffset = 0;
-        public static final double kFrontMiddleCamUpOffset = 6.9909 * 0.0254;
-        public static final double kFrontMiddleCamPitchDeg = 6;
+        public static final double kBackClimbCamUpOffset = 0.0;
+        public static final double kBackClimbCamPitchDeg = -37.0;
         // public static final double kFrontMiddleCamYawDeg = 0;
         // public static final int kFrontMiddleCamPipeline = 0;
 
@@ -563,17 +563,9 @@ public final class Constants {
         // public static final double kFrontRightCamForward = 7.7188 * 0.0254;
         // public static final double kFrontRightCamLeftOffset = -6.5 * 0.0254;
         public static final double kFrontRightCamUpOffset = 6.9909 * 0.0254;
-        public static final double kFrontRightCamPitchDeg = 6;
+        public static final double kFrontRightCamPitchDeg = 17;
         // public static final double kFrontRightCamYawDeg = 0;
         // public static final int kFrontRightCamPipeline = 0;
-
-        public static final String kLeftCamName = "limelight-climber";
-        // public static final double kLeftCamForward = 0;
-        // public static final double kLeftCamLeftOffset = 0;
-        public static final double kLeftCamUpOffset = 0;
-        public static final double kLeftCamPitchDeg = 0;
-        // public static final double kLeftCamYawDeg = 0;
-        // public static final int kLeftCamPipeline = 0;
 
         public static final InterpolatingDoubleTreeMap k1TagStdDevs = new InterpolatingDoubleTreeMap() {
             {

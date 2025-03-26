@@ -98,7 +98,6 @@ public class DriverOI {
             Optional<Pose2d> pose = LimelightFrontLeft.getInstance().getEstimatedPoseMT2();
             if (pose.isPresent())
                 Drivetrain.getInstance().resetTranslation(pose.get().getTranslation());
-            // Drivetrain.getInstance().resetTranslation(LimelightFrontMiddle.getInstance().getEstimatedPoseMT2().get().getTranslation());
         }));
 
         Trigger touchpadButton = new JoystickButton(controller, PS4Controller.Button.kTouchpad.value);

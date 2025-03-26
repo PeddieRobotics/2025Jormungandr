@@ -52,7 +52,6 @@ public class AlignToProcessor extends Command {
             LimelightBack.getInstance(),
             LimelightFrontLeft.getInstance(),
             LimelightFrontRight.getInstance(),
-            // LimelightFrontMiddle.getInstance(),
         };
 
         xP = HPAlign.kLateralP;

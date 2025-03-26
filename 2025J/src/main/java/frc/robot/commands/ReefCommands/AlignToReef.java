@@ -53,7 +53,6 @@ public class AlignToReef extends Command {
             case LEFT -> {
                 cameras = new Limelight[] {
                     LimelightFrontRight.getInstance(),
-                    // LimelightFrontMiddle.getInstance(),
                     LimelightFrontLeft.getInstance(),
                 };
                 commandName = "left align";
@@ -61,7 +60,6 @@ public class AlignToReef extends Command {
             }
             case MIDDLE -> {
                 cameras = new Limelight[] {
-                    // LimelightFrontMiddle.getInstance(),
                     LimelightFrontLeft.getInstance(),
                     LimelightFrontRight.getInstance(),
                 };
@@ -71,7 +69,6 @@ public class AlignToReef extends Command {
             case RIGHT -> {
                 cameras = new Limelight[] {
                     LimelightFrontLeft.getInstance(),
-                    // LimelightFrontMiddle.getInstance(),
                     LimelightFrontRight.getInstance(),
                 };
                 commandName = "right align";
@@ -140,7 +137,6 @@ public class AlignToReef extends Command {
         }
         else
             desiredTarget = LimelightFrontLeft.getInstance().getTargetID();
-            // desiredTarget = LimelightFrontMiddle.getInstance().getTargetID();
 
         SmartDashboard.putNumber("Align: Desired Target", desiredTarget);
 
@@ -183,7 +179,6 @@ public class AlignToReef extends Command {
 
         translateThreshold = DriverStation.isAutonomous() ? ReefAlign.kTranslateThresholdAuto : ReefAlign.kTranslateThreshold;
         
-        // LimelightFrontMiddle.getInstance().setLED(Limelight.LightMode.ON);
         LimelightBack.getInstance().setLED(Limelight.LightMode.ON);
         Logger.getInstance().logEvent("Align to Reef, ID " + desiredTarget, true);
     }
@@ -278,7 +273,6 @@ public class AlignToReef extends Command {
 
         boolean autoScore = SmartDashboard.getBoolean("Align: Auto Score", true);
         if (Math.abs(rotationError) < rotationThreshold && translationDistanceGood() && autoScore) {
-            // LimelightFrontMiddle.getInstance().setLED(Limelight.LightMode.OFF);
             LimelightBack.getInstance().setLED(Limelight.LightMode.OFF);
             Superstructure.getInstance().sendToScore();
         }
@@ -300,7 +294,6 @@ public class AlignToReef extends Command {
         if (desiredPose.isPresent())
             drivetrain.drive(new Translation2d(0,0), 0, false, null);
         
-        // LimelightFrontMiddle.getInstance().setLED(Limelight.LightMode.OFF);
         LimelightBack.getInstance().setLED(Limelight.LightMode.OFF);
         
         Logger.getInstance().logEvent(

@@ -78,7 +78,6 @@ public class AlignToReefBasisVector extends Command {
             case LEFT -> {
                 cameras = new Limelight[] {
                     LimelightFrontRight.getInstance(),
-                    // LimelightFrontMiddle.getInstance(),
                     LimelightFrontLeft.getInstance(),
                 };
                 commandName = "left align";
@@ -86,7 +85,6 @@ public class AlignToReefBasisVector extends Command {
             }
             case MIDDLE -> {
                 cameras = new Limelight[] {
-                    // LimelightFrontMiddle.getInstance(),
                     LimelightFrontLeft.getInstance(),
                     LimelightFrontRight.getInstance(),
                 };
@@ -96,7 +94,6 @@ public class AlignToReefBasisVector extends Command {
             case RIGHT -> {
                 cameras = new Limelight[] {
                     LimelightFrontLeft.getInstance(),
-                    // LimelightFrontMiddle.getInstance(),
                     LimelightFrontRight.getInstance(),
                 };
                 commandName = "right align";
