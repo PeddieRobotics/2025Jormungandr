@@ -229,7 +229,6 @@ public final class Constants {
         public static final double kElevatorProcessorScorePosition = 0.0;
         public static final double kElevatorReef1IntakePosition = 2.2;
         public static final double kElevatorReef2IntakePosition = 5.45;
-        public static final double kElevatorClimbPosition = 0.0;
 
         public static final double kArmStowPosition = 0.25;
         public static final double kArmHPIntakePosition = 0.25;
@@ -243,7 +242,6 @@ public final class Constants {
         public static final double kArmProcessorScorePosition = 0.09;
         public static final double kArmReef1IntakePosition = 0.17;
         public static final double kArmReef2IntakePosition = 0.17;
-        public static final double kArmClimbPosition = 0.09; 
 
     }
 
@@ -519,9 +517,9 @@ public final class Constants {
 
         //TODO: set values
         public static final double kClimberRetractedPosition = 0.0;
-        public static final double kClimberDeployedPosition = 40.0;
-        public static final double kClimberRetractedPercentOutput = -0.3;
-        public static final double kClimberDeployedPercentOutput = 0.3;
+        public static final double kClimberDeployedPosition = 0.0;
+        public static final double kClimberRetractedPercentOutput = 0.0;
+        public static final double kClimberDeployedPercentOutput = 0.0;
 
     }
 

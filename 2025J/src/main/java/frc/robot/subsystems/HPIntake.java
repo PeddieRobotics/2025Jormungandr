@@ -8,17 +8,14 @@ import frc.robot.utils.RobotMap;
 public class HPIntake extends SubsystemBase{
 
     private static HPIntake hpIntake;
-    private final Servo linearActuatorRight, linearActuatorLeft;
+    private final Servo linearActuator;
 
     private LiveData rollerMotorStatorCurrent, rollerMotorTemperature, pivotMotorStatorCurrent, pivotMotorTemperature, 
     intakePosition, intakeVelocity, pivotMotorSupplyCurrent, rollerMotorSupplyCurrent; 
     
     public HPIntake() {
-        linearActuatorRight = new Servo(RobotMap.HP_INTAKE_SERVO_LEFT_ID);
-        linearActuatorLeft = new Servo(RobotMap.HP_INTAKE_SERVO_RIGHT_ID);
-        linearActuatorRight.setBoundsMicroseconds(2000, 1800, 1500, 1200, 1000);
-        linearActuatorLeft.setBoundsMicroseconds(2000, 1800, 1500, 1200, 1000);
-
+        linearActuator = new Servo(RobotMap.HP_INTAKE_SERVO_ID);
+        linearActuator.setBoundsMicroseconds(2000, 1800, 1500, 1200, 1000);
     }
 
     /**
@@ -32,13 +29,11 @@ public class HPIntake extends SubsystemBase{
     }
     
     public void extendLinearActuator(){
-        linearActuatorRight.set(1);
-        linearActuatorLeft.set(1);
+        linearActuator.set(1);
     }
 
     public void retractLinearActuator(){
-        linearActuatorRight.set(0);
-        linearActuatorLeft.set(0);
+        linearActuator.set(0);
     }
 
     @Override

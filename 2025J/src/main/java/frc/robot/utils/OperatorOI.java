@@ -4,7 +4,6 @@ import static frc.robot.subsystems.Superstructure.SuperstructureState.L1_PREP;
 import static frc.robot.subsystems.Superstructure.SuperstructureState.L2_PREP;
 import static frc.robot.subsystems.Superstructure.SuperstructureState.BARGE_PRESTAGE;
 import static frc.robot.subsystems.Superstructure.SuperstructureState.PRESTAGE;
-import static frc.robot.subsystems.Superstructure.SuperstructureState.STOW;
 import static frc.robot.subsystems.Superstructure.SuperstructureState.L3_PREP;
 import static frc.robot.subsystems.Superstructure.SuperstructureState.L4_PREP;
 
@@ -15,15 +14,11 @@ import edu.wpi.first.wpilibj.PS4Controller;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.subsystems.Claw;
-import frc.robot.commands.DeployClimber;
 import frc.robot.commands.HomeElevator;
 import frc.robot.commands.ManualArmControl;
-import frc.robot.commands.ManualClimbControl;
 import frc.robot.commands.ManualElevatorControl;
 import frc.robot.subsystems.Superstructure;
 import frc.robot.subsystems.Superstructure.SuperstructureState;
@@ -89,7 +84,7 @@ public class OperatorOI {
 
 
         Trigger muteButton = new JoystickButton(controller, 15);
-        muteButton.onTrue(new ParallelCommandGroup(new DeployClimber(), new InstantCommand(() -> superstructure.requestState(SuperstructureState.CLIMB))));
+        // enter climb mode
 
         // DO NOT DO NOT BIND ANYTHING TO THIS
         // THIS IS CHECKED FOR AUTOMATIC ALGAE REMOVAL FROM L4
@@ -105,7 +100,7 @@ public class OperatorOI {
         }));
 
         Trigger L2Trigger = new JoystickButton(controller, PS4Controller.Button.kL2.value);
-        L2Trigger.whileTrue(new ConditionalCommand(new ManualClimbControl(), new ManualElevatorControl(), superstructure::isClimbState));
+        L2Trigger.whileTrue(new ManualElevatorControl());
 
         Trigger R2Trigger = new JoystickButton(controller, PS4Controller.Button.kR2.value);
         R2Trigger.whileTrue(new ManualArmControl());

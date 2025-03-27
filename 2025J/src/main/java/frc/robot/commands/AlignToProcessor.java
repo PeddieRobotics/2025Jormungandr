@@ -97,30 +97,23 @@ public class AlignToProcessor extends Command {
         SmartDashboard.putNumber("ProcessorAlign: sendToScoreOffset", 0.65);
     }
 
-    public boolean isInBlueSide() {
-        return drivetrain.getPose().getX() < 17.55 / 2;
-    }
-
     @Override
     public void initialize() {
-        // int desiredTarget;
-        // if (DriverStation.getAlliance().isEmpty() || DriverStation.getAlliance().get() == DriverStation.Alliance.Blue) {
-        //     desiredTarget = 16;
-        //     desiredAngle = -90;
-        // }
-        // else {
-        //     desiredTarget = 3;
-        //     desiredAngle = 90;
-        // }
-        int desiredTarget = isInBlueSide() ? 16 : 3;
-        desiredAngle = isInBlueSide() ? -90 : 90;
+        int desiredTarget;
+        if (DriverStation.getAlliance().isEmpty() || DriverStation.getAlliance().get() == DriverStation.Alliance.Blue) {
+            desiredTarget = 16;
+            desiredAngle = -90;
+        }
+        else {
+            desiredTarget = 3;
+            desiredAngle = 90;
+        }
 
         Pose2d tagPose = Limelight.getAprilTagPose(desiredTarget);
         desiredX = tagPose.getX();
         
         double amount = 0.65; // SmartDashboard.getNumber("ProcessorAlign: sendToScoreOffset", 0.65);
-        // if (DriverStation.getAlliance().isEmpty() || DriverStation.getAlliance().get() == DriverStation.Alliance.Blue)
-        if (isInBlueSide())
+        if (DriverStation.getAlliance().isEmpty() || DriverStation.getAlliance().get() == DriverStation.Alliance.Blue)
             sendToScoreLocation = tagPose.getY() + amount;
         else
             sendToScoreLocation = tagPose.getY() - amount;
@@ -208,8 +201,7 @@ public class AlignToProcessor extends Command {
         
         if (superstructure.getCurrentState() == SuperstructureState.PROCESSOR_PREP) {
             Logger.getInstance().logEvent("Align to Processor score", true);
-            if (isInBlueSide()) {
-            // if (DriverStation.getAlliance().isEmpty() || DriverStation.getAlliance().get() == DriverStation.Alliance.Blue) {
+            if (DriverStation.getAlliance().isEmpty() || DriverStation.getAlliance().get() == DriverStation.Alliance.Blue) {
                 if (estimatedPose.getY() <= sendToScoreLocation)
                     superstructure.sendToScore();
             }
