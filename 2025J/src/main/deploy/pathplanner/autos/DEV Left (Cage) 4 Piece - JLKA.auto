@@ -13,11 +13,7 @@
         {
           "type": "path",
           "data": {
-<<<<<<<< HEAD:2025J/src/main/deploy/pathplanner/autos/DEV Right (Cage) 4 Piece - ECDB 1 Slot Left.auto
-            "pathName": "Right (Cage) to E Align"
-========
             "pathName": "Left (Cage) to J Align"
->>>>>>>> dev:2025J/src/main/deploy/pathplanner/autos/DEV Left (Cage) 4 Piece - JLKA.auto
           }
         },
         {
@@ -47,11 +43,7 @@
         {
           "type": "path",
           "data": {
-<<<<<<<< HEAD:2025J/src/main/deploy/pathplanner/autos/DEV Right (Cage) 4 Piece - ECDB 1 Slot Left.auto
-            "pathName": "HP 1 Slot Left to C Align"
-========
             "pathName": "HP to L Align"
->>>>>>>> dev:2025J/src/main/deploy/pathplanner/autos/DEV Left (Cage) 4 Piece - JLKA.auto
           }
         },
         {
@@ -75,17 +67,13 @@
         {
           "type": "named",
           "data": {
-            "name": "L4_PRESTAGE"
+            "name": "PRESTAGE"
           }
         },
         {
           "type": "path",
           "data": {
-<<<<<<<< HEAD:2025J/src/main/deploy/pathplanner/autos/DEV Right (Cage) 4 Piece - ECDB 1 Slot Left.auto
-            "pathName": "HP 1 Slot Left to D Align"
-========
             "pathName": "HP to K Align"
->>>>>>>> dev:2025J/src/main/deploy/pathplanner/autos/DEV Left (Cage) 4 Piece - JLKA.auto
           }
         },
         {
@@ -121,11 +109,7 @@
         {
           "type": "path",
           "data": {
-<<<<<<<< HEAD:2025J/src/main/deploy/pathplanner/autos/DEV Right (Cage) 4 Piece - ECDB 1 Slot Left.auto
-            "pathName": "HP 1 Slot Left to B Align"
-========
             "pathName": "HP to A Align"
->>>>>>>> dev:2025J/src/main/deploy/pathplanner/autos/DEV Left (Cage) 4 Piece - JLKA.auto
           }
         },
         {

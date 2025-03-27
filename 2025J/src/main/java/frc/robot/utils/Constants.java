@@ -112,7 +112,7 @@ public final class Constants {
         // // offsets (check robotmap for ids) and put them here
 
         public static final double kFrontLeftMagnetOffset = 0.238525;
-        public static final double kFrontRightMagnetOffset = 0.384521;
+        public static final double kFrontRightMagnetOffset = 0.157471;
         public static final double kBackLeftMagnetOffset = 0.496094;
         public static final double kBackRightMagnetOffset = 0.130127;
 
@@ -258,7 +258,8 @@ public final class Constants {
         public static final double kArmSensortoMechanismRatio = 0.96;
 
         // public static final double kArmMagnetOffset = -0.052979 + 0.25 * kArmSensortoMechanismRatio;
-        public static final double kArmMagnetOffset = 0.146729 + 0.25 * kArmSensortoMechanismRatio;
+        public static final double kArmMagnetOffset = -0.854004 + 0.25 * kArmSensortoMechanismRatio;
+        // public static final double kArmMagnetOffset = 0.0;
 
         // public static final double kS = 0.0;
         // public static final double kV = 0.0;
@@ -519,9 +520,9 @@ public final class Constants {
 
         //TODO: set values
         public static final double kClimberRetractedPosition = 0.0;
-        public static final double kClimberDeployedPosition = 40.0;
-        public static final double kClimberRetractedPercentOutput = -0.3;
-        public static final double kClimberDeployedPercentOutput = 0.3;
+        public static final double kClimberDeployedPosition = 115.0;
+        public static final double kClimberRetractedPercentOutput = -0.5;
+        public static final double kClimberDeployedPercentOutput = 0.5;
 
     }
 

@@ -6,6 +6,7 @@ import frc.robot.utils.Constants.ClimberConstants;
 import frc.robot.utils.DriverOI;
 import frc.robot.utils.Kraken;
 import frc.robot.utils.LiveData;
+import frc.robot.utils.OperatorOI;
 import frc.robot.utils.RobotMap;
 
 
@@ -23,7 +24,7 @@ public class Climber extends SubsystemBase {
         climberMotor.setSupplyCurrentLimit(40.0);
         climberMotor.setStatorCurrentLimit(40.0);
 
-        climberMotor.setInverted(false);
+        climberMotor.setInverted(true);
         climberMotor.setBrake();
 
         SmartDashboard.putBoolean("Climber: Open Loop Control", false);
@@ -46,9 +47,9 @@ public class Climber extends SubsystemBase {
 
     public void deployClimber(){
         if(climbDeployed()){
-            setSpeed(ClimberConstants.kClimberDeployedPercentOutput);
-        }else{
             setSpeed(0.0);
+        }else{
+            setSpeed(ClimberConstants.kClimberDeployedPercentOutput);
         }
     }
 
@@ -98,6 +99,10 @@ public class Climber extends SubsystemBase {
         if(SmartDashboard.getBoolean("Climber: Open Loop Control", false)){
             climberMotor.setPercentOutput(DriverOI.getInstance().getRightForward());
         }
+        SmartDashboard.putNumber("Climber: commanded output", OperatorOI.getInstance().getForward());
+        SmartDashboard.putBoolean("Climber: deployed", climbDeployed());
+        SmartDashboard.putBoolean("Climber: retracted", climbRetracted());
+        SmartDashboard.putNumber("Climber: position", getClimberPosition());
 
     }
 }

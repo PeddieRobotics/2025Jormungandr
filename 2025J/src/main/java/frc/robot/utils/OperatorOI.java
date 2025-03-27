@@ -20,6 +20,7 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.subsystems.Claw;
+import frc.robot.subsystems.HPIntake;
 import frc.robot.commands.DeployClimber;
 import frc.robot.commands.HomeElevator;
 import frc.robot.commands.ManualArmControl;
@@ -105,8 +106,9 @@ public class OperatorOI {
         }));
 
         Trigger L2Trigger = new JoystickButton(controller, PS4Controller.Button.kL2.value);
-        L2Trigger.whileTrue(new ConditionalCommand(new ManualClimbControl(), new ManualElevatorControl(), superstructure::isClimbState));
-
+        // L2Trigger.whileTrue(new ConditionalCommand(new ManualClimbControl(), new ManualElevatorControl(), superstructure::isClimbState));
+        L2Trigger.whileTrue(new ManualClimbControl());
+        
         Trigger R2Trigger = new JoystickButton(controller, PS4Controller.Button.kR2.value);
         R2Trigger.whileTrue(new ManualArmControl());
 
@@ -137,8 +139,7 @@ public class OperatorOI {
         optionButton.onTrue(new HomeElevator());
         
         Trigger shareButton = new JoystickButton(controller, PS4Controller.Button.kShare.value);
-        // TODO: home arm
-
+        shareButton.onTrue(new InstantCommand(() -> HPIntake.getInstance().extendLinearActuator()));
     }
 
     public double getForward() {
@@ -148,7 +149,8 @@ public class OperatorOI {
 
     public double getRightForward() {
         double val = -controller.getRawAxis(PS4Controller.Axis.kRightY.value);
-        return Math.abs(val) < 0.1 ? 0 : val;
+        return Math.abs(
+            val) < 0.1 ? 0 : val;
     }
 
     public boolean bothBumpersHeld() {

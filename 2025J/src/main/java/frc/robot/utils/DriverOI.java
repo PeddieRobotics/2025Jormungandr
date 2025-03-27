@@ -22,6 +22,7 @@ import frc.robot.commands.AlignToBarge;
 import frc.robot.commands.AlignToCage;
 import frc.robot.commands.AlignToProcessor;
 import frc.robot.commands.HomeElevator;
+import frc.robot.commands.RetractClimber;
 import frc.robot.commands.WheelRadiusCharacterization;
 import frc.robot.commands.ReefCommands.AlignToHP;
 import frc.robot.commands.ReefCommands.AlignToHPBasisVector;
@@ -71,6 +72,7 @@ public class DriverOI {
         return instance;
     }
 
+
     public void configureController() {
 
         // READ: Press FN + X on the PS5 edge controller to activate the 2025 binding
@@ -106,11 +108,11 @@ public class DriverOI {
 
         // TODO: Set binding to enter climb mode
         Trigger L1Bumper = new JoystickButton(controller, PS4Controller.Button.kL1.value);
-        L1Bumper.onTrue(new InstantCommand(() -> HPIntake.getInstance().extendLinearActuator()));
+        L1Bumper.onTrue(new RetractClimber());
 
         // TODO: Set binding to climb
         Trigger R1Bumper = new JoystickButton(controller, PS4Controller.Button.kR1.value);
-        R1Bumper.onTrue(new InstantCommand(() -> HPIntake.getInstance().retractLinearActuator()));
+        R1Bumper.onTrue(new InstantCommand(() -> HPIntake.getInstance().extendLinearActuator()));
         // R1Bumper.whileTrue(new AlignToCage());
 
         // DO NOT BIND: USED FOR ROTATION OF DRIVETRAIN
