@@ -2,7 +2,8 @@ package frc.robot.utils;
 
 public class RobotMap {
     // HP INTAKE LINEAR ACTUATORS - PWM Port
-    public static final int HP_INTAKE_SERVO_ID = 0;
+    public static final int HP_INTAKE_SERVO_RIGHT_ID = 0;
+    public static final int HP_INTAKE_SERVO_LEFT_ID = 1;
 
     // MISCELLANEOUS
     public static final String CANIVORE_BUS = "canivore";

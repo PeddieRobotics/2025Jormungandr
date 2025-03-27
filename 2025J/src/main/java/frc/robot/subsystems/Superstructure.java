@@ -66,7 +66,8 @@ public class Superstructure extends SubsystemBase {
         REEF2_ALGAE_INTAKE,
         EJECT_ALGAE,
         EJECT_CORAL,
-        REMOVING_ALGAE
+        REMOVING_ALGAE,
+        CLIMB
     }
 
     public enum ScoringFlag {
@@ -200,7 +201,8 @@ public class Superstructure extends SubsystemBase {
                         REEF1_ALGAE_INTAKE,
                         REEF2_ALGAE_INTAKE,
                         EJECT_ALGAE,
-                        EJECT_CORAL)
+                        EJECT_CORAL,
+                        CLIMB)
                         .contains(requestedSystemState)) {
                     systemState = requestedSystemState;
                 }
@@ -797,6 +799,28 @@ public class Superstructure extends SubsystemBase {
                     systemState = requestedSystemState;
                 }
             }
+
+            case CLIMB -> {
+                claw.stopClaw();
+                elevator.setElevatorPositionMotionMagicVoltage(ScoreConstants.kElevatorClimbPosition);
+                arm.setArmPositionMotionMagicVoltage(ScoreConstants.kArmClimbPosition);
+
+                if (Arrays.asList(
+                        // STOW,
+                        // HP_INTAKE,
+                        // ALGAE_GROUND_INTAKE,
+                        // L1_PREP,
+                        // L2_PREP,
+                        // PRESTAGE,
+                        // BARGE_PRESTAGE,
+                        // PROCESSOR_PREP,
+                        // REEF1_ALGAE_INTAKE,
+                        // REEF2_ALGAE_INTAKE,
+                        )
+                        .contains(requestedSystemState)) {
+                    systemState = requestedSystemState;
+                }
+            }
         }
 
     }
@@ -935,5 +959,9 @@ public class Superstructure extends SubsystemBase {
 
     public boolean isReefPrepState(){
         return requestedSystemState == L1_PREP || requestedSystemState == L2_PREP || requestedSystemState == L3_PREP || requestedSystemState == L4_PREP;
+    }
+
+    public boolean isClimbState(){
+        return requestedSystemState == CLIMB;
     }
 }
