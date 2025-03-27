@@ -527,12 +527,6 @@ public final class Constants {
     }
 
     public static final class CameraConstants {
-        /*
-         * TODO: ONCE ROBOT ORIENTATION IS CORRECTED
-         * - Front(Left/Middle/Right) Yaw: 180 -> 0
-         * - Front(Left/Middle/Right) (Left/Up)Offset: remove "* -1"
-         */
-
         // 3: 10.58.95.14
         // TODO: find real values
         public static final String kBackCamName = "limelight-back";
@@ -553,11 +547,11 @@ public final class Constants {
         // public static final int kFrontLeftCamPipeline = 0;
 
         // 3: 10.58.95.12
-        public static final String kFrontMiddleCamName = "limelight-middle";
+        public static final String kClimberCamName = "limelight-climber";
         // public static final double kFrontMiddleCamForward = 7.7188 * 0.0254;
         // public static final double kFrontMiddleCamLeftOffset = 0;
-        public static final double kFrontMiddleCamUpOffset = 6.9909 * 0.0254;
-        public static final double kFrontMiddleCamPitchDeg = 6;
+        public static final double kClimberCamUpOffset = 0; // TODO: 6.9909 * 0.0254;
+        public static final double kClimberCamPitchDeg = -37;
         // public static final double kFrontMiddleCamYawDeg = 0;
         // public static final int kFrontMiddleCamPipeline = 0;
 
@@ -569,14 +563,6 @@ public final class Constants {
         public static final double kFrontRightCamPitchDeg = 6;
         // public static final double kFrontRightCamYawDeg = 0;
         // public static final int kFrontRightCamPipeline = 0;
-
-        public static final String kLeftCamName = "limelight-climber";
-        // public static final double kLeftCamForward = 0;
-        // public static final double kLeftCamLeftOffset = 0;
-        public static final double kLeftCamUpOffset = 0;
-        public static final double kLeftCamPitchDeg = 0;
-        // public static final double kLeftCamYawDeg = 0;
-        // public static final int kLeftCamPipeline = 0;
 
         public static final InterpolatingDoubleTreeMap k1TagStdDevs = new InterpolatingDoubleTreeMap() {
             {

@@ -62,7 +62,6 @@ public class AlignToHPBasisVector extends Command {
             LimelightBack.getInstance(),
             LimelightFrontRight.getInstance(),
             LimelightFrontLeft.getInstance(),
-            // LimelightFrontMiddle.getInstance(),
         };
 
         depthP = HPAlign.kDepthP;

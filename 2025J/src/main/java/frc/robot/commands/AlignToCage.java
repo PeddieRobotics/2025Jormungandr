@@ -7,13 +7,13 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Limelight;
-import frc.robot.subsystems.LimelightFrontMiddle;
+import frc.robot.subsystems.LimelightClimber;
 import frc.robot.utils.DriverOI;
 import frc.robot.utils.Logger;
 
 public class AlignToCage extends Command {
     private Drivetrain drivetrain;
-    private LimelightFrontMiddle ll;
+    private LimelightClimber ll;
 
     private PIDController rotationController, yController;
     private double rotationP, rotationI, rotationD, rotationFF, rotationLowerP, rotationUseLowerPThreshold;
@@ -24,7 +24,7 @@ public class AlignToCage extends Command {
 
     public AlignToCage() {
         drivetrain = Drivetrain.getInstance();
-        ll = LimelightFrontMiddle.getInstance();
+        ll = LimelightClimber.getInstance();
 
         rotationP = 0.08;
         rotationI = 0.0;

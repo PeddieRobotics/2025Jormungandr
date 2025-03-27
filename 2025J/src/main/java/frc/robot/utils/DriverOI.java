@@ -1,7 +1,6 @@
 package frc.robot.utils;
 
 import edu.wpi.first.wpilibj.PS4Controller;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
@@ -13,25 +12,14 @@ import frc.robot.subsystems.Superstructure;
 import edu.wpi.first.math.geometry.Translation2d;
 import frc.robot.subsystems.Superstructure.SuperstructureState;
 
-import java.util.Arrays;
 import java.util.Optional;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import frc.robot.commands.AlignToBarge;
-import frc.robot.commands.AlignToCage;
-import frc.robot.commands.AlignToProcessor;
-import frc.robot.commands.HomeElevator;
+import frc.robot.commands.AlignToHPBasisVector;
+import frc.robot.commands.AlignToReefBasisVector;
 import frc.robot.commands.RetractClimber;
-import frc.robot.commands.WheelRadiusCharacterization;
-import frc.robot.commands.ReefCommands.AlignToHP;
-import frc.robot.commands.ReefCommands.AlignToHPBasisVector;
-import frc.robot.commands.ReefCommands.AlignToReef;
-import frc.robot.commands.ReefCommands.AlignToReefBasisVector;
-import frc.robot.commands.ReefCommands.OrbitReef;
-// import frc.robot.commands.ReefCommands.AlignToReef2D;
-// import frc.robot.commands.ReefCommands.AlignToReefEstimatedPose;
-// import frc.robot.commands.ScoreCommands.AlignAndScore;
 import frc.robot.subsystems.Claw;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.HPIntake;
@@ -41,14 +29,7 @@ import frc.robot.utils.Constants.AlignmentConstants.HPAlign;
 import frc.robot.utils.Constants.AlignmentConstants.ReefAlign;
 import frc.robot.utils.Constants.DriveConstants;
 
-import static frc.robot.subsystems.Superstructure.SuperstructureState.HP_INTAKE;
-import static frc.robot.subsystems.Superstructure.SuperstructureState.L1_PREP;
-import static frc.robot.subsystems.Superstructure.SuperstructureState.L2_PREP;
-import static frc.robot.subsystems.Superstructure.SuperstructureState.L3_PREP;
-import static frc.robot.subsystems.Superstructure.SuperstructureState.L4_PREP;
-
 public class DriverOI {
-
     private static DriverOI instance;
     private Superstructure superstructure;
     private PS4Controller controller;
@@ -100,7 +81,6 @@ public class DriverOI {
             Optional<Pose2d> pose = LimelightFrontLeft.getInstance().getEstimatedPoseMT2();
             if (pose.isPresent())
                 Drivetrain.getInstance().resetTranslation(pose.get().getTranslation());
-            // Drivetrain.getInstance().resetTranslation(LimelightFrontMiddle.getInstance().getEstimatedPoseMT2().get().getTranslation());
         }));
 
         Trigger touchpadButton = new JoystickButton(controller, PS4Controller.Button.kTouchpad.value);
