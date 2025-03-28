@@ -214,7 +214,7 @@ public final class Constants {
         public static final double kElevatorStowPosition = 0.0;
         public static final double kElevatorHPIntakePosition = 0.0;
         public static final double kElevatorGroundIntakePosition = 0.77;
-        public static final double kElevatorL1ScorePosition = 1.75;
+        public static final double kElevatorL1ScorePosition = 0.0;
         public static final double kElevatorL2ScorePosition = 3.7; //3.8;
         public static final double kElevatorL3ScorePosition = 7.05;
         public static final double kElevatorPrestagePosition = 3.3;
@@ -234,8 +234,8 @@ public final class Constants {
         public static final double kArmStowPosition = 0.25;
         public static final double kArmHPIntakePosition = 0.25;
         public static final double kArmGroundIntakePosition = 0.0;
-        // public static final double kArmL1ScorePosition = 0.25;
-        public static final double kArmL1ScorePosition = 0.0;
+        public static final double kArmL1ScorePosition = 0.25;
+        // public static final double kArmL1ScorePosition = 0.0;
         public static final double kArmL2ScorePosition = 0.25;
         public static final double kArmL3ScorePosition = 0.25;
         public static final double kArmL4ScorePosition = 0.25;
