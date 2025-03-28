@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 7.2,
-        "y": 5.364
+        "x": 1.299,
+        "y": 7.128
       },
       "prevControl": null,
       "nextControl": {
-        "x": 6.138400668665817,
-        "y": 5.298139867677428
+        "x": 1.7009259731631947,
+        "y": 6.181764648358008
       },
       "isLocked": false,
-      "linkedName": "LeftCageStart"
+      "linkedName": "AlignedToHPTop1SlotRight"
     },
     {
       "anchor": {
-        "x": 5.873975409836065,
-        "y": 5.364
+        "x": 2.4,
+        "y": 5.05
       },
       "prevControl": {
-        "x": 6.289118729715601,
-        "y": 5.3658403989773715
+        "x": 1.9659807821257214,
+        "y": 5.685295201569347
       },
       "nextControl": null,
       "isLocked": false,
@@ -34,7 +34,7 @@
   "eventMarkers": [
     {
       "name": "L4_PREP",
-      "waypointRelativePos": 0.5,
+      "waypointRelativePos": 0.9034117660473895,
       "endWaypointRelativePos": null,
       "command": {
         "type": "named",
@@ -46,21 +46,21 @@
   ],
   "globalConstraints": {
     "maxVelocity": 3.0,
-    "maxAcceleration": 5.0,
+    "maxAcceleration": 4.5,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0,
     "nominalVoltage": 12.0,
     "unlimited": false
   },
   "goalEndState": {
-    "velocity": 2.0,
-    "rotation": -117.636
+    "velocity": 2.5,
+    "rotation": -4.0
   },
   "reversed": false,
-  "folder": "Start to Reef",
+  "folder": "HP 1 Slot Right to Reef",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": -90.0
+    "rotation": -55.0
   },
   "useDefaultConstraints": false
 }

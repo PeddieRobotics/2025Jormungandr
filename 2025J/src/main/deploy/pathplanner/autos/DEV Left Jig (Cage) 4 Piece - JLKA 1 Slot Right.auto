@@ -13,25 +13,25 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Right (Cage) to E Align"
+            "pathName": "Left Jig (Cage) to J Align"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "CLOSE_ALIGN_22_9_LEFT"
+            "name": "CLOSE_ALIGN_20_11_RIGHT"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "E to HP Align"
+            "pathName": "J to HP Align"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "LEFT_1_ALIGN_TO_HP_12_2"
+            "name": "RIGHT_1_ALIGN_TO_HP_13_1"
           }
         },
         {
@@ -43,25 +43,25 @@
         {
           "type": "path",
           "data": {
-            "pathName": "HP 1 Slot Left to C Align"
+            "pathName": "HP 1 Slot Right to L Align"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "ALIGN_17_8_LEFT"
+            "name": "ALIGN_19_6_RIGHT"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "C to HP Align"
+            "pathName": "L to HP Align"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "LEFT_1_ALIGN_TO_HP_12_2"
+            "name": "RIGHT_1_ALIGN_TO_HP_13_1"
           }
         },
         {
@@ -73,7 +73,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "HP 1 Slot Left to D Align"
+            "pathName": "HP 1 Slot Right to K Align"
           }
         },
         {
@@ -85,19 +85,19 @@
         {
           "type": "named",
           "data": {
-            "name": "ALIGN_17_8_RIGHT"
+            "name": "ALIGN_19_6_LEFT"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "D to HP Align"
+            "pathName": "K to HP Align"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "LEFT_1_ALIGN_TO_HP_12_2"
+            "name": "RIGHT_1_ALIGN_TO_HP_13_1"
           }
         },
         {
@@ -109,7 +109,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "HP 1 Slot Left to B Align"
+            "pathName": "HP 1 Slot Right to A Align"
           }
         },
         {
@@ -121,7 +121,7 @@
         {
           "type": "named",
           "data": {
-            "name": "ALIGN_18_7_RIGHT"
+            "name": "ALIGN_18_7_LEFT"
           }
         }
       ]

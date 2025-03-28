@@ -3,8 +3,9 @@
   "robotLength": 0.895,
   "holonomicMode": true,
   "pathFolders": [
-    "HP to Reef",
     "HP 1 Slot Left to Reef",
+    "HP to Reef",
+    "HP 1 Slot Right to Reef",
     "Reef to HP",
     "Start to Reef"
   ],
