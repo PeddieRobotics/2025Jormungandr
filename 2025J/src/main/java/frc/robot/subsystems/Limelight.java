@@ -96,8 +96,8 @@ public abstract class Limelight extends SubsystemBase {
         double depthError = xError * Math.cos(tagAngle) + yError * Math.sin(tagAngle);
         double lateralError = xError * Math.sin(tagAngle) - yError * Math.cos(tagAngle);
 
-        SmartDashboard.putNumber(limelightName + " depthError", -depthError);
-        SmartDashboard.putNumber(limelightName + " lateralError", -lateralError);
+        SmartDashboard.putNumber(limelightName + " depthError", depthError);
+        SmartDashboard.putNumber(limelightName + " lateralError", lateralError);
     }
 
     @Override

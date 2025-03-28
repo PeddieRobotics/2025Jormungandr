@@ -204,8 +204,9 @@ public class Autonomous extends SubsystemBase {
     }
         
     private void registerNamedCommands() {
-        registerReefAlignments("", ReefAlign.kAutoTagBackMagnitude - 0.01, 0.2);
-        registerReefAlignments("CLOSE_", ReefAlign.kAutoTagBackMagnitude - 0.02, 0.3);
+        registerReefAlignments("", ReefAlign.kAutoTagBackMagnitude, 0.2);
+        // registerReefAlignments("", ReefAlign.kAutoTagBackMagnitude - 0.005, 0.2);
+        registerReefAlignments("CLOSE_", ReefAlign.kAutoCloseTagBackMagnitude, 0.3);
 
         NamedCommands.registerCommand("L1_PREP", new InstantCommand(() -> superstructure.requestState(SuperstructureState.L1_PREP)));
         NamedCommands.registerCommand("L2_PREP", new InstantCommand(() -> superstructure.requestState(SuperstructureState.L2_PREP)));
@@ -231,6 +232,7 @@ public class Autonomous extends SubsystemBase {
         NamedCommands.registerCommand("LEFT_1_ALIGN_TO_HP_12_2", new SequentialCommandGroup(
             new ParallelRaceGroup(
                 new AlignToHPBasisVector(HPAlign.kMaxSpeed, 8 * 2.54 / 100, HPAlign.kAutoBackOffset, 12, 2),
+                // new AlignToHPBasisVector(HPAlign.kMaxSpeed, 8 * 2.54 / 100 - 0.05, HPAlign.kAutoBackOffset, 12, 2),
                 new WaitForCoral(), new WaitCommand(1.5)
             ),
             new InstantCommand(() -> {
@@ -243,6 +245,7 @@ public class Autonomous extends SubsystemBase {
         NamedCommands.registerCommand("RIGHT_1_ALIGN_TO_HP_13_1", new SequentialCommandGroup(
             new ParallelRaceGroup(
                 new AlignToHPBasisVector(HPAlign.kMaxSpeed, -8 * 2.54 / 100, HPAlign.kAutoBackOffset, 13, 1),
+                // new AlignToHPBasisVector(HPAlign.kMaxSpeed, -8 * 2.54 / 100 - 0.05, HPAlign.kAutoBackOffset, 13, 1),
                 new WaitForCoral(), new WaitCommand(1.5)
             ),
             new InstantCommand(() -> {

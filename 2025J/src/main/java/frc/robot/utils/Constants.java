@@ -111,10 +111,15 @@ public final class Constants {
         // 3. read the cancoder values from dashboard, and negate those values
         // // offsets (check robotmap for ids) and put them here
 
-        public static final double kFrontLeftMagnetOffset = 0.238525;
-        public static final double kFrontRightMagnetOffset = 0.157471;
-        public static final double kBackLeftMagnetOffset = 0.496094;
-        public static final double kBackRightMagnetOffset = 0.130127;
+        // public static final double kFrontLeftMagnetOffset = 0.238525;
+        // public static final double kFrontRightMagnetOffset = 0.157471;
+        // public static final double kBackLeftMagnetOffset = 0.496094;
+        // public static final double kBackRightMagnetOffset = 0.130127;
+
+        public static final double kFrontLeftMagnetOffset = 0.236084;
+        public static final double kFrontRightMagnetOffset = 0.154541;
+        public static final double kBackLeftMagnetOffset = 0.496338;
+        public static final double kBackRightMagnetOffset = 0.129883;
 
         public static final double kSkidThreshold = 0.2;
         public static final double kDrivingDeadband = 0.05;
@@ -390,6 +395,7 @@ public final class Constants {
             // center of robot distance to tag -- back (+ = back, - = forwards)
             public static final double kTagBackMagnitude = 0.47; // from 0.45
             public static final double kAutoTagBackMagnitude = 0.48; // from 0.45
+            public static final double kAutoCloseTagBackMagnitude = 0.46; // from 0.45
 
             // center of robot distance to tag -- left (+ = left, - = right)
             public static final double kLeftOffset = 0.199; // 0.1896;

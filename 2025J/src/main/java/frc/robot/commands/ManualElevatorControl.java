@@ -28,7 +28,7 @@ public class ManualElevatorControl extends Command {
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-        elevator.setElevatorPercentOutput(operatorOI.getRightForward());
+        elevator.setElevatorPercentOutput(0.5 * operatorOI.getRightForward());
     }
 
     // Called once the command ends or is interrupted.

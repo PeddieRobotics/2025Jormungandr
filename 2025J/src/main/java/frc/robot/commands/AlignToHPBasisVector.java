@@ -242,8 +242,8 @@ public class AlignToHPBasisVector extends Command {
     @Override
     public void execute() {
 
-        depthThreshold = SmartDashboard.getNumber("HPAlign: depth threshold", 0.0);
-        lateralThreshold = SmartDashboard.getNumber("HPAlign: lateral threshold", 0.0);
+        // depthThreshold = SmartDashboard.getNumber("HPAlign: depth threshold", 0.0);
+        // lateralThreshold = SmartDashboard.getNumber("HPAlign: lateral threshold", 0.0);
 
         SmartDashboard.putBoolean("HPAlign: rotation good", rotationGood());
         SmartDashboard.putBoolean("HPAlign: translation distance good", translationDistanceGood());
