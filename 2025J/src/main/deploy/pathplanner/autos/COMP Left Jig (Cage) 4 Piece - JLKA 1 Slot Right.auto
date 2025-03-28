@@ -13,7 +13,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Left (Cage) to J Align"
+            "pathName": "Left Jig (Cage) to J Align"
           }
         },
         {
@@ -25,7 +25,7 @@
         {
           "type": "named",
           "data": {
-            "name": "CLOSE_ALIGN_22_9_LEFT"
+            "name": "CLOSE_ALIGN_20_11_RIGHT"
           }
         },
         {
@@ -37,7 +37,7 @@
         {
           "type": "named",
           "data": {
-            "name": "LEFT_1_ALIGN_TO_HP_12_2"
+            "name": "RIGHT_1_ALIGN_TO_HP_13_1"
           }
         },
         {
@@ -49,7 +49,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "HP to L Align"
+            "pathName": "HP 1 Slot Right to L Align"
           }
         },
         {
@@ -61,7 +61,7 @@
         {
           "type": "named",
           "data": {
-            "name": "ALIGN_17_8_LEFT"
+            "name": "ALIGN_19_6_RIGHT"
           }
         },
         {
@@ -73,7 +73,7 @@
         {
           "type": "named",
           "data": {
-            "name": "LEFT_1_ALIGN_TO_HP_12_2"
+            "name": "RIGHT_1_ALIGN_TO_HP_13_1"
           }
         },
         {
@@ -85,7 +85,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "HP to K Align"
+            "pathName": "HP 1 Slot Right to K Align"
           }
         },
         {
@@ -97,7 +97,7 @@
         {
           "type": "named",
           "data": {
-            "name": "ALIGN_17_8_RIGHT"
+            "name": "ALIGN_19_6_LEFT"
           }
         },
         {
@@ -109,7 +109,7 @@
         {
           "type": "named",
           "data": {
-            "name": "LEFT_1_ALIGN_TO_HP_12_2"
+            "name": "RIGHT_1_ALIGN_TO_HP_13_1"
           }
         },
         {
@@ -121,7 +121,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "HP to A Align"
+            "pathName": "HP 1 Slot Right to A Align"
           }
         },
         {
@@ -133,13 +133,13 @@
         {
           "type": "named",
           "data": {
-            "name": "ALIGN_18_7_RIGHT"
+            "name": "CLOSE_ALIGN_18_7_LEFT"
           }
         }
       ]
     }
   },
   "resetOdom": true,
-  "folder": "DEV",
+  "folder": "4 PIECE",
   "choreoAuto": false
 }

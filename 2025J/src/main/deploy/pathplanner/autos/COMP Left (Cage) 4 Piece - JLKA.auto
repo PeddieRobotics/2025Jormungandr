@@ -13,7 +13,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Right (Cage) to E Align"
+            "pathName": "Left (Cage) to J Align"
           }
         },
         {
@@ -31,13 +31,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": "E to HP Align"
+            "pathName": "J to HP Align"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "ALIGN_TO_HP_12_2"
+            "name": "LEFT_1_ALIGN_TO_HP_12_2"
           }
         },
         {
@@ -49,7 +49,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "HP to C Align"
+            "pathName": "HP to L Align"
           }
         },
         {
@@ -67,13 +67,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": "C to HP Align"
+            "pathName": "L to HP Align"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "ALIGN_TO_HP_12_2"
+            "name": "LEFT_1_ALIGN_TO_HP_12_2"
           }
         },
         {
@@ -85,7 +85,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "HP to D Align"
+            "pathName": "HP to K Align"
           }
         },
         {
@@ -103,13 +103,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": "D to HP Align"
+            "pathName": "K to HP Align"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "ALIGN_TO_HP_12_2"
+            "name": "LEFT_1_ALIGN_TO_HP_12_2"
           }
         },
         {
@@ -121,7 +121,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "HP to B Align"
+            "pathName": "HP to A Align"
           }
         },
         {
@@ -140,6 +140,6 @@
     }
   },
   "resetOdom": true,
-  "folder": "DEV",
+  "folder": "4 PIECE",
   "choreoAuto": false
 }

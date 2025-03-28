@@ -13,7 +13,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Left Jig (Cage) to J Align"
+            "pathName": "Right Jig (Cage) to E Align"
           }
         },
         {
@@ -25,19 +25,19 @@
         {
           "type": "named",
           "data": {
-            "name": "CLOSE_ALIGN_20_11_RIGHT"
+            "name": "CLOSE_ALIGN_22_9_LEFT"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "J to HP Align"
+            "pathName": "E to HP Align"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "RIGHT_1_ALIGN_TO_HP_13_1"
+            "name": "LEFT_1_ALIGN_TO_HP_12_2"
           }
         },
         {
@@ -49,7 +49,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "HP 1 Slot Right to L Align"
+            "pathName": "HP 1 Slot Left to C Align"
           }
         },
         {
@@ -61,19 +61,19 @@
         {
           "type": "named",
           "data": {
-            "name": "ALIGN_19_6_RIGHT"
+            "name": "ALIGN_17_8_LEFT"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "L to HP Align"
+            "pathName": "C to HP Align"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "RIGHT_1_ALIGN_TO_HP_13_1"
+            "name": "LEFT_1_ALIGN_TO_HP_12_2"
           }
         },
         {
@@ -85,7 +85,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "HP 1 Slot Right to K Align"
+            "pathName": "HP 1 Slot Left to D Align"
           }
         },
         {
@@ -97,19 +97,19 @@
         {
           "type": "named",
           "data": {
-            "name": "ALIGN_19_6_LEFT"
+            "name": "ALIGN_17_8_RIGHT"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "K to HP Align"
+            "pathName": "D to HP Align"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "RIGHT_1_ALIGN_TO_HP_13_1"
+            "name": "LEFT_1_ALIGN_TO_HP_12_2"
           }
         },
         {
@@ -121,7 +121,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "HP 1 Slot Right to A Align"
+            "pathName": "HP 1 Slot Left to B Align"
           }
         },
         {
@@ -133,13 +133,13 @@
         {
           "type": "named",
           "data": {
-            "name": "CLOSE_ALIGN_18_7_LEFT"
+            "name": "CLOSE_ALIGN_18_7_RIGHT"
           }
         }
       ]
     }
   },
   "resetOdom": true,
-  "folder": "DEV",
+  "folder": "4 PIECE",
   "choreoAuto": false
 }

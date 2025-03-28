@@ -37,7 +37,7 @@
         {
           "type": "named",
           "data": {
-            "name": "LEFT_1_ALIGN_TO_HP_12_2"
+            "name": "ALIGN_TO_HP_12_2"
           }
         },
         {
@@ -49,7 +49,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "HP 1 Slot Left to C Align"
+            "pathName": "HP to C Align"
           }
         },
         {
@@ -73,7 +73,7 @@
         {
           "type": "named",
           "data": {
-            "name": "LEFT_1_ALIGN_TO_HP_12_2"
+            "name": "ALIGN_TO_HP_12_2"
           }
         },
         {
@@ -85,7 +85,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "HP 1 Slot Left to D Align"
+            "pathName": "HP to D Align"
           }
         },
         {
@@ -109,7 +109,7 @@
         {
           "type": "named",
           "data": {
-            "name": "LEFT_1_ALIGN_TO_HP_12_2"
+            "name": "ALIGN_TO_HP_12_2"
           }
         },
         {
@@ -121,7 +121,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "HP 1 Slot Left to B Align"
+            "pathName": "HP to B Align"
           }
         },
         {
@@ -133,13 +133,13 @@
         {
           "type": "named",
           "data": {
-            "name": "CLOSE_ALIGN_18_7_RIGHT"
+            "name": "ALIGN_18_7_RIGHT"
           }
         }
       ]
     }
   },
   "resetOdom": true,
-  "folder": "DEV",
+  "folder": "4 PIECE",
   "choreoAuto": false
 }

@@ -13,7 +13,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Right Jig (Cage) to E Align"
+            "pathName": "Right (Cage) to E Align"
           }
         },
         {
@@ -140,6 +140,6 @@
     }
   },
   "resetOdom": true,
-  "folder": "DEV",
+  "folder": "4 PIECE",
   "choreoAuto": false
 }
