@@ -52,7 +52,16 @@ public class Autonomous extends SubsystemBase {
 
         registerNamedCommands();
         configureAutoBuilder();
-        autoChooser = AutoBuilder.buildAutoChooser();
+
+        // DISABLE FOR LAB!!!
+        boolean isCompetition = true;
+
+        autoChooser = AutoBuilder.buildAutoChooserWithOptionsModifier(
+            (stream) -> isCompetition
+                ? stream.filter(auto -> auto.getName().startsWith("COMP"))
+                : stream
+        );
+
         SmartDashboard.putData("autoSelector", autoChooser);
         superstructure = Superstructure.getInstance();
     }
