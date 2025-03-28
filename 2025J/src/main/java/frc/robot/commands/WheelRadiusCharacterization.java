@@ -5,14 +5,11 @@
 package frc.robot.commands;
 
 import frc.robot.subsystems.Drivetrain;
-import frc.robot.subsystems.SwerveModule;
 import frc.robot.utils.Constants.DriveConstants;
-import frc.robot.utils.Logger;
 
 import java.util.Arrays;
 
 import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -27,7 +24,6 @@ public class WheelRadiusCharacterization extends Command {
   private double averageDeltaPositions;
   private double effectiveWheelRadius;
   private double drivebaseRadius;
-  private Logger logger;
   
   private double initialTime;
   private double currentTime;
@@ -41,7 +37,6 @@ public class WheelRadiusCharacterization extends Command {
    */
   public WheelRadiusCharacterization() {
     drivetrain = Drivetrain.getInstance();
-    logger = Logger.getInstance();
     currentGyro = 0;
     initialGyro = 0;
     deltaGyro = 0;

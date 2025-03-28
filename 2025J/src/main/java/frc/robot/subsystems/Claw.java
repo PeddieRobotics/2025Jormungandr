@@ -1,7 +1,5 @@
 package frc.robot.subsystems;
 
-import static frc.robot.subsystems.Superstructure.SuperstructureState.EJECT_ALGAE;
-
 import com.ctre.phoenix6.configs.CANrangeConfiguration;
 import com.ctre.phoenix6.hardware.CANrange;
 
@@ -87,7 +85,6 @@ public class Claw extends SubsystemBase {
                 // hasCoral = new LiveData(hasCoral(), "Claw Has Coral");
                 // coralIndexed = new LiveData(coralIndexed(), "Claw Coral is Indexed");
 
-        // TODO: DELETE THIS OR ELSE
         SmartDashboard.putNumber("Claw Increment", 5);
     }
 

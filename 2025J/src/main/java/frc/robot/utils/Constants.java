@@ -350,17 +350,13 @@ public final class Constants {
         };
 
         public static final class ReefAlign {
-            public static final double kTranslateP = 2.5;
-            public static final double kTranslateI = 0;
-            public static final double kTranslateD = 0;
-            public static final double kTranslateFF = 0;
-
             public static final double kTranslateThreshold = 0.03;
             public static final double kTranslateThresholdAuto = 0.035;
             public static final double kTranslateThresholdL2L3 = 0.065;
             public static final double kTranslateSetpoint = 0;
 
-            public static final double kDepthP = 2.825; // went from 2.9
+            public static final double kAutoDepthP = 2.625; // went from 2.9
+            public static final double kDepthP = 3.05;
             public static final double kDepthI = 0;
             public static final double kDepthD = 0;
             public static final double kDepthFF = 0;
@@ -371,7 +367,8 @@ public final class Constants {
             public static final double kDepthL3PrestageThreshold = 1.3;
             public static final double kDepthL4PrestageThreshold = 1.3;
 
-            public static final double kLateralP = 2.9;
+            public static final double kAutoLateralP = 2.7;
+            public static final double kLateralP = 3.1;
             public static final double kLateralI = 0;
             public static final double kLateralD = 0;
             public static final double kLateralFF = 0;
@@ -391,7 +388,7 @@ public final class Constants {
             public static final double kRotationUseLowerPThreshold = 1.5;
             
             // center of robot distance to tag -- back (+ = back, - = forwards)
-            public static final double kTagBackMagnitude = 0.46; // from 0.45
+            public static final double kTagBackMagnitude = 0.44; // from 0.45
             public static final double kAutoTagBackMagnitude = 0.48; // from 0.45
 
             // center of robot distance to tag -- left (+ = left, - = right)
@@ -519,50 +516,25 @@ public final class Constants {
         public static final double kClimberReduction = 120.0 / 1.0;
 
         //TODO: set values
-        public static final double kClimberRetractedPosition = 0.0;
-        public static final double kClimberDeployedPosition = 115.0;
-        public static final double kClimberRetractedPercentOutput = -0.5;
+        public static final double kClimberRetractedPosition = 60.0;
+        public static final double kClimberDeployedPosition = 211.0;
+        public static final double kClimberRetractedPercentOutput = -0.3;
         public static final double kClimberDeployedPercentOutput = 0.5;
 
     }
 
     public static final class CameraConstants {
         // 3: 10.58.95.14
-        // TODO: find real values
         public static final String kBackCamName = "limelight-back";
-        // public static final double kBackCamForward = 0;
-        // public static final double kBackCamLeftOffset = 0;
-        public static final double kBackCamUpOffset = 1.00;
-        public static final double kBackCamPitchDeg = 36.0;
-        // public static final double kBackCamYawDeg = 0;
-        // public static final int kBackCamPipeline = 0;
 
         // 3G: 10.58.95.11
         public static final String kFrontLeftCamName = "limelight-left";
-        // public static final double kFrontLeftCamForward = 7.7188 * 0.0254;
-        // public static final double kFrontLeftCamLeftOffset = 6.625 * 0.0254;
-        public static final double kFrontLeftCamUpOffset = 6.9909 * 0.0254;
-        public static final double kFrontLeftCamPitchDeg = 6;
-        // public static final double kFrontLeftCamYawDeg = 0;
-        // public static final int kFrontLeftCamPipeline = 0;
 
         // 3: 10.58.95.12
         public static final String kClimberCamName = "limelight-climber";
-        // public static final double kFrontMiddleCamForward = 7.7188 * 0.0254;
-        // public static final double kFrontMiddleCamLeftOffset = 0;
-        public static final double kClimberCamUpOffset = 0; // TODO: 6.9909 * 0.0254;
-        public static final double kClimberCamPitchDeg = -37;
-        // public static final double kFrontMiddleCamYawDeg = 0;
-        // public static final int kFrontMiddleCamPipeline = 0;
 
         // 3G: 10.58.95.13
         public static final String kFrontRightCamName = "limelight-right";
-        // public static final double kFrontRightCamForward = 7.7188 * 0.0254;
-        // public static final double kFrontRightCamLeftOffset = -6.5 * 0.0254;
-        public static final double kFrontRightCamUpOffset = 6.9909 * 0.0254;
-        public static final double kFrontRightCamPitchDeg = 6;
-        // public static final double kFrontRightCamYawDeg = 0;
-        // public static final int kFrontRightCamPipeline = 0;
 
         public static final InterpolatingDoubleTreeMap k1TagStdDevs = new InterpolatingDoubleTreeMap() {
             {

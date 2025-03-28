@@ -4,7 +4,6 @@
 
 package frc.robot.subsystems;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -17,7 +16,6 @@ import frc.robot.utils.Constants.ClawConstants;
 import frc.robot.utils.Constants.ScoreConstants;
 import frc.robot.utils.LiveData;
 import frc.robot.utils.Logger;
-import frc.robot.utils.OperatorOI;
 
 import static frc.robot.subsystems.Superstructure.SuperstructureState.*;
 
@@ -34,7 +32,7 @@ public class Superstructure extends SubsystemBase {
 
     private Timer timer;
 
-    private LiveData systemStateData, requestedSystemStateData, algaeIndex, coralIndex; 
+    private LiveData systemStateData, requestedSystemStateData, algaeIndex;
 
     private boolean isManualControl, hasJustRemovedAlgae;
     private double startedOuttakingRemovedAlgaeTime;
@@ -91,7 +89,6 @@ public class Superstructure extends SubsystemBase {
         timer = new Timer();
 
         algaeIndex = new LiveData(false, "Algae Index"); 
-        coralIndex = new LiveData(false, "Coral Index"); 
 
         systemStateData = new LiveData(systemState.toString(), "System State"); 
         requestedSystemStateData = new LiveData(requestedSystemState.toString(), "Requested System State"); 
@@ -802,7 +799,12 @@ public class Superstructure extends SubsystemBase {
 
             case CLIMB -> {
                 claw.stopClaw();
-                elevator.setElevatorPositionMotionMagicVoltage(ScoreConstants.kElevatorClimbPosition);
+                if(elevator.isAtBottom()){
+                    elevator.setElevatorNeutralMode();
+                } else{
+                    elevator.setElevatorPositionMotionMagicVoltage(ScoreConstants.kElevatorClimbPosition);
+                }
+                // elevator.setElevatorPositionMotionMagicVoltage(ScoreConstants.kElevatorClimbPosition);
                 arm.setArmPositionMotionMagicVoltage(ScoreConstants.kArmClimbPosition);
 
                 if (Arrays.asList(
@@ -911,17 +913,21 @@ public class Superstructure extends SubsystemBase {
     private final List<Integer> highAlgaeTags = Arrays.asList(
         18, 20, 22, 7, 9, 11
     );
-    public Optional<Boolean> isHighAlgae() {
+    public boolean isHighAlgae() {
         // return SmartDashboard.getBoolean("RemoveAlgae: high?", false);
-        Limelight camera = LimelightFrontLeft.getInstance();
-        if (camera.getNumberOfTagsSeen() == 1)
-            return Optional.of(highAlgaeTags.contains(camera.getTargetID()));
+        Limelight left = LimelightFrontLeft.getInstance();
+        Limelight right = LimelightFrontRight.getInstance();
 
-        camera = LimelightFrontRight.getInstance();
-        if (camera.getNumberOfTagsSeen() == 1)
-            return Optional.of(highAlgaeTags.contains(camera.getTargetID()));
+        if (left.getNumberOfTagsSeen() == 1)
+            return highAlgaeTags.contains(left.getTargetID());
 
-        return Optional.empty();
+        if (right.getNumberOfTagsSeen() == 1)
+            return highAlgaeTags.contains(right.getTargetID());
+
+        if (left.getLastSeenTag() != 0)
+            return highAlgaeTags.contains(left.getLastSeenTag());
+        
+        return highAlgaeTags.contains(right.getLastSeenTag());
     }
 
     private double getAlgaeRemovalSpeed() {
@@ -930,14 +936,11 @@ public class Superstructure extends SubsystemBase {
         // double slowThreshold = SmartDashboard.getNumber("RemoveAlgae: slow threshold", 1.0);
         // double thing = SmartDashboard.getNumber("RemoveAlgae: thing", 0.3);
 
-        Optional<Boolean> high = isHighAlgae();
+        boolean high = isHighAlgae();
         final double elevatorFast = -0.7, elevatorSlow = -0.3, slowThreshold = 0.8;
 
-        if (high.isEmpty())
-            return elevatorSlow;
-
         double elevatorPosition = elevator.getElevatorCANcoderPosition();
-        if (high.get()) {
+        if (high) {
             if (Math.abs(elevatorPosition - (ScoreConstants.kElevatorReef2IntakePosition + 0.5)) <= slowThreshold)
                 return elevatorSlow;
             return elevatorFast;

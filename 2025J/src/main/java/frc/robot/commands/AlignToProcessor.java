@@ -114,7 +114,7 @@ public class AlignToProcessor extends Command {
         Pose2d tagPose = Limelight.getAprilTagPose(desiredTarget);
         desiredX = tagPose.getX();
         
-        double amount = 0.65; // SmartDashboard.getNumber("ProcessorAlign: sendToScoreOffset", 0.65);
+        double amount = 0.7; // SmartDashboard.getNumber("ProcessorAlign: sendToScoreOffset", 0.65);
         // if (DriverStation.getAlliance().isEmpty() || DriverStation.getAlliance().get() == DriverStation.Alliance.Blue)
         if (isInBlueSide())
             sendToScoreLocation = tagPose.getY() + amount;

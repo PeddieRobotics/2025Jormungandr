@@ -5,15 +5,9 @@
 package frc.robot.commands;
 
 import frc.robot.subsystems.Drivetrain;
-import frc.robot.subsystems.Limelight;
-import frc.robot.subsystems.SwerveModule;
-import frc.robot.utils.Constants;
 import frc.robot.utils.Constants.FieldConstants;
 import frc.robot.utils.DriverOI;
 import frc.robot.utils.DriverOI.DPadDirection;
-
-import com.ctre.phoenix6.signals.PIDRefPIDErr_ClosedLoopModeValue;
-import com.fasterxml.jackson.databind.DeserializationFeature;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -66,7 +60,6 @@ public class AlignToBarge extends Command {
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-        //TODO: getHeading is in clockwise positive, should be counterclockwise on 2025j
         rotationError = desiredAngle + drivetrain.getHeading();
     
         // set rotation PID controller

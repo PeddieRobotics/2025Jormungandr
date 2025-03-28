@@ -5,7 +5,6 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.utils.Constants.ClimberConstants;
 import frc.robot.utils.DriverOI;
 import frc.robot.utils.Kraken;
-import frc.robot.utils.LiveData;
 import frc.robot.utils.OperatorOI;
 import frc.robot.utils.RobotMap;
 
@@ -23,6 +22,8 @@ public class Climber extends SubsystemBase {
 
         climberMotor.setSupplyCurrentLimit(40.0);
         climberMotor.setStatorCurrentLimit(40.0);
+
+        climberMotor.setSoftLimits(true, 300, 0);
 
         climberMotor.setInverted(true);
         climberMotor.setBrake();

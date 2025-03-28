@@ -2,14 +2,11 @@ package frc.robot.utils;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Limelight;
 
 public class CalculateHPTarget {
     public static int calculateTargetID() {
-        Drivetrain drivetrain = Drivetrain.getInstance();
-
         int station0, station1;
         if (DriverStation.getAlliance().isEmpty() || DriverStation.getAlliance().get() == DriverStation.Alliance.Blue) {
             station0 = 12;

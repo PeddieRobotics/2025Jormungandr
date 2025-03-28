@@ -17,7 +17,9 @@ import java.util.Optional;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import frc.robot.commands.AlignToBarge;
+import frc.robot.commands.AlignToCage;
 import frc.robot.commands.AlignToHPBasisVector;
+import frc.robot.commands.AlignToProcessor;
 import frc.robot.commands.AlignToReefBasisVector;
 import frc.robot.commands.RetractClimber;
 import frc.robot.subsystems.Claw;
@@ -92,13 +94,16 @@ public class DriverOI {
 
         // TODO: Set binding to climb
         Trigger R1Bumper = new JoystickButton(controller, PS4Controller.Button.kR1.value);
-        R1Bumper.onTrue(new InstantCommand(() -> HPIntake.getInstance().extendLinearActuator()));
-        // R1Bumper.whileTrue(new AlignToCage());
+        // R1Bumper.onTrue(new InstantCommand(() -> HPIntake.getInstance().retractLinearActuator()));
+        R1Bumper.whileTrue(new ConditionalCommand(new AlignToCage(), new AlignToProcessor(2.0), superstructure::isClimbState));
+
 
         // DO NOT BIND: USED FOR ROTATION OF DRIVETRAIN
+        @SuppressWarnings("unused")
         Trigger L2Trigger = new JoystickButton(controller, PS4Controller.Button.kL2.value);
 
         // DO NOT BIND: USED FOR ROTATION OF DRIVETRAIN
+        @SuppressWarnings("unused")
         Trigger R2Trigger = new JoystickButton(controller, PS4Controller.Button.kR2.value);
 
         Trigger L3Trigger = new JoystickButton(controller, PS4Controller.Button.kL3.value);
@@ -115,11 +120,8 @@ public class DriverOI {
                                 new SequentialCommandGroup(
                                     new WaitCommand(0.25),
                                     new InstantCommand(() -> {
-                                        Optional<Boolean> high = superstructure.isHighAlgae();
-                                        if (high.isEmpty() || high.get())
-                                            superstructure.requestState(SuperstructureState.REEF2_ALGAE_INTAKE);
-                                        else
-                                            superstructure.requestState(SuperstructureState.REEF1_ALGAE_INTAKE);
+                                        boolean high = superstructure.isHighAlgae();
+                                        superstructure.requestState(high ? SuperstructureState.REEF2_ALGAE_INTAKE : SuperstructureState.REEF1_ALGAE_INTAKE);
                                     })
                                 )
                             )
@@ -145,13 +147,10 @@ public class DriverOI {
                             new ParallelCommandGroup(
                                 new AlignToReefBasisVector(AlignmentConstants.AlignmentDestination.MIDDLE, ReefAlign.kMaxSpeed, 0, ReefAlign.kTagBackMagnitude, 0, 0),
                                 new SequentialCommandGroup(
-                                    new WaitCommand(0.25), 
+                                    new WaitCommand(0.25),
                                     new InstantCommand(() -> {
-                                        Optional<Boolean> high = superstructure.isHighAlgae();
-                                        if (high.isEmpty() || high.get())
-                                            superstructure.requestState(SuperstructureState.REEF2_ALGAE_INTAKE);
-                                        else
-                                            superstructure.requestState(SuperstructureState.REEF1_ALGAE_INTAKE);
+                                        boolean high = superstructure.isHighAlgae();
+                                        superstructure.requestState(high ? SuperstructureState.REEF2_ALGAE_INTAKE : SuperstructureState.REEF1_ALGAE_INTAKE);
                                     })
                                 )
                             )

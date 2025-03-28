@@ -4,7 +4,6 @@ import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.Superstructure;
 import frc.robot.subsystems.Superstructure.SuperstructureState;
 import frc.robot.utils.OperatorOI;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 
 /** An example command that uses an example subsystem. */
@@ -29,7 +28,7 @@ public class ManualElevatorControl extends Command {
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-        elevator.setElevatorPercentOutput(operatorOI.getForward());
+        elevator.setElevatorPercentOutput(operatorOI.getRightForward());
     }
 
     // Called once the command ends or is interrupted.

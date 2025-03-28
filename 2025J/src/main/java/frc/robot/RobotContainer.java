@@ -11,20 +11,15 @@ import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Autonomous;
 import frc.robot.subsystems.Claw;
 import frc.robot.subsystems.Climber;
-// import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.HPIntake;
 import frc.robot.subsystems.LimelightBack;
 import frc.robot.subsystems.LimelightClimber;
-// import frc.robot.subsystems.Lights;
-// import frc.robot.subsystems.LimelightClimber;
 import frc.robot.subsystems.LimelightFrontLeft;
 import frc.robot.subsystems.LimelightFrontRight;
 import frc.robot.subsystems.Superstructure;
 import frc.robot.utils.CalculateReefTarget;
-import frc.robot.utils.Constants.ClawConstants;
-import frc.robot.utils.Constants.ScoreConstants;
 import frc.robot.utils.DriverOI;
 import frc.robot.utils.OperatorOI;
 
@@ -37,6 +32,7 @@ import frc.robot.utils.OperatorOI;
  * the robot (including
  * subsystems, commands, and trigger mappings) should be declared here.
  */
+@SuppressWarnings("unused")
 public class RobotContainer {
     private Arm arm;
     private Autonomous autonomous;

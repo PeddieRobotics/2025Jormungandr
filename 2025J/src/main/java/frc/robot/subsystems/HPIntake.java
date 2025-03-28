@@ -10,6 +10,7 @@ public class HPIntake extends SubsystemBase{
     private static HPIntake hpIntake;
     private final Servo linearActuatorRight, linearActuatorLeft;
 
+    @SuppressWarnings("unused")
     private LiveData rollerMotorStatorCurrent, rollerMotorTemperature, pivotMotorStatorCurrent, pivotMotorTemperature, 
     intakePosition, intakeVelocity, pivotMotorSupplyCurrent, rollerMotorSupplyCurrent; 
     
@@ -39,6 +40,13 @@ public class HPIntake extends SubsystemBase{
     public void retractLinearActuator(){
         linearActuatorRight.set(0);
         linearActuatorLeft.set(0);
+    }
+
+    public void toggleLinearActuator() {
+        if (linearActuatorLeft.get() == 1)
+            retractLinearActuator();
+        else 
+            extendLinearActuator();
     }
 
     @Override

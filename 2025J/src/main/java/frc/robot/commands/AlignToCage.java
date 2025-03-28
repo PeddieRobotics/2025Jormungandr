@@ -2,11 +2,9 @@ package frc.robot.commands;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Drivetrain;
-import frc.robot.subsystems.Limelight;
 import frc.robot.subsystems.LimelightClimber;
 import frc.robot.utils.DriverOI;
 import frc.robot.utils.Logger;
@@ -108,14 +106,14 @@ public class AlignToCage extends Command {
 
         double yInput = 0;
         
-        double tx = ll.getTxAverage();
-        if (Math.abs(tx) > yThreshold && ll.hasTarget())
-            yInput = yController.calculate(tx) + Math.signum(tx) * yFF;
+        double ty = ll.getTyAverage();
+        if (Math.abs(ty) > yThreshold && ll.hasTarget())
+            yInput = yController.calculate(ty) + Math.signum(ty) * yFF;
   
         double xDriverInput = DriverOI.getInstance().getForward();
         drivetrain.drive(new Translation2d(xDriverInput, yInput), rotation, false, null);
         
-        Logger.getInstance().logAlignToCage(tx, yInput, rotationError, rotation);
+        Logger.getInstance().logAlignToCage(ty, yInput, rotationError, rotation);
     }
 
     @Override

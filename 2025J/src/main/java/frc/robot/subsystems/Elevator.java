@@ -28,6 +28,7 @@ public class Elevator extends SubsystemBase {
     private double globalOffset = 0;
 
 
+    @SuppressWarnings("unused")
     private LiveData elevatorEncoderPosition, elevatorCanCoderPosition, elevatorSetpoint, mainMotorTemp, mainMotorStatorCurrent, mainMotorSupplyCurrent,
             followerMotorTemp, bottomSensorData, elevatorHeight, canCoderVelocity;
 

@@ -6,12 +6,7 @@ public class LimelightClimber extends Limelight {
     private static LimelightClimber llClimber;
 
     private LimelightClimber() {
-        super(
-            CameraConstants.kClimberCamName,
-            CameraConstants.kClimberCamUpOffset,
-            CameraConstants.kClimberCamPitchDeg,
-            false
-        );
+        super(CameraConstants.kClimberCamName, false);
     }
 
     public static LimelightClimber getInstance() {

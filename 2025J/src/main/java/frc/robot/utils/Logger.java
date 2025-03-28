@@ -1,15 +1,11 @@
 package frc.robot.utils;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
-import edu.wpi.first.networktables.NetworkTableInstance;
-import edu.wpi.first.networktables.StructPublisher;
 import edu.wpi.first.util.datalog.BooleanLogEntry;
 import edu.wpi.first.util.datalog.DataLog;
 import edu.wpi.first.util.datalog.DoubleArrayLogEntry;
@@ -20,11 +16,9 @@ import edu.wpi.first.wpilibj.DriverStation;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Autonomous;
 import frc.robot.subsystems.Claw;
-// import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.HPIntake;
-// import frc.robot.subsystems.LimelightClimber;
 import frc.robot.subsystems.Limelight;
 import frc.robot.subsystems.LimelightBack;
 import frc.robot.subsystems.LimelightFrontLeft;
@@ -32,6 +26,7 @@ import frc.robot.subsystems.LimelightFrontRight;
 import frc.robot.subsystems.Superstructure;
 import frc.robot.subsystems.SwerveModule;
 
+@SuppressWarnings("unused")
 public class Logger {
     private static Logger instance;
     private Drivetrain drivetrain;
@@ -320,7 +315,6 @@ public class Logger {
 
         // Limelight Logs
         for (int i = 0; i < limelights.length; i++) {
-            limelightTyDistanceEntry[i].append(limelights[i].getDistanceTy());
             limelightPoseDistanceEntry[i].append(limelights[i].getDistanceEstimatedPose());
             limelightFilteredTyDistanceEntry[i].append(limelights[i].getFilteredDistanceTy());
             limelightFilteredPoseDistanceEntry[i].append(limelights[i].getFilteredDistanceEstimatedPose());

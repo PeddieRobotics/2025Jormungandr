@@ -1,4 +1,4 @@
-package frc.robot.commands.ReefCommands;
+package frc.robot.commands;
 
 import java.util.Optional;
 
@@ -57,7 +57,6 @@ public class AlignToHPBasisVector extends Command {
     public AlignToHPBasisVector(double maxSpeed, double lateralOffset, double backOffset, int blueTargetTag, int redTargetTag) {
         drivetrain = Drivetrain.getInstance();
 
-        // TODO: MEGA IMPORTANT REENABLE THE BACK LIMELIGHT!!!!!!!!!
         cameras = new Limelight[] {
             LimelightBack.getInstance(),
             LimelightFrontRight.getInstance(),
@@ -105,7 +104,6 @@ public class AlignToHPBasisVector extends Command {
 
         addRequirements(drivetrain);
 
-        // TODO: tune values! especially: depthP, lateralP, translateThreshold, autonomousTranslateThreshold, maxSpeed
         SmartDashboard.putNumber("HPAlign: lateral offset", lateralOffset);
         SmartDashboard.putNumber("HPAlign: back offset", backOffset);
 
@@ -214,8 +212,6 @@ public class AlignToHPBasisVector extends Command {
         return Optional.of(drivetrain.getPose());
     }
     
-    // TODO: don't know how we want to do thresholding for HP Align, including whether pythagoras or by component
-
     private boolean translationDistanceGood() {
         // return xError * xError + yError * yError < Math.pow(translateThreshold, 2);
         // non-pythagoras based / reef align code:

@@ -1,7 +1,5 @@
 package frc.robot.subsystems;
 
-import static frc.robot.subsystems.Superstructure.SuperstructureState.HP_INTAKE;
-
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -17,17 +15,15 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
-import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
 import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.commands.AlignToHPBasisVector;
 import frc.robot.commands.AlignToReefBasisVector;
-import frc.robot.commands.AutoCommands.*;
+import frc.robot.commands.WaitForCoral;
 import frc.robot.subsystems.Superstructure.SuperstructureState;
 import frc.robot.utils.Constants;
 import frc.robot.utils.Constants.AlignmentConstants;
@@ -70,18 +66,28 @@ public class Autonomous extends SubsystemBase {
 
     public void configureAutoBuilder() {
         AutoBuilder.configure(
-            drivetrain::getPose, // Robot pose supplier
-            drivetrain::setPose, // Method to reset odometry (will be called if your auto has a starting pose)
-            drivetrain::getRobotRelativeSpeeds, // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
-            drivetrain::driveRobotRelative, // Method that will drive the robot given ROBOT RELATIVE ChassisSpeeds.
-            new PPHolonomicDriveController( // PPHolonomicController is the built in path following controller for
-                                            // holonomic drive trains
-                    // TODO: update these constants for AUTO
-                    new PIDConstants(AutoConstants.kTranslationP, AutoConstants.kTranslationI,
-                            AutoConstants.kTranslationD), // Translation PID constants
-                    new PIDConstants(AutoConstants.kThetaP, AutoConstants.kThetaI, AutoConstants.kThetaD) // Rotation
-                                                                                                            // PID
-                                                                                                            // constants
+            // Robot pose supplier
+            drivetrain::getPose,
+            // Method to reset odometry (will be called if your auto has a starting pose)
+            drivetrain::setPose,
+            // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
+            drivetrain::getRobotRelativeSpeeds,
+            // Method that will drive the robot given ROBOT RELATIVE ChassisSpeeds.
+            drivetrain::driveRobotRelative,
+            // PPHolonomicController is the built in path following controller for holonomic drive trains
+            new PPHolonomicDriveController(
+                // Translation PID constants
+                new PIDConstants(
+                    AutoConstants.kTranslationP,
+                    AutoConstants.kTranslationI,
+                    AutoConstants.kTranslationD
+                ),
+                // Rotation PID constants
+                new PIDConstants(
+                    AutoConstants.kThetaP,
+                    AutoConstants.kThetaI,
+                    AutoConstants.kThetaD
+                )
             ),
             config,
             () -> {
@@ -96,7 +102,8 @@ public class Autonomous extends SubsystemBase {
                 }
                 return true;
             },
-            drivetrain // Reference to this subsystem to set requirements
+            // Reference to this subsystem to set requirements
+            drivetrain
         );
     }
 
@@ -233,6 +240,18 @@ public class Autonomous extends SubsystemBase {
                     drivetrain.resetTranslation(new Translation2d(16.251, 7.128));
             })
         ));
+        NamedCommands.registerCommand("RIGHT_1_ALIGN_TO_HP_13_1", new SequentialCommandGroup(
+            new ParallelRaceGroup(
+                new AlignToHPBasisVector(HPAlign.kMaxSpeed, -8 * 2.54 / 100, HPAlign.kAutoBackOffset, 13, 1),
+                new WaitForCoral(), new WaitCommand(1.5)
+            ),
+            new InstantCommand(() -> {
+                if (DriverStation.getAlliance().isEmpty() || DriverStation.getAlliance().get() == DriverStation.Alliance.Blue)
+                    drivetrain.resetTranslation(new Translation2d(1.299, 7.128));
+                else
+                    drivetrain.resetTranslation(new Translation2d(16.251, 0.922));
+            })
+        ));
 
         NamedCommands.registerCommand("ALIGN_TO_HP_13_1", new SequentialCommandGroup(
             new ParallelRaceGroup(
@@ -246,19 +265,6 @@ public class Autonomous extends SubsystemBase {
                     drivetrain.resetTranslation(new Translation2d(16.415, 1.042));
             })
         ));
-        NamedCommands.registerCommand("RIGHT_1_ALIGN_TO_HP_13_1", new SequentialCommandGroup(
-            new ParallelRaceGroup(
-                new AlignToHPBasisVector(HPAlign.kMaxSpeed, -8 * 2.54 / 100, HPAlign.kAutoBackOffset, 13, 1),
-                new WaitForCoral(), new WaitCommand(1.5)
-            ),
-            new InstantCommand(() -> {
-                // TODO: find actual numbers
-                if (DriverStation.getAlliance().isEmpty() || DriverStation.getAlliance().get() == DriverStation.Alliance.Blue)
-                    drivetrain.resetTranslation(new Translation2d(9.999, 9.999));
-                else
-                    drivetrain.resetTranslation(new Translation2d(9.999, 9.999));
-            })
-        ));
 
         NamedCommands.registerCommand("WAIT_FOR_CORAL", new ParallelRaceGroup(
             new WaitForCoral(), new WaitCommand(0.5)
@@ -269,33 +275,25 @@ public class Autonomous extends SubsystemBase {
         }));
 
         NamedCommands.registerCommand("REMOVE_ALGAE_LEFT", new ParallelCommandGroup(
-                                new AlignToReefBasisVector(AlignmentConstants.AlignmentDestination.MIDDLE, ReefAlign.kMaxSpeed, 0, ReefAlign.kTagBackMagnitude,  0, 0),
-                                new SequentialCommandGroup(
-                                    new WaitCommand(0.25),
-                                    new InstantCommand(() -> {
-                                        Optional<Boolean> high = superstructure.isHighAlgae();
-                                        if (high.isEmpty() || high.get())
-                                            superstructure.requestState(SuperstructureState.REEF2_ALGAE_INTAKE);
-                                        else
-                                            superstructure.requestState(SuperstructureState.REEF1_ALGAE_INTAKE);
-                                    })
-                                )
-                            ));
+            new AlignToReefBasisVector(AlignmentConstants.AlignmentDestination.MIDDLE, ReefAlign.kMaxSpeed, 0, ReefAlign.kTagBackMagnitude,  0, 0),
+            new SequentialCommandGroup(
+                new WaitCommand(0.25),
+                new InstantCommand(() -> {
+                    boolean high = superstructure.isHighAlgae();
+                    superstructure.requestState(high ? SuperstructureState.REEF2_ALGAE_INTAKE : SuperstructureState.REEF1_ALGAE_INTAKE);
+                })
+            )
+        ));
 
         NamedCommands.registerCommand("REMOVE_ALGAE_RIGHT", new ParallelCommandGroup(
-                                new AlignToReefBasisVector(AlignmentConstants.AlignmentDestination.MIDDLE, ReefAlign.kMaxSpeed, 0, ReefAlign.kTagBackMagnitude,  19, 6),
-                                new SequentialCommandGroup(
-                                    new WaitCommand(0.25),
-                                    new InstantCommand(() -> {
-                                        Optional<Boolean> high = superstructure.isHighAlgae();
-                                        if (high.isEmpty() || high.get())
-                                            superstructure.requestState(SuperstructureState.REEF2_ALGAE_INTAKE);
-                                        else
-                                            superstructure.requestState(SuperstructureState.REEF1_ALGAE_INTAKE);
-                                    })
-                                )
-                            ));
-
-        
+            new AlignToReefBasisVector(AlignmentConstants.AlignmentDestination.MIDDLE, ReefAlign.kMaxSpeed, 0, ReefAlign.kTagBackMagnitude,  19, 6),
+            new SequentialCommandGroup(
+                new WaitCommand(0.25),
+                new InstantCommand(() -> {
+                    boolean high = superstructure.isHighAlgae();
+                    superstructure.requestState(high ? SuperstructureState.REEF2_ALGAE_INTAKE : SuperstructureState.REEF1_ALGAE_INTAKE);
+                })
+            )
+        ));
     }
 }

@@ -4,7 +4,6 @@ import static frc.robot.subsystems.Superstructure.SuperstructureState.L1_PREP;
 import static frc.robot.subsystems.Superstructure.SuperstructureState.L2_PREP;
 import static frc.robot.subsystems.Superstructure.SuperstructureState.BARGE_PRESTAGE;
 import static frc.robot.subsystems.Superstructure.SuperstructureState.PRESTAGE;
-import static frc.robot.subsystems.Superstructure.SuperstructureState.STOW;
 import static frc.robot.subsystems.Superstructure.SuperstructureState.L3_PREP;
 import static frc.robot.subsystems.Superstructure.SuperstructureState.L4_PREP;
 
@@ -16,10 +15,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-import frc.robot.subsystems.Claw;
 import frc.robot.subsystems.HPIntake;
 import frc.robot.commands.DeployClimber;
 import frc.robot.commands.HomeElevator;
@@ -94,28 +91,29 @@ public class OperatorOI {
 
         // DO NOT DO NOT BIND ANYTHING TO THIS
         // THIS IS CHECKED FOR AUTOMATIC ALGAE REMOVAL FROM L4
+        @SuppressWarnings("unused")
         Trigger L1Bumper = new JoystickButton(controller, PS4Controller.Button.kL1.value);
 
         Trigger R1Bumper = new JoystickButton(controller, PS4Controller.Button.kR1.value);
         R1Bumper.onTrue(new InstantCommand(() -> {
-            Optional<Boolean> high = superstructure.isHighAlgae();
-            if (high.isEmpty() || high.get())
-                superstructure.requestState(SuperstructureState.REEF2_ALGAE_INTAKE);
-            else
-                superstructure.requestState(SuperstructureState.REEF1_ALGAE_INTAKE);
+            boolean high = superstructure.isHighAlgae();
+            superstructure.requestState(high ? SuperstructureState.REEF2_ALGAE_INTAKE : SuperstructureState.REEF1_ALGAE_INTAKE);
         }));
 
         Trigger L2Trigger = new JoystickButton(controller, PS4Controller.Button.kL2.value);
-        // L2Trigger.whileTrue(new ConditionalCommand(new ManualClimbControl(), new ManualElevatorControl(), superstructure::isClimbState));
         L2Trigger.whileTrue(new ManualClimbControl());
-        
-        Trigger R2Trigger = new JoystickButton(controller, PS4Controller.Button.kR2.value);
-        R2Trigger.whileTrue(new ManualArmControl());
+        // L2Trigger.whileTrue(new ConditionalCommand(new ManualClimbControl(), new ManualArmControl(), superstructure::isClimbState));
 
+        Trigger R2Trigger = new JoystickButton(controller, PS4Controller.Button.kR2.value);
+        R2Trigger.whileTrue(new ManualElevatorControl());
+
+        @SuppressWarnings("unused")
         Trigger L3Trigger = new JoystickButton(controller, PS4Controller.Button.kL3.value);
 
+        @SuppressWarnings("unused")
         Trigger R3Trigger = new JoystickButton(controller, PS4Controller.Button.kR3.value);
 
+        @SuppressWarnings("unused")
         Trigger ps5Button = new JoystickButton(controller, PS4Controller.Button.kPS.value);
 
         Trigger dpadUpTrigger = new Trigger(() -> controller.getPOV() == 0);
@@ -139,7 +137,7 @@ public class OperatorOI {
         optionButton.onTrue(new HomeElevator());
         
         Trigger shareButton = new JoystickButton(controller, PS4Controller.Button.kShare.value);
-        shareButton.onTrue(new InstantCommand(() -> HPIntake.getInstance().extendLinearActuator()));
+        shareButton.onTrue(new InstantCommand(() -> HPIntake.getInstance().toggleLinearActuator()));
     }
 
     public double getForward() {

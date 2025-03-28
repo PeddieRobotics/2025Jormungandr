@@ -6,13 +6,7 @@ public class LimelightBack extends Limelight {
     private static LimelightBack llBack;
 
     private LimelightBack() {
-        // TODO: find real values
-        super(
-            CameraConstants.kBackCamName,
-            CameraConstants.kBackCamUpOffset,
-            CameraConstants.kBackCamPitchDeg,
-            true
-        );
+        super(CameraConstants.kBackCamName, true);
     }
 
     public static LimelightBack getInstance() {

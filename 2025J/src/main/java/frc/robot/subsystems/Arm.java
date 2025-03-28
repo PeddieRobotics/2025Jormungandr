@@ -16,8 +16,7 @@ import frc.robot.utils.LiveData;
 import frc.robot.utils.RobotMap;
 import frc.robot.utils.TunableConstant;
 
-
-
+@SuppressWarnings("unused")
 public class Arm extends SubsystemBase {
 
     private static Arm arm;
@@ -34,7 +33,6 @@ public class Arm extends SubsystemBase {
 
         CANcoderConfiguration config = new CANcoderConfiguration();
         config.MagnetSensor.AbsoluteSensorDiscontinuityPoint = 1;
-        // TODO: Change this to change direction
         config.MagnetSensor.SensorDirection = SensorDirectionValue.CounterClockwise_Positive;
         config.MagnetSensor.MagnetOffset = ArmConstants.kArmMagnetOffset;
         armCANcoder.getConfigurator().apply(config);
