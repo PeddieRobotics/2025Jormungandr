@@ -149,6 +149,7 @@ public class Drivetrain extends SubsystemBase {
         autoStartPosition.addOption("RIGHT", "RIGHT");
         autoStartPosition.addOption("CENTER", "CENTER");
         autoStartPosition.addOption("RIGHT JIG", "RIGHT JIG");
+        autoStartPosition.addOption("LEFT JIG", "LEFT JIG");
 
         SmartDashboard.putData("Auto Starting Direction", autoStartPosition);
     }
@@ -164,6 +165,8 @@ public class Drivetrain extends SubsystemBase {
             return 180.0;
         } else if (autoStartPosition.getSelected().equals("RIGHT JIG")){
             return 120.0;
+        } else if (autoStartPosition.getSelected().equals("LEFT JIG")){
+            return -120.0;
         } else {
             return 0;
         }

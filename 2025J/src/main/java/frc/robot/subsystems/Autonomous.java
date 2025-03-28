@@ -204,8 +204,8 @@ public class Autonomous extends SubsystemBase {
     }
         
     private void registerNamedCommands() {
-        registerReefAlignments("", ReefAlign.kAutoTagBackMagnitude + 0.01, 0.2);
-        registerReefAlignments("CLOSE_", ReefAlign.kAutoTagBackMagnitude - 0.01, 0.3);
+        registerReefAlignments("", ReefAlign.kAutoTagBackMagnitude - 0.01, 0.2);
+        registerReefAlignments("CLOSE_", ReefAlign.kAutoTagBackMagnitude - 0.02, 0.3);
 
         NamedCommands.registerCommand("L1_PREP", new InstantCommand(() -> superstructure.requestState(SuperstructureState.L1_PREP)));
         NamedCommands.registerCommand("L2_PREP", new InstantCommand(() -> superstructure.requestState(SuperstructureState.L2_PREP)));
@@ -275,7 +275,7 @@ public class Autonomous extends SubsystemBase {
         }));
 
         NamedCommands.registerCommand("REMOVE_ALGAE_LEFT", new ParallelCommandGroup(
-            new AlignToReefBasisVector(AlignmentConstants.AlignmentDestination.MIDDLE, ReefAlign.kMaxSpeed, 0, ReefAlign.kTagBackMagnitude,  0, 0),
+            new AlignToReefBasisVector(AlignmentConstants.AlignmentDestination.MIDDLE, ReefAlign.kMaxSpeed, 0, ReefAlign.kTagBackMagnitude,  19, 6),
             new SequentialCommandGroup(
                 new WaitCommand(0.25),
                 new InstantCommand(() -> {
@@ -286,7 +286,7 @@ public class Autonomous extends SubsystemBase {
         ));
 
         NamedCommands.registerCommand("REMOVE_ALGAE_RIGHT", new ParallelCommandGroup(
-            new AlignToReefBasisVector(AlignmentConstants.AlignmentDestination.MIDDLE, ReefAlign.kMaxSpeed, 0, ReefAlign.kTagBackMagnitude,  19, 6),
+            new AlignToReefBasisVector(AlignmentConstants.AlignmentDestination.MIDDLE, ReefAlign.kMaxSpeed, 0, ReefAlign.kTagBackMagnitude,  17, 8),
             new SequentialCommandGroup(
                 new WaitCommand(0.25),
                 new InstantCommand(() -> {

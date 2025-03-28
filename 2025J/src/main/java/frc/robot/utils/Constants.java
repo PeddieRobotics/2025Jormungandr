@@ -356,7 +356,7 @@ public final class Constants {
             public static final double kTranslateSetpoint = 0;
 
             public static final double kAutoDepthP = 2.625; // went from 2.9
-            public static final double kDepthP = 3.05;
+            public static final double kDepthP = 2.8;
             public static final double kDepthI = 0;
             public static final double kDepthD = 0;
             public static final double kDepthFF = 0;
@@ -368,7 +368,7 @@ public final class Constants {
             public static final double kDepthL4PrestageThreshold = 1.3;
 
             public static final double kAutoLateralP = 2.7;
-            public static final double kLateralP = 3.1;
+            public static final double kLateralP = 2.85;
             public static final double kLateralI = 0;
             public static final double kLateralD = 0;
             public static final double kLateralFF = 0;
@@ -388,7 +388,7 @@ public final class Constants {
             public static final double kRotationUseLowerPThreshold = 1.5;
             
             // center of robot distance to tag -- back (+ = back, - = forwards)
-            public static final double kTagBackMagnitude = 0.44; // from 0.45
+            public static final double kTagBackMagnitude = 0.47; // from 0.45
             public static final double kAutoTagBackMagnitude = 0.48; // from 0.45
 
             // center of robot distance to tag -- left (+ = left, - = right)
@@ -434,7 +434,7 @@ public final class Constants {
             
             // TODO
             public static final double kBackOffset = 0.46;
-            public static final double kAutoBackOffset = 0.48;
+            public static final double kAutoBackOffset = 0.44;
             public static final double kLateralOffset = -0.03;
 
             public static final double kAutoRightLateralOffset = 0.0;
@@ -496,7 +496,7 @@ public final class Constants {
 
         public static final double kCoralIntakeSpeed = 0.65;
         public static final double kCoralOuttakeSpeed = 0.75;
-        public static final double kCoralSlowIntake = 0.4;
+        public static final double kCoralSlowIntake = 0.3;
         // public static final double kCoralL1OuttakeSpeed = 0.4;
         public static final double kCoralL1OuttakeSpeed = -0.7;
 
@@ -518,8 +518,8 @@ public final class Constants {
         //TODO: set values
         public static final double kClimberRetractedPosition = 60.0;
         public static final double kClimberDeployedPosition = 211.0;
-        public static final double kClimberRetractedPercentOutput = -0.3;
-        public static final double kClimberDeployedPercentOutput = 0.5;
+        public static final double kClimberRetractedPercentOutput = -0.5;
+        public static final double kClimberDeployedPercentOutput = 1;
 
     }
 

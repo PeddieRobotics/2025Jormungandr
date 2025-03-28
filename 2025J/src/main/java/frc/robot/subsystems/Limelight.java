@@ -82,6 +82,24 @@ public abstract class Limelight extends SubsystemBase {
         LimelightHelpers.setPriorityTagID(limelightName, tagNum);
     }
 
+    private void findLateralDepthErrors() {
+        Pose2d tagPose = Limelight.getAprilTagPose(getTargetID());
+        double tagAngle = tagPose.getRotation().getRadians();
+
+        Optional<Pose2d> estimatedPose = getEstimatedPoseMT2();
+        if (estimatedPose.isEmpty())
+            return;
+
+        double xError = estimatedPose.get().getX() - tagPose.getX();
+        double yError = estimatedPose.get().getY() - tagPose.getY();
+
+        double depthError = xError * Math.cos(tagAngle) + yError * Math.sin(tagAngle);
+        double lateralError = xError * Math.sin(tagAngle) - yError * Math.cos(tagAngle);
+
+        SmartDashboard.putNumber(limelightName + " depthError", -depthError);
+        SmartDashboard.putNumber(limelightName + " lateralError", -lateralError);
+    }
+
     @Override
     public void periodic() {
         updateRollingAverages();
@@ -126,6 +144,9 @@ public abstract class Limelight extends SubsystemBase {
 
         SmartDashboard.putNumber(limelightName + " tx", getTx());
         SmartDashboard.putNumber(limelightName + " tx average", getTxAverage());
+
+        // TODO: comment out for real match
+        findLateralDepthErrors();
     }
 
     // ========================================================

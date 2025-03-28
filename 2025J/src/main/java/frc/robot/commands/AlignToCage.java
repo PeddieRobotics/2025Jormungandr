@@ -24,12 +24,12 @@ public class AlignToCage extends Command {
         drivetrain = Drivetrain.getInstance();
         ll = LimelightClimber.getInstance();
 
-        rotationP = 0.08;
+        rotationP = 0.05;
         rotationI = 0.0;
         rotationD = 0.0;
         rotationFF = 0.0;
-        rotationThreshold = 0.5;
-        rotationLowerP = 0.06;
+        rotationThreshold = 1.0;
+        rotationLowerP = 0.03;
         rotationUseLowerPThreshold = 1.5;
         rotationController = new PIDController(rotationP, rotationI, rotationD);
         rotationController.enableContinuousInput(-180.0, 180.0);
@@ -66,8 +66,8 @@ public class AlignToCage extends Command {
 
     @Override
     public void initialize() {
-        ll.setPipeline(1); 
-        drivetrain.setUseMegaTag(false);
+        ll.setPipeline(0); 
+        // drivetrain.setUseMegaTag(false);
         Logger.getInstance().logEvent("Align to Cage", true);
     }
 
@@ -104,21 +104,22 @@ public class AlignToCage extends Command {
         if (Math.abs(rotationError) > rotationThreshold)
             rotation = rotationController.calculate(rotationError) + Math.signum(rotationError) * rotationFF;
 
-        double yInput = 0;
+        // double yInput = 0;
         
-        double ty = ll.getTyAverage();
-        if (Math.abs(ty) > yThreshold && ll.hasTarget())
-            yInput = yController.calculate(ty) + Math.signum(ty) * yFF;
+        // double ty = ll.getTyAverage();
+        // if (Math.abs(ty) > yThreshold && ll.hasTarget())
+        //     yInput = yController.calculate(ty) + Math.signum(ty) * yFF;
   
         double xDriverInput = DriverOI.getInstance().getForward();
-        drivetrain.drive(new Translation2d(xDriverInput, yInput), rotation, false, null);
+        double yInput = DriverOI.getInstance().getStrafe();
+        drivetrain.drive(new Translation2d(-xDriverInput, -yInput), rotation, false, null);
         
-        Logger.getInstance().logAlignToCage(ty, yInput, rotationError, rotation);
+        // Logger.getInstance().logAlignToCage(ty, yInput, rotationError, rotation);
     }
 
     @Override
     public void end(boolean interrupted) {
-        drivetrain.setUseMegaTag(true);
+        // drivetrain.setUseMegaTag(true);
         Logger.getInstance().logEvent("Align to Cage", false);
     }
 
