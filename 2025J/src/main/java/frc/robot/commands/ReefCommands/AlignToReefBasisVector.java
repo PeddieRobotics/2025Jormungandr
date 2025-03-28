@@ -1,4 +1,4 @@
-package frc.robot.commands;
+package frc.robot.commands.ReefCommands;
 
 import static frc.robot.subsystems.Superstructure.SuperstructureState.HP_INTAKE;
 import static frc.robot.subsystems.Superstructure.SuperstructureState.L4_PREP;
@@ -7,9 +7,11 @@ import static frc.robot.subsystems.Superstructure.SuperstructureState.STOW;
 import java.util.Optional;
 
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -24,6 +26,7 @@ import frc.robot.subsystems.Limelight;
 import frc.robot.subsystems.LimelightBack;
 import frc.robot.utils.CalculateReefTarget;
 import frc.robot.utils.Constants.AlignmentConstants;
+import frc.robot.utils.Constants.AutoConstants;
 import frc.robot.utils.Constants.AlignmentConstants.AlignmentDestination;
 import frc.robot.utils.Constants.AlignmentConstants.ReefAlign;
 import frc.robot.utils.Logger;
@@ -33,7 +36,7 @@ public class AlignToReefBasisVector extends Command {
     private Drivetrain drivetrain;
     private Limelight[] cameras;
 
-    private PIDController depthPIDController, lateralPIDController, rotationPIDController;
+    private ProfiledPIDController depthPIDController, lateralPIDController, rotationPIDController;
 
     private double depthP, depthI, depthD, depthFF;
 
@@ -75,6 +78,7 @@ public class AlignToReefBasisVector extends Command {
             case LEFT -> {
                 cameras = new Limelight[] {
                     LimelightFrontRight.getInstance(),
+                    // LimelightFrontMiddle.getInstance(),
                     LimelightFrontLeft.getInstance(),
                 };
                 commandName = "left align";
@@ -82,6 +86,7 @@ public class AlignToReefBasisVector extends Command {
             }
             case MIDDLE -> {
                 cameras = new Limelight[] {
+                    // LimelightFrontMiddle.getInstance(),
                     LimelightFrontLeft.getInstance(),
                     LimelightFrontRight.getInstance(),
                 };
@@ -91,6 +96,7 @@ public class AlignToReefBasisVector extends Command {
             case RIGHT -> {
                 cameras = new Limelight[] {
                     LimelightFrontLeft.getInstance(),
+                    // LimelightFrontMiddle.getInstance(),
                     LimelightFrontRight.getInstance(),
                 };
                 commandName = "right align";
@@ -98,7 +104,7 @@ public class AlignToReefBasisVector extends Command {
             }
         }
 
-        depthP = ReefAlign.kDepthP;
+        depthP = ReefAlign.kDepthP - 0.2;
         depthI = ReefAlign.kDepthI;
         depthD = ReefAlign.kDepthD;
         depthFF = ReefAlign.kDepthFF;
@@ -110,7 +116,7 @@ public class AlignToReefBasisVector extends Command {
         depthL3PrestageThreshold = ReefAlign.kDepthL3PrestageThreshold;
         depthL4PrestageThreshold = ReefAlign.kDepthL4PrestageThreshold;
 
-        lateralP = ReefAlign.kLateralP;
+        lateralP = ReefAlign.kLateralP - 0.2;
         lateralI = ReefAlign.kLateralI;
         lateralD = ReefAlign.kLateralD;
         lateralFF = ReefAlign.kLateralFF;
@@ -130,9 +136,9 @@ public class AlignToReefBasisVector extends Command {
         rotationLowerP = ReefAlign.kRotationLowerP;
         rotationUseLowerPThreshold = ReefAlign.kRotationUseLowerPThreshold;
         
-        depthPIDController = new PIDController(depthP, depthI, depthD);
-        lateralPIDController = new PIDController(lateralP, lateralI, lateralD);
-        rotationPIDController = new PIDController(rotationP, rotationI, rotationD);
+        depthPIDController = new ProfiledPIDController(depthP, depthI, depthD, new TrapezoidProfile(null));
+        lateralPIDController = new ProfiledPIDController(lateralP, lateralI, lateralD);
+        rotationPIDController = new ProfiledPIDController(rotationP, rotationI, rotationD);
         rotationPIDController.enableContinuousInput(-180.0, 180.0);
         
         tagAngle = 0;
@@ -152,53 +158,53 @@ public class AlignToReefBasisVector extends Command {
 
         addRequirements(drivetrain);
         
-        // {
-        //     SmartDashboard.putNumber("Align: depthP", depthP);
-        //     SmartDashboard.putNumber("Align: depthI", depthI);
-        //     SmartDashboard.putNumber("Align: depthD", depthD);
-        //     SmartDashboard.putNumber("Align: depthFF", depthFF);
+        {
+            SmartDashboard.putNumber("Align: depthP", depthP);
+            SmartDashboard.putNumber("Align: depthI", depthI);
+            SmartDashboard.putNumber("Align: depthD", depthD);
+            SmartDashboard.putNumber("Align: depthFF", depthFF);
 
-        //     SmartDashboard.putNumber("Align: lateralP", lateralP);
-        //     SmartDashboard.putNumber("Align: lateralI", lateralI);
-        //     SmartDashboard.putNumber("Align: lateralD", lateralD);
-        //     SmartDashboard.putNumber("Align: lateralFF", lateralFF);
+            SmartDashboard.putNumber("Align: lateralP", lateralP);
+            SmartDashboard.putNumber("Align: lateralI", lateralI);
+            SmartDashboard.putNumber("Align: lateralD", lateralD);
+            SmartDashboard.putNumber("Align: lateralFF", lateralFF);
             
-        //     SmartDashboard.putNumber("Align: rotationP", rotationP);
-        //     SmartDashboard.putNumber("Align: rotationI", rotationI);
-        //     SmartDashboard.putNumber("Align: rotationD", rotationD);
-        //     SmartDashboard.putNumber("Align: rotationFF", rotationFF);
-        //     SmartDashboard.putNumber("Align: rotationThreshold", rotationThreshold);
-        //     SmartDashboard.putNumber("Align: rotationLowerP", rotationLowerP);
-        //     SmartDashboard.putNumber("Align: rotationUseLowerPThreshold", rotationUseLowerPThreshold);
+            SmartDashboard.putNumber("Align: rotationP", rotationP);
+            SmartDashboard.putNumber("Align: rotationI", rotationI);
+            SmartDashboard.putNumber("Align: rotationD", rotationD);
+            SmartDashboard.putNumber("Align: rotationFF", rotationFF);
+            SmartDashboard.putNumber("Align: rotationThreshold", rotationThreshold);
+            SmartDashboard.putNumber("Align: rotationLowerP", rotationLowerP);
+            SmartDashboard.putNumber("Align: rotationUseLowerPThreshold", rotationUseLowerPThreshold);
 
-        //     SmartDashboard.putNumber("Align: maxSpeed", maxSpeed);
-        // }
+            SmartDashboard.putNumber("Align: maxSpeed", maxSpeed);
+        }
 
-        // SmartDashboard.putNumber("Align: Elapsed Time", 0.0);
+        SmartDashboard.putNumber("Align: Elapsed Time", 0.0);
 
-        // SmartDashboard.putNumber("Align: depth close threshold", ReefAlign.kDepthCloseThreshold);
-        // SmartDashboard.putNumber("Align: depth close at L4 threshold", ReefAlign.kDepthCloseAtL4Threshold);
-        // SmartDashboard.putNumber("Align: depth L3 prestage threshold", ReefAlign.kDepthL3PrestageThreshold);
-        // SmartDashboard.putNumber("Align: depth L4 prestage threshold", ReefAlign.kDepthL4PrestageThreshold);
+        SmartDashboard.putNumber("Align: depth close threshold", ReefAlign.kDepthCloseThreshold);
+        SmartDashboard.putNumber("Align: depth close at L4 threshold", ReefAlign.kDepthCloseAtL4Threshold);
+        SmartDashboard.putNumber("Align: depth L3 prestage threshold", ReefAlign.kDepthL3PrestageThreshold);
+        SmartDashboard.putNumber("Align: depth L4 prestage threshold", ReefAlign.kDepthL4PrestageThreshold);
 
-        // SmartDashboard.putNumber("Align: lateral close threshold", ReefAlign.kLateralCloseThreshold);
-        // SmartDashboard.putNumber("Align: lateral close at L4 threshold", ReefAlign.kLateralCloseAtL4Threshold);
-        // SmartDashboard.putNumber("Align: lateral L3 prestage threshold", ReefAlign.kLateralL3PrestageThreshold);
-        // SmartDashboard.putNumber("Align: lateral L4 prestage threshold", ReefAlign.kLateralL4PrestageThreshold);
+        SmartDashboard.putNumber("Align: lateral close threshold", ReefAlign.kLateralCloseThreshold);
+        SmartDashboard.putNumber("Align: lateral close at L4 threshold", ReefAlign.kLateralCloseAtL4Threshold);
+        SmartDashboard.putNumber("Align: lateral L3 prestage threshold", ReefAlign.kLateralL3PrestageThreshold);
+        SmartDashboard.putNumber("Align: lateral L4 prestage threshold", ReefAlign.kLateralL4PrestageThreshold);
 
-        // SmartDashboard.putNumber("Align: depth threshold", ReefAlign.kDepthThreshold);
-        // SmartDashboard.putNumber("Align: lateral threshold", ReefAlign.kLateralThreshold);
+        SmartDashboard.putNumber("Align: depth threshold", ReefAlign.kDepthThreshold);
+        SmartDashboard.putNumber("Align: lateral threshold", ReefAlign.kLateralThreshold);
 
-        // SmartDashboard.putBoolean("Align: fire gamepiece", false);
+        SmartDashboard.putBoolean("Align: fire gamepiece", false);
 
-        // SmartDashboard.putNumber("Align: depthError", depthError);
-        // SmartDashboard.putNumber("Align: lateralError", lateralError);
+        SmartDashboard.putNumber("Align: depthError", depthError);
+        SmartDashboard.putNumber("Align: lateralError", lateralError);
 
-        // SmartDashboard.putBoolean("Align: rotation good", false);
-        // SmartDashboard.putBoolean("Align: depth good", false);
-        // SmartDashboard.putBoolean("Align: lateral good", false);
-        // SmartDashboard.putBoolean("Align: depth close", false);
-        // SmartDashboard.putBoolean("Align: lateral close", false);
+        SmartDashboard.putBoolean("Align: rotation good", false);
+        SmartDashboard.putBoolean("Align: depth good", false);
+        SmartDashboard.putBoolean("Align: lateral good", false);
+        SmartDashboard.putBoolean("Align: depth close", false);
+        SmartDashboard.putBoolean("Align: lateral close", false);
     }
 
     @Override
@@ -233,19 +239,10 @@ public class AlignToReefBasisVector extends Command {
 
         tagLateralMagnitude = SmartDashboard.getNumber(commandName + " lateral offset", tagLateralMagnitude);
 
-        if (DriverStation.isAutonomous()) {
+        if (DriverStation.isAutonomous())
             tagBackMagnitude = autoBackOffset; // ReefAlign.kAutoTagBackMagnitude;
-            depthP = ReefAlign.kAutoDepthP;
-            lateralP = ReefAlign.kAutoLateralP;
-        }
-        else {
+        else
             tagBackMagnitude = teleopBackOffset; // SmartDashboard.getNumber(commandName + " back offset", tagBackMagnitude);
-            depthP = ReefAlign.kDepthP;
-            lateralP = ReefAlign.kLateralP;
-        }
-
-        depthPIDController.setP(depthP);
-        lateralPIDController.setP(lateralP);
 
         if (Superstructure.getInstance().getCurrentState() == SuperstructureState.L1_PREP){
             // if (commandName.equals("left align")) {
@@ -279,8 +276,8 @@ public class AlignToReefBasisVector extends Command {
 
         Logger.getInstance().logEvent("Align to Reef, ID " + desiredTarget, true);
 
-        // SmartDashboard.putNumber("Align: target x", desiredPose.get().getX());
-        // SmartDashboard.putNumber("Align: target y", desiredPose.get().getY());
+        SmartDashboard.putNumber("Align: target x", desiredPose.get().getX());
+        SmartDashboard.putNumber("Align: target y", desiredPose.get().getY());
     }
     
     private Optional<Pose2d> getBestEstimatedPose() {
@@ -344,49 +341,49 @@ public class AlignToReefBasisVector extends Command {
 
     @Override
     public void execute() {
-        // SmartDashboard.putBoolean("Align: rotation good", rotationGood());
-        // SmartDashboard.putBoolean("Align: depth good", depthGood());
-        // SmartDashboard.putBoolean("Align: lateral good", lateralGood());
-        // SmartDashboard.putBoolean("Align: depth close", depthClose());
-        // SmartDashboard.putBoolean("Align: lateral close", lateralClose());
+        SmartDashboard.putBoolean("Align: rotation good", rotationGood());
+        SmartDashboard.putBoolean("Align: depth good", depthGood());
+        SmartDashboard.putBoolean("Align: lateral good", lateralGood());
+        SmartDashboard.putBoolean("Align: depth close", depthClose());
+        SmartDashboard.putBoolean("Align: lateral close", lateralClose());
 
-        // SmartDashboard.putBoolean("Align: l3PrepSafe", l3PrepSafe());
-        // SmartDashboard.putBoolean("Align: l4PrepSafe", l4PrepSafe());
+        SmartDashboard.putBoolean("Align: l3PrepSafe", l3PrepSafe());
+        SmartDashboard.putBoolean("Align: l4PrepSafe", l4PrepSafe());
 
-        // {
-        //     depthP = SmartDashboard.getNumber("Align: depthP", depthP);
-        //     depthI = SmartDashboard.getNumber("Align: depthI", depthI);
-        //     depthD = SmartDashboard.getNumber("Align: depthD", depthD);
-        //     depthFF = SmartDashboard.getNumber("Align: depthFF", depthFF);
+        {
+            depthP = SmartDashboard.getNumber("Align: depthP", depthP);
+            depthI = SmartDashboard.getNumber("Align: depthI", depthI);
+            depthD = SmartDashboard.getNumber("Align: depthD", depthD);
+            depthFF = SmartDashboard.getNumber("Align: depthFF", depthFF);
 
-        //     lateralP = SmartDashboard.getNumber("Align: lateralP", lateralP);
-        //     lateralI = SmartDashboard.getNumber("Align: lateralI", lateralI);
-        //     lateralD = SmartDashboard.getNumber("Align: lateralD", lateralD);
-        //     lateralFF = SmartDashboard.getNumber("Align: lateralFF", lateralFF);
+            lateralP = SmartDashboard.getNumber("Align: lateralP", lateralP);
+            lateralI = SmartDashboard.getNumber("Align: lateralI", lateralI);
+            lateralD = SmartDashboard.getNumber("Align: lateralD", lateralD);
+            lateralFF = SmartDashboard.getNumber("Align: lateralFF", lateralFF);
 
-        //     rotationP = SmartDashboard.getNumber("Align: rotationP", rotationP);
-        //     rotationI = SmartDashboard.getNumber("Align: rotationI", rotationI);
-        //     rotationD = SmartDashboard.getNumber("Align: rotationD", rotationD);
-        //     rotationFF = SmartDashboard.getNumber("Align: rotationFF", rotationFF);
-        //     rotationThreshold = SmartDashboard.getNumber("Align: rotationThreshold", rotationThreshold);
-        //     rotationLowerP = SmartDashboard.getNumber("Align: rotationLowerP", rotationLowerP);
-        //     rotationUseLowerPThreshold = SmartDashboard.getNumber("Align: rotationUseLowerPThreshold", rotationUseLowerPThreshold);
+            rotationP = SmartDashboard.getNumber("Align: rotationP", rotationP);
+            rotationI = SmartDashboard.getNumber("Align: rotationI", rotationI);
+            rotationD = SmartDashboard.getNumber("Align: rotationD", rotationD);
+            rotationFF = SmartDashboard.getNumber("Align: rotationFF", rotationFF);
+            rotationThreshold = SmartDashboard.getNumber("Align: rotationThreshold", rotationThreshold);
+            rotationLowerP = SmartDashboard.getNumber("Align: rotationLowerP", rotationLowerP);
+            rotationUseLowerPThreshold = SmartDashboard.getNumber("Align: rotationUseLowerPThreshold", rotationUseLowerPThreshold);
             
-        //     maxSpeed = SmartDashboard.getNumber("Align: maxSpeed", maxSpeed);
+            maxSpeed = SmartDashboard.getNumber("Align: maxSpeed", maxSpeed);
 
-        //     depthCloseThreshold = SmartDashboard.getNumber("Align: depth close threshold", 0.0);
-        //     depthCloseAtL4Threshold = SmartDashboard.getNumber("Align: depth close at L4 threshold", 0.0);
-        //     lateralCloseThreshold = SmartDashboard.getNumber("Align: lateral close threshold", 0.0);
-        //     lateralCloseAtL4Threshold = SmartDashboard.getNumber("Align: lateral close at L4 threshold", 0.0);
-        //     depthThreshold = SmartDashboard.getNumber("Align: depth threshold", 0.0);
-        //     lateralThreshold = SmartDashboard.getNumber("Align: lateral threshold", 0.0);
+            depthCloseThreshold = SmartDashboard.getNumber("Align: depth close threshold", 0.0);
+            depthCloseAtL4Threshold = SmartDashboard.getNumber("Align: depth close at L4 threshold", 0.0);
+            lateralCloseThreshold = SmartDashboard.getNumber("Align: lateral close threshold", 0.0);
+            lateralCloseAtL4Threshold = SmartDashboard.getNumber("Align: lateral close at L4 threshold", 0.0);
+            depthThreshold = SmartDashboard.getNumber("Align: depth threshold", 0.0);
+            lateralThreshold = SmartDashboard.getNumber("Align: lateral threshold", 0.0);
 
-        //     depthL3PrestageThreshold = SmartDashboard.getNumber("Align: depth L3 prestage threshold", 0.0);
-        //     depthL4PrestageThreshold = SmartDashboard.getNumber("Align: depth L4 prestage threshold", 0.0);
+            depthL3PrestageThreshold = SmartDashboard.getNumber("Align: depth L3 prestage threshold", 0.0);
+            depthL4PrestageThreshold = SmartDashboard.getNumber("Align: depth L4 prestage threshold", 0.0);
 
-        //     lateralL3PrestageThreshold = SmartDashboard.getNumber("Align: lateral L3 prestage threshold", 0.0);
-        //     lateralL4PrestageThreshold = SmartDashboard.getNumber("Align: lateral L4 prestage threshold", 0.0);
-        // }
+            lateralL3PrestageThreshold = SmartDashboard.getNumber("Align: lateral L3 prestage threshold", 0.0);
+            lateralL4PrestageThreshold = SmartDashboard.getNumber("Align: lateral L4 prestage threshold", 0.0);
+        }
         
         if (desiredPose.isEmpty())
             return;
@@ -442,6 +439,7 @@ public class AlignToReefBasisVector extends Command {
         double elapsedTime = Timer.getFPGATimestamp() - initialTime;
 
         // Auto Prep State Logic
+        // TODO: create "auto prep" boolean logic
         boolean autoPrep = SmartDashboard.getBoolean("Align: Auto Prep", true);
 
         if(!DriverStation.isAutonomousEnabled() && autoPrep){
@@ -474,7 +472,7 @@ public class AlignToReefBasisVector extends Command {
             }
         }
 
-        Logger.getInstance().logAlignToReef(lateralError, depthError, rotationError, lateralMagnitude, depthMagnitude, rotation);
+        Logger.getInstance().logAlignToReef(lateralError, depthError, rotationError, depthMagnitude, lateralMagnitude, rotation);
     }
 
     @Override
@@ -486,7 +484,7 @@ public class AlignToReefBasisVector extends Command {
             drivetrain.drive(new Translation2d(0,0), 0, false, null);
   
         Logger.getInstance().logEvent(
-            "Align to Reef ended with errors: lateral " + lateralError + ", depth " + depthError + ", rotation " + rotationError,
+            "Align to Reef ended with errors: x " + xError + ", y " + yError + ", rotation " + rotationError,
             false
         );
     }
