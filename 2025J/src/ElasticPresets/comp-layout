@@ -11,7 +11,7 @@
             "title": "Auto Routines",
             "x": 0.0,
             "y": 0.0,
-            "width": 512.0,
+            "width": 640.0,
             "height": 128.0,
             "type": "ComboBox Chooser",
             "properties": {
@@ -24,8 +24,8 @@
             "title": "Fused odometry",
             "x": 0.0,
             "y": 384.0,
-            "width": 768.0,
-            "height": 384.0,
+            "width": 896.0,
+            "height": 512.0,
             "type": "Field",
             "properties": {
               "topic": "/SmartDashboard/Fused odometry",
@@ -42,8 +42,8 @@
           },
           {
             "title": "Claw: Has Algae",
-            "x": 0.0,
-            "y": 256.0,
+            "x": 384.0,
+            "y": 128.0,
             "width": 256.0,
             "height": 128.0,
             "type": "Boolean Box",
@@ -59,8 +59,8 @@
           },
           {
             "title": "Claw: Top Sensor",
-            "x": 512.0,
-            "y": 256.0,
+            "x": 0.0,
+            "y": 128.0,
             "width": 256.0,
             "height": 128.0,
             "type": "Boolean Box",
@@ -76,7 +76,7 @@
           },
           {
             "title": "Claw: Bottom Sensor",
-            "x": 256.0,
+            "x": 0.0,
             "y": 256.0,
             "width": 256.0,
             "height": 128.0,
@@ -93,7 +93,7 @@
           },
           {
             "title": "System State",
-            "x": 512.0,
+            "x": 640.0,
             "y": 0.0,
             "width": 256.0,
             "height": 128.0,
@@ -107,7 +107,7 @@
           },
           {
             "title": "Requested System State",
-            "x": 512.0,
+            "x": 640.0,
             "y": 128.0,
             "width": 256.0,
             "height": 128.0,
@@ -120,22 +120,9 @@
             }
           },
           {
-            "title": "limelight-middle",
-            "x": 768.0,
-            "y": 0.0,
-            "width": 640.0,
-            "height": 768.0,
-            "type": "Camera Stream",
-            "properties": {
-              "topic": "/CameraPublisher/limelight-middle",
-              "period": 0.06,
-              "rotation_turns": 0
-            }
-          },
-          {
             "title": "L1 Flag",
-            "x": 1408.0,
-            "y": 384.0,
+            "x": 1664.0,
+            "y": 512.0,
             "width": 256.0,
             "height": 128.0,
             "type": "Boolean Box",
@@ -151,8 +138,8 @@
           },
           {
             "title": "L2 Flag",
-            "x": 1408.0,
-            "y": 256.0,
+            "x": 1664.0,
+            "y": 384.0,
             "width": 256.0,
             "height": 128.0,
             "type": "Boolean Box",
@@ -168,8 +155,8 @@
           },
           {
             "title": "L3 Flag",
-            "x": 1408.0,
-            "y": 128.0,
+            "x": 1664.0,
+            "y": 256.0,
             "width": 256.0,
             "height": 128.0,
             "type": "Boolean Box",
@@ -185,8 +172,8 @@
           },
           {
             "title": "L4 Flag",
-            "x": 1408.0,
-            "y": 0.0,
+            "x": 1664.0,
+            "y": 128.0,
             "width": 256.0,
             "height": 128.0,
             "type": "Boolean Box",
@@ -202,8 +189,8 @@
           },
           {
             "title": "Align: Auto Score",
-            "x": 1408.0,
-            "y": 512.0,
+            "x": 1664.0,
+            "y": 640.0,
             "width": 256.0,
             "height": 128.0,
             "type": "Toggle Switch",
@@ -215,8 +202,8 @@
           },
           {
             "title": "Align: Auto Prep",
-            "x": 1408.0,
-            "y": 640.0,
+            "x": 1664.0,
+            "y": 768.0,
             "width": 256.0,
             "height": 128.0,
             "type": "Toggle Switch",
@@ -228,15 +215,42 @@
           },
           {
             "title": "Auto Starting Direction",
-            "x": 0.0,
-            "y": 128.0,
-            "width": 512.0,
+            "x": 640.0,
+            "y": 256.0,
+            "width": 256.0,
             "height": 128.0,
             "type": "ComboBox Chooser",
             "properties": {
               "topic": "/SmartDashboard/Auto Starting Direction",
               "period": 0.06,
               "sort_options": false
+            }
+          },
+          {
+            "title": "limelight-climber",
+            "x": 896.0,
+            "y": 0.0,
+            "width": 768.0,
+            "height": 896.0,
+            "type": "Camera Stream",
+            "properties": {
+              "topic": "/CameraPublisher/limelight-climber",
+              "period": 0.06,
+              "rotation_turns": 0
+            }
+          },
+          {
+            "title": "Elevator: Global Offset",
+            "x": 1664.0,
+            "y": 0.0,
+            "width": 256.0,
+            "height": 128.0,
+            "type": "Text Display",
+            "properties": {
+              "topic": "/SmartDashboard/Elevator: Global Offset",
+              "period": 0.06,
+              "data_type": "double",
+              "show_submit_button": true
             }
           }
         ]
@@ -871,19 +885,6 @@
       "grid_layout": {
         "layouts": [],
         "containers": [
-          {
-            "title": "limelight-middle",
-            "x": 0.0,
-            "y": 0.0,
-            "width": 640.0,
-            "height": 512.0,
-            "type": "Camera Stream",
-            "properties": {
-              "topic": "/CameraPublisher/limelight-middle",
-              "period": 0.06,
-              "rotation_turns": 0
-            }
-          },
           {
             "title": "limelight-left Current Priority",
             "x": 640.0,
@@ -1561,7 +1562,70 @@
       "name": "Tuning",
       "grid_layout": {
         "layouts": [],
-        "containers": []
+        "containers": [
+          {
+            "title": "Climber: deployed",
+            "x": 640.0,
+            "y": 0.0,
+            "width": 256.0,
+            "height": 128.0,
+            "type": "Boolean Box",
+            "properties": {
+              "topic": "/SmartDashboard/Climber: deployed",
+              "period": 0.06,
+              "data_type": "boolean",
+              "true_color": 4283215696,
+              "false_color": 4294198070,
+              "true_icon": "None",
+              "false_icon": "None"
+            }
+          },
+          {
+            "title": "Climber: position",
+            "x": 512.0,
+            "y": 256.0,
+            "width": 256.0,
+            "height": 128.0,
+            "type": "Text Display",
+            "properties": {
+              "topic": "/SmartDashboard/Climber: position",
+              "period": 0.06,
+              "data_type": "double",
+              "show_submit_button": true
+            }
+          },
+          {
+            "title": "Climber: retracted",
+            "x": 512.0,
+            "y": 0.0,
+            "width": 128.0,
+            "height": 128.0,
+            "type": "Boolean Box",
+            "properties": {
+              "topic": "/SmartDashboard/Climber: retracted",
+              "period": 0.06,
+              "data_type": "boolean",
+              "true_color": 4283215696,
+              "false_color": 4294198070,
+              "true_icon": "None",
+              "false_icon": "None"
+            }
+          },
+          {
+            "title": "Climber: commanded output",
+            "x": 768.0,
+            "y": 256.0,
+            "width": 256.0,
+            "height": 128.0,
+            "type": "Text Display",
+            "properties": {
+              "topic": "/SmartDashboard/Climber: commanded output",
+              "period": 0.06,
+              "data_type": "double",
+              "show_submit_button": true
+            }
+          }
+        ]
       }
     },
     {
@@ -1690,6 +1754,48 @@
             "type": "Text Display",
             "properties": {
               "topic": "/SmartDashboard/HPAlign: lateral threshold",
+              "period": 0.06,
+              "data_type": "double",
+              "show_submit_button": true
+            }
+          },
+          {
+            "title": "HPAlign: target x",
+            "x": 1024.0,
+            "y": 0.0,
+            "width": 256.0,
+            "height": 128.0,
+            "type": "Text Display",
+            "properties": {
+              "topic": "/SmartDashboard/HPAlign: target x",
+              "period": 0.06,
+              "data_type": "double",
+              "show_submit_button": true
+            }
+          },
+          {
+            "title": "HPAlign: target y",
+            "x": 1024.0,
+            "y": 128.0,
+            "width": 256.0,
+            "height": 128.0,
+            "type": "Text Display",
+            "properties": {
+              "topic": "/SmartDashboard/HPAlign: target y",
+              "period": 0.06,
+              "data_type": "double",
+              "show_submit_button": true
+            }
+          },
+          {
+            "title": "HPAlign: back offset",
+            "x": 896.0,
+            "y": 512.0,
+            "width": 256.0,
+            "height": 128.0,
+            "type": "Text Display",
+            "properties": {
+              "topic": "/SmartDashboard/HPAlign: back offset",
               "period": 0.06,
               "data_type": "double",
               "show_submit_button": true
