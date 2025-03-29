@@ -153,6 +153,12 @@ public class AlignToReefBasisVector extends Command {
         SmartDashboard.putNumber(commandName + " lateral offset", tagLateralMagnitude);
         SmartDashboard.putNumber(commandName + " back offset", tagBackMagnitude);
 
+        if (DriverStation.getAlliance().isEmpty() || DriverStation.getAlliance().get() == DriverStation.Alliance.Blue) {
+            if (blueTargetTag == 19 && destination == AlignmentDestination.LEFT) {
+                this.L4offset = 0.05;
+            }
+        }
+
         addRequirements(drivetrain);
         
         // {

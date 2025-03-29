@@ -219,6 +219,7 @@ public class Autonomous extends SubsystemBase {
         
     private void registerNamedCommands() {
         registerReefAlignments("", ReefAlign.kAutoTagBackMagnitude, 0.2, 0);
+
         // registerReefAlignments("", ReefAlign.kAutoTagBackMagnitude - 0.005, 0.2);
         registerReefAlignments("CLOSE_", ReefAlign.kAutoCloseTagBackMagnitude, 0.3, 0);
 

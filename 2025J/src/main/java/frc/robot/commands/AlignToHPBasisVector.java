@@ -59,8 +59,8 @@ public class AlignToHPBasisVector extends Command {
 
         cameras = new Limelight[] {
             LimelightBack.getInstance(),
-            LimelightFrontRight.getInstance(),
             LimelightFrontLeft.getInstance(),
+            LimelightFrontRight.getInstance(),
         };
 
         depthP = HPAlign.kDepthP;
