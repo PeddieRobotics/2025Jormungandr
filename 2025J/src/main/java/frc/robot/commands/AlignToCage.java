@@ -7,6 +7,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.LimelightClimber;
 import frc.robot.utils.DriverOI;
+import frc.robot.utils.DriverOI.DPadDirection;
 import frc.robot.utils.Logger;
 
 public class AlignToCage extends Command {
@@ -110,9 +111,17 @@ public class AlignToCage extends Command {
         // if (Math.abs(ty) > yThreshold && ll.hasTarget())
         //     yInput = yController.calculate(ty) + Math.signum(ty) * yFF;
   
-        double xDriverInput = DriverOI.getInstance().getForward();
-        double yInput = DriverOI.getInstance().getStrafe();
-        drivetrain.drive(new Translation2d(-xDriverInput, -yInput), rotation, false, null);
+        // double xDriverInput = DriverOI.getInstance().getForward();
+        // double yInput = DriverOI.getInstance().getStrafe();
+
+        // drivetrain.drive(new Translation2d(-xDriverInput, -yInput), rotation, false, null);
+
+        Translation2d translation = DriverOI.getInstance().getSwerveTranslation();
+        if (DriverOI.getInstance().getDriverDPadInput() != DPadDirection.NONE) {
+            translation = DriverOI.getInstance().getCardinalDirection();
+        }
+        drivetrain.drive(translation.times(-1), rotation, false, null);
+
         
         // Logger.getInstance().logAlignToCage(ty, yInput, rotationError, rotation);
     }

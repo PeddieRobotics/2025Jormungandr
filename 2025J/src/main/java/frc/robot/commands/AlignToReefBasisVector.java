@@ -280,7 +280,7 @@ public class AlignToReefBasisVector extends Command {
         depthError = 10000;
         lateralError = 10000;
 
-        Logger.getInstance().logEvent("Align to Reef, ID " + desiredTarget + ", L4 Offset " + L4offset, true);
+        Logger.getInstance().logEvent("Reef " + commandName + ", ID " + desiredTarget + ", L4 Offset " + L4offset, true);
 
         // SmartDashboard.putNumber("Align: target x", desiredPose.get().getX());
         // SmartDashboard.putNumber("Align: target y", desiredPose.get().getY());
@@ -491,7 +491,7 @@ public class AlignToReefBasisVector extends Command {
             drivetrain.drive(new Translation2d(0,0), 0, false, null);
   
         Logger.getInstance().logEvent(
-            "Align to Reef ended with errors: lateral " + lateralError + ", depth " + depthError + ", rotation " + rotationError,
+            "Reef " + commandName + " ended with errors: lateral " + lateralError + ", depth " + depthError + ", rotation " + rotationError,
             false
         );
 
@@ -505,13 +505,17 @@ public class AlignToReefBasisVector extends Command {
             return true;
         }
 
-        if (Superstructure.getInstance().isReefScoringState())
-            Logger.getInstance().logEvent("Align to reef is in scoring state", false);
-        if (Superstructure.getInstance().getCurrentState() == HP_INTAKE)
-            Logger.getInstance().logEvent("Align to reef is in HP intake state", false);
-        if (Superstructure.getInstance().getCurrentState() == STOW)
-            Logger.getInstance().logEvent("Align to reef is in stow state", false);
+        // if (Superstructure.getInstance().isReefScoringState())
+        //     Logger.getInstance().logEvent("Align to reef is in scoring state", false);
+        // if (Superstructure.getInstance().getRequestedState() == HP_INTAKE)
+        //     Logger.getInstance().logEvent("Align to reef is in HP intake state", false);
+        // if (Superstructure.getInstance().getCurrentState() == STOW)
+        //     Logger.getInstance().logEvent("Align to reef is in stow state", false);
 
-        return (Superstructure.getInstance().isReefScoringState() || Superstructure.getInstance().getCurrentState() == HP_INTAKE || Superstructure.getInstance().getCurrentState() == STOW) && rotationGood() && depthAndLateralGood();
+        return (
+            Superstructure.getInstance().isReefScoringState() ||
+            Superstructure.getInstance().getRequestedState() == HP_INTAKE ||
+            Superstructure.getInstance().getCurrentState() == STOW
+        ) && rotationGood() && depthAndLateralGood();
     }
 }

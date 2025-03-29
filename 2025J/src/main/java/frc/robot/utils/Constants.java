@@ -445,7 +445,7 @@ public final class Constants {
             public static final double kRotationUseLowerPThreshold = 1.5;
             
             // TODO
-            public static final double kBackOffset = 0.46;
+            public static final double kBackOffset = 0.44;
             public static final double kAutoBackOffset = 0.44;
             public static final double kLateralOffset = -0.03;
 

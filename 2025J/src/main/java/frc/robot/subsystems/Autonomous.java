@@ -30,6 +30,7 @@ import frc.robot.utils.Constants.AlignmentConstants;
 import frc.robot.utils.Constants.AlignmentConstants.HPAlign;
 import frc.robot.utils.Constants.AlignmentConstants.ReefAlign;
 import frc.robot.utils.Constants.AutoConstants;
+import frc.robot.utils.Logger;
 
 public class Autonomous extends SubsystemBase {
 
@@ -167,12 +168,14 @@ public class Autonomous extends SubsystemBase {
                                 ReefAlign.kMaxSpeed, backOffset, ReefAlign.kTagBackMagnitude,
                                 blue, red, L4offset
                             ),
-                            new WaitCommand(postScoreDelay)
+                            new WaitCommand(postScoreDelay),
+                            new InstantCommand(() -> Logger.getInstance().logEvent("Auto Align to Reef converged", false))
                         ),
                         new SequentialCommandGroup(
                             new WaitCommand(2.0),
                             new InstantCommand(() -> superstructure.sendToScore()),
-                            new WaitCommand(postScoreDelay)
+                            new WaitCommand(postScoreDelay),
+                            new InstantCommand(() -> Logger.getInstance().logEvent("Auto Align to Reef timeout", false))
                         )
                     ),
                     new InstantCommand(() -> {
@@ -193,12 +196,14 @@ public class Autonomous extends SubsystemBase {
                                 ReefAlign.kMaxSpeed, backOffset, ReefAlign.kTagBackMagnitude,
                                 blue, red, L4offset
                             ),
-                            new WaitCommand(postScoreDelay)
+                            new WaitCommand(postScoreDelay),
+                            new InstantCommand(() -> Logger.getInstance().logEvent("Auto Align to Reef converged", false))
                         ),
                         new SequentialCommandGroup(
                             new WaitCommand(2.0),
                             new InstantCommand(() -> superstructure.sendToScore()),
-                            new WaitCommand(postScoreDelay)
+                            new WaitCommand(postScoreDelay),
+                            new InstantCommand(() -> Logger.getInstance().logEvent("Auto Align to Reef timeout", false))
                         )
                     ),
                     new InstantCommand(() -> {
@@ -217,9 +222,8 @@ public class Autonomous extends SubsystemBase {
         // registerReefAlignments("", ReefAlign.kAutoTagBackMagnitude - 0.005, 0.2);
         registerReefAlignments("CLOSE_", ReefAlign.kAutoCloseTagBackMagnitude, 0.3, 0);
 
-        // TODO: FIND FIND FIND!!! Do not deploy without!!!
-        FIX ME IMMEDIATELY!!!
-        registerReefAlignments("LOW_", ReefAlign.kAutoCloseTagBackMagnitude + 0.01, 0.2, -0.1);
+        // TODO: FIND FIND FIND!!! Do not play without!!!
+        registerReefAlignments("LOW_", ReefAlign.kAutoCloseTagBackMagnitude + 0.01, 0.3, -0.1);
 
         NamedCommands.registerCommand("L1_PREP", new InstantCommand(() -> superstructure.requestState(SuperstructureState.L1_PREP)));
         NamedCommands.registerCommand("L2_PREP", new InstantCommand(() -> superstructure.requestState(SuperstructureState.L2_PREP)));
@@ -292,6 +296,17 @@ public class Autonomous extends SubsystemBase {
 
         NamedCommands.registerCommand("REMOVE_ALGAE_LEFT", new ParallelCommandGroup(
             new AlignToReefBasisVector(AlignmentConstants.AlignmentDestination.MIDDLE, ReefAlign.kMaxSpeed, 0, ReefAlign.kTagBackMagnitude, 19, 6, 0),
+            new SequentialCommandGroup(
+                new WaitCommand(0.25),
+                new InstantCommand(() -> {
+                    boolean high = superstructure.isHighAlgae();
+                    superstructure.requestState(high ? SuperstructureState.REEF2_ALGAE_INTAKE : SuperstructureState.REEF1_ALGAE_INTAKE);
+                })
+            )
+        ));
+
+        NamedCommands.registerCommand("REMOVE_ALGAE_MIDDLE", new ParallelCommandGroup(
+            new AlignToReefBasisVector(AlignmentConstants.AlignmentDestination.MIDDLE, ReefAlign.kMaxSpeed, 0, ReefAlign.kTagBackMagnitude, 18, 7, 0),
             new SequentialCommandGroup(
                 new WaitCommand(0.25),
                 new InstantCommand(() -> {
