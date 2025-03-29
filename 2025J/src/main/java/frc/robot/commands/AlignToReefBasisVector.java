@@ -66,8 +66,10 @@ public class AlignToReefBasisVector extends Command {
     private int blueTargetTag, redTargetTag;
 
     private double initialTime;
+
+    private double L4offset;
     
-    public AlignToReefBasisVector(AlignmentDestination destination, double maxSpeed, double autoBackOffset, double teleopBackOffset, int blueTargetTag, int redTargetTag) {
+    public AlignToReefBasisVector(AlignmentDestination destination, double maxSpeed, double autoBackOffset, double teleopBackOffset, int blueTargetTag, int redTargetTag, double L4offset) {
         drivetrain = Drivetrain.getInstance();
         
         // center
@@ -144,6 +146,7 @@ public class AlignToReefBasisVector extends Command {
         this.redTargetTag = redTargetTag;
         this.autoBackOffset = autoBackOffset;
         this.teleopBackOffset = teleopBackOffset;
+        this.L4offset = L4offset;
 
         tagBackMagnitude = teleopBackOffset; // ReefAlign.kTagBackMagnitude;
         
@@ -277,10 +280,12 @@ public class AlignToReefBasisVector extends Command {
         depthError = 10000;
         lateralError = 10000;
 
-        Logger.getInstance().logEvent("Align to Reef, ID " + desiredTarget, true);
+        Logger.getInstance().logEvent("Align to Reef, ID " + desiredTarget + ", L4 Offset " + L4offset, true);
 
         // SmartDashboard.putNumber("Align: target x", desiredPose.get().getX());
         // SmartDashboard.putNumber("Align: target y", desiredPose.get().getY());
+
+        Superstructure.getInstance().setL4offset(L4offset);
     }
     
     private Optional<Pose2d> getBestEstimatedPose() {
@@ -489,6 +494,8 @@ public class AlignToReefBasisVector extends Command {
             "Align to Reef ended with errors: lateral " + lateralError + ", depth " + depthError + ", rotation " + rotationError,
             false
         );
+
+        Superstructure.getInstance().setL4offset(0);
     }
 
     @Override

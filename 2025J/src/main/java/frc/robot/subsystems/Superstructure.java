@@ -42,6 +42,8 @@ public class Superstructure extends SubsystemBase {
     // flag used for align
     private ScoringFlag scoringFlag;
 
+    private double L4offset;
+
     public enum SuperstructureState {
         STOW,
         HP_INTAKE,
@@ -98,6 +100,16 @@ public class Superstructure extends SubsystemBase {
         startedOuttakingRemovedAlgaeTime = 0.0;
         
         autoRemoveAlgaeSwitch = false;
+
+        L4offset = 0;
+    }
+
+    public void setL4offset(double offset) {
+        Logger.getInstance().logEvent("Set L4 Offset " + offset, true);
+        L4offset = offset;
+    }
+    public double getL4offset() {
+        return L4offset;
     }
 
     public static Superstructure getInstance() {
@@ -161,6 +173,8 @@ public class Superstructure extends SubsystemBase {
 
     @Override
     public void periodic() {
+        Logger.getInstance().logL4offset(L4offset);
+        
         double manualOffset = SmartDashboard.getNumber("Scoring Pose Offset", 0);
 
         systemStateData.setString(systemState.toString()); 
@@ -422,7 +436,7 @@ public class Superstructure extends SubsystemBase {
             }
 
             case L4_PREP -> {
-                elevator.setElevatorPositionMotionMagicVoltage(ScoreConstants.kElevatorL4ScorePosition + manualOffset);
+                elevator.setElevatorPositionMotionMagicVoltage(ScoreConstants.kElevatorL4ScorePosition + manualOffset + L4offset);
                 arm.setArmPositionMotionMagicVoltage(ScoreConstants.kArmL4ScorePosition);
                 claw.stopClaw();
 
@@ -864,7 +878,7 @@ public class Superstructure extends SubsystemBase {
 
             case L4_PREP -> {
                 if (arm.isAtPosition(ScoreConstants.kArmL4ScorePosition)
-                        && elevator.isAtPosition(ScoreConstants.kElevatorL4ScorePosition + manualOffset)) {
+                        && elevator.isAtPosition(ScoreConstants.kElevatorL4ScorePosition + manualOffset + L4offset)) {
                     logger.logScoreEvent(4, elevator.getElevatorCANcoderPosition(), arm.getArmMotorEncoderPosition());  
                     requestState(L4_SCORE);
                     timer.reset();

@@ -141,7 +141,7 @@ public class Autonomous extends SubsystemBase {
         put(22, new Translation2d(5.252, 2.975));
     }};
 
-    public void registerReefAlignments(String namePrefix, double backOffset, double postScoreDelay) {
+    public void registerReefAlignments(String namePrefix, double backOffset, double postScoreDelay, double L4offset) {
         for (int blue = 17; blue <= 22; blue++) {
             int red = AlignmentConstants.kBlueToRedReefTag.get(blue);
 
@@ -165,7 +165,7 @@ public class Autonomous extends SubsystemBase {
                             new AlignToReefBasisVector(
                                 Constants.AlignmentConstants.AlignmentDestination.LEFT,
                                 ReefAlign.kMaxSpeed, backOffset, ReefAlign.kTagBackMagnitude,
-                                blue, red
+                                blue, red, L4offset
                             ),
                             new WaitCommand(postScoreDelay)
                         ),
@@ -191,7 +191,7 @@ public class Autonomous extends SubsystemBase {
                             new AlignToReefBasisVector(
                                 Constants.AlignmentConstants.AlignmentDestination.RIGHT,
                                 ReefAlign.kMaxSpeed, backOffset, ReefAlign.kTagBackMagnitude,
-                                blue, red
+                                blue, red, L4offset
                             ),
                             new WaitCommand(postScoreDelay)
                         ),
@@ -213,9 +213,13 @@ public class Autonomous extends SubsystemBase {
     }
         
     private void registerNamedCommands() {
-        registerReefAlignments("", ReefAlign.kAutoTagBackMagnitude, 0.2);
+        registerReefAlignments("", ReefAlign.kAutoTagBackMagnitude, 0.2, 0);
         // registerReefAlignments("", ReefAlign.kAutoTagBackMagnitude - 0.005, 0.2);
-        registerReefAlignments("CLOSE_", ReefAlign.kAutoCloseTagBackMagnitude, 0.3);
+        registerReefAlignments("CLOSE_", ReefAlign.kAutoCloseTagBackMagnitude, 0.3, 0);
+
+        // TODO: FIND FIND FIND!!! Do not deploy without!!!
+        FIX ME IMMEDIATELY!!!
+        registerReefAlignments("LOW_", ReefAlign.kAutoCloseTagBackMagnitude + 0.01, 0.2, -0.1);
 
         NamedCommands.registerCommand("L1_PREP", new InstantCommand(() -> superstructure.requestState(SuperstructureState.L1_PREP)));
         NamedCommands.registerCommand("L2_PREP", new InstantCommand(() -> superstructure.requestState(SuperstructureState.L2_PREP)));
@@ -287,7 +291,7 @@ public class Autonomous extends SubsystemBase {
         }));
 
         NamedCommands.registerCommand("REMOVE_ALGAE_LEFT", new ParallelCommandGroup(
-            new AlignToReefBasisVector(AlignmentConstants.AlignmentDestination.MIDDLE, ReefAlign.kMaxSpeed, 0, ReefAlign.kTagBackMagnitude,  19, 6),
+            new AlignToReefBasisVector(AlignmentConstants.AlignmentDestination.MIDDLE, ReefAlign.kMaxSpeed, 0, ReefAlign.kTagBackMagnitude, 19, 6, 0),
             new SequentialCommandGroup(
                 new WaitCommand(0.25),
                 new InstantCommand(() -> {
@@ -298,7 +302,7 @@ public class Autonomous extends SubsystemBase {
         ));
 
         NamedCommands.registerCommand("REMOVE_ALGAE_RIGHT", new ParallelCommandGroup(
-            new AlignToReefBasisVector(AlignmentConstants.AlignmentDestination.MIDDLE, ReefAlign.kMaxSpeed, 0, ReefAlign.kTagBackMagnitude,  17, 8),
+            new AlignToReefBasisVector(AlignmentConstants.AlignmentDestination.MIDDLE, ReefAlign.kMaxSpeed, 0, ReefAlign.kTagBackMagnitude, 17, 8, 0),
             new SequentialCommandGroup(
                 new WaitCommand(0.25),
                 new InstantCommand(() -> {

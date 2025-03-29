@@ -76,6 +76,8 @@ public class Logger {
     private DoubleLogEntry[] limelightTyDistanceEntry, limelightPoseDistanceEntry, limelightFilteredPoseDistanceEntry,
         limelightFilteredTyDistanceEntry, limelightNumOfApriltagEntry, limelightTxEntry, limelightTyEntry, limelightTargetEntry;
 
+    private DoubleLogEntry L4offsetEntry;
+
     private Map<Integer, DoubleLogEntry> moduleDriveSupplyCurrentEntry, moduleSteerSupplyCurrentEntry;
     private Map<Integer, DoubleLogEntry> moduleDriveStatorCurrentEntry, moduleSteerStatorCurrentEntry;
     private Map<Integer, DoubleLogEntry> moduleCanCoderPositionEntry;
@@ -259,6 +261,8 @@ public class Logger {
         moduleCanCoderPositionEntry.put(22, new DoubleLogEntry(log, "Modules/22 CANCoder Position"));
         moduleCanCoderPositionEntry.put(32, new DoubleLogEntry(log, "Modules/32 CANCoder Position"));
         moduleCanCoderPositionEntry.put(42, new DoubleLogEntry(log, "Modules/42 CANCoder Position"));
+
+        L4offsetEntry = new DoubleLogEntry(log, "Superstructure/L4 Offset");
     }
 
     public void logEvent(String event, boolean isStart) {
@@ -426,5 +430,9 @@ public class Logger {
 
     public void logScoreEvent(int level, double elevator, double arm) {
         logEvent("Score L" + level + " with elevator " + elevator + ", arm " + arm, false);
+    }
+
+    public void logL4offset(double offset) {
+        L4offsetEntry.append(offset);
     }
 }

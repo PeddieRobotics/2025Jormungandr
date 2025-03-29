@@ -5,6 +5,7 @@
 package frc.robot;
 
 import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.Superstructure;
 import frc.robot.utils.CalculateReefTarget;
 import frc.robot.utils.Logger;
 
@@ -78,7 +79,7 @@ public class Robot extends TimedRobot {
         }
 
         CalculateReefTarget.init();
-        // Drivetrain.getInstance().setAutoAdjustHeading(Drivetrain.getInstance().getAutoAdjustHeading());
+        Superstructure.getInstance().setL4offset(0);
     }
 
     /** This function is called periodically during autonomous. */
@@ -99,6 +100,7 @@ public class Robot extends TimedRobot {
 
         CalculateReefTarget.init();
         Drivetrain.getInstance().setAutoAdjustHeading(Drivetrain.getInstance().getAutoAdjustHeading());
+        Superstructure.getInstance().setL4offset(0);
     }
 
     /** This function is called periodically during operator control. */
