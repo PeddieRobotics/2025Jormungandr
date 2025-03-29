@@ -238,7 +238,8 @@ public class Autonomous extends SubsystemBase {
         NamedCommands.registerCommand("ALIGN_TO_HP_12_2", new SequentialCommandGroup(
             new ParallelRaceGroup(
                 new AlignToHPBasisVector(HPAlign.kMaxSpeed, 0, HPAlign.kAutoBackOffset, 12, 2),
-                new WaitForCoral(), new WaitCommand(1.5)
+                // new WaitForCoral(),
+                new WaitCommand(1.5)
             ),
             new InstantCommand(() -> {
                 if (DriverStation.getAlliance().isEmpty() || DriverStation.getAlliance().get() == DriverStation.Alliance.Blue)
@@ -251,7 +252,8 @@ public class Autonomous extends SubsystemBase {
             new ParallelRaceGroup(
                 new AlignToHPBasisVector(HPAlign.kMaxSpeed, 8 * 2.54 / 100, HPAlign.kAutoBackOffset, 12, 2),
                 // new AlignToHPBasisVector(HPAlign.kMaxSpeed, 8 * 2.54 / 100 - 0.05, HPAlign.kAutoBackOffset, 12, 2),
-                new WaitForCoral(), new WaitCommand(1.5)
+                // new WaitForCoral(),
+                new WaitCommand(1.5)
             ),
             new InstantCommand(() -> {
                 if (DriverStation.getAlliance().isEmpty() || DriverStation.getAlliance().get() == DriverStation.Alliance.Blue)
@@ -264,7 +266,8 @@ public class Autonomous extends SubsystemBase {
             new ParallelRaceGroup(
                 new AlignToHPBasisVector(HPAlign.kMaxSpeed, -8 * 2.54 / 100, HPAlign.kAutoBackOffset, 13, 1),
                 // new AlignToHPBasisVector(HPAlign.kMaxSpeed, -8 * 2.54 / 100 - 0.05, HPAlign.kAutoBackOffset, 13, 1),
-                new WaitForCoral(), new WaitCommand(1.5)
+                // new WaitForCoral(),
+                new WaitCommand(1.5)
             ),
             new InstantCommand(() -> {
                 if (DriverStation.getAlliance().isEmpty() || DriverStation.getAlliance().get() == DriverStation.Alliance.Blue)
@@ -277,7 +280,8 @@ public class Autonomous extends SubsystemBase {
         NamedCommands.registerCommand("ALIGN_TO_HP_13_1", new SequentialCommandGroup(
             new ParallelRaceGroup(
                 new AlignToHPBasisVector(HPAlign.kMaxSpeed, 0, HPAlign.kAutoBackOffset, 13, 1),
-                new WaitForCoral(), new WaitCommand(1.5)
+                // new WaitForCoral(),
+                new WaitCommand(1.5)
             ),
             new InstantCommand(() -> {
                 if (DriverStation.getAlliance().isEmpty() || DriverStation.getAlliance().get() == DriverStation.Alliance.Blue)

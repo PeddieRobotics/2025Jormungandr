@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.subsystems.Claw;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.LimelightFrontLeft;
 import frc.robot.subsystems.LimelightFrontRight;
@@ -351,14 +352,17 @@ public class AlignToHPBasisVector extends Command {
         SmartDashboard.putNumber("HPAlign: Elapsed Time", elapsedTime);
 
         Logger.getInstance().logEvent(
-            "Align to HP ended with errors: x " + xError + ", y " + yError + ", rotation " + rotationError,
+            "Align to HP ended with errors: lateral " + lateralError + ", depth " + depthError + ", rotation " + rotationError,
             false
         );
     }
 
     @Override
     public boolean isFinished() {
-        if(DriverStation.isAutonomousEnabled()){
+        if (DriverStation.isAutonomousEnabled()) {
+            if (Claw.getInstance().getTopSensor()) {
+                return rotationGood() && Math.abs(depthError) < 0.12;
+            }
             return rotationGood() && translationDistanceGoodInAuto();
         } else {
             return rotationGood() && translationDistanceGood();
