@@ -74,7 +74,8 @@ public class Logger {
     private DoubleArrayLogEntry[] limelightMT2Entry;
     
     private DoubleLogEntry[] limelightTyDistanceEntry, limelightPoseDistanceEntry, limelightFilteredPoseDistanceEntry,
-        limelightFilteredTyDistanceEntry, limelightNumOfApriltagEntry, limelightTxEntry, limelightTyEntry, limelightTargetEntry;
+        limelightFilteredTyDistanceEntry, limelightNumOfApriltagEntry, limelightTxEntry, limelightTyEntry, limelightTargetEntry,
+        limelightLatencyEntry;
 
     private DoubleLogEntry L4offsetEntry;
 
@@ -178,6 +179,7 @@ public class Logger {
         limelightTxEntry = new DoubleLogEntry[limelights.length];
         limelightTyEntry = new DoubleLogEntry[limelights.length];
         limelightTargetEntry = new DoubleLogEntry[limelights.length];
+        limelightLatencyEntry = new DoubleLogEntry[limelights.length];
 
         for (int i = 0; i < limelights.length; i++) {
             String cameraName = limelights[i].getName();
@@ -191,6 +193,7 @@ public class Logger {
             // limelightMT2Entry.add(new StructPublisher<Pose2d>())
             limelightMT2Entry[i] = new DoubleArrayLogEntry(log, "/Limelight/" + cameraName + " MT2 Pose");
             limelightTargetEntry[i] = new DoubleLogEntry(log, "/Limelight/" + cameraName + " Best Target ID");
+            limelightLatencyEntry[i] = new DoubleLogEntry(log, "/Limelight/" + cameraName + " Latency");
         }
         
         // Alignment Command Logs
@@ -327,6 +330,7 @@ public class Logger {
             limelightTyEntry[i].append(limelights[i].getTyAverage());
             limelightMT2Entry[i].append(pose2dToDoubleArray(limelights[i].getEstimatedPoseMT2()));
             limelightTargetEntry[i].append(limelights[i].getTargetID());
+            limelightLatencyEntry[i].append(limelights[i].getTotalLatencyInMS());
         }
     }
 

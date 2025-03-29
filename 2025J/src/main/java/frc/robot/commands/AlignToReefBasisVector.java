@@ -210,6 +210,7 @@ public class AlignToReefBasisVector extends Command {
     @Override
     public void initialize() {
         initialTime = Timer.getFPGATimestamp();
+        this.L4offset = 0;
         SmartDashboard.putBoolean("Align: fire gamepiece", false);
 
         int desiredTarget;
@@ -288,9 +289,21 @@ public class AlignToReefBasisVector extends Command {
         // SmartDashboard.putNumber("Align: target x", desiredPose.get().getX());
         // SmartDashboard.putNumber("Align: target y", desiredPose.get().getY());
 
-        if (DriverStation.getAlliance().isEmpty() || DriverStation.getAlliance().get() == DriverStation.Alliance.Blue) {
-            if (blueTargetTag == 19 && destination == AlignmentDestination.LEFT && DriverStation.isAutonomous()) {
-                this.L4offset = 0.05;
+        boolean blue = DriverStation.getAlliance().isEmpty() || DriverStation.getAlliance().get() == DriverStation.Alliance.Blue;
+        // AUTONOMOUS
+        if (DriverStation.isAutonomous()) {
+            if (blue) {
+                if (blueTargetTag == 19 && destination == AlignmentDestination.LEFT) {
+                    this.L4offset = 0.05;
+                }
+            }
+        }
+        // TELEOPERATED
+        else {
+            if (blue) {
+                if (desiredTarget == 20 && destination == AlignmentDestination.RIGHT) {
+                    this.L4offset = 0.05;
+                }
             }
         }
         Superstructure.getInstance().setL4offset(L4offset);
@@ -503,6 +516,7 @@ public class AlignToReefBasisVector extends Command {
             false
         );
 
+        this.L4offset = 0;
         Superstructure.getInstance().setL4offset(0);
     }
 
