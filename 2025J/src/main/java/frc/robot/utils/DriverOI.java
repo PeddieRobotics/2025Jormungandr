@@ -160,7 +160,7 @@ public class DriverOI {
                     )
                 ),
                 new AlignToHPBasisVector(HPAlign.kMaxSpeed, HPAlign.kLateralOffset, HPAlign.kBackOffset, 0, 0),
-                Claw.getInstance()::eitherCoralSensorTriggered
+                Claw.getInstance()::eitherCoralSensorsTriggeredAndNoAlgae
             )
         );
 

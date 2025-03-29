@@ -199,6 +199,10 @@ public class Claw extends SubsystemBase {
     public boolean getAlgaeSensor() {
         return algaeSensor.getAmbientSignal().getValueAsDouble() < 30.0 && algaeSensor.getDistance().getValueAsDouble() < 0.05; // true if detected
     }
+    
+    public boolean eitherCoralSensorsTriggeredAndNoAlgae() {
+        return Claw.getInstance().eitherCoralSensorTriggered() && !Claw.getInstance().getAlgaeSensor();
+    }
 
     /**
      * @return claw algae coral distance sensor reading (distance sensor units)
