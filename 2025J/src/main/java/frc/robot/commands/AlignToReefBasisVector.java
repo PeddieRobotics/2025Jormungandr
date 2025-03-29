@@ -296,6 +296,8 @@ public class AlignToReefBasisVector extends Command {
                 if (blueTargetTag == 19 && destination == AlignmentDestination.LEFT) {
                     this.L4offset = 0.05;
                 }
+            } else {
+                
             }
         }
         // TELEOPERATED
@@ -304,6 +306,8 @@ public class AlignToReefBasisVector extends Command {
                 if (desiredTarget == 20 && destination == AlignmentDestination.RIGHT) {
                     this.L4offset = 0.05;
                 }
+            } else {
+
             }
         }
         Superstructure.getInstance().setL4offset(L4offset);
