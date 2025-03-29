@@ -161,7 +161,8 @@ public class DriverOI {
                 ),
                 new AlignToHPBasisVector(HPAlign.kMaxSpeed, HPAlign.kLateralOffset, HPAlign.kBackOffset, 0, 0),
                 Claw.getInstance()::eitherCoralSensorTriggered
-        ));
+            )
+        );
 
         Trigger optionButton = new JoystickButton(controller, PS4Controller.Button.kOptions.value);
         optionButton.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.EJECT_CORAL)));
