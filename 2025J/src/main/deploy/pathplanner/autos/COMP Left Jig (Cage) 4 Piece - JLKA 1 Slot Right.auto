@@ -137,9 +137,9 @@
           }
         },
         {
-          "type": "named",
+          "type": "path",
           "data": {
-            "name": "REMOVE_ALGAE_MIDDLE"
+            "pathName": "A Back Away"
           }
         }
       ]

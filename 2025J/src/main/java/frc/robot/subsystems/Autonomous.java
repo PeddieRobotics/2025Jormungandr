@@ -310,16 +310,16 @@ public class Autonomous extends SubsystemBase {
             )
         ));
 
-        NamedCommands.registerCommand("REMOVE_ALGAE_MIDDLE", new ParallelCommandGroup(
-            new AlignToReefBasisVector(AlignmentConstants.AlignmentDestination.MIDDLE, ReefAlign.kMaxSpeed, 0, ReefAlign.kTagBackMagnitude, 18, 7, 0),
-            new SequentialCommandGroup(
-                new WaitCommand(0.25),
-                new InstantCommand(() -> {
-                    boolean high = superstructure.isHighAlgae();
-                    superstructure.requestState(high ? SuperstructureState.REEF2_ALGAE_INTAKE : SuperstructureState.REEF1_ALGAE_INTAKE);
-                })
-            )
-        ));
+        // NamedCommands.registerCommand("REMOVE_ALGAE_MIDDLE", new ParallelCommandGroup(
+        //     new AlignToReefBasisVector(AlignmentConstants.AlignmentDestination.MIDDLE, ReefAlign.kMaxSpeed, 0, ReefAlign.kTagBackMagnitude, 18, 7, 0),
+        //     new SequentialCommandGroup(
+        //         new WaitCommand(0.25),
+        //         new InstantCommand(() -> {
+        //             boolean high = superstructure.isHighAlgae();
+        //             superstructure.requestState(high ? SuperstructureState.REEF2_ALGAE_INTAKE : SuperstructureState.REEF1_ALGAE_INTAKE);
+        //         })
+        //     )
+        // ));
 
         NamedCommands.registerCommand("REMOVE_ALGAE_RIGHT", new ParallelCommandGroup(
             new AlignToReefBasisVector(AlignmentConstants.AlignmentDestination.MIDDLE, ReefAlign.kMaxSpeed, 0, ReefAlign.kTagBackMagnitude, 17, 8, 0),
