@@ -2,6 +2,7 @@ package frc.robot.utils;
 
 import static frc.robot.subsystems.Superstructure.SuperstructureState.L1_PREP;
 import static frc.robot.subsystems.Superstructure.SuperstructureState.L2_PREP;
+import static frc.robot.subsystems.Superstructure.SuperstructureState.BARGE_PREP;
 import static frc.robot.subsystems.Superstructure.SuperstructureState.BARGE_PRESTAGE;
 import static frc.robot.subsystems.Superstructure.SuperstructureState.PRESTAGE;
 import static frc.robot.subsystems.Superstructure.SuperstructureState.L3_PREP;
@@ -119,10 +120,10 @@ public class OperatorOI {
 
         Trigger dpadUpTrigger = new Trigger(() -> controller.getPOV() == 0);
         dpadUpTrigger.onTrue(new InstantCommand(() -> {
-            if (Arrays.asList(BARGE_PRESTAGE, L3_PREP, L4_PREP).contains(superstructure.getCurrentState()))
-                    superstructure.requestState(SuperstructureState.BARGE_PREP);
-                else
-                    superstructure.requestState(SuperstructureState.BARGE_PRESTAGE);
+            if (Arrays.asList(BARGE_PRESTAGE, BARGE_PREP, L3_PREP, L4_PREP).contains(superstructure.getCurrentState()))
+                superstructure.requestState(SuperstructureState.BARGE_PREP);
+            else
+                superstructure.requestState(SuperstructureState.BARGE_PRESTAGE);
         }));
 
         Trigger dpadLeftTrigger = new Trigger(() -> controller.getPOV() == 270);
