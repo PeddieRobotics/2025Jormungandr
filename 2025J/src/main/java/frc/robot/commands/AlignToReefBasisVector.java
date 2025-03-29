@@ -68,6 +68,8 @@ public class AlignToReefBasisVector extends Command {
     private double initialTime;
 
     private double L4offset;
+
+    private AlignmentDestination destination;
     
     public AlignToReefBasisVector(AlignmentDestination destination, double maxSpeed, double autoBackOffset, double teleopBackOffset, int blueTargetTag, int redTargetTag, double L4offset) {
         drivetrain = Drivetrain.getInstance();
@@ -147,17 +149,12 @@ public class AlignToReefBasisVector extends Command {
         this.autoBackOffset = autoBackOffset;
         this.teleopBackOffset = teleopBackOffset;
         this.L4offset = L4offset;
+        this.destination = destination;
 
         tagBackMagnitude = teleopBackOffset; // ReefAlign.kTagBackMagnitude;
         
         SmartDashboard.putNumber(commandName + " lateral offset", tagLateralMagnitude);
         SmartDashboard.putNumber(commandName + " back offset", tagBackMagnitude);
-
-        if (DriverStation.getAlliance().isEmpty() || DriverStation.getAlliance().get() == DriverStation.Alliance.Blue) {
-            if (blueTargetTag == 19 && destination == AlignmentDestination.LEFT) {
-                this.L4offset = 0.05;
-            }
-        }
 
         addRequirements(drivetrain);
         
@@ -291,6 +288,11 @@ public class AlignToReefBasisVector extends Command {
         // SmartDashboard.putNumber("Align: target x", desiredPose.get().getX());
         // SmartDashboard.putNumber("Align: target y", desiredPose.get().getY());
 
+        if (DriverStation.getAlliance().isEmpty() || DriverStation.getAlliance().get() == DriverStation.Alliance.Blue) {
+            if (blueTargetTag == 19 && destination == AlignmentDestination.LEFT && DriverStation.isAutonomous()) {
+                this.L4offset = 0.05;
+            }
+        }
         Superstructure.getInstance().setL4offset(L4offset);
     }
     
