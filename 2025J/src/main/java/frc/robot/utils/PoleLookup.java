@@ -49,6 +49,7 @@ public class PoleLookup {
     }};
 
     private static double getCategoryHeightOffset(PoleCategory category) {
+        // approximately 0.1 = 0.5 inches
         switch (category) {
             case VERY_LOW:
                 return -0.1;

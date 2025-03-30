@@ -288,17 +288,7 @@ public class AlignToReefBasisVector extends Command {
 
         Logger.getInstance().logEvent("Reef " + commandName + ", ID " + desiredTarget + ", L4 Offset " + L4offset, true);
 
-        int tagID;
-        if (DriverStation.isAutonomous()) {
-            if (DriverStation.getAlliance().isEmpty() || DriverStation.getAlliance().get() == DriverStation.Alliance.Blue)
-                tagID = blueTargetTag;
-            else
-                tagID = redTargetTag;
-        }
-        else
-            tagID = desiredTarget;
-
-        double offset = PoleLookup.lookupPole(tagID, destination);
+        double offset = PoleLookup.lookupPole(desiredTarget, destination);
         Superstructure.getInstance().setL4offset(offset);
     }
     
