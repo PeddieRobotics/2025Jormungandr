@@ -296,7 +296,7 @@ public final class Constants {
         public static final double kArmMaxCruiseJerk = 20.0;
 
         public static final double kArmAngleEpsilon = 0.0; // TODO: define
-        public static final double kArmPositionEpsilon = 0.05; // TODO: define
+        public static final double kArmPositionEpsilon = 0.02;
 
         public static final double kArmHPIntakeAngle = 0.0; // TODO: define
         public static final double kArmL1ScoreAngle = 0.0;

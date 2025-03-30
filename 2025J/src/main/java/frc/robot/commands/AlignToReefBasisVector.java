@@ -296,6 +296,9 @@ public class AlignToReefBasisVector extends Command {
                 if (blueTargetTag == 19 && destination == AlignmentDestination.LEFT) {
                     this.L4offset = 0.05;
                 }
+                if (blueTargetTag == 17 && destination == AlignmentDestination.RIGHT) {
+                    this.L4offset = 0.05;
+                }
             } else {
                 
             }

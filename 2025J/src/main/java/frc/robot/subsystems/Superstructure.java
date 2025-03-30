@@ -698,8 +698,11 @@ public class Superstructure extends SubsystemBase {
                 arm.setArmPositionMotionMagicVoltage(ScoreConstants.kArmReef1IntakePosition);
 
                 if (claw.getAlgaeSensor()) {
+                    arm.setArmPositionMotionMagicVoltage(0.22);
                     claw.holdAlgae();
-                    requestState(STOW);
+                    if(arm.isAtPosition(0.22)){
+                        requestState(STOW);
+                    }
                 } else {
                     claw.intakeAlgae();
                     claw.stopCoralMotor();
@@ -727,8 +730,11 @@ public class Superstructure extends SubsystemBase {
                 arm.setArmPositionMotionMagicVoltage(ScoreConstants.kArmReef2IntakePosition);
                 
                 if (claw.getAlgaeSensor()) {
+                    arm.setArmPositionMotionMagicVoltage(0.22);
                     claw.holdAlgae();
-                    requestState(STOW);
+                    if(arm.isAtPosition(0.22)){
+                        requestState(STOW);
+                    }
                 } else {
                     claw.intakeAlgae();
                     claw.stopCoralMotor();
