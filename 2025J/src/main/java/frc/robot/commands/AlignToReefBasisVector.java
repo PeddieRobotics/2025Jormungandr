@@ -24,10 +24,12 @@ import frc.robot.subsystems.Limelight;
 import frc.robot.subsystems.LimelightBack;
 import frc.robot.utils.CalculateReefTarget;
 import frc.robot.utils.Constants.AlignmentConstants;
+import frc.robot.utils.Constants.ScoreConstants;
 import frc.robot.utils.Constants.AlignmentConstants.AlignmentDestination;
 import frc.robot.utils.Constants.AlignmentConstants.ReefAlign;
 import frc.robot.utils.Logger;
 import frc.robot.utils.MagnitudeCap;
+import frc.robot.utils.PoleLookup;
 
 public class AlignToReefBasisVector extends Command {
     private Drivetrain drivetrain;
@@ -286,31 +288,18 @@ public class AlignToReefBasisVector extends Command {
 
         Logger.getInstance().logEvent("Reef " + commandName + ", ID " + desiredTarget + ", L4 Offset " + L4offset, true);
 
-        // SmartDashboard.putNumber("Align: target x", desiredPose.get().getX());
-        // SmartDashboard.putNumber("Align: target y", desiredPose.get().getY());
-
-        boolean blue = DriverStation.getAlliance().isEmpty() || DriverStation.getAlliance().get() == DriverStation.Alliance.Blue;
-        // AUTONOMOUS
+        int tagID;
         if (DriverStation.isAutonomous()) {
-            if (blue) {
-                if (blueTargetTag == 19 && destination == AlignmentDestination.LEFT) {
-                    this.L4offset = 0.05;
-                }
-            } else {
-                
-            }
+            if (DriverStation.getAlliance().isEmpty() || DriverStation.getAlliance().get() == DriverStation.Alliance.Blue)
+                tagID = blueTargetTag;
+            else
+                tagID = redTargetTag;
         }
-        // TELEOPERATED
-        else {
-            if (blue) {
-                if (desiredTarget == 20 && destination == AlignmentDestination.RIGHT) {
-                    this.L4offset = 0.05;
-                }
-            } else {
+        else
+            tagID = desiredTarget;
 
-            }
-        }
-        Superstructure.getInstance().setL4offset(L4offset);
+        double offset = PoleLookup.lookupPole(tagID, destination);
+        Superstructure.getInstance().setL4offset(offset);
     }
     
     private Optional<Pose2d> getBestEstimatedPose() {
