@@ -16,6 +16,7 @@ import edu.wpi.first.wpilibj.DriverStation;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Autonomous;
 import frc.robot.subsystems.Claw;
+import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.HPIntake;
@@ -27,7 +28,7 @@ import frc.robot.subsystems.LimelightFrontRight;
 import frc.robot.subsystems.Superstructure;
 import frc.robot.subsystems.SwerveModule;
 
-@SuppressWarnings("unused")
+// @SuppressWarnings("unused")
 public class Logger {
     private static Logger instance;
     private Drivetrain drivetrain;
@@ -37,7 +38,7 @@ public class Logger {
     private Elevator elevator;
     private HPIntake hpIntake;
     private Superstructure superstructure;
-    // private Climber climber;
+    private Climber climber;
 
     Limelight[] limelights;
 
@@ -54,10 +55,8 @@ public class Logger {
             elevatorPositionEntry, elevatorVelocityEntry, elevatorPositionSetpointEntry,
             elevatorMainMotorSupplyCurrentEntry, elevatorMainMotorStatorCurrentEntry, elevatorMainMotorTorqueCurrentEntry,
             elevatorFollowerMotorSupplyCurrentEntry, elevatorFollowerMotorStatorCurrentEntry, elevatorFollowerMotorTorqueCurrentEntry,
-            leftClimberSupplyCurrentEntry, leftClimberStatorCurrentEntry, leftClimberTemperatureEntry,
-            leftClimberPositionEntry,
-            rightClimberSupplyCurrentEntry, rightClimberStatorCurrentEntry, rightClimberTemperatureEntry,
-            rightClimberPosition;
+            climberSupplyCurrentEntry, climberStatorCurrentEntry, climberTemperatureEntry,
+            climberPositionEntry;
     
     private DoubleLogEntry reefAlignLateralErrorEntry, reefAlignDepthErrorEntry, reefAlignRotationErrorEntry;
     private DoubleLogEntry reefAlignLateralEntry, reefAlignDepthEntry, reefAlignRotationEntry;
@@ -101,7 +100,7 @@ public class Logger {
         claw = Claw.getInstance();
         elevator = Elevator.getInstance();
         superstructure = Superstructure.getInstance();
-        // climber = Climber.getInstance();
+        climber = Climber.getInstance();
 
         // Superstructure Logs
         superstructureCurrentStateEntry = new StringLogEntry(log, "/Superstructure/Current Superstructure State");
@@ -162,15 +161,10 @@ public class Logger {
         armPositionSetpointEntry = new DoubleLogEntry(log, "/Arm/Arm Position Setpoint");
 
         // Climber logs
-        leftClimberSupplyCurrentEntry = new DoubleLogEntry(log, "/Climber/Left Climber Motor Supply Current");
-        leftClimberStatorCurrentEntry = new DoubleLogEntry(log, "/Climber/Left Climber Motor Stator Current");
-        leftClimberTemperatureEntry = new DoubleLogEntry(log, "/Climber/Left Climber Motor Temperature");
-        leftClimberPositionEntry = new DoubleLogEntry(log, "/Climber/Left Climber Motor Position");
-
-        rightClimberSupplyCurrentEntry = new DoubleLogEntry(log, "/Climber/Right Climber Motor Supply Current");
-        rightClimberStatorCurrentEntry = new DoubleLogEntry(log, "/Climber/Right Climber Motor Stator Current");
-        rightClimberTemperatureEntry = new DoubleLogEntry(log, "/Climber/Right Climber Motor Temperature");
-        rightClimberPosition = new DoubleLogEntry(log, "/Climber/Right Climber Motor Position");
+        climberSupplyCurrentEntry = new DoubleLogEntry(log, "/Climber/Climber Motor Supply Current");
+        climberStatorCurrentEntry = new DoubleLogEntry(log, "/Climber/Climber Motor Stator Current");
+        climberTemperatureEntry = new DoubleLogEntry(log, "/Climber/Climber Motor Temperature");
+        climberPositionEntry = new DoubleLogEntry(log, "/Climber/Climber Motor Position");
         
         // Limelight Logs
         limelights = new Limelight[] { 
@@ -325,15 +319,10 @@ public class Logger {
         armCANcoderPositionEntry.append(arm.getAbsoluteCANcoderPosition());
 
         // Climber Logs
-        // leftClimberSupplyCurrentEntry.append(climber.getLeftClimberSupplyCurrent());
-        // leftClimberStatorCurrentEntry.append(climber.getLeftClimberStatorCurrent());
-        // leftClimberTemperatureEntry.append(climber.getLeftClimberTemperature());
-        // leftClimberPositionEntry.append(climber.getLeftClimberPosition());
-
-        // rightClimberSupplyCurrentEntry.append(climber.getRightClimberSupplyCurrent());
-        // rightClimberStatorCurrentEntry.append(climber.getRightClimberStatorCurrent());
-        // rightClimberTemperatureEntry.append(climber.getRightClimberTemperature());
-        // rightClimberPosition.append(climber.getRightClimberPosition());
+        climberSupplyCurrentEntry.append(climber.getClimberSupplyCurrent());
+        climberStatorCurrentEntry.append(climber.getClimberStatorCurrent());
+        climberTemperatureEntry.append(climber.getClimberTemperature());
+        climberPositionEntry.append(climber.getClimberPosition());
 
         // Limelight Logs
         for (int i = 0; i < limelights.length; i++) {

@@ -3,6 +3,7 @@ package frc.robot.subsystems;
 import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.utils.LiveData;
+import frc.robot.utils.Logger;
 import frc.robot.utils.RobotMap;
 
 public class HPIntake extends SubsystemBase{
@@ -43,6 +44,7 @@ public class HPIntake extends SubsystemBase{
     }
 
     public void toggleLinearActuator() {
+        Logger.getInstance().logEvent("Toggle Linear Actuator", true);
         if (linearActuatorLeft.get() == 1)
             retractLinearActuator();
         else 

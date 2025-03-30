@@ -80,6 +80,9 @@ public class Climber extends SubsystemBase {
     public double getClimberSupplyCurrent() {
         return climberMotor.getSupplyCurrent();
     }
+    public double getClimberStatorCurrent() {
+        return climberMotor.getStatorCurrent();
+    }
 
     /**
      * @return returns temperature of climber motor in celcius

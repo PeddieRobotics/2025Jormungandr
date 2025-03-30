@@ -300,7 +300,9 @@ public class AlignToReefBasisVector extends Command {
                     this.L4offset = 0.05;
                 }
             } else {
-                
+                if (redTargetTag == 8 && destination == AlignmentDestination.LEFT) {
+                    this.L4offset = 0.05;
+                }
             }
         }
         // TELEOPERATED
