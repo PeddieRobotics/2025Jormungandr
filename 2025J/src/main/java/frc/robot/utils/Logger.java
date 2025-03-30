@@ -50,6 +50,7 @@ public class Logger {
             armAngleEntry, armPositionEntry, armPositionSetpointEntry, armCANcoderPositionEntry,
             armSupplyCurrentEntry, armStatorCurrentEntry, armTorqueCurrentEntry, armVelocityEntry,
             clawCoralMotorPositionEntry, clawCoralMotorVelocityEntry, clawCoralMotorSupplyCurrentEntry, clawCoralMotorStatorCurrentEntry,
+            clawAlgaeMotorPositionEntry, clawAlgaeMotorVelocityEntry, clawAlgaeMotorSupplyCurrentEntry, clawAlgaeMotorStatorCurrentEntry,
             elevatorPositionEntry, elevatorVelocityEntry, elevatorPositionSetpointEntry,
             elevatorMainMotorSupplyCurrentEntry, elevatorMainMotorStatorCurrentEntry, elevatorMainMotorTorqueCurrentEntry,
             elevatorFollowerMotorSupplyCurrentEntry, elevatorFollowerMotorStatorCurrentEntry, elevatorFollowerMotorTorqueCurrentEntry,
@@ -129,6 +130,12 @@ public class Logger {
         clawCoralMotorVelocityEntry = new DoubleLogEntry(log, "/Claw/Coral Motor Velocity");
         clawCoralMotorSupplyCurrentEntry = new DoubleLogEntry(log, "/Claw/Coral Motor Supply Current");
         clawCoralMotorStatorCurrentEntry = new DoubleLogEntry(log, "/Claw/Coral Motor Stator Current");
+        
+        clawAlgaeMotorPositionEntry = new DoubleLogEntry(log, "/Claw/Algae Motor Position");
+        clawAlgaeMotorVelocityEntry = new DoubleLogEntry(log, "/Claw/Algae Motor Velocity");
+        clawAlgaeMotorSupplyCurrentEntry = new DoubleLogEntry(log, "/Claw/Algae Motor Supply Current");
+        clawAlgaeMotorStatorCurrentEntry = new DoubleLogEntry(log, "/Claw/Algae Motor Stator Current");
+        
         clawTopSensorEntry = new BooleanLogEntry(log, "/Claw/Top Sensor");
         clawBottomSensorEntry = new BooleanLogEntry(log, "/Claw/Bottom Sensor");
         clawAlgaeSensorEntry = new BooleanLogEntry(log, "Claw/Algae Sensor");
@@ -288,6 +295,12 @@ public class Logger {
         clawCoralMotorVelocityEntry.append(claw.getCoralMotorVelocity());
         clawCoralMotorSupplyCurrentEntry.append(claw.getCoralMotorSupplyCurrent());
         clawCoralMotorStatorCurrentEntry.append(claw.getCoralMotorStatorCurrent());
+
+        clawAlgaeMotorPositionEntry.append(claw.getAlgaeMotorPosition());
+        clawAlgaeMotorVelocityEntry.append(claw.getAlgaeMotorVelocity());
+        clawAlgaeMotorSupplyCurrentEntry.append(claw.getAlgaeMotorSupplyCurrent());
+        clawAlgaeMotorStatorCurrentEntry.append(claw.getAlgaeMotorStatorCurrent());
+
         clawTopSensorEntry.append(claw.getTopSensor());
         clawBottomSensorEntry.append(claw.getBottomSensor());
         clawAlgaeSensorEntry.append(claw.getAlgaeSensor());

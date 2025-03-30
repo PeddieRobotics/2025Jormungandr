@@ -188,7 +188,7 @@ public class Superstructure extends SubsystemBase {
 
                     if(elevator.isAtBottom()){
                         elevator.setElevatorNeutralMode();
-                    } else{
+                    } else {
                         elevator.setElevatorPositionMotionMagicVoltage(ScoreConstants.kElevatorStowPosition);
                     }
                     arm.setArmPositionMotionMagicVoltage(ScoreConstants.kArmStowPosition);
@@ -238,7 +238,7 @@ public class Superstructure extends SubsystemBase {
                     }
                     claw.intakeCoral(ClawConstants.kCoralIntakeSpeed);
                 } else if(claw.bothCoralSensorsTriggered()) {
-                    claw.stopClaw();
+                    claw.stopCoralMotor();
                     if (DriverStation.isAutonomous())
                         systemState = requestedSystemState;
                     else
