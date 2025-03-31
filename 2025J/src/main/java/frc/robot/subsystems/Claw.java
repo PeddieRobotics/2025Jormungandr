@@ -89,7 +89,7 @@ public class Claw extends SubsystemBase {
     }
 
     public void configureCANrange(CANrange sensor, CANrangeConfiguration config, double signalStrengthThreshold,
-            double proximityThreshold, double proximityHysteresis) {
+        double proximityThreshold, double proximityHysteresis) {
         config.ProximityParams.ProximityThreshold = proximityThreshold;
         config.ProximityParams.MinSignalStrengthForValidMeasurement = signalStrengthThreshold;
         config.ProximityParams.ProximityHysteresis = proximityHysteresis;
@@ -97,7 +97,7 @@ public class Claw extends SubsystemBase {
     }
 
     public void configureCANrange(CANrange sensor, CANrangeConfiguration config, double signalStrengthThreshold,
-            double proximityThreshold, double proximityHysteresis, double fovCenterX, double fovCenterY, double fovRangeX, double fovRangeY) {
+        double proximityThreshold, double proximityHysteresis, double fovCenterX, double fovCenterY, double fovRangeX, double fovRangeY) {
         config.ProximityParams.ProximityThreshold = proximityThreshold;
         config.ProximityParams.MinSignalStrengthForValidMeasurement = signalStrengthThreshold;
         config.ProximityParams.ProximityHysteresis = proximityHysteresis;
@@ -187,7 +187,7 @@ public class Claw extends SubsystemBase {
     public boolean getTopSensor() {
         // return topSensor.getIsDetected().getValue(); // true if detected
         // return topSensor.getDistance().getValueAsDouble() < 0.16;
-        return topSensor.getAmbientSignal().getValueAsDouble() < 10;
+        return topSensor.getAmbientSignal().getValueAsDouble() < 5;
     }
 
     public boolean getBottomSensor() {

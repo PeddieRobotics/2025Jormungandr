@@ -115,8 +115,8 @@ public class OperatorOI {
         @SuppressWarnings("unused")
         Trigger R3Trigger = new JoystickButton(controller, PS4Controller.Button.kR3.value);
 
-        @SuppressWarnings("unused")
         Trigger ps5Button = new JoystickButton(controller, PS4Controller.Button.kPS.value);
+        ps5Button.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.PRESTAGE)));
 
         Trigger dpadUpTrigger = new Trigger(() -> controller.getPOV() == 0);
         dpadUpTrigger.onTrue(new InstantCommand(() -> {
