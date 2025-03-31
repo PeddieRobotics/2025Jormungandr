@@ -218,11 +218,7 @@ public class Autonomous extends SubsystemBase {
         
     private void registerNamedCommands() {
         registerReefAlignments("", ReefAlign.kAutoTagBackMagnitude, 0.2, 0);
-
-        // registerReefAlignments("", ReefAlign.kAutoTagBackMagnitude - 0.005, 0.2);
         registerReefAlignments("CLOSE_", ReefAlign.kAutoCloseTagBackMagnitude, 0.3, 0);
-
-        registerReefAlignments("LOW_", ReefAlign.kAutoCloseTagBackMagnitude + 0.01, 0.3, -0.1);
 
         NamedCommands.registerCommand("L1_PREP", new InstantCommand(() -> superstructure.requestState(SuperstructureState.L1_PREP)));
         NamedCommands.registerCommand("L2_PREP", new InstantCommand(() -> superstructure.requestState(SuperstructureState.L2_PREP)));
