@@ -5,6 +5,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.utils.Constants.ClimberConstants;
 import frc.robot.utils.DriverOI;
 import frc.robot.utils.Kraken;
+import frc.robot.utils.Logger;
 import frc.robot.utils.OperatorOI;
 import frc.robot.utils.RobotMap;
 
@@ -79,6 +80,9 @@ public class Climber extends SubsystemBase {
      */
     public double getClimberSupplyCurrent() {
         return climberMotor.getSupplyCurrent();
+    }
+    public double getClimberStatorCurrent() {
+        return climberMotor.getStatorCurrent();
     }
 
     /**
