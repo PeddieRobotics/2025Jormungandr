@@ -17,7 +17,8 @@ import frc.robot.subsystems.LimelightFrontRight;
 import frc.robot.subsystems.Superstructure;
 import frc.robot.subsystems.Superstructure.SuperstructureState;
 import frc.robot.subsystems.Limelight;
-import frc.robot.subsystems.LimelightBack;
+import frc.robot.subsystems.LimelightBackBottom;
+import frc.robot.subsystems.LimelightBackTop;
 import frc.robot.utils.CalculateHPTarget;
 import frc.robot.utils.Constants.AlignmentConstants.HPAlign;
 import frc.robot.utils.Logger;
@@ -59,7 +60,8 @@ public class AlignToHPBasisVector extends Command {
         drivetrain = Drivetrain.getInstance();
 
         cameras = new Limelight[] {
-            LimelightBack.getInstance(),
+            LimelightBackBottom.getInstance(),
+            LimelightBackTop.getInstance(),
             LimelightFrontLeft.getInstance(),
             LimelightFrontRight.getInstance(),
         };

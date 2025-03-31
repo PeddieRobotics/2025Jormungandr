@@ -11,7 +11,6 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.interpolation.InterpolatingDoubleTreeMap;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.util.Units;
-import frc.robot.utils.Constants.AlignmentConstants.AlignmentDestination;
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide
@@ -538,7 +537,10 @@ public final class Constants {
 
     public static final class CameraConstants {
         // 3: 10.58.95.14
-        public static final String kBackCamName = "limelight-back";
+        public static final String kBackTopCamName = "limelight-back";
+
+        // 3: 10.58.95.15
+        public static final String kBackBottomCamName = "something";
 
         // 3G: 10.58.95.11
         public static final String kFrontLeftCamName = "limelight-left";

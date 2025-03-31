@@ -24,7 +24,6 @@ import frc.robot.commands.AlignToReefBasisVector;
 import frc.robot.commands.RetractClimber;
 import frc.robot.subsystems.Claw;
 import frc.robot.subsystems.Drivetrain;
-import frc.robot.subsystems.HPIntake;
 import frc.robot.subsystems.LimelightFrontLeft;
 import frc.robot.utils.Constants.AlignmentConstants;
 import frc.robot.utils.Constants.AlignmentConstants.HPAlign;

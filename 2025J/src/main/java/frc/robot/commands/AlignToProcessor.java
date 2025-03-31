@@ -15,7 +15,8 @@ import frc.robot.subsystems.LimelightFrontRight;
 import frc.robot.subsystems.Superstructure;
 import frc.robot.subsystems.Superstructure.SuperstructureState;
 import frc.robot.subsystems.Limelight;
-import frc.robot.subsystems.LimelightBack;
+import frc.robot.subsystems.LimelightBackBottom;
+import frc.robot.subsystems.LimelightBackTop;
 import frc.robot.utils.DriverOI;
 import frc.robot.utils.Constants.AlignmentConstants.HPAlign;
 import frc.robot.utils.Constants.DriveConstants;
@@ -48,7 +49,8 @@ public class AlignToProcessor extends Command {
         cameras = new Limelight[] {
             LimelightFrontLeft.getInstance(),
             LimelightFrontRight.getInstance(),
-            LimelightBack.getInstance(),
+            LimelightBackBottom.getInstance(),
+            LimelightBackTop.getInstance(),
         };
 
         xP = HPAlign.kLateralP;

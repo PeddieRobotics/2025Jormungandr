@@ -2,7 +2,6 @@ package frc.robot.subsystems;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
@@ -223,7 +222,6 @@ public class Autonomous extends SubsystemBase {
         // registerReefAlignments("", ReefAlign.kAutoTagBackMagnitude - 0.005, 0.2);
         registerReefAlignments("CLOSE_", ReefAlign.kAutoCloseTagBackMagnitude, 0.3, 0);
 
-        // TODO: FIND FIND FIND!!! Do not play without!!!
         registerReefAlignments("LOW_", ReefAlign.kAutoCloseTagBackMagnitude + 0.01, 0.3, -0.1);
 
         NamedCommands.registerCommand("L1_PREP", new InstantCommand(() -> superstructure.requestState(SuperstructureState.L1_PREP)));

@@ -21,7 +21,8 @@ import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.HPIntake;
 import frc.robot.subsystems.Limelight;
-import frc.robot.subsystems.LimelightBack;
+import frc.robot.subsystems.LimelightBackBottom;
+import frc.robot.subsystems.LimelightBackTop;
 import frc.robot.subsystems.LimelightClimber;
 import frc.robot.subsystems.LimelightFrontLeft;
 import frc.robot.subsystems.LimelightFrontRight;
@@ -170,7 +171,8 @@ public class Logger {
         limelights = new Limelight[] { 
             LimelightFrontLeft.getInstance(),
             LimelightFrontRight.getInstance(),
-            LimelightBack.getInstance(),
+            LimelightBackTop.getInstance(),
+            LimelightBackBottom.getInstance(),
             LimelightClimber.getInstance()
         };
         limelightMT2Entry = new DoubleArrayLogEntry[limelights.length];

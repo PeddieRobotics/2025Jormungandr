@@ -6,7 +6,6 @@ package frc.robot.subsystems;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;

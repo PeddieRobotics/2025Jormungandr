@@ -21,10 +21,9 @@ import frc.robot.subsystems.Superstructure;
 import frc.robot.subsystems.Superstructure.ScoringFlag;
 import frc.robot.subsystems.Superstructure.SuperstructureState;
 import frc.robot.subsystems.Limelight;
-import frc.robot.subsystems.LimelightBack;
+import frc.robot.subsystems.LimelightBackTop;
 import frc.robot.utils.CalculateReefTarget;
 import frc.robot.utils.Constants.AlignmentConstants;
-import frc.robot.utils.Constants.ScoreConstants;
 import frc.robot.utils.Constants.AlignmentConstants.AlignmentDestination;
 import frc.robot.utils.Constants.AlignmentConstants.ReefAlign;
 import frc.robot.utils.Logger;
@@ -478,7 +477,7 @@ public class AlignToReefBasisVector extends Command {
             Superstructure.getInstance().sendToScore();
             SmartDashboard.putBoolean("Align: fire gamepiece", true);
             if(Superstructure.getInstance().isReefScoringState()){
-                LimelightBack.getInstance().flashLED();
+                LimelightBackTop.getInstance().flashLED();
                 SmartDashboard.putNumber("Align: Elapsed Time", elapsedTime);
             }
         }

@@ -9,7 +9,6 @@ import static frc.robot.subsystems.Superstructure.SuperstructureState.L3_PREP;
 import static frc.robot.subsystems.Superstructure.SuperstructureState.L4_PREP;
 
 import java.util.Arrays;
-import java.util.Optional;
 
 import edu.wpi.first.wpilibj.PS4Controller;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -21,7 +20,6 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.subsystems.HPIntake;
 import frc.robot.commands.DeployClimber;
 import frc.robot.commands.HomeElevator;
-import frc.robot.commands.ManualArmControl;
 import frc.robot.commands.ManualClimbControl;
 import frc.robot.commands.ManualElevatorControl;
 import frc.robot.subsystems.Superstructure;
