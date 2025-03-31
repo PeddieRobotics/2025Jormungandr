@@ -34,11 +34,13 @@ public class HPIntake extends SubsystemBase{
     }
     
     public void extendLinearActuator(){
+        Logger.getInstance().logEvent("Extend Linear Actuator", true);
         linearActuatorRight.set(1);
         linearActuatorLeft.set(1);
     }
 
     public void retractLinearActuator(){
+        Logger.getInstance().logEvent("Retract Linear Actuator", true);
         linearActuatorRight.set(0);
         linearActuatorLeft.set(0);
     }

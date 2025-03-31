@@ -292,27 +292,33 @@ public class AlignToReefBasisVector extends Command {
         boolean blue = DriverStation.getAlliance().isEmpty() || DriverStation.getAlliance().get() == DriverStation.Alliance.Blue;
         // AUTONOMOUS
         if (DriverStation.isAutonomous()) {
+            // BLUE
             if (blue) {
-                if (blueTargetTag == 19 && destination == AlignmentDestination.LEFT) {
+                if (blueTargetTag == 19 && destination == AlignmentDestination.LEFT)
                     this.L4offset = 0.05;
-                }
-                if (blueTargetTag == 17 && destination == AlignmentDestination.RIGHT) {
+                if (blueTargetTag == 17 && destination == AlignmentDestination.RIGHT)
                     this.L4offset = 0.05;
-                }
-            } else {
-                if (redTargetTag == 8 && destination == AlignmentDestination.LEFT) {
+            }
+            
+            // RED
+            else {
+                if (redTargetTag == 8 && destination == AlignmentDestination.LEFT)
                     this.L4offset = 0.05;
-                }
             }
         }
+
         // TELEOPERATED
         else {
+            // BLUE
             if (blue) {
-                if (desiredTarget == 20 && destination == AlignmentDestination.RIGHT) {
+                if (desiredTarget == 20 && destination == AlignmentDestination.RIGHT)
                     this.L4offset = 0.05;
-                }
-            } else {
-
+            }
+            
+            // RED
+            else {
+                if (desiredTarget == 10 && destination == AlignmentDestination.RIGHT)
+                    this.L4offset = 0.05;
             }
         }
         Superstructure.getInstance().setL4offset(L4offset);
