@@ -5,6 +5,7 @@
 package frc.robot.commands;
 
 import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.LimelightClimber;
 import frc.robot.utils.Constants.FieldConstants;
 import frc.robot.utils.DriverOI;
 import frc.robot.utils.DriverOI.DPadDirection;
@@ -18,12 +19,15 @@ import edu.wpi.first.wpilibj2.command.Command;
 /** An example command that uses an example subsystem. */
 public class AlignToBarge extends Command {
     private Drivetrain drivetrain;
+    private LimelightClimber limelight;
 
-    private PIDController rotationPidController;
+    private PIDController rotationPIDController, translationPIDController;
     private double rotationUseLowerPThreshold, rotationThresholdP;
     private double desiredAngle, rotationThreshold;
+    private double translationThreshold;
     private double rotationP, rotationI, rotationD, rotationFF;
-    private double rotationError;
+    private double translationP, translationI, translationD, translationFF;
+    private double rotationError, translationError;
     private double startTime;
 
     /**
@@ -33,6 +37,7 @@ public class AlignToBarge extends Command {
      */
     public AlignToBarge() {
         drivetrain = Drivetrain.getInstance();
+        limelight = LimelightClimber.getInstance();
 
         desiredAngle = 0;
 
@@ -41,10 +46,24 @@ public class AlignToBarge extends Command {
         rotationD = 0.0;
         rotationFF = 0.0;
         rotationThresholdP = 0.03;
-        rotationPidController = new PIDController(rotationP, rotationI, rotationD);
+        rotationPIDController = new PIDController(rotationP, rotationI, rotationD);
+        
+        translationP = 0.0;
+        translationI = 0.0;
+        translationD = 0.0;
+        translationFF = 0.0;
+        translationPIDController = new PIDController(translationP, translationI, translationD);
 
         rotationThreshold = 1;
         rotationUseLowerPThreshold = 1.5;
+        
+        translationThreshold = 1;
+        
+        SmartDashboard.putNumber("BargeAlign: translationP", translationP);
+        SmartDashboard.putNumber("BargeAlign: translationI", translationI);
+        SmartDashboard.putNumber("BargeAlign: translationD", translationD);
+        SmartDashboard.putNumber("BargeAlign: translationFF", translationFF);
+        SmartDashboard.putNumber("BargeAlign: translationThreshold", translationThreshold);
        
         addRequirements(drivetrain);
     }
@@ -60,26 +79,37 @@ public class AlignToBarge extends Command {
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
+        translationP = SmartDashboard.getNumber("BargeAlign: translationP", translationP);
+        translationI = SmartDashboard.getNumber("BargeAlign: translationI", translationI);
+        translationD = SmartDashboard.getNumber("BargeAlign: translationD", translationD);
+        translationFF = SmartDashboard.getNumber("BargeAlign: translationFF", translationFF);
+        translationThreshold = SmartDashboard.getNumber("BargeAlign: translationThreshold", translationThreshold);
+        translationPIDController.setPID(translationP, translationI, translationD);
+
         rotationError = desiredAngle + drivetrain.getHeading();
     
         // set rotation PID controller
         if(Math.abs(rotationError) < rotationUseLowerPThreshold)
-            rotationPidController.setP(rotationThresholdP);
+            rotationPIDController.setP(rotationThresholdP);
         else
-            rotationPidController.setP(rotationP);
-        rotationPidController.setI(rotationI);
-        rotationPidController.setD(rotationD);
+            rotationPIDController.setP(rotationP);
+        rotationPIDController.setI(rotationI);
+        rotationPIDController.setD(rotationD);
         
         double rotation = 0;
         if (Math.abs(rotationError) > rotationThreshold)
-            rotation = rotationPidController.calculate(rotationError) + Math.signum(rotationError) * rotationFF;
+            rotation = rotationPIDController.calculate(rotationError) + Math.signum(rotationError) * rotationFF;
 
+        double tx = limelight.getTxAverage(), y = 0;;
+        if (Math.abs(tx) > translationThreshold)
+            y = translationPIDController.calculate(tx) + Math.signum(tx) * translationFF;
         
-        Translation2d translation = DriverOI.getInstance().getSwerveTranslation();
+        // Translation2d translation = DriverOI.getInstance().getSwerveTranslation();
+        Translation2d translation = new Translation2d(DriverOI.getInstance().getForward(), y);
 
-        if (DriverOI.getInstance().getDriverDPadInput() != DPadDirection.NONE) {
-            translation = DriverOI.getInstance().getCardinalDirection();
-        }
+        // if (DriverOI.getInstance().getDriverDPadInput() != DPadDirection.NONE)
+        //     translation = DriverOI.getInstance().getCardinalDirection();
+
         drivetrain.drive(translation, rotation, false, null);
 
     }
