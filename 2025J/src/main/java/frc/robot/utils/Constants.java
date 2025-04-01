@@ -143,64 +143,43 @@ public final class Constants {
         public static final double kElevatorForwardSoftLimit = 12.9;
         public static final double kElevatorReverseSoftLimit = 0.0;
 
-        public static final double kElevatorReduction = 7.0 / 1.0;
+        public static final double kElevatorReduction = 4.083333 / 1.0;
         public static final double kElevatorRotorToSensorRatio = kElevatorReduction;
         public static final double kElevatorSensortoMechanismRatio = 1.0;
 
-        public static final double kElevatorMagnetOffset = 0.357422;
+        public static final double kElevatorMagnetOffset = 0.0;
 
         // Motion Magic Parameters
-        public static final double kElevatorMaxCruiseVelocity = 14.0;
+        // public static final double kElevatorMaxCruiseVelocity = 14.0;
+        // public static final double kElevatorMaxCruiseAcceleration = 40.0;
+        // public static final double kElevatorMaxCruiseJerk = 400.0;
+        // TODO: REDO MOTION MAGIC PARAMETERS
+        public static final double kElevatorMaxCruiseVelocity = 17.0;
         public static final double kElevatorMaxCruiseAcceleration = 40.0;
         public static final double kElevatorMaxCruiseJerk = 400.0;
 
-        // public static final double kS = 0.09;
+        // 7:1 gear ratio | voltage motion magic
+        // public static final double kS = 0.085;
         // public static final double kV = 0.0;
         // public static final double kA = 0.0;
-        // public static final double kP = 10.0;
+        // public static final double kP = 40.0;
         // public static final double kI = 0.0;
-        // public static final double kD = 1.0;
-        // public static final double kG = 0.31;
+        // public static final double kD = 2.0;
+        // public static final double kG = 0.255;
         // public static final double kFF = 0.0;
 
-        // public static final double kS = 3.9;
-        // public static final double kV = 0.0;
-        // public static final double kA = 0.0;
-        // public static final double kP = 150.0;
-        // public static final double kI = 0.0;
-        // public static final double kD = 30.0;
-        // public static final double kG = 9.1;
-        // public static final double kFF = 0.0;
-
-        public static final double kS = 0.085;
+        public static final double kS = 0.19;
         public static final double kV = 0.0;
         public static final double kA = 0.0;
-        public static final double kP = 40.0;
+        public static final double kP = 45.0;
         public static final double kI = 0.0;
-        public static final double kD = 2.0;
-        public static final double kG = 0.255;
+        public static final double kD = 0.5;
+        public static final double kG = 0.3;
         public static final double kFF = 0.0;
 
         public static final double kElevatorPositionEpsilon = 0.05;
         public static final double kElevatorPositionEpsilonAuto = 0.3;
         public static final double kElevatorNeutralModePositionEpsilon = 0.1;
-        public static final double kElevatorL1Height = 0.0;
-        public static final double kElevatorL2Height = 0.0;
-        public static final double kElevatorL3Height = 0.0;
-        public static final double kElevatorL4Height = 0.0;
-
-        public static final double kL1Setpoint = 0.0;
-        public static final double kL2Setpoint = 0.0;
-        public static final double kL3Setpoint = 0.0;
-        public static final double kL4Setpoint = 0.0;
-
-        public static final double kHPIntakeSetpoint = 0.0;
-        public static final double kStowSetpoint = 0.0;
-
-        public static final double kBargeSetpoint = 0.0;
-        public static final double kAlgaeL1Setpoint = 0.0;
-        public static final double kAlgaeL2Setpoint = 0.0;
-        public static final double kProcessorSetpoint = 0.0;
 
         public static final double kMinHomeTime = 0.25;
         public static final double kHomeSpeed = -0.1;

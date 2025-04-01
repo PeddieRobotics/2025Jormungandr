@@ -68,7 +68,7 @@ public class Elevator extends SubsystemBase {
         elevatorFollowerMotor.setBrake();
         
         elevatorMainMotor.setEncoder(0);
-        elevatorMainMotor.setFeedbackDevice(RobotMap.ELEVATOR_CANCODER_ID, FeedbackSensorSourceValue.FusedCANcoder);
+        elevatorMainMotor.setFeedbackDevice(RobotMap.ELEVATOR_CANCODER_ID, FeedbackSensorSourceValue.RemoteCANcoder);
         elevatorMainMotor.setRotorToSensorRatio(ElevatorConstants.kElevatorRotorToSensorRatio);
         elevatorMainMotor.setSensorToMechanismRatio(ElevatorConstants.kElevatorSensortoMechanismRatio);
 
@@ -95,7 +95,7 @@ public class Elevator extends SubsystemBase {
         // algaeL2Setpoint = new TunableConstant(ElevatorConstants.kAlgaeL2Setpoint, "Elevator algaeL2Setpoint");
         // processorSetpoint = new TunableConstant(ElevatorConstants.kProcessorSetpoint, "Elevator processorSetpoint");
 
-        elevatorSetpoint = new LiveData(ElevatorConstants.kStowSetpoint, "Elevator: Current Setpoint");
+        elevatorSetpoint = new LiveData(0.0, "Elevator: Current Setpoint");
         elevatorEncoderPosition = new LiveData(elevatorMainMotor.getPosition(), "Elevator: Current Encoder Position");
         elevatorCanCoderPosition = new LiveData(getElevatorCANcoderPosition(), "Elevator: Current Cancoder Position"); 
 
