@@ -105,22 +105,22 @@ public class AlignToCage extends Command {
         if (Math.abs(rotationError) > rotationThreshold)
             rotation = rotationController.calculate(rotationError) + Math.signum(rotationError) * rotationFF;
 
-        // double yInput = 0;
+        double yInput = 0;
         
-        // double ty = ll.getTyAverage();
-        // if (Math.abs(ty) > yThreshold && ll.hasTarget())
-        //     yInput = yController.calculate(ty) + Math.signum(ty) * yFF;
+        double tx = ll.getTxAverage();
+        if (Math.abs(tx) > yThreshold && ll.hasTarget())
+            yInput = yController.calculate(tx) + Math.signum(tx) * yFF;
   
-        // double xDriverInput = DriverOI.getInstance().getForward();
-        // double yInput = DriverOI.getInstance().getStrafe();
+        double xDriverInput = DriverOI.getInstance().getForward();
 
-        // drivetrain.drive(new Translation2d(-xDriverInput, -yInput), rotation, false, null);
+        drivetrain.drive(new Translation2d(-xDriverInput, -yInput), rotation, false, null);
 
-        Translation2d translation = DriverOI.getInstance().getSwerveTranslation();
-        if (DriverOI.getInstance().getDriverDPadInput() != DPadDirection.NONE) {
-            translation = DriverOI.getInstance().getCardinalDirection();
-        }
-        drivetrain.drive(translation.times(-1), rotation, false, null);
+        // Translation2d translation = DriverOI.getInstance().getSwerveTranslation();
+        // if (DriverOI.getInstance().getDriverDPadInput() != DPadDirection.NONE) {
+        //     translation = DriverOI.getInstance().getCardinalDirection();
+        // }
+
+        // drivetrain.drive(translation.times(-1), rotation, false, null);
 
         
         // Logger.getInstance().logAlignToCage(ty, yInput, rotationError, rotation);
