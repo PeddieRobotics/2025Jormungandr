@@ -43,6 +43,7 @@ public class AlignToReefBasisVector extends Command {
     private double lateralP, lateralI, lateralD, lateralFF;
 
     private double lateralThreshold, lateralCloseThreshold, lateralCloseAtL4Threshold, lateralL3PrestageThreshold, lateralL4PrestageThreshold;
+    private double depthL4AutoPrestageThreshold, lateralL4AutoPrestageThreshold;
 
     private double rotationP, rotationI, rotationD, rotationFF;
     private double rotationLowerP, rotationUseLowerPThreshold;
@@ -126,6 +127,9 @@ public class AlignToReefBasisVector extends Command {
 
         lateralL3PrestageThreshold = ReefAlign.kLateralL3PrestageThreshold;
         lateralL4PrestageThreshold = ReefAlign.kLateralL4PrestageThreshold;
+
+        depthL4AutoPrestageThreshold = ReefAlign.kDepthL4AutoPrestageThreshold;
+        lateralL4AutoPrestageThreshold = ReefAlign.kLateralL4AutoPrestageThreshold;
 
         rotationP = ReefAlign.kRotationP;
         rotationI = ReefAlign.kRotationI;
@@ -350,6 +354,10 @@ public class AlignToReefBasisVector extends Command {
         return Math.abs(depthError) < depthL4PrestageThreshold && Math.abs(lateralError) < lateralL4PrestageThreshold;
     }
 
+    private boolean l4AutoPrepSafe(){
+        return Math.abs(depthError) < depthL4AutoPrestageThreshold && Math.abs(lateralError) < lateralL4AutoPrestageThreshold;
+    }
+
     @Override
     public void execute() {
         // SmartDashboard.putBoolean("Align: rotation good", rotationGood());
@@ -469,7 +477,7 @@ public class AlignToReefBasisVector extends Command {
             }
         }
         if (DriverStation.isAutonomousEnabled()) {
-            if(elapsedTime > 0.05 && l4PrepSafe() && (Superstructure.getInstance().getCurrentState() == SuperstructureState.PRESTAGE || Superstructure.getInstance().isReefPrepState()) && Superstructure.getInstance().getScoringFlag() == ScoringFlag.L4FLAG){
+            if(elapsedTime > 0.05 && l4AutoPrepSafe() && (Superstructure.getInstance().getCurrentState() == SuperstructureState.PRESTAGE || Superstructure.getInstance().isReefPrepState()) && Superstructure.getInstance().getScoringFlag() == ScoringFlag.L4FLAG){
                 Logger.getInstance().logEvent("Align to reef to L4 Prep", true);
                 Superstructure.getInstance().requestState(SuperstructureState.L4_PREP);
             }

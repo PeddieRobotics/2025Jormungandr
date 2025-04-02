@@ -984,6 +984,6 @@ public class Superstructure extends SubsystemBase {
     }
 
     public boolean isClimbState(){
-        return requestedSystemState == CLIMB;
+        return requestedSystemState == CLIMB || systemState == CLIMB;
     }
 }

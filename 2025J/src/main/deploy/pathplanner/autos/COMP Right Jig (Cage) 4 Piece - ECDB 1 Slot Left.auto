@@ -115,12 +115,6 @@
         {
           "type": "named",
           "data": {
-            "name": "L4_PREP"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
             "name": "ALIGN_18_7_RIGHT"
           }
         },

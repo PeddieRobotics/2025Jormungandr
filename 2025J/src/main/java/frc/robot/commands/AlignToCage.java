@@ -107,13 +107,13 @@ public class AlignToCage extends Command {
 
         double yInput = 0;
         
-        double tx = ll.getTxAverage();
-        if (Math.abs(tx) > yThreshold && ll.hasTarget())
-            yInput = yController.calculate(tx) + Math.signum(tx) * yFF;
+        double ty = ll.getTyAverage();
+        if (Math.abs(ty) > yThreshold && ll.hasTarget())
+            yInput = yController.calculate(ty) + Math.signum(ty) * yFF;
   
         double xDriverInput = DriverOI.getInstance().getForward();
 
-        drivetrain.drive(new Translation2d(-xDriverInput, -yInput), rotation, false, null);
+        drivetrain.drive(new Translation2d(-xDriverInput, yInput), rotation, false, null);
 
         // Translation2d translation = DriverOI.getInstance().getSwerveTranslation();
         // if (DriverOI.getInstance().getDriverDPadInput() != DPadDirection.NONE) {

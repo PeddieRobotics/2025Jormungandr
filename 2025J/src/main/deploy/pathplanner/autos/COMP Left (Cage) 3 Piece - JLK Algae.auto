@@ -11,15 +11,15 @@
           }
         },
         {
-          "type": "named",
-          "data": {
-            "name": "L4_PREP"
-          }
-        },
-        {
           "type": "path",
           "data": {
             "pathName": "SLOW Left (Cage) to J Align"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "L4_PREP"
           }
         },
         {

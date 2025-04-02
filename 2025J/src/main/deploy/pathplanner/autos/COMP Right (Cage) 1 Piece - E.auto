@@ -11,15 +11,15 @@
           }
         },
         {
-          "type": "named",
-          "data": {
-            "name": "L4_PREP"
-          }
-        },
-        {
           "type": "path",
           "data": {
             "pathName": "SLOW Right (Cage) to E Align"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "L4_PREP"
           }
         },
         {

@@ -13,12 +13,12 @@ public class PoleLookup {
         put(PoleLookup.getPoleNumber(6, AlignmentDestination.RIGHT),  PoleCategory.MEDIUM);
 
         put(PoleLookup.getPoleNumber(7, AlignmentDestination.LEFT),   PoleCategory.MEDIUM);
-        put(PoleLookup.getPoleNumber(7, AlignmentDestination.RIGHT),  PoleCategory.SLIGHTLY_HIGH);
+        put(PoleLookup.getPoleNumber(7, AlignmentDestination.RIGHT),  PoleCategory.HIGH);
 
         put(PoleLookup.getPoleNumber(8, AlignmentDestination.LEFT),   PoleCategory.SLIGHTLY_LOW);
         put(PoleLookup.getPoleNumber(8, AlignmentDestination.RIGHT),  PoleCategory.SLIGHTLY_HIGH);
 
-        put(PoleLookup.getPoleNumber(9, AlignmentDestination.LEFT),   PoleCategory.VERY_HIGH);
+        put(PoleLookup.getPoleNumber(9, AlignmentDestination.LEFT),   PoleCategory.EXTREMELY_HIGH);
         put(PoleLookup.getPoleNumber(9, AlignmentDestination.RIGHT),  PoleCategory.MEDIUM);
 
         put(PoleLookup.getPoleNumber(10, AlignmentDestination.LEFT),  PoleCategory.MEDIUM);
@@ -51,7 +51,9 @@ public class PoleLookup {
     private static double getCategoryHeightOffset(PoleCategory category) {
         // approximately 0.1 = 0.5 inches
         switch (category) {
-            case VERY_LOW:
+            case EXTREMELY_LOW:
+                return -0.15;
+            case LOW:
                 return -0.1;
             case SLIGHTLY_LOW:
                 return -0.05;
@@ -59,14 +61,22 @@ public class PoleLookup {
                 return 0;
             case SLIGHTLY_HIGH:
                 return 0.05;
-            case VERY_HIGH:
+            case HIGH:
                 return 0.1;
+            case EXTREMELY_HIGH:
+                return 0.15;
         }
         return 0;
     }
 
     private enum PoleCategory {
-        VERY_LOW, SLIGHTLY_LOW, MEDIUM, SLIGHTLY_HIGH, VERY_HIGH
+        EXTREMELY_LOW,
+        LOW,
+        SLIGHTLY_LOW,
+        MEDIUM,
+        SLIGHTLY_HIGH,
+        HIGH,
+        EXTREMELY_HIGH
     };
 
 

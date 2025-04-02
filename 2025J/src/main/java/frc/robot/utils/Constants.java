@@ -187,7 +187,7 @@ public final class Constants {
         public static final double kFF = 0.0;
 
         public static final double kElevatorPositionEpsilon = 0.03;
-        public static final double kElevatorPositionEpsilonAuto = 0.3;
+        public static final double kElevatorPositionEpsilonAuto = 0.2;
         public static final double kElevatorNeutralModePositionEpsilon = 0.1;
 
         public static final double kMinHomeTime = 0.25;
@@ -360,6 +360,7 @@ public final class Constants {
             public static final double kDepthCloseAtL4Threshold = 0.05;
             public static final double kDepthL3PrestageThreshold = 0.6;
             public static final double kDepthL4PrestageThreshold = 0.6;
+            public static final double kDepthL4AutoPrestageThreshold = 0.9;
 
             public static final double kAutoLateralP = 2.7;
             public static final double kLateralP = 2.85;
@@ -372,6 +373,7 @@ public final class Constants {
             public static final double kLateralCloseAtL4Threshold = 0.05;
             public static final double kLateralL3PrestageThreshold = 0.4;
             public static final double kLateralL4PrestageThreshold = 0.4;
+            public static final double kLateralL4AutoPrestageThreshold = 0.5;
 
             public static final double kRotationP = 0.08;
             public static final double kRotationI = 0;
