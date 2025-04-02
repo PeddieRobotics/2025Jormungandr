@@ -143,7 +143,7 @@ public final class Constants {
         public static final double kElevatorForwardSoftLimit = 12.9;
         public static final double kElevatorReverseSoftLimit = 0.0;
 
-        public static final double kElevatorReduction = 4.083333 / 1.0;
+        public static final double kElevatorReduction = 5.250  / 1.0;
         public static final double kElevatorRotorToSensorRatio = kElevatorReduction;
         public static final double kElevatorSensortoMechanismRatio = 1.0;
 
@@ -154,9 +154,9 @@ public final class Constants {
         // public static final double kElevatorMaxCruiseAcceleration = 40.0;
         // public static final double kElevatorMaxCruiseJerk = 400.0;
         // TODO: REDO MOTION MAGIC PARAMETERS
-        public static final double kElevatorMaxCruiseVelocity = 17.0;
-        public static final double kElevatorMaxCruiseAcceleration = 40.0;
-        public static final double kElevatorMaxCruiseJerk = 400.0;
+        public static final double kElevatorMaxCruiseVelocity = 18.0;
+        public static final double kElevatorMaxCruiseAcceleration = 80.0;
+        public static final double kElevatorMaxCruiseJerk = 800.0;
 
         // 7:1 gear ratio | voltage motion magic
         // public static final double kS = 0.085;
@@ -168,16 +168,25 @@ public final class Constants {
         // public static final double kG = 0.255;
         // public static final double kFF = 0.0;
 
-        public static final double kS = 0.19;
+        // public static final double kS = 0.19;
+        // public static final double kV = 0.0;
+        // public static final double kA = 0.0;
+        // public static final double kP = 45.0;
+        // public static final double kI = 0.0;
+        // public static final double kD = 0.5;
+        // public static final double kG = 0.3;
+        // public static final double kFF = 0.0;
+
+        public static final double kS = 0.17;
         public static final double kV = 0.0;
         public static final double kA = 0.0;
-        public static final double kP = 45.0;
+        public static final double kP = 40.0;
         public static final double kI = 0.0;
-        public static final double kD = 0.5;
-        public static final double kG = 0.3;
+        public static final double kD = 0.7;
+        public static final double kG = 0.36;
         public static final double kFF = 0.0;
 
-        public static final double kElevatorPositionEpsilon = 0.05;
+        public static final double kElevatorPositionEpsilon = 0.03;
         public static final double kElevatorPositionEpsilonAuto = 0.3;
         public static final double kElevatorNeutralModePositionEpsilon = 0.1;
 
@@ -200,14 +209,14 @@ public final class Constants {
         public static final double kElevatorGroundIntakePosition = 0.77;
         public static final double kElevatorL1ScorePosition = 0.0;
         // public static final double kElevatorL1ScorePosition = 1.75;;
-        public static final double kElevatorL2ScorePosition = 3.7; //3.8;
-        public static final double kElevatorL3ScorePosition = 7.05;
+        public static final double kElevatorL2ScorePosition = 3.55; //3.8;
+        public static final double kElevatorL3ScorePosition = 6.9;
         public static final double kElevatorPrestagePosition = 3.3;
 
         // Seneca Height
         // public static final double kElevatorL4ScorePosition = 12.45; 
         // Lab Height
-        public static final double kElevatorL4ScorePosition = 12.32; 
+        public static final double kElevatorL4ScorePosition = 12.15; 
 
         public static final double kElevatorBargePrestagePosition = 6.2;
         public static final double kElevatorBargeScorePosition = 12.85;
@@ -349,8 +358,8 @@ public final class Constants {
             public static final double kDepthThreshold = 0.03;
             public static final double kDepthCloseThreshold = 0.45;
             public static final double kDepthCloseAtL4Threshold = 0.05;
-            public static final double kDepthL3PrestageThreshold = 1.3;
-            public static final double kDepthL4PrestageThreshold = 1.3;
+            public static final double kDepthL3PrestageThreshold = 0.6;
+            public static final double kDepthL4PrestageThreshold = 0.6;
 
             public static final double kAutoLateralP = 2.7;
             public static final double kLateralP = 2.85;
@@ -361,8 +370,8 @@ public final class Constants {
             public static final double kLateralThreshold = 0.03;
             public static final double kLateralCloseThreshold = 0.35;
             public static final double kLateralCloseAtL4Threshold = 0.05;
-            public static final double kLateralL3PrestageThreshold = 1;
-            public static final double kLateralL4PrestageThreshold = 1;
+            public static final double kLateralL3PrestageThreshold = 0.4;
+            public static final double kLateralL4PrestageThreshold = 0.4;
 
             public static final double kRotationP = 0.08;
             public static final double kRotationI = 0;
@@ -383,9 +392,9 @@ public final class Constants {
             // public static final double kRightOffset = -0.135; // -0.1651;
 
             // MONTGOMERY
-            public static final double kLeftOffset = 0.180;
+            public static final double kLeftOffset = 0.199;
             public static final double kMiddleOffset = 0.01;   
-            public static final double kRightOffset = -0.140;
+            public static final double kRightOffset = -0.135;
             
             public static final double kMaxSpeed = 2.5;
 
@@ -516,10 +525,7 @@ public final class Constants {
 
     public static final class CameraConstants {
         // 3: 10.58.95.14
-        public static final String kBackTopCamName = "limelight-back";
-
-        // 3: 10.58.95.15
-        public static final String kBackBottomCamName = "something";
+        public static final String kBackCamName = "limelight-back";
 
         // 3G: 10.58.95.11
         public static final String kFrontLeftCamName = "limelight-left";

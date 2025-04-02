@@ -55,12 +55,6 @@
         {
           "type": "named",
           "data": {
-            "name": "L4_PREP"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
             "name": "ALIGN_17_8_LEFT"
           }
         },
@@ -86,12 +80,6 @@
           "type": "path",
           "data": {
             "pathName": "HP 1 Slot Left to D Align"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "L4_PREP"
           }
         },
         {

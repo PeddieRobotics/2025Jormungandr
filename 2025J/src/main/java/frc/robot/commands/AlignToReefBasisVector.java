@@ -21,7 +21,7 @@ import frc.robot.subsystems.Superstructure;
 import frc.robot.subsystems.Superstructure.ScoringFlag;
 import frc.robot.subsystems.Superstructure.SuperstructureState;
 import frc.robot.subsystems.Limelight;
-import frc.robot.subsystems.LimelightBackTop;
+import frc.robot.subsystems.LimelightBack;
 import frc.robot.utils.CalculateReefTarget;
 import frc.robot.utils.Constants.AlignmentConstants;
 import frc.robot.utils.Constants.AlignmentConstants.AlignmentDestination;
@@ -468,6 +468,12 @@ public class AlignToReefBasisVector extends Command {
                 Superstructure.getInstance().requestState(SuperstructureState.L4_PREP);
             }
         }
+        if (DriverStation.isAutonomousEnabled()) {
+            if(elapsedTime > 0.05 && l4PrepSafe() && (Superstructure.getInstance().getCurrentState() == SuperstructureState.PRESTAGE || Superstructure.getInstance().isReefPrepState()) && Superstructure.getInstance().getScoringFlag() == ScoringFlag.L4FLAG){
+                Logger.getInstance().logEvent("Align to reef to L4 Prep", true);
+                Superstructure.getInstance().requestState(SuperstructureState.L4_PREP);
+            }
+        }
 
         // Auto Score Logic
         boolean autoScore = SmartDashboard.getBoolean("Align: Auto Score", true);
@@ -477,7 +483,7 @@ public class AlignToReefBasisVector extends Command {
             Superstructure.getInstance().sendToScore();
             SmartDashboard.putBoolean("Align: fire gamepiece", true);
             if(Superstructure.getInstance().isReefScoringState()){
-                LimelightBackTop.getInstance().flashLED();
+                LimelightBack.getInstance().flashLED();
                 SmartDashboard.putNumber("Align: Elapsed Time", elapsedTime);
             }
         }

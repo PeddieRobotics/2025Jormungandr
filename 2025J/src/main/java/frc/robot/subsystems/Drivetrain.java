@@ -310,8 +310,7 @@ public class Drivetrain extends SubsystemBase {
      */
     public void updateOdometry() {
         if (!DriverStation.isAutonomous() && useMegaTag) {
-            LimelightBackBottom.getInstance().fuseEstimatedPose(odometry);
-            LimelightBackTop.getInstance().fuseEstimatedPose(odometry);
+            LimelightBack.getInstance().fuseEstimatedPose(odometry);
             LimelightFrontLeft.getInstance().fuseEstimatedPose(odometry);
             LimelightFrontRight.getInstance().fuseEstimatedPose(odometry);
             // TODO: maybe the climber??
