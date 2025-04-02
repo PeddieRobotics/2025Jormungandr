@@ -54,7 +54,7 @@ public class Autonomous extends SubsystemBase {
         configureAutoBuilder();
 
         // DISABLE FOR LAB!!!
-        boolean isCompetition = true;
+        boolean isCompetition = false;
 
         autoChooser = AutoBuilder.buildAutoChooserWithOptionsModifier(
             (stream) -> isCompetition

@@ -1,0 +1,127 @@
+{
+  "version": "2025.0",
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "named",
+          "data": {
+            "name": "PRESTAGE"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Right Jig (Cage) to F Align"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "L4_PREP"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "CLOSE_ALIGN_22_9_RIGHT"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "F to HP Align"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "LEFT_1_ALIGN_TO_HP_12_2"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "PRESTAGE"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "HP 1 Slot Left to C Align"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "ALIGN_17_8_LEFT"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "C to HP Align"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "LEFT_1_ALIGN_TO_HP_12_2"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "PRESTAGE"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "HP 1 Slot Left to D Align"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "ALIGN_17_8_RIGHT"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "D to HP Align"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "LEFT_1_ALIGN_TO_HP_12_2"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "PRESTAGE"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "HP 1 Slot Left to E Align"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "ALIGN_22_9_LEFT"
+          }
+        }
+      ]
+    }
+  },
+  "resetOdom": true,
+  "folder": "4 PIECE",
+  "choreoAuto": false
+}

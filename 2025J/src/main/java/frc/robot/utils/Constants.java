@@ -209,8 +209,8 @@ public final class Constants {
         public static final double kElevatorGroundIntakePosition = 0.77;
         public static final double kElevatorL1ScorePosition = 0.0;
         // public static final double kElevatorL1ScorePosition = 1.75;;
-        public static final double kElevatorL2ScorePosition = 3.55; //3.8;
-        public static final double kElevatorL3ScorePosition = 6.9;
+        public static final double kElevatorL2ScorePosition = 3.65; //3.8;
+        public static final double kElevatorL3ScorePosition = 7.0;
         public static final double kElevatorPrestagePosition = 3.3;
 
         // Seneca Height
@@ -359,7 +359,7 @@ public final class Constants {
             public static final double kDepthCloseAtL4Threshold = 0.05;
             public static final double kDepthL3PrestageThreshold = 0.6;
             public static final double kDepthL4PrestageThreshold = 0.6;
-            public static final double kDepthL4AutoPrestageThreshold = 0.9;
+            public static final double kDepthL4AutoPrestageThreshold = 1.2; // 0.9 definitely works however
 
             public static final double kAutoLateralP = 2.7;
             public static final double kLateralP = 2.85;

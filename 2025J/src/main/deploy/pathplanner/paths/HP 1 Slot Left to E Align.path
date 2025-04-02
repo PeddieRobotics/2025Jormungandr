@@ -1,0 +1,54 @@
+{
+  "version": "2025.0",
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 1.299,
+        "y": 0.922
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 2.46675,
+        "y": 1.0025
+      },
+      "isLocked": false,
+      "linkedName": "AlignedToHPBottom1SlotLeft"
+    },
+    {
+      "anchor": {
+        "x": 4.61175,
+        "y": 2.0554999999999994
+      },
+      "prevControl": {
+        "x": 4.43625,
+        "y": 1.3339999999999996
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": null
+    }
+  ],
+  "rotationTargets": [],
+  "constraintZones": [],
+  "pointTowardsZones": [],
+  "eventMarkers": [],
+  "globalConstraints": {
+    "maxVelocity": 4.0,
+    "maxAcceleration": 5.0,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0,
+    "nominalVoltage": 12.0,
+    "unlimited": false
+  },
+  "goalEndState": {
+    "velocity": 2.5,
+    "rotation": 100.45990909292921
+  },
+  "reversed": false,
+  "folder": "HP 1 Slot Left to Reef",
+  "idealStartingState": {
+    "velocity": 0,
+    "rotation": 55.0
+  },
+  "useDefaultConstraints": false
+}

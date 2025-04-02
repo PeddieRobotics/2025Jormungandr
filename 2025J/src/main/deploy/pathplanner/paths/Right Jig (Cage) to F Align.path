@@ -1,0 +1,54 @@
+{
+  "version": "2025.0",
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 7.05,
+        "y": 2.686
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 6.098855708126819,
+        "y": 2.9742133591839677
+      },
+      "isLocked": false,
+      "linkedName": "RightJigCageStart"
+    },
+    {
+      "anchor": {
+        "x": 6.3534836065573765,
+        "y": 2.9
+      },
+      "prevControl": {
+        "x": 6.793519688365864,
+        "y": 2.7780501848874124
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": null
+    }
+  ],
+  "rotationTargets": [],
+  "constraintZones": [],
+  "pointTowardsZones": [],
+  "eventMarkers": [],
+  "globalConstraints": {
+    "maxVelocity": 3.0,
+    "maxAcceleration": 5.0,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0,
+    "nominalVoltage": 12.0,
+    "unlimited": false
+  },
+  "goalEndState": {
+    "velocity": 2.0,
+    "rotation": 119.99999999999999
+  },
+  "reversed": false,
+  "folder": "Start to Reef",
+  "idealStartingState": {
+    "velocity": 0,
+    "rotation": 119.99999999999999
+  },
+  "useDefaultConstraints": false
+}
