@@ -251,37 +251,36 @@ public final class Constants {
         public static final double kArmRotorToSensorRatio = kArmReduction / 0.96;
         public static final double kArmSensortoMechanismRatio = 0.96;
 
-        // public static final double kArmMagnetOffset = -0.052979 + 0.25 * kArmSensortoMechanismRatio;
         public static final double kArmMagnetOffset = -0.854004 + 0.25 * kArmSensortoMechanismRatio;
         // public static final double kArmMagnetOffset = 0.0;
 
-        // public static final double kS = 0.0;
+        // public static final double kS = 0.3;
         // public static final double kV = 0.0;
         // public static final double kA = 0.0;
-        // public static final double kP = 50.0;
+        // public static final double kP = 100.0;
         // public static final double kI = 0.0;
-        // public static final double kD = 1.0;
+        // public static final double kD = 5.0;
         // public static final double kFF = 0.0;
         // public static final double kIZone = 0.0;
-        // public static final double kG = 0.45;
+        // public static final double kG = 0.39;
 
-        public static final double kS = 0.3;
+        public static final double kS = 0.0;
         public static final double kV = 0.0;
         public static final double kA = 0.0;
-        public static final double kP = 100.0;
+        public static final double kP = 120.0;
         public static final double kI = 0.0;
-        public static final double kD = 5.0;
+        public static final double kD = 0.3;
         public static final double kFF = 0.0;
         public static final double kIZone = 0.0;
-        public static final double kG = 0.39;
+        public static final double kG = 0.37;
 
         public static final double kArmForwardSoftLimit = 0.25;
         public static final double kArmReverseSoftLimit = 0.0;
 
         // Motion Magic Parameters
         public static final double kArmMaxCruiseVelocity = 1.0;
-        public static final double kArmMaxCruiseAcceleration = 1.0;
-        public static final double kArmMaxCruiseJerk = 20.0;
+        public static final double kArmMaxCruiseAcceleration = 0.5;
+        public static final double kArmMaxCruiseJerk = 7.0;
 
         public static final double kArmAngleEpsilon = 0.0; // TODO: define
         public static final double kArmPositionEpsilon = 0.02;
