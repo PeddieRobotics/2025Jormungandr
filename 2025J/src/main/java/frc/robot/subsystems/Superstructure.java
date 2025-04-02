@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.utils.Constants.ArmConstants;
 import frc.robot.utils.Constants.ClawConstants;
 import frc.robot.utils.Constants.ScoreConstants;
 import frc.robot.utils.LiveData;
@@ -190,7 +191,7 @@ public class Superstructure extends SubsystemBase {
                     } else {
                         elevator.setElevatorPositionMotionMagicVoltage(ScoreConstants.kElevatorStowPosition);
                     }
-                    arm.setArmPositionMotionMagicVoltage(ScoreConstants.kArmStowPosition);
+                    arm.setArmPositionMotionMagicVoltage(ScoreConstants.kArmStowPosition, ArmConstants.kSlotUp);
 
                     if (claw.getAlgaeSensor()) {
                         claw.holdAlgae();
@@ -224,7 +225,7 @@ public class Superstructure extends SubsystemBase {
                 }else{
                     elevator.setElevatorPositionMotionMagicVoltage(ScoreConstants.kElevatorHPIntakePosition);
                 }
-                arm.setArmPositionMotionMagicVoltage(ScoreConstants.kArmHPIntakePosition);
+                arm.setArmPositionMotionMagicVoltage(ScoreConstants.kArmHPIntakePosition, ArmConstants.kSlotUp);
 
                 // add gate to check elevator height and arm angle ?
 
@@ -277,7 +278,7 @@ public class Superstructure extends SubsystemBase {
             case ALGAE_GROUND_INTAKE -> {
                 elevator.setElevatorPositionMotionMagicVoltage(ScoreConstants.kElevatorGroundIntakePosition);                
                 if(elevator.isAtPosition(ScoreConstants.kElevatorGroundIntakePosition)){
-                    arm.setArmPositionMotionMagicVoltage(ScoreConstants.kArmGroundIntakePosition);
+                    arm.setArmPositionMotionMagicVoltage(ScoreConstants.kArmGroundIntakePosition, ArmConstants.kSlotDown);
                 }
 
                 claw.intakeAlgae();
@@ -285,7 +286,7 @@ public class Superstructure extends SubsystemBase {
 
                 if (claw.getAlgaeSensor()) {
                     claw.holdAlgae();
-                    arm.setArmPositionMotionMagicVoltage(0.17);
+                    arm.setArmPositionMotionMagicVoltage(0.17, ArmConstants.kSlotUp);
                     if(arm.isAtPosition(0.17)){
                         requestState(STOW);
                     }
@@ -305,7 +306,7 @@ public class Superstructure extends SubsystemBase {
                         EJECT_ALGAE,
                         EJECT_CORAL)
                         .contains(requestedSystemState)) {
-                    arm.setArmPositionMotionMagicVoltage(0.17);
+                    arm.setArmPositionMotionMagicVoltage(0.17, ArmConstants.kSlotUp);
                     if(arm.isAtPosition(0.17)){
                         systemState = requestedSystemState;
                     }
@@ -315,7 +316,7 @@ public class Superstructure extends SubsystemBase {
             case L1_PREP -> {
                 elevator.setElevatorPositionMotionMagicVoltage(ScoreConstants.kElevatorL1ScorePosition + manualOffset);
                 if(elevator.isAtPosition(ScoreConstants.kElevatorL1ScorePosition)){
-                    arm.setArmPositionMotionMagicVoltage(ScoreConstants.kArmL1ScorePosition);
+                    arm.setArmPositionMotionMagicVoltage(ScoreConstants.kArmL1ScorePosition, ArmConstants.kSlotUp);
                 }
 
                 claw.stopClaw();
@@ -341,7 +342,7 @@ public class Superstructure extends SubsystemBase {
                     if(requestedSystemState == L1_SCORE){
                         systemState = requestedSystemState;
                     } else{
-                        arm.setArmPositionMotionMagicVoltage(0.17);
+                        arm.setArmPositionMotionMagicVoltage(0.17, ArmConstants.kSlotUp);
                         if(arm.isAtPosition(0.17)){
                             systemState = requestedSystemState;
                         }
@@ -351,7 +352,7 @@ public class Superstructure extends SubsystemBase {
 
             case L2_PREP -> {
                 elevator.setElevatorPositionMotionMagicVoltage(ScoreConstants.kElevatorL2ScorePosition + manualOffset);
-                arm.setArmPositionMotionMagicVoltage(ScoreConstants.kArmL2ScorePosition);
+                arm.setArmPositionMotionMagicVoltage(ScoreConstants.kArmL2ScorePosition, ArmConstants.kSlotUp);
                 claw.stopClaw();
 
                 if (Arrays.asList(
@@ -377,7 +378,7 @@ public class Superstructure extends SubsystemBase {
 
             case L3_PREP -> {
                 elevator.setElevatorPositionMotionMagicVoltage(ScoreConstants.kElevatorL3ScorePosition + manualOffset);
-                arm.setArmPositionMotionMagicVoltage(ScoreConstants.kArmL3ScorePosition);
+                arm.setArmPositionMotionMagicVoltage(ScoreConstants.kArmL3ScorePosition, ArmConstants.kSlotUp);
                 claw.stopClaw();
 
 
@@ -404,7 +405,7 @@ public class Superstructure extends SubsystemBase {
 
             case PRESTAGE -> {
                 elevator.setElevatorPositionMotionMagicVoltage(ScoreConstants.kElevatorPrestagePosition + manualOffset);
-                arm.setArmPositionMotionMagicVoltage(ScoreConstants.kArmStowPosition);
+                arm.setArmPositionMotionMagicVoltage(ScoreConstants.kArmStowPosition, ArmConstants.kSlotUp);
 
                 claw.stopCoralMotor();
                 if(claw.getAlgaeSensor()){
@@ -436,7 +437,7 @@ public class Superstructure extends SubsystemBase {
 
             case L4_PREP -> {
                 elevator.setElevatorPositionMotionMagicVoltage(ScoreConstants.kElevatorL4ScorePosition + manualOffset + L4offset);
-                arm.setArmPositionMotionMagicVoltage(ScoreConstants.kArmL4ScorePosition);
+                arm.setArmPositionMotionMagicVoltage(ScoreConstants.kArmL4ScorePosition, ArmConstants.kSlotUp);
                 claw.stopClaw();
 
                 if (Arrays.asList(
@@ -555,7 +556,7 @@ public class Superstructure extends SubsystemBase {
 
             case BARGE_PRESTAGE -> {
                 elevator.setElevatorPositionMotionMagicVoltage(ScoreConstants.kElevatorBargePrestagePosition);
-                arm.setArmPositionMotionMagicVoltage(ScoreConstants.kArmStowPosition);
+                arm.setArmPositionMotionMagicVoltage(ScoreConstants.kArmStowPosition, ArmConstants.kSlotUp);
 
                 if (claw.getAlgaeSensor()) {
                     claw.holdAlgae();
@@ -584,7 +585,7 @@ public class Superstructure extends SubsystemBase {
 
             case BARGE_PREP -> {
                 elevator.setElevatorPositionMotionMagicVoltage(ScoreConstants.kElevatorBargeScorePosition);
-                arm.setArmPositionMotionMagicVoltage(ScoreConstants.kArmBargeScorePosition);
+                arm.setArmPositionMotionMagicVoltage(ScoreConstants.kArmBargeScorePosition, ArmConstants.kSlotUp);
 
                 if (claw.getAlgaeSensor()) {
                     claw.holdAlgae();
@@ -635,7 +636,7 @@ public class Superstructure extends SubsystemBase {
 
             case PROCESSOR_PREP -> {
                 elevator.setElevatorPositionMotionMagicVoltage(ScoreConstants.kElevatorProcessorScorePosition);
-                arm.setArmPositionMotionMagicVoltage(ScoreConstants.kArmProcessorScorePosition);
+                arm.setArmPositionMotionMagicVoltage(ScoreConstants.kArmProcessorScorePosition, ArmConstants.kSlotDown);
 
                 if (claw.getAlgaeSensor()) {
                     claw.holdAlgae();
@@ -663,7 +664,7 @@ public class Superstructure extends SubsystemBase {
                     if(requestedSystemState == PROCESSOR_SCORE){
                         systemState = requestedSystemState;
                     } else{
-                        arm.setArmPositionMotionMagicVoltage(0.17);
+                        arm.setArmPositionMotionMagicVoltage(0.17, ArmConstants.kSlotUp);
                         if(arm.isAtPosition(0.17)){
                             systemState = requestedSystemState;
                         }       
@@ -694,10 +695,10 @@ public class Superstructure extends SubsystemBase {
 
             case REEF1_ALGAE_INTAKE -> {
                 elevator.setElevatorPositionMotionMagicVoltage(ScoreConstants.kElevatorReef1IntakePosition + manualOffset);
-                arm.setArmPositionMotionMagicVoltage(ScoreConstants.kArmReef1IntakePosition);
+                arm.setArmPositionMotionMagicVoltage(ScoreConstants.kArmReef1IntakePosition, ArmConstants.kSlotDown);
 
                 if (claw.getAlgaeSensor()) {
-                    arm.setArmPositionMotionMagicVoltage(0.22);
+                    arm.setArmPositionMotionMagicVoltage(0.22, ArmConstants.kSlotUp);
                     claw.holdAlgae();
                     if(arm.isAtPosition(0.22)){
                         requestState(STOW);
@@ -726,10 +727,10 @@ public class Superstructure extends SubsystemBase {
 
             case REEF2_ALGAE_INTAKE -> {
                 elevator.setElevatorPositionMotionMagicVoltage(ScoreConstants.kElevatorReef2IntakePosition + manualOffset);
-                arm.setArmPositionMotionMagicVoltage(ScoreConstants.kArmReef2IntakePosition);
+                arm.setArmPositionMotionMagicVoltage(ScoreConstants.kArmReef2IntakePosition, ArmConstants.kSlotDown);
                 
                 if (claw.getAlgaeSensor()) {
-                    arm.setArmPositionMotionMagicVoltage(0.22);
+                    arm.setArmPositionMotionMagicVoltage(0.22, ArmConstants.kSlotUp);
                     claw.holdAlgae();
                     if(arm.isAtPosition(0.22)){
                         requestState(STOW);
@@ -802,11 +803,11 @@ public class Superstructure extends SubsystemBase {
                 if (elevator.getElevatorCANcoderPosition() > 1.5) {
                     claw.intakeAlgae();
                     claw.stopCoralMotor();
-                    arm.setArmPositionMotionMagicVoltage(armAngle);
+                    arm.setArmPositionMotionMagicVoltage(armAngle, ArmConstants.kSlotDown);
                     elevator.setElevatorPercentOutput(getAlgaeRemovalSpeed());
                 }
                 else {
-                    arm.setArmPositionMotionMagicVoltage(0.25);
+                    arm.setArmPositionMotionMagicVoltage(0.25, ArmConstants.kSlotUp);
                     hasJustRemovedAlgae = true;
                     requestState(STOW);
                 }
@@ -824,7 +825,7 @@ public class Superstructure extends SubsystemBase {
                     elevator.setElevatorPositionMotionMagicVoltage(ScoreConstants.kElevatorClimbPosition);
                 }
                 // elevator.setElevatorPositionMotionMagicVoltage(ScoreConstants.kElevatorClimbPosition);
-                arm.setArmPositionMotionMagicVoltage(ScoreConstants.kArmClimbPosition);
+                arm.setArmPositionMotionMagicVoltage(ScoreConstants.kArmClimbPosition, ArmConstants.kSlotDown);
 
                 if (Arrays.asList(
                         // STOW,

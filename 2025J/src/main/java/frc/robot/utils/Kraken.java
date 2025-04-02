@@ -425,6 +425,21 @@ public class Kraken {
         config.Slot0.kG = kG;
         talon.getConfigurator().apply(config);
     }
+
+    public void setPIDValuesSlot1(double kS, double kV, double kA, double kP, double kI, double kD, double kF, double kG, GravityTypeValue gravityType, StaticFeedforwardSignValue feedforwardSign) {
+        config.Slot1.StaticFeedforwardSign = feedforwardSign;
+        config.Slot1.GravityType = gravityType;
+
+        feedForward = kF;
+        config.Slot1.kS = kS;
+        config.Slot1.kV = kV;
+        config.Slot1.kA = kA;
+        config.Slot1.kP = kP;
+        config.Slot1.kI = kI;
+        config.Slot1.kD = kD;
+        config.Slot1.kG = kG;
+        talon.getConfigurator().apply(config);
+    }
     
     //DO NOT AUTOFORMAT
     /**
@@ -548,8 +563,8 @@ public class Kraken {
      * Request MotionMagic motion profile to target position with MotionMagicVoltage control mode
      * @param position - motor/mechanism target position setpoint (post conversion factors)
      */
-    public void setPositionMotionMagicVoltage(double position) {
-        final MotionMagicVoltage request = new MotionMagicVoltage(0).withSlot(0);
+    public void setPositionMotionMagicVoltage(double position, int slot) {
+        final MotionMagicVoltage request = new MotionMagicVoltage(0).withSlot(slot);
         talon.setControl(request.withPosition(position).withFeedForward(feedForward).withEnableFOC(true));
     }
 

@@ -162,7 +162,7 @@ public class Elevator extends SubsystemBase {
      */
     public void setElevatorPositionMotionMagicVoltage(double position) {
         elevatorSetpoint.setNumber(position + globalOffset);
-        elevatorMainMotor.setPositionMotionMagicVoltage(position + globalOffset);
+        elevatorMainMotor.setPositionMotionMagicVoltage(position + globalOffset, 0);
     }
 
     /**

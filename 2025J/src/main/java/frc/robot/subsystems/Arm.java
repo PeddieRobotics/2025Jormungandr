@@ -53,10 +53,18 @@ public class Arm extends SubsystemBase {
         armMotor.setRotorToSensorRatio(ArmConstants.kArmRotorToSensorRatio);
         armMotor.setSensorToMechanismRatio(ArmConstants.kArmSensortoMechanismRatio);
 
-        armMotor.setPIDValues(ArmConstants.kS, ArmConstants.kV,
-                ArmConstants.kA,
-                ArmConstants.kP, ArmConstants.kI, ArmConstants.kD,
-                ArmConstants.kFF, ArmConstants.kG, GravityTypeValue.Arm_Cosine, StaticFeedforwardSignValue.UseVelocitySign);
+        // Slot 0
+        armMotor.setPIDValues(ArmConstants.kSUp, ArmConstants.kVUp,
+                ArmConstants.kAUp,
+                ArmConstants.kPUp, ArmConstants.kIUp, ArmConstants.kDUp,
+                ArmConstants.kFFUp, ArmConstants.kGUp, GravityTypeValue.Arm_Cosine, StaticFeedforwardSignValue.UseVelocitySign);
+
+        // Slot 1
+        armMotor.setPIDValuesSlot1(ArmConstants.kSDown, ArmConstants.kVDown,
+                ArmConstants.kADown,
+                ArmConstants.kPDown, ArmConstants.kIDown, ArmConstants.kDDown,
+                ArmConstants.kFFDown, ArmConstants.kGDown, GravityTypeValue.Arm_Cosine, StaticFeedforwardSignValue.UseVelocitySign);
+        
         armMotor.setMotionMagicParameters(ArmConstants.kArmMaxCruiseVelocity, ArmConstants.kArmMaxCruiseAcceleration,
                 ArmConstants.kArmMaxCruiseJerk);
 
@@ -121,9 +129,9 @@ public class Arm extends SubsystemBase {
      * 
      * @param position - commanded motor position (cancoder units)
      */
-    public void setArmPositionMotionMagicVoltage(double position) {
+    public void setArmPositionMotionMagicVoltage(double position, int slot) {
         armSetpoint.setNumber(position);
-        armMotor.setPositionMotionMagicVoltage(position);
+        armMotor.setPositionMotionMagicVoltage(position, slot);
     }
 
     /**

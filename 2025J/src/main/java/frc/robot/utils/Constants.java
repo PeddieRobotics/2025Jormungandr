@@ -221,8 +221,8 @@ public final class Constants {
         public static final double kElevatorBargePrestagePosition = 6.2;
         public static final double kElevatorBargeScorePosition = 12.85;
         public static final double kElevatorProcessorScorePosition = 0.0;
-        public static final double kElevatorReef1IntakePosition = 2.2;
-        public static final double kElevatorReef2IntakePosition = 5.45;
+        public static final double kElevatorReef1IntakePosition = 2.0;
+        public static final double kElevatorReef2IntakePosition = 5.25;
         public static final double kElevatorClimbPosition = 0.0;
 
         public static final double kArmStowPosition = 0.25;
@@ -264,23 +264,35 @@ public final class Constants {
         // public static final double kIZone = 0.0;
         // public static final double kG = 0.39;
 
-        public static final double kS = 0.0;
-        public static final double kV = 0.0;
-        public static final double kA = 0.0;
-        public static final double kP = 120.0;
-        public static final double kI = 0.0;
-        public static final double kD = 0.3;
-        public static final double kFF = 0.0;
-        public static final double kIZone = 0.0;
-        public static final double kG = 0.37;
+        public static final int kSlotUp = 0;
+        public static final double kSUp = 0.0;
+        public static final double kVUp = 0.0;
+        public static final double kAUp = 0.0;
+        public static final double kPUp = 60.0;
+        public static final double kIUp = 0.0;
+        public static final double kDUp = 2.0;
+        public static final double kFFUp = 0.0;
+        public static final double kIZoneUp = 0.0;
+        public static final double kGUp = 0.37;
+
+        public static final int kSlotDown = 1;
+        public static final double kSDown = 0.0;
+        public static final double kVDown = 0.0;
+        public static final double kADown = 0.0;
+        public static final double kPDown = 40.0;
+        public static final double kIDown = 0.0;
+        public static final double kDDown = 1.0;
+        public static final double kFFDown = 0.0;
+        public static final double kIZoneDown = 0.0;
+        public static final double kGDown = 0.37;
 
         public static final double kArmForwardSoftLimit = 0.25;
         public static final double kArmReverseSoftLimit = 0.0;
 
         // Motion Magic Parameters
-        public static final double kArmMaxCruiseVelocity = 1.0;
-        public static final double kArmMaxCruiseAcceleration = 0.5;
-        public static final double kArmMaxCruiseJerk = 7.0;
+        public static final double kArmMaxCruiseVelocity = 2.0;
+        public static final double kArmMaxCruiseAcceleration = 4.0;
+        public static final double kArmMaxCruiseJerk = 40.0;
 
         public static final double kArmAngleEpsilon = 0.0; // TODO: define
         public static final double kArmPositionEpsilon = 0.02;
