@@ -10,84 +10,84 @@ public class PoleLookup {
     // TUNE THESE NUMBERS
     private static Map<Integer, PoleCategory> kPoleOffsetTableAuto = new HashMap<>() {{
         // RED POLES
-        put(PoleLookup.getPoleNumber(6, AlignmentDestination.LEFT),   PoleCategory.MEDIUM);
+        put(PoleLookup.getPoleNumber(6, AlignmentDestination.LEFT),   PoleCategory.SLIGHTLY_HIGH);
         put(PoleLookup.getPoleNumber(6, AlignmentDestination.RIGHT),  PoleCategory.MEDIUM);
 
-        put(PoleLookup.getPoleNumber(7, AlignmentDestination.LEFT),   PoleCategory.MEDIUM);
-        put(PoleLookup.getPoleNumber(7, AlignmentDestination.RIGHT),  PoleCategory.MEDIUM);
+        put(PoleLookup.getPoleNumber(7, AlignmentDestination.LEFT),   PoleCategory.SLIGHTLY_HIGH);
+        put(PoleLookup.getPoleNumber(7, AlignmentDestination.RIGHT),  PoleCategory.SLIGHTLY_HIGH);
 
         put(PoleLookup.getPoleNumber(8, AlignmentDestination.LEFT),   PoleCategory.MEDIUM);
-        put(PoleLookup.getPoleNumber(8, AlignmentDestination.RIGHT),  PoleCategory.MEDIUM);
+        put(PoleLookup.getPoleNumber(8, AlignmentDestination.RIGHT),  PoleCategory.SLIGHTLY_HIGH);
 
-        put(PoleLookup.getPoleNumber(9, AlignmentDestination.LEFT),   PoleCategory.MEDIUM);
-        put(PoleLookup.getPoleNumber(9, AlignmentDestination.RIGHT),  PoleCategory.MEDIUM);
+        put(PoleLookup.getPoleNumber(9, AlignmentDestination.LEFT),   PoleCategory.SLIGHTLY_HIGH);
+        put(PoleLookup.getPoleNumber(9, AlignmentDestination.RIGHT),  PoleCategory.SLIGHTLY_HIGH);
 
         put(PoleLookup.getPoleNumber(10, AlignmentDestination.LEFT),  PoleCategory.MEDIUM);
-        put(PoleLookup.getPoleNumber(10, AlignmentDestination.RIGHT), PoleCategory.MEDIUM);
+        put(PoleLookup.getPoleNumber(10, AlignmentDestination.RIGHT), PoleCategory.SLIGHTLY_HIGH);
 
-        put(PoleLookup.getPoleNumber(11, AlignmentDestination.LEFT),  PoleCategory.MEDIUM);
-        put(PoleLookup.getPoleNumber(11, AlignmentDestination.RIGHT), PoleCategory.MEDIUM);
+        put(PoleLookup.getPoleNumber(11, AlignmentDestination.LEFT),  PoleCategory.SLIGHTLY_HIGH);
+        put(PoleLookup.getPoleNumber(11, AlignmentDestination.RIGHT), PoleCategory.SLIGHTLY_HIGH);
         
 
         // BLUE POLES
-        put(PoleLookup.getPoleNumber(17, AlignmentDestination.LEFT),  PoleCategory.MEDIUM);
-        put(PoleLookup.getPoleNumber(17, AlignmentDestination.RIGHT), PoleCategory.MEDIUM);
+        put(PoleLookup.getPoleNumber(17, AlignmentDestination.LEFT),  PoleCategory.SLIGHTLY_HIGH);
+        put(PoleLookup.getPoleNumber(17, AlignmentDestination.RIGHT), PoleCategory.SLIGHTLY_HIGH);
 
-        put(PoleLookup.getPoleNumber(18, AlignmentDestination.LEFT),  PoleCategory.MEDIUM);
-        put(PoleLookup.getPoleNumber(18, AlignmentDestination.RIGHT), PoleCategory.MEDIUM);
+        put(PoleLookup.getPoleNumber(18, AlignmentDestination.LEFT),  PoleCategory.SLIGHTLY_HIGH);
+        put(PoleLookup.getPoleNumber(18, AlignmentDestination.RIGHT), PoleCategory.SLIGHTLY_HIGH);
 
-        put(PoleLookup.getPoleNumber(19, AlignmentDestination.LEFT),  PoleCategory.MEDIUM);
-        put(PoleLookup.getPoleNumber(19, AlignmentDestination.RIGHT), PoleCategory.MEDIUM);
+        put(PoleLookup.getPoleNumber(19, AlignmentDestination.LEFT),  PoleCategory.HIGH);
+        put(PoleLookup.getPoleNumber(19, AlignmentDestination.RIGHT), PoleCategory.SLIGHTLY_HIGH);
 
-        put(PoleLookup.getPoleNumber(20, AlignmentDestination.LEFT),  PoleCategory.MEDIUM);
-        put(PoleLookup.getPoleNumber(20, AlignmentDestination.RIGHT), PoleCategory.MEDIUM);
+        put(PoleLookup.getPoleNumber(20, AlignmentDestination.LEFT),  PoleCategory.SLIGHTLY_HIGH);
+        put(PoleLookup.getPoleNumber(20, AlignmentDestination.RIGHT), PoleCategory.SLIGHTLY_HIGH);
 
-        put(PoleLookup.getPoleNumber(21, AlignmentDestination.LEFT),  PoleCategory.MEDIUM);
-        put(PoleLookup.getPoleNumber(21, AlignmentDestination.RIGHT), PoleCategory.MEDIUM);
+        put(PoleLookup.getPoleNumber(21, AlignmentDestination.LEFT),  PoleCategory.SLIGHTLY_HIGH);
+        put(PoleLookup.getPoleNumber(21, AlignmentDestination.RIGHT), PoleCategory.SLIGHTLY_HIGH);
 
         put(PoleLookup.getPoleNumber(22, AlignmentDestination.LEFT),  PoleCategory.MEDIUM);
-        put(PoleLookup.getPoleNumber(22, AlignmentDestination.RIGHT), PoleCategory.MEDIUM);
+        put(PoleLookup.getPoleNumber(22, AlignmentDestination.RIGHT), PoleCategory.SLIGHTLY_HIGH);
     }};
 
     private static Map<Integer, PoleCategory> kPoleOffsetTableTeleop = new HashMap<>() {{
         // RED POLES
-        put(PoleLookup.getPoleNumber(6, AlignmentDestination.LEFT),   PoleCategory.MEDIUM);
+        put(PoleLookup.getPoleNumber(6, AlignmentDestination.LEFT),   PoleCategory.SLIGHTLY_HIGH);
         put(PoleLookup.getPoleNumber(6, AlignmentDestination.RIGHT),  PoleCategory.MEDIUM);
 
-        put(PoleLookup.getPoleNumber(7, AlignmentDestination.LEFT),   PoleCategory.MEDIUM);
-        put(PoleLookup.getPoleNumber(7, AlignmentDestination.RIGHT),  PoleCategory.MEDIUM);
+        put(PoleLookup.getPoleNumber(7, AlignmentDestination.LEFT),   PoleCategory.SLIGHTLY_HIGH);
+        put(PoleLookup.getPoleNumber(7, AlignmentDestination.RIGHT),  PoleCategory.SLIGHTLY_HIGH);
 
         put(PoleLookup.getPoleNumber(8, AlignmentDestination.LEFT),   PoleCategory.MEDIUM);
-        put(PoleLookup.getPoleNumber(8, AlignmentDestination.RIGHT),  PoleCategory.MEDIUM);
+        put(PoleLookup.getPoleNumber(8, AlignmentDestination.RIGHT),  PoleCategory.SLIGHTLY_HIGH);
 
-        put(PoleLookup.getPoleNumber(9, AlignmentDestination.LEFT),   PoleCategory.MEDIUM);
-        put(PoleLookup.getPoleNumber(9, AlignmentDestination.RIGHT),  PoleCategory.MEDIUM);
+        put(PoleLookup.getPoleNumber(9, AlignmentDestination.LEFT),   PoleCategory.SLIGHTLY_HIGH);
+        put(PoleLookup.getPoleNumber(9, AlignmentDestination.RIGHT),  PoleCategory.SLIGHTLY_HIGH);
 
         put(PoleLookup.getPoleNumber(10, AlignmentDestination.LEFT),  PoleCategory.MEDIUM);
-        put(PoleLookup.getPoleNumber(10, AlignmentDestination.RIGHT), PoleCategory.MEDIUM);
+        put(PoleLookup.getPoleNumber(10, AlignmentDestination.RIGHT), PoleCategory.SLIGHTLY_HIGH);
 
-        put(PoleLookup.getPoleNumber(11, AlignmentDestination.LEFT),  PoleCategory.MEDIUM);
-        put(PoleLookup.getPoleNumber(11, AlignmentDestination.RIGHT), PoleCategory.MEDIUM);
+        put(PoleLookup.getPoleNumber(11, AlignmentDestination.LEFT),  PoleCategory.SLIGHTLY_HIGH);
+        put(PoleLookup.getPoleNumber(11, AlignmentDestination.RIGHT), PoleCategory.SLIGHTLY_HIGH);
         
 
         // BLUE POLES
-        put(PoleLookup.getPoleNumber(17, AlignmentDestination.LEFT),  PoleCategory.MEDIUM);
-        put(PoleLookup.getPoleNumber(17, AlignmentDestination.RIGHT), PoleCategory.MEDIUM);
+        put(PoleLookup.getPoleNumber(17, AlignmentDestination.LEFT),  PoleCategory.SLIGHTLY_HIGH);
+        put(PoleLookup.getPoleNumber(17, AlignmentDestination.RIGHT), PoleCategory.SLIGHTLY_HIGH);
 
-        put(PoleLookup.getPoleNumber(18, AlignmentDestination.LEFT),  PoleCategory.MEDIUM);
-        put(PoleLookup.getPoleNumber(18, AlignmentDestination.RIGHT), PoleCategory.MEDIUM);
+        put(PoleLookup.getPoleNumber(18, AlignmentDestination.LEFT),  PoleCategory.SLIGHTLY_HIGH);
+        put(PoleLookup.getPoleNumber(18, AlignmentDestination.RIGHT), PoleCategory.SLIGHTLY_HIGH);
 
-        put(PoleLookup.getPoleNumber(19, AlignmentDestination.LEFT),  PoleCategory.MEDIUM);
-        put(PoleLookup.getPoleNumber(19, AlignmentDestination.RIGHT), PoleCategory.MEDIUM);
+        put(PoleLookup.getPoleNumber(19, AlignmentDestination.LEFT),  PoleCategory.HIGH);
+        put(PoleLookup.getPoleNumber(19, AlignmentDestination.RIGHT), PoleCategory.SLIGHTLY_HIGH);
 
-        put(PoleLookup.getPoleNumber(20, AlignmentDestination.LEFT),  PoleCategory.MEDIUM);
-        put(PoleLookup.getPoleNumber(20, AlignmentDestination.RIGHT), PoleCategory.MEDIUM);
+        put(PoleLookup.getPoleNumber(20, AlignmentDestination.LEFT),  PoleCategory.SLIGHTLY_HIGH);
+        put(PoleLookup.getPoleNumber(20, AlignmentDestination.RIGHT), PoleCategory.SLIGHTLY_HIGH);
 
-        put(PoleLookup.getPoleNumber(21, AlignmentDestination.LEFT),  PoleCategory.MEDIUM);
-        put(PoleLookup.getPoleNumber(21, AlignmentDestination.RIGHT), PoleCategory.MEDIUM);
+        put(PoleLookup.getPoleNumber(21, AlignmentDestination.LEFT),  PoleCategory.SLIGHTLY_HIGH);
+        put(PoleLookup.getPoleNumber(21, AlignmentDestination.RIGHT), PoleCategory.SLIGHTLY_HIGH);
 
         put(PoleLookup.getPoleNumber(22, AlignmentDestination.LEFT),  PoleCategory.MEDIUM);
-        put(PoleLookup.getPoleNumber(22, AlignmentDestination.RIGHT), PoleCategory.MEDIUM);
+        put(PoleLookup.getPoleNumber(22, AlignmentDestination.RIGHT), PoleCategory.SLIGHTLY_HIGH);
     }};
 
     private static double getCategoryHeightOffset(PoleCategory category) {
