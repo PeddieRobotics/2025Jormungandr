@@ -395,8 +395,8 @@ public final class Constants {
             public static final double kRotationUseLowerPThreshold = 1.5;
             
             // center of robot distance to tag -- back (+ = back, - = forwards)
-            public static final double kTagBackMagnitude = 0.47; // from 0.45
-            public static final double kAutoTagBackMagnitude = 0.48; // from 0.45
+            public static final double kTagBackMagnitude = 0.45; // from 0.45
+            public static final double kAutoTagBackMagnitude = 0.47; // from 0.45
             public static final double kAutoCloseTagBackMagnitude = 0.46; // from 0.45
 
             // center of robot distance to tag -- left (+ = left, - = right)
