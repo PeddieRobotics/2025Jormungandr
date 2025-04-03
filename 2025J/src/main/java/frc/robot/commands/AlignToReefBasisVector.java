@@ -69,11 +69,11 @@ public class AlignToReefBasisVector extends Command {
 
     private double initialTime;
 
-    private double L4offset;
+    private boolean waitForRotation;
 
     private AlignmentDestination destination;
     
-    public AlignToReefBasisVector(AlignmentDestination destination, double maxSpeed, double autoBackOffset, double teleopBackOffset, int blueTargetTag, int redTargetTag, double L4offset) {
+    public AlignToReefBasisVector(AlignmentDestination destination, double maxSpeed, double autoBackOffset, double teleopBackOffset, int blueTargetTag, int redTargetTag, boolean waitForRotation) {
         drivetrain = Drivetrain.getInstance();
         
         // center
@@ -153,7 +153,7 @@ public class AlignToReefBasisVector extends Command {
         this.redTargetTag = redTargetTag;
         this.autoBackOffset = autoBackOffset;
         this.teleopBackOffset = teleopBackOffset;
-        this.L4offset = L4offset;
+        this.waitForRotation = waitForRotation;
         this.destination = destination;
 
         tagBackMagnitude = teleopBackOffset; // ReefAlign.kTagBackMagnitude;
@@ -215,7 +215,6 @@ public class AlignToReefBasisVector extends Command {
     @Override
     public void initialize() {
         initialTime = Timer.getFPGATimestamp();
-        this.L4offset = 0;
         SmartDashboard.putBoolean("Align: fire gamepiece", false);
 
         int desiredTarget;
@@ -289,9 +288,10 @@ public class AlignToReefBasisVector extends Command {
         depthError = 10000;
         lateralError = 10000;
 
-        Logger.getInstance().logEvent("Reef " + commandName + ", ID " + desiredTarget + ", L4 Offset " + L4offset, true);
-
         double offset = PoleLookup.lookupPole(desiredTarget, destination);
+
+        Logger.getInstance().logEvent("Reef " + commandName + ", ID " + desiredTarget + ", L4 Offset " + offset, true);
+
         Superstructure.getInstance().setL4offset(offset);
     }
     
@@ -429,6 +429,7 @@ public class AlignToReefBasisVector extends Command {
         Optional<Pose2d> estimatedPoseOptional = getBestEstimatedPose();
         if (!estimatedPoseOptional.isPresent()) {
             drivetrain.drive(new Translation2d(0, 0), rotation, true, null);
+            Logger.getInstance().logAlignToReef(lateralError, depthError, rotationError, 0, 0, rotation);
             return;
         }
         Pose2d estimatedPose = estimatedPoseOptional.get();
@@ -512,7 +513,6 @@ public class AlignToReefBasisVector extends Command {
             false
         );
 
-        this.L4offset = 0;
         Superstructure.getInstance().setL4offset(0);
     }
 
@@ -534,6 +534,7 @@ public class AlignToReefBasisVector extends Command {
             Superstructure.getInstance().isReefScoringState() ||
             Superstructure.getInstance().getRequestedState() == HP_INTAKE ||
             Superstructure.getInstance().getCurrentState() == STOW
-        ) && rotationGood() && depthAndLateralGood();
+        )   && depthAndLateralGood()
+            && (!waitForRotation || rotationGood());
     }
 }
