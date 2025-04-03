@@ -370,7 +370,7 @@ public final class Constants {
             public static final double kDepthCloseThreshold = 0.45;
             public static final double kDepthCloseAtL4Threshold = 0.05;
             public static final double kDepthL3PrestageThreshold = 0.6;
-            public static final double kDepthL4PrestageThreshold = 0.6;
+            public static final double kDepthL4PrestageThreshold = 0.9;
             public static final double kDepthL4AutoPrestageThreshold = 1.2; // 0.9 definitely works however
 
             public static final double kAutoLateralP = 2.7;

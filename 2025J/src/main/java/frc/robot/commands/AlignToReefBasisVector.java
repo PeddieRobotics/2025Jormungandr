@@ -428,7 +428,7 @@ public class AlignToReefBasisVector extends Command {
 
         Optional<Pose2d> estimatedPoseOptional = getBestEstimatedPose();
         if (!estimatedPoseOptional.isPresent()) {
-            drivetrain.drive(new Translation2d(0, 0), 0, true, null);
+            drivetrain.drive(new Translation2d(0, 0), rotation, true, null);
             return;
         }
         Pose2d estimatedPose = estimatedPoseOptional.get();
