@@ -69,12 +69,12 @@ public class AlignToReefBasisVector extends Command {
 
     private double initialTime;
 
-    private boolean waitForRotation, isDaisy;
+    private boolean isNotFirstPoleAuto, isDaisy;
 
     private AlignmentDestination destination;
     
     public AlignToReefBasisVector(AlignmentDestination destination, double maxSpeed, double autoBackOffset, double teleopBackOffset, 
-            int blueTargetTag, int redTargetTag, boolean waitForRotation, boolean isDaisy) {
+            int blueTargetTag, int redTargetTag, boolean isNotFirstPoleAuto, boolean isDaisy) {
         drivetrain = Drivetrain.getInstance();
         
         // center
@@ -155,7 +155,7 @@ public class AlignToReefBasisVector extends Command {
         this.redTargetTag = redTargetTag;
         this.autoBackOffset = autoBackOffset;
         this.teleopBackOffset = teleopBackOffset;
-        this.waitForRotation = waitForRotation;
+        this.isNotFirstPoleAuto = isNotFirstPoleAuto;
         this.isDaisy = isDaisy;
         this.destination = destination;
 
@@ -305,7 +305,7 @@ public class AlignToReefBasisVector extends Command {
                 return Optional.of(measurement.get());
         }
 
-        if (DriverStation.isAutonomous())
+        if (isNotFirstPoleAuto && DriverStation.isAutonomous())
             return Optional.empty();
         return Optional.of(drivetrain.getPose());
     }
@@ -492,7 +492,10 @@ public class AlignToReefBasisVector extends Command {
         // Auto Score Logic
         boolean autoScore = SmartDashboard.getBoolean("Align: Auto Score", true);
 
-        if (Math.abs(rotationError) < rotationThreshold && depthAndLateralClose() && autoScore && (elapsedTime > 0.3 || depthAndLateralGood()) && Math.abs(drivetrain.getDrivetrainCurrentVelocity()) < 0.5) {
+        if (((DriverStation.isAutonomous() && !isNotFirstPoleAuto) || Math.abs(rotationError) < rotationThreshold) &&
+                depthAndLateralClose() && autoScore && (elapsedTime > 0.3 || depthAndLateralGood()) &&
+                Math.abs(drivetrain.getDrivetrainCurrentVelocity()) < 0.5) {
+
             Logger.getInstance().logEvent("Align to reef send to score", true);
             Superstructure.getInstance().sendToScore();
             SmartDashboard.putBoolean("Align: fire gamepiece", true);
@@ -540,6 +543,6 @@ public class AlignToReefBasisVector extends Command {
             Superstructure.getInstance().getRequestedState() == HP_INTAKE ||
             Superstructure.getInstance().getCurrentState() == STOW
         )   && depthAndLateralGood()
-            && (!waitForRotation || rotationGood());
+            && (!isNotFirstPoleAuto || rotationGood());
     }
 }

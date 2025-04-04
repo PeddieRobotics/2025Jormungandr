@@ -141,7 +141,7 @@ public class Autonomous extends SubsystemBase {
         put(22, new Translation2d(5.252, 2.975));
     }};
 
-    public void registerReefAlignments(String namePrefix, double backOffset, double postScoreDelay, boolean waitForRotation, boolean isDaisy) {
+    public void registerReefAlignments(String namePrefix, double backOffset, double postScoreDelay, boolean isNotFirstPole, boolean isDaisy) {
         for (int blue = 17; blue <= 22; blue++) {
             int red = AlignmentConstants.kBlueToRedReefTag.get(blue);
 
@@ -165,7 +165,7 @@ public class Autonomous extends SubsystemBase {
                             new AlignToReefBasisVector(
                                 Constants.AlignmentConstants.AlignmentDestination.LEFT,
                                 ReefAlign.kMaxSpeed, backOffset, ReefAlign.kTagBackMagnitude,
-                                blue, red, waitForRotation, isDaisy
+                                blue, red, isNotFirstPole, isDaisy
                             ),
                             new WaitCommand(postScoreDelay),
                             new InstantCommand(() -> Logger.getInstance().logEvent("Auto Align to Reef converged", true))
@@ -193,7 +193,7 @@ public class Autonomous extends SubsystemBase {
                             new AlignToReefBasisVector(
                                 Constants.AlignmentConstants.AlignmentDestination.RIGHT,
                                 ReefAlign.kMaxSpeed, backOffset, ReefAlign.kTagBackMagnitude,
-                                blue, red, waitForRotation, isDaisy
+                                blue, red, isNotFirstPole, isDaisy
                             ),
                             new WaitCommand(postScoreDelay),
                             new InstantCommand(() -> Logger.getInstance().logEvent("Auto Align to Reef converged", true))
