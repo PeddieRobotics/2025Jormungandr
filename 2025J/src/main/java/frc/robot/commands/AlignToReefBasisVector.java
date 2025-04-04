@@ -301,8 +301,12 @@ public class AlignToReefBasisVector extends Command {
     private Optional<Pose2d> getBestEstimatedPose() {
         for (Limelight camera : cameras) {
             Optional<Pose2d> measurement = camera.getEstimatedPoseMT2();
-            if (measurement.isPresent() && camera.hasTarget())
-                return Optional.of(measurement.get());
+            if (measurement.isPresent() && camera.hasTarget()) {
+                double x = measurement.get().getX();
+                double y = measurement.get().getY();
+                if (x != 0 || y != 0)
+                    return Optional.of(measurement.get());
+            }
         }
 
         if (isNotFirstPoleAuto && DriverStation.isAutonomous())
