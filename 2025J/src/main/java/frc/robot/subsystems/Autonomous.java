@@ -141,7 +141,7 @@ public class Autonomous extends SubsystemBase {
         put(22, new Translation2d(5.252, 2.975));
     }};
 
-    public void registerReefAlignments(String namePrefix, double backOffset, double postScoreDelay, boolean waitForRotation) {
+    public void registerReefAlignments(String namePrefix, double backOffset, double postScoreDelay, boolean waitForRotation, boolean isDaisy) {
         for (int blue = 17; blue <= 22; blue++) {
             int red = AlignmentConstants.kBlueToRedReefTag.get(blue);
 
@@ -165,7 +165,7 @@ public class Autonomous extends SubsystemBase {
                             new AlignToReefBasisVector(
                                 Constants.AlignmentConstants.AlignmentDestination.LEFT,
                                 ReefAlign.kMaxSpeed, backOffset, ReefAlign.kTagBackMagnitude,
-                                blue, red, waitForRotation
+                                blue, red, waitForRotation, isDaisy
                             ),
                             new WaitCommand(postScoreDelay),
                             new InstantCommand(() -> Logger.getInstance().logEvent("Auto Align to Reef converged", true))
@@ -193,7 +193,7 @@ public class Autonomous extends SubsystemBase {
                             new AlignToReefBasisVector(
                                 Constants.AlignmentConstants.AlignmentDestination.RIGHT,
                                 ReefAlign.kMaxSpeed, backOffset, ReefAlign.kTagBackMagnitude,
-                                blue, red, waitForRotation
+                                blue, red, waitForRotation, isDaisy
                             ),
                             new WaitCommand(postScoreDelay),
                             new InstantCommand(() -> Logger.getInstance().logEvent("Auto Align to Reef converged", true))
@@ -217,8 +217,11 @@ public class Autonomous extends SubsystemBase {
     }
         
     private void registerNamedCommands() {
-        registerReefAlignments("", ReefAlign.kAutoTagBackMagnitude, 0.2, true);
-        registerReefAlignments("CLOSE_", ReefAlign.kAutoCloseTagBackMagnitude, 0.3, false);
+        registerReefAlignments("", ReefAlign.kAutoTagBackMagnitude, 0.2, true, false);
+        registerReefAlignments("CLOSE_", ReefAlign.kAutoCloseTagBackMagnitude, 0.3, false, false);
+
+        registerReefAlignments("DAISY_", ReefAlign.kAutoTagBackMagnitude, 0.2, true, true);
+        registerReefAlignments("DAISY_CLOSE_", ReefAlign.kAutoCloseTagBackMagnitude, 0.3, false, true);
 
         NamedCommands.registerCommand("L1_PREP", new InstantCommand(() -> superstructure.requestState(SuperstructureState.L1_PREP)));
         NamedCommands.registerCommand("L2_PREP", new InstantCommand(() -> superstructure.requestState(SuperstructureState.L2_PREP)));
@@ -294,7 +297,11 @@ public class Autonomous extends SubsystemBase {
         }));
 
         NamedCommands.registerCommand("REMOVE_ALGAE_LEFT", new ParallelCommandGroup(
-            new AlignToReefBasisVector(AlignmentConstants.AlignmentDestination.MIDDLE, ReefAlign.kMaxSpeed, 0, ReefAlign.kTagBackMagnitude, 19, 6, true),
+            new AlignToReefBasisVector(
+                AlignmentConstants.AlignmentDestination.MIDDLE,
+                ReefAlign.kMaxSpeed, 0, ReefAlign.kTagBackMagnitude,
+                19, 6, true, false
+            ),
             new SequentialCommandGroup(
                 new WaitCommand(0.25),
                 new InstantCommand(() -> {
@@ -316,7 +323,11 @@ public class Autonomous extends SubsystemBase {
         // ));
 
         NamedCommands.registerCommand("REMOVE_ALGAE_RIGHT", new ParallelCommandGroup(
-            new AlignToReefBasisVector(AlignmentConstants.AlignmentDestination.MIDDLE, ReefAlign.kMaxSpeed, 0, ReefAlign.kTagBackMagnitude, 17, 8, true),
+            new AlignToReefBasisVector(
+                AlignmentConstants.AlignmentDestination.MIDDLE,
+                ReefAlign.kMaxSpeed, 0, ReefAlign.kTagBackMagnitude,
+                17, 8, true, false
+            ),
             new SequentialCommandGroup(
                 new WaitCommand(0.25),
                 new InstantCommand(() -> {

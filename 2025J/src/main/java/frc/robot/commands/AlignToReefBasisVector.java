@@ -43,7 +43,7 @@ public class AlignToReefBasisVector extends Command {
     private double lateralP, lateralI, lateralD, lateralFF;
 
     private double lateralThreshold, lateralCloseThreshold, lateralCloseAtL4Threshold, lateralL3PrestageThreshold, lateralL4PrestageThreshold;
-    private double depthL4AutoPrestageThreshold, lateralL4AutoPrestageThreshold;
+    private double depthL4AutoPrestageThreshold, depthL4DaisyAutoPrestageThreshold, lateralL4AutoPrestageThreshold;
 
     private double rotationP, rotationI, rotationD, rotationFF;
     private double rotationLowerP, rotationUseLowerPThreshold;
@@ -69,11 +69,12 @@ public class AlignToReefBasisVector extends Command {
 
     private double initialTime;
 
-    private boolean waitForRotation;
+    private boolean waitForRotation, isDaisy;
 
     private AlignmentDestination destination;
     
-    public AlignToReefBasisVector(AlignmentDestination destination, double maxSpeed, double autoBackOffset, double teleopBackOffset, int blueTargetTag, int redTargetTag, boolean waitForRotation) {
+    public AlignToReefBasisVector(AlignmentDestination destination, double maxSpeed, double autoBackOffset, double teleopBackOffset, 
+            int blueTargetTag, int redTargetTag, boolean waitForRotation, boolean isDaisy) {
         drivetrain = Drivetrain.getInstance();
         
         // center
@@ -129,6 +130,7 @@ public class AlignToReefBasisVector extends Command {
         lateralL4PrestageThreshold = ReefAlign.kLateralL4PrestageThreshold;
 
         depthL4AutoPrestageThreshold = ReefAlign.kDepthL4AutoPrestageThreshold;
+        depthL4DaisyAutoPrestageThreshold = ReefAlign.kDepthL4DaisyAutoPrestageThreshold;    
         lateralL4AutoPrestageThreshold = ReefAlign.kLateralL4AutoPrestageThreshold;
 
         rotationP = ReefAlign.kRotationP;
@@ -154,6 +156,7 @@ public class AlignToReefBasisVector extends Command {
         this.autoBackOffset = autoBackOffset;
         this.teleopBackOffset = teleopBackOffset;
         this.waitForRotation = waitForRotation;
+        this.isDaisy = isDaisy;
         this.destination = destination;
 
         tagBackMagnitude = teleopBackOffset; // ReefAlign.kTagBackMagnitude;
@@ -355,6 +358,8 @@ public class AlignToReefBasisVector extends Command {
     }
 
     private boolean l4AutoPrepSafe(){
+        if (isDaisy)
+            return Math.abs(depthError) < depthL4DaisyAutoPrestageThreshold && Math.abs(lateralError) < lateralL4AutoPrestageThreshold;
         return Math.abs(depthError) < depthL4AutoPrestageThreshold && Math.abs(lateralError) < lateralL4AutoPrestageThreshold;
     }
 

@@ -25,7 +25,7 @@
         {
           "type": "named",
           "data": {
-            "name": "CLOSE_ALIGN_20_11_LEFT"
+            "name": "DAISY_CLOSE_ALIGN_20_11_LEFT"
           }
         },
         {
@@ -55,7 +55,7 @@
         {
           "type": "named",
           "data": {
-            "name": "ALIGN_19_6_RIGHT"
+            "name": "DAISY_ALIGN_19_6_RIGHT"
           }
         },
         {
@@ -85,7 +85,7 @@
         {
           "type": "named",
           "data": {
-            "name": "ALIGN_19_6_LEFT"
+            "name": "DAISY_ALIGN_19_6_LEFT"
           }
         },
         {
@@ -115,7 +115,13 @@
         {
           "type": "named",
           "data": {
-            "name": "ALIGN_20_11_RIGHT"
+            "name": "L4_PREP"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "DAISY_ALIGN_20_11_RIGHT"
           }
         }
       ]

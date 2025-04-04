@@ -110,12 +110,18 @@ public class DriverOI {
             new AlignToBarge(), 
             new ConditionalCommand(
                 new SequentialCommandGroup(
-                    new AlignToReefBasisVector(AlignmentConstants.AlignmentDestination.LEFT, ReefAlign.kMaxSpeed, 0, ReefAlign.kTagBackMagnitude, 0, 0, true),
+                    new AlignToReefBasisVector(
+                        AlignmentConstants.AlignmentDestination.LEFT, ReefAlign.kMaxSpeed,
+                        0, ReefAlign.kTagBackMagnitude, 0, 0, true, false
+                    ),
                     new ConditionalCommand(
                         new SequentialCommandGroup(
                             new WaitCommand(0.5),
                             new ParallelCommandGroup(
-                                new AlignToReefBasisVector(AlignmentConstants.AlignmentDestination.MIDDLE, ReefAlign.kMaxSpeed, 0, ReefAlign.kTagBackMagnitude,  0, 0, true),
+                                new AlignToReefBasisVector(
+                                    AlignmentConstants.AlignmentDestination.MIDDLE, ReefAlign.kMaxSpeed,
+                                    0, ReefAlign.kTagBackMagnitude, 0, 0, true, false
+                                ),
                                 new SequentialCommandGroup(
                                     new WaitCommand(0.25),
                                     new InstantCommand(() -> {
@@ -129,7 +135,10 @@ public class DriverOI {
                         OperatorOI.getInstance()::getLeftBumperHeld
                     )
                 ),
-                new AlignToReefBasisVector(AlignmentConstants.AlignmentDestination.MIDDLE, ReefAlign.kMaxSpeed, 0, ReefAlign.kTagBackMagnitude, 0, 0, true), 
+                new AlignToReefBasisVector(
+                    AlignmentConstants.AlignmentDestination.MIDDLE, ReefAlign.kMaxSpeed,
+                    0, ReefAlign.kTagBackMagnitude, 0, 0, true, false
+                ), 
                 Claw.getInstance()::eitherCoralSensorTriggered
             ),
             Claw.getInstance()::getAlgaeSensor
@@ -139,12 +148,18 @@ public class DriverOI {
         R3Trigger.whileTrue(
             new ConditionalCommand(
                 new SequentialCommandGroup(
-                    new AlignToReefBasisVector(AlignmentConstants.AlignmentDestination.RIGHT, ReefAlign.kMaxSpeed, 0, ReefAlign.kTagBackMagnitude, 0, 0, true),
+                    new AlignToReefBasisVector(
+                        AlignmentConstants.AlignmentDestination.RIGHT, ReefAlign.kMaxSpeed,
+                        0, ReefAlign.kTagBackMagnitude, 0, 0, true, false
+                    ),
                     new ConditionalCommand(
                         new SequentialCommandGroup(
                             new WaitCommand(0.5),
                             new ParallelCommandGroup(
-                                new AlignToReefBasisVector(AlignmentConstants.AlignmentDestination.MIDDLE, ReefAlign.kMaxSpeed, 0, ReefAlign.kTagBackMagnitude, 0, 0, true),
+                                new AlignToReefBasisVector(
+                                    AlignmentConstants.AlignmentDestination.MIDDLE, ReefAlign.kMaxSpeed,
+                                    0, ReefAlign.kTagBackMagnitude, 0, 0, true, false
+                                ),
                                 new SequentialCommandGroup(
                                     new WaitCommand(0.25),
                                     new InstantCommand(() -> {
