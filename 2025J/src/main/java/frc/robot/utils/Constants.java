@@ -202,7 +202,7 @@ public final class Constants {
         public static final double kL3ScoreTimeout = 1.0; 
         public static final double kL4ScoreTimeout = 1.0; 
         public static final double kProcessorTimeout = 1.0; 
-        public static final double kBargeTimeout = 1.0;
+        public static final double kBargeTimeout = 0.7; // 1.0;
 
         public static final double kElevatorStowPosition = 0.0;
         public static final double kElevatorHPIntakePosition = 0.0;
