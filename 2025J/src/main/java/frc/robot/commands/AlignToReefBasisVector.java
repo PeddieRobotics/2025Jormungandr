@@ -304,13 +304,14 @@ public class AlignToReefBasisVector extends Command {
             if (measurement.isPresent() && camera.hasTarget()) {
                 double x = measurement.get().getX();
                 double y = measurement.get().getY();
-                if (x != 0 || y != 0)
+                if (x != 0 && y != 0)
                     return Optional.of(measurement.get());
             }
         }
 
         if (isNotFirstPoleAuto && DriverStation.isAutonomous())
             return Optional.empty();
+
         return Optional.of(drivetrain.getPose());
     }
 
