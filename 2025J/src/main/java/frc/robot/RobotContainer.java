@@ -67,7 +67,7 @@ public class RobotContainer {
         llClimber = LimelightClimber.getInstance();
         // lights = Lights.getInstance();
 
-        CalculateReefTarget.init();
+        CalculateReefTarget.initBlue();
 
         SmartDashboard.putData("Auto Routines", autonomous.getAutoChooser());
         drivetrain.setDefaultCommand(new SwerveDriveCommand());

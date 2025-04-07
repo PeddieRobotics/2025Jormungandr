@@ -7,7 +7,6 @@ import java.util.List;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.util.Units;
-import edu.wpi.first.wpilibj.DriverStation;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Limelight;
 import frc.robot.utils.Constants.AlignmentConstants;
@@ -42,34 +41,21 @@ class Point {
 
 public class CalculateReefTarget {
     private static Drivetrain drivetrain;
-    private static List<Point> badHexagonPoints;
+    private static List<Point> badHexagonPointsRed, badHexagonPointsBlue;
 
     private static double cosineSimilarity(Translation2d a, Translation2d b) {
         return (a.getX() * b.getX() + a.getY() * b.getY()) / (a.getNorm() * b.getNorm());
     }
 
-    public static void init() {
+    public static void initBlue() {
         drivetrain = Drivetrain.getInstance();
 
-        Point reefCenter;
-        // BLUE
-        if (DriverStation.getAlliance().isEmpty() || DriverStation.getAlliance().get() == DriverStation.Alliance.Blue) {
-            Pose2d tag18 = Limelight.getAprilTagPose(18);
-            Pose2d tag21 = Limelight.getAprilTagPose(21);
-            reefCenter = new Point(
-                (tag18.getX() + tag21.getX()) / 2,
-                (tag18.getY() + tag21.getY()) / 2
-            );
-        }
-        // RED
-        else {
-            Pose2d tag7 = Limelight.getAprilTagPose(7);
-            Pose2d tag10 = Limelight.getAprilTagPose(10);
-            reefCenter = new Point(
-                (tag7.getX() + tag10.getX()) / 2,
-                (tag7.getY() + tag10.getY()) / 2
-            );
-        }
+        Pose2d tag18 = Limelight.getAprilTagPose(18);
+        Pose2d tag21 = Limelight.getAprilTagPose(21);
+        Point reefCenter = new Point(
+            (tag18.getX() + tag21.getX()) / 2,
+            (tag18.getY() + tag21.getY()) / 2
+        );
 
         /*
          * center to tag = 32.75
@@ -88,24 +74,37 @@ public class CalculateReefTarget {
          */
 
         double reefCornerToCenter = Units.inchesToMeters(2 * 32.75 / Math.sqrt(3));
-        // TODO: tune
         reefCornerToCenter += AlignmentConstants.kBadHexagonSize;
 
-        badHexagonPoints = new ArrayList<>();
+        badHexagonPointsBlue = new ArrayList<>();
         for (int i = 0; i < 360; i += 60) {
-            badHexagonPoints.add(new Point(
+            badHexagonPointsBlue.add(new Point(
                 reefCenter.x + reefCornerToCenter * Math.cos(Math.toRadians(i)),
                 reefCenter.y + reefCornerToCenter * Math.sin(Math.toRadians(i))
             ));
         }
+    }
 
-        // Field2d[] fields = new Field2d[6];
-        // for (int i = 0; i < 6; i++) {
-        //     Point p = badHexagonPoints.get(i);
-        //     fields[i] = new Field2d();
-        //     fields[i].setRobotPose(new Pose2d(p.x, p.y, new Rotation2d(0)));
-        //     SmartDashboard.putData("hexagon " + i, fields[i]);
-        // }
+    public static void initRed() {
+        drivetrain = Drivetrain.getInstance();
+
+        Pose2d tag7 = Limelight.getAprilTagPose(7);
+        Pose2d tag10 = Limelight.getAprilTagPose(10);
+        Point reefCenter = new Point(
+            (tag7.getX() + tag10.getX()) / 2,
+            (tag7.getY() + tag10.getY()) / 2
+        );
+
+        double reefCornerToCenter = Units.inchesToMeters(2 * 32.75 / Math.sqrt(3));
+        reefCornerToCenter += AlignmentConstants.kBadHexagonSize;
+
+        badHexagonPointsRed = new ArrayList<>();
+        for (int i = 0; i < 360; i += 60) {
+            badHexagonPointsRed.add(new Point(
+                reefCenter.x + reefCornerToCenter * Math.cos(Math.toRadians(i)),
+                reefCenter.y + reefCornerToCenter * Math.sin(Math.toRadians(i))
+            ));
+        }
     }
 
     // Solution 2: https://www.eecs.umich.edu/courses/eecs380/HANDOUTS/PROJ2/InsidePoly.html
@@ -120,23 +119,35 @@ public class CalculateReefTarget {
             dtheta += 2 * Math.PI;
         return dtheta;
     }
-    private static boolean insideBadHexagon(Point p) {
+    private static boolean insideBadHexagonBlue(Point p) {
         double angle = 0;
         Point p1 = new Point(0, 0);
         Point p2 = new Point(0, 0);
 
         for (int i = 0; i < 6; i++) {
-            p1.x = badHexagonPoints.get(i).x - p.x;
-            p1.y = badHexagonPoints.get(i).y - p.y;
-            p2.x = badHexagonPoints.get((i + 1) % 6).x - p.x;
-            p2.y = badHexagonPoints.get((i + 1) % 6).y - p.y;
+            p1.x = badHexagonPointsBlue.get(i).x - p.x;
+            p1.y = badHexagonPointsBlue.get(i).y - p.y;
+            p2.x = badHexagonPointsBlue.get((i + 1) % 6).x - p.x;
+            p2.y = badHexagonPointsBlue.get((i + 1) % 6).y - p.y;
             angle += angle2d(p1.x, p1.y, p2.x, p2.y);
         }
 
         return Math.abs(angle) >= Math.PI;
     }
-    public static boolean insideBadHexagon(Pose2d p) {
-        return insideBadHexagon(new Point(p.getX(), p.getY()));
+    private static boolean insideBadHexagonRed(Point p) {
+        double angle = 0;
+        Point p1 = new Point(0, 0);
+        Point p2 = new Point(0, 0);
+
+        for (int i = 0; i < 6; i++) {
+            p1.x = badHexagonPointsRed.get(i).x - p.x;
+            p1.y = badHexagonPointsRed.get(i).y - p.y;
+            p2.x = badHexagonPointsRed.get((i + 1) % 6).x - p.x;
+            p2.y = badHexagonPointsRed.get((i + 1) % 6).y - p.y;
+            angle += angle2d(p1.x, p1.y, p2.x, p2.y);
+        }
+
+        return Math.abs(angle) >= Math.PI;
     }
 
     public static int calculateTargetID() {
@@ -144,19 +155,29 @@ public class CalculateReefTarget {
         Translation2d odometryPose = drivetrain.getPose().getTranslation();
         List<IDVectorPair> robotToTag = new ArrayList<>();
 
-        // BLUE:
-        if (DriverStation.getAlliance().isEmpty() || DriverStation.getAlliance().get() == DriverStation.Alliance.Blue) {
-            for (int i = 17; i <= 22; i++) {
-                Translation2d tagPose = Limelight.getAprilTagPose(i).getTranslation();
-                robotToTag.add(new IDVectorPair(i, tagPose.minus(odometryPose)));
-            }
+        // // BLUE:
+        // if (DriverStation.getAlliance().isEmpty() || DriverStation.getAlliance().get() == DriverStation.Alliance.Blue) {
+        //     for (int i = 17; i <= 22; i++) {
+        //         Translation2d tagPose = Limelight.getAprilTagPose(i).getTranslation();
+        //         robotToTag.add(new IDVectorPair(i, tagPose.minus(odometryPose)));
+        //     }
+        // }
+        // // RED:
+        // else {
+        //     for (int i = 6; i <= 11; i++) {
+        //         Translation2d tagPose = Limelight.getAprilTagPose(i).getTranslation();
+        //         robotToTag.add(new IDVectorPair(i, tagPose.minus(odometryPose)));
+        //     }
+        // }
+        
+        // consider all tags for stealing algae from opponent's reef
+        for (int i = 17; i <= 22; i++) {
+            Translation2d tagPose = Limelight.getAprilTagPose(i).getTranslation();
+            robotToTag.add(new IDVectorPair(i, tagPose.minus(odometryPose)));
         }
-        // RED:
-        else {
-            for (int i = 6; i <= 11; i++) {
-                Translation2d tagPose = Limelight.getAprilTagPose(i).getTranslation();
-                robotToTag.add(new IDVectorPair(i, tagPose.minus(odometryPose)));
-            }
+        for (int i = 6; i <= 11; i++) {
+            Translation2d tagPose = Limelight.getAprilTagPose(i).getTranslation();
+            robotToTag.add(new IDVectorPair(i, tagPose.minus(odometryPose)));
         }
 
         // sort list in ascending order of vector magnitude / robot distance to tag
@@ -166,7 +187,8 @@ public class CalculateReefTarget {
         int tag0id = robotToTag.get(0).id;
         int tag1id = robotToTag.get(1).id;
 
-        boolean isInBadHexagon = insideBadHexagon(new Point(odometryPose));
+        Point point = new Point(odometryPose);
+        boolean isInBadHexagon = insideBadHexagonBlue(point) || insideBadHexagonRed(point);
 
         // SmartDashboard.putBoolean("is inside bad hexagon", isInBadHexagon);
 

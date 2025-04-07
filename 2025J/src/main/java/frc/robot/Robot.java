@@ -78,7 +78,9 @@ public class Robot extends TimedRobot {
             m_autonomousCommand.schedule();
         }
 
-        CalculateReefTarget.init();
+        CalculateReefTarget.initBlue();
+        CalculateReefTarget.initRed();
+
         Superstructure.getInstance().setL4offset(0);
     }
 
@@ -98,7 +100,7 @@ public class Robot extends TimedRobot {
             m_autonomousCommand.cancel();
         }
 
-        CalculateReefTarget.init();
+        CalculateReefTarget.initBlue();
         Drivetrain.getInstance().setAutoAdjustHeading(Drivetrain.getInstance().getAutoAdjustHeading());
         Superstructure.getInstance().setL4offset(0);
     }
