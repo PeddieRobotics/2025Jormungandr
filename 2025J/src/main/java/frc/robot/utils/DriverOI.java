@@ -12,6 +12,7 @@ import frc.robot.subsystems.Superstructure;
 import edu.wpi.first.math.geometry.Translation2d;
 import frc.robot.subsystems.Superstructure.SuperstructureState;
 
+import java.util.Arrays;
 import java.util.Optional;
 
 import edu.wpi.first.math.geometry.Pose2d;
@@ -72,7 +73,12 @@ public class DriverOI {
         circleButton.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.HP_INTAKE)));
 
         Trigger squareButton = new JoystickButton(controller, PS4Controller.Button.kSquare.value);
-        squareButton.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.ALGAE_GROUND_INTAKE)));
+        squareButton.onTrue(new InstantCommand(() -> {
+            if (Arrays.asList(SuperstructureState.ALGAE_LOLLIPOP_INTAKE).contains(superstructure.getCurrentState()))
+                superstructure.requestState(SuperstructureState.ALGAE_GROUND_INTAKE);
+            else
+                superstructure.requestState(SuperstructureState.ALGAE_LOLLIPOP_INTAKE);
+        }));
 
         Trigger triangleButton = new JoystickButton(controller, PS4Controller.Button.kTriangle.value);
         triangleButton.onTrue(new InstantCommand(() -> superstructure.sendToScore()));

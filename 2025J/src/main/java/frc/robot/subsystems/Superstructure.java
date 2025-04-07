@@ -48,6 +48,7 @@ public class Superstructure extends SubsystemBase {
         STOW,
         HP_INTAKE,
         ALGAE_GROUND_INTAKE,
+        ALGAE_LOLLIPOP_INTAKE,
         PRESTAGE,
         L1_PREP,
         L2_PREP,
@@ -204,6 +205,7 @@ public class Superstructure extends SubsystemBase {
                 if (Arrays.asList(
                         STOW, HP_INTAKE,
                         ALGAE_GROUND_INTAKE,
+                        ALGAE_LOLLIPOP_INTAKE,
                         L1_PREP,
                         L2_PREP,
                         PRESTAGE,
@@ -260,6 +262,7 @@ public class Superstructure extends SubsystemBase {
                 if (Arrays.asList(
                         STOW,
                         ALGAE_GROUND_INTAKE,
+                        ALGAE_LOLLIPOP_INTAKE,
                         PROCESSOR_PREP,
                         EJECT_ALGAE,
                         EJECT_CORAL,
@@ -313,6 +316,36 @@ public class Superstructure extends SubsystemBase {
                 }
             }
 
+            case ALGAE_LOLLIPOP_INTAKE -> {
+                elevator.setElevatorPositionMotionMagicVoltage(ScoreConstants.kElevatorLollipopIntakePosition);                
+                arm.setArmPositionMotionMagicVoltage(ScoreConstants.kArmLollipopIntakePosition, ArmConstants.kSlotDown);
+
+                claw.intakeAlgae();
+                claw.stopCoralMotor();
+
+                if (claw.getAlgaeSensor()) {
+                    claw.holdAlgae();
+                    requestState(STOW);
+                }
+
+                if (Arrays.asList(
+                        STOW,
+                        HP_INTAKE,
+                        L1_PREP,
+                        L2_PREP,
+                        PRESTAGE,
+                        BARGE_PRESTAGE,
+                        BARGE_PREP,
+                        PROCESSOR_PREP,
+                        REEF1_ALGAE_INTAKE,
+                        REEF2_ALGAE_INTAKE,
+                        EJECT_ALGAE,
+                        EJECT_CORAL)
+                        .contains(requestedSystemState)) {
+                            systemState = requestedSystemState;
+                }
+            }
+
             case L1_PREP -> {
                 elevator.setElevatorPositionMotionMagicVoltage(ScoreConstants.kElevatorL1ScorePosition + manualOffset);
                 if(elevator.isAtPosition(ScoreConstants.kElevatorL1ScorePosition)){
@@ -325,6 +358,7 @@ public class Superstructure extends SubsystemBase {
                         STOW,
                         HP_INTAKE,
                         ALGAE_GROUND_INTAKE,
+                        ALGAE_LOLLIPOP_INTAKE,
                         L1_SCORE,
                         L2_PREP,
                         L3_PREP,
@@ -359,6 +393,7 @@ public class Superstructure extends SubsystemBase {
                         STOW,
                         HP_INTAKE,
                         ALGAE_GROUND_INTAKE,
+                        ALGAE_LOLLIPOP_INTAKE,
                         L1_PREP,
                         L2_SCORE,
                         L3_PREP,
@@ -386,6 +421,7 @@ public class Superstructure extends SubsystemBase {
                         STOW,
                         HP_INTAKE,
                         ALGAE_GROUND_INTAKE,
+                        ALGAE_LOLLIPOP_INTAKE,
                         L1_PREP,
                         L2_PREP,
                         L3_SCORE,
@@ -418,6 +454,7 @@ public class Superstructure extends SubsystemBase {
                         STOW,
                         HP_INTAKE,
                         ALGAE_GROUND_INTAKE,
+                        ALGAE_LOLLIPOP_INTAKE,
                         L1_PREP,
                         L2_PREP,
                         L3_PREP,
@@ -444,6 +481,7 @@ public class Superstructure extends SubsystemBase {
                         STOW,
                         HP_INTAKE,
                         ALGAE_GROUND_INTAKE,
+                        ALGAE_LOLLIPOP_INTAKE,
                         L1_PREP,
                         L2_PREP,
                         L3_PREP,
@@ -478,6 +516,7 @@ public class Superstructure extends SubsystemBase {
                         STOW,
                         HP_INTAKE,
                         ALGAE_GROUND_INTAKE,
+                        ALGAE_LOLLIPOP_INTAKE,
                         REEF1_ALGAE_INTAKE,
                         REEF2_ALGAE_INTAKE)
                         .contains(requestedSystemState)) {
@@ -500,6 +539,7 @@ public class Superstructure extends SubsystemBase {
                         STOW,
                         HP_INTAKE,
                         ALGAE_GROUND_INTAKE,
+                        ALGAE_LOLLIPOP_INTAKE,
                         REEF1_ALGAE_INTAKE,
                         REEF2_ALGAE_INTAKE)
                         .contains(requestedSystemState)) {
@@ -521,6 +561,7 @@ public class Superstructure extends SubsystemBase {
                         STOW,
                         HP_INTAKE,
                         ALGAE_GROUND_INTAKE,
+                        ALGAE_LOLLIPOP_INTAKE,
                         REEF1_ALGAE_INTAKE,
                         REEF2_ALGAE_INTAKE)
                         .contains(requestedSystemState)) {
@@ -546,6 +587,7 @@ public class Superstructure extends SubsystemBase {
                         STOW,
                         HP_INTAKE,
                         ALGAE_GROUND_INTAKE,
+                        ALGAE_LOLLIPOP_INTAKE,
                         REEF1_ALGAE_INTAKE,
                         REEF2_ALGAE_INTAKE,
                         REMOVING_ALGAE)
@@ -569,6 +611,7 @@ public class Superstructure extends SubsystemBase {
                         STOW,
                         HP_INTAKE,
                         ALGAE_GROUND_INTAKE,
+                        ALGAE_LOLLIPOP_INTAKE,
                         L1_PREP,
                         L2_PREP,
                         PRESTAGE,
@@ -598,6 +641,7 @@ public class Superstructure extends SubsystemBase {
                         STOW,
                         HP_INTAKE,
                         ALGAE_GROUND_INTAKE,
+                        ALGAE_LOLLIPOP_INTAKE,
                         L1_PREP,
                         L2_PREP,
                         PRESTAGE,
@@ -627,6 +671,7 @@ public class Superstructure extends SubsystemBase {
                         STOW,
                         HP_INTAKE,
                         ALGAE_GROUND_INTAKE,
+                        ALGAE_LOLLIPOP_INTAKE,
                         REEF1_ALGAE_INTAKE,
                         REEF2_ALGAE_INTAKE)
                         .contains(requestedSystemState)) {
@@ -650,6 +695,7 @@ public class Superstructure extends SubsystemBase {
                         STOW,
                         HP_INTAKE,
                         ALGAE_GROUND_INTAKE,
+                        ALGAE_LOLLIPOP_INTAKE,
                         L1_PREP,
                         L2_PREP,
                         PRESTAGE,
@@ -686,6 +732,7 @@ public class Superstructure extends SubsystemBase {
                         STOW,
                         HP_INTAKE,
                         ALGAE_GROUND_INTAKE,
+                        ALGAE_LOLLIPOP_INTAKE,
                         REEF1_ALGAE_INTAKE,
                         REEF2_ALGAE_INTAKE)
                         .contains(requestedSystemState)) {
@@ -712,6 +759,7 @@ public class Superstructure extends SubsystemBase {
                         STOW,
                         HP_INTAKE,
                         ALGAE_GROUND_INTAKE,
+                        ALGAE_LOLLIPOP_INTAKE,
                         L1_PREP,
                         L2_PREP,
                         PRESTAGE,
@@ -744,6 +792,7 @@ public class Superstructure extends SubsystemBase {
                         STOW,
                         HP_INTAKE,
                         ALGAE_GROUND_INTAKE,
+                        ALGAE_LOLLIPOP_INTAKE,
                         L1_PREP,
                         L2_PREP,
                         PRESTAGE,
@@ -765,6 +814,7 @@ public class Superstructure extends SubsystemBase {
                         STOW,
                         HP_INTAKE,
                         ALGAE_GROUND_INTAKE,
+                        ALGAE_LOLLIPOP_INTAKE,
                         L1_PREP,
                         L2_PREP,
                         PRESTAGE,
@@ -786,6 +836,7 @@ public class Superstructure extends SubsystemBase {
                         STOW,
                         HP_INTAKE,
                         ALGAE_GROUND_INTAKE,
+                        ALGAE_LOLLIPOP_INTAKE,
                         L1_PREP,
                         L2_PREP,
                         PRESTAGE,
@@ -831,6 +882,7 @@ public class Superstructure extends SubsystemBase {
                         // STOW,
                         // HP_INTAKE,
                         // ALGAE_GROUND_INTAKE,
+                        // ALGAE_LOLLIPOP_INTAKE,
                         // L1_PREP,
                         // L2_PREP,
                         // PRESTAGE,
