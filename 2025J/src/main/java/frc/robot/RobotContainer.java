@@ -68,6 +68,7 @@ public class RobotContainer {
         // lights = Lights.getInstance();
 
         CalculateReefTarget.initBlue();
+        CalculateReefTarget.initRed();
 
         SmartDashboard.putData("Auto Routines", autonomous.getAutoChooser());
         drivetrain.setDefaultCommand(new SwerveDriveCommand());

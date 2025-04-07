@@ -101,6 +101,8 @@ public class Robot extends TimedRobot {
         }
 
         CalculateReefTarget.initBlue();
+        CalculateReefTarget.initRed();
+
         Drivetrain.getInstance().setAutoAdjustHeading(Drivetrain.getInstance().getAutoAdjustHeading());
         Superstructure.getInstance().setL4offset(0);
     }
