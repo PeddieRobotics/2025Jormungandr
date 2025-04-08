@@ -4,6 +4,7 @@ import static frc.robot.subsystems.Superstructure.SuperstructureState.HP_INTAKE;
 import static frc.robot.subsystems.Superstructure.SuperstructureState.L4_PREP;
 import static frc.robot.subsystems.Superstructure.SuperstructureState.STOW;
 
+import java.util.Arrays;
 import java.util.Optional;
 
 import edu.wpi.first.math.controller.PIDController;
@@ -26,6 +27,7 @@ import frc.robot.utils.CalculateReefTarget;
 import frc.robot.utils.Constants.AlignmentConstants;
 import frc.robot.utils.Constants.AlignmentConstants.AlignmentDestination;
 import frc.robot.utils.Constants.AlignmentConstants.ReefAlign;
+import frc.robot.utils.Constants.DriveConstants;
 import frc.robot.utils.Logger;
 import frc.robot.utils.MagnitudeCap;
 import frc.robot.utils.PoleLookup;
@@ -70,6 +72,8 @@ public class AlignToReefBasisVector extends Command {
     private double initialTime;
 
     private boolean isNotFirstPoleAuto, isDaisy;
+    
+    private double L1startMoveTime;
 
     private AlignmentDestination destination;
     
@@ -166,6 +170,8 @@ public class AlignToReefBasisVector extends Command {
         
         SmartDashboard.putNumber(commandName + " lateral offset", tagLateralMagnitude);
         SmartDashboard.putNumber(commandName + " back offset", tagBackMagnitude);
+        
+        L1startMoveTime = 0;
 
         addRequirements(drivetrain);
         
@@ -297,6 +303,8 @@ public class AlignToReefBasisVector extends Command {
         rotationError = 10000;
         depthError = 10000;
         lateralError = 10000;
+        
+        L1startMoveTime = 0;
 
         double offset = PoleLookup.lookupPole(desiredTarget, destination);
 
@@ -479,6 +487,11 @@ public class AlignToReefBasisVector extends Command {
         boolean autoPrep = SmartDashboard.getBoolean("Align: Auto Prep", true);
 
         if(!DriverStation.isAutonomousEnabled() && autoPrep){
+            if(elapsedTime > 0.05 && (Superstructure.getInstance().getCurrentState() == SuperstructureState.PRESTAGE || Superstructure.getInstance().isReefPrepState()) && Superstructure.getInstance().getScoringFlag() == ScoringFlag.L1FLAG){
+                Logger.getInstance().logEvent("Align to reef to L1 Prep", true);
+                Superstructure.getInstance().requestState(SuperstructureState.L1_PREP);
+            }
+
             if(elapsedTime > 0.05 && (Superstructure.getInstance().getCurrentState() == SuperstructureState.PRESTAGE || Superstructure.getInstance().isReefPrepState()) && Superstructure.getInstance().getScoringFlag() == ScoringFlag.L2FLAG){
                 Logger.getInstance().logEvent("Align to reef to L2 Prep", true);
                 Superstructure.getInstance().requestState(SuperstructureState.L2_PREP);
@@ -508,8 +521,45 @@ public class AlignToReefBasisVector extends Command {
                 depthAndLateralClose() && autoScore && (elapsedTime > 0.3 || depthAndLateralGood()) &&
                 Math.abs(drivetrain.getDrivetrainCurrentVelocity()) < 0.5) {
 
-            Logger.getInstance().logEvent("Align to reef send to score", true);
+            if (Arrays.asList(ScoringFlag.L2FLAG, ScoringFlag.L3FLAG, ScoringFlag.L4FLAG).contains(
+                    Superstructure.getInstance().getScoringFlag())) {
+
+                Logger.getInstance().logEvent("Align to reef L2/3/4 send to score", true);
+                Superstructure.getInstance().sendToScore();
+                SmartDashboard.putBoolean("Align: fire gamepiece", true);
+                if(Superstructure.getInstance().isReefScoringState()){
+                    LimelightBack.getInstance().flashLED();
+                    SmartDashboard.putNumber("Align: Elapsed Time", elapsedTime);
+                }
+            }
+        }
+        
+        if (Math.abs(rotationError) < rotationThreshold && depthAndLateralGood() && autoScore &&
+                Math.abs(drivetrain.getDrivetrainCurrentVelocity()) < 0.5 &&
+                Superstructure.getInstance().getScoringFlag() == ScoringFlag.L1FLAG) {
+
+            if (destination == AlignmentDestination.RIGHT) {
+                drivetrain.drive(
+                    new Translation2d(0, 0.2 * DriveConstants.kMaxFloorSpeed),
+                    0, false, null
+                );
+            }
+            else if (destination == AlignmentDestination.LEFT) {
+                drivetrain.drive(
+                    new Translation2d(0, -0.2 * DriveConstants.kMaxFloorSpeed),
+                    0, false, null
+                );
+            }
+            
+            L1startMoveTime = Timer.getFPGATimestamp();
+        }
+        
+        if (Superstructure.getInstance().getScoringFlag() == ScoringFlag.L1FLAG && 
+                L1startMoveTime != 0 && Timer.getFPGATimestamp() - L1startMoveTime >= 0.3) {
+
+            Logger.getInstance().logEvent("Align to reef L1 send to score", true);
             Superstructure.getInstance().sendToScore();
+
             SmartDashboard.putBoolean("Align: fire gamepiece", true);
             if(Superstructure.getInstance().isReefScoringState()){
                 LimelightBack.getInstance().flashLED();
