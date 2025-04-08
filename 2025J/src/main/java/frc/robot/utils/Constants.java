@@ -207,8 +207,8 @@ public final class Constants {
         public static final double kElevatorStowPosition = 0.0;
         public static final double kElevatorHPIntakePosition = 0.0;
         public static final double kElevatorGroundIntakePosition = 0.77;
-        public static final double kElevatorLollipopIntakePosition = 0.77;
-        public static final double kElevatorL1ScorePosition = 0.0;
+        public static final double kElevatorLollipopIntakePosition = 0;
+        public static final double kElevatorL1ScorePosition = 3.65 - 1.5;
         // public static final double kElevatorL1ScorePosition = 1.75;;
         public static final double kElevatorL2ScorePosition = 3.65; //3.8;
         public static final double kElevatorL3ScorePosition = 7.0;
@@ -229,7 +229,7 @@ public final class Constants {
         public static final double kArmStowPosition = 0.25;
         public static final double kArmHPIntakePosition = 0.25;
         public static final double kArmGroundIntakePosition = 0.0;
-        public static final double kArmLollipopIntakePosition = 0.17;
+        public static final double kArmLollipopIntakePosition = 0.10;
         public static final double kArmL1ScorePosition = 0.25;
         // public static final double kArmL1ScorePosition = 0.0;
         public static final double kArmL2ScorePosition = 0.25;
@@ -399,6 +399,7 @@ public final class Constants {
             
             // center of robot distance to tag -- back (+ = back, - = forwards)
             public static final double kTagBackMagnitude = 0.45; // from 0.45
+                                                                 //
             public static final double kAutoTagBackMagnitude = 0.47; // from 0.45
             public static final double kAutoCloseTagBackMagnitude = 0.46; // from 0.45
 
@@ -411,6 +412,10 @@ public final class Constants {
             public static final double kLeftOffset = 0.199;
             public static final double kMiddleOffset = 0.01;   
             public static final double kRightOffset = -0.135;
+
+            public static final double kL1TagBackMagnitude = 0.44;
+            public static final double kL1LeftOffset = 0.199 + 0.1194;
+            public static final double kL1RightOffset = -0.135 - 0.1194;
             
             public static final double kMaxSpeed = 2.5;
 
@@ -514,7 +519,7 @@ public final class Constants {
         public static final double kCoralOuttakeSpeed = 0.75;
         public static final double kCoralSlowIntake = 0.3;
         // public static final double kCoralL1OuttakeSpeed = 0.4;
-        public static final double kCoralL1OuttakeSpeed = -0.7;
+        public static final double kCoralL1OuttakeSpeed = 0.25;
 
         public static final double kAlgaeIntakeSpeed = 1.0;
         public static final double kAlgaeOuttakeSpeed = -1.0;

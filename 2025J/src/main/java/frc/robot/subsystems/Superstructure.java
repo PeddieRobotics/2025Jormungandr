@@ -175,7 +175,7 @@ public class Superstructure extends SubsystemBase {
     @Override
     public void periodic() {
         Logger.getInstance().logL4offset(L4offset);
-        
+
         double manualOffset = SmartDashboard.getNumber("Scoring Pose Offset", 0);
 
         systemStateData.setString(systemState.toString()); 
@@ -306,6 +306,7 @@ public class Superstructure extends SubsystemBase {
                         PROCESSOR_PREP,
                         REEF1_ALGAE_INTAKE,
                         REEF2_ALGAE_INTAKE,
+                        ALGAE_LOLLIPOP_INTAKE,
                         EJECT_ALGAE,
                         EJECT_CORAL)
                         .contains(requestedSystemState)) {
@@ -339,6 +340,7 @@ public class Superstructure extends SubsystemBase {
                         PROCESSOR_PREP,
                         REEF1_ALGAE_INTAKE,
                         REEF2_ALGAE_INTAKE,
+                        ALGAE_GROUND_INTAKE,
                         EJECT_ALGAE,
                         EJECT_CORAL)
                         .contains(requestedSystemState)) {
@@ -348,10 +350,7 @@ public class Superstructure extends SubsystemBase {
 
             case L1_PREP -> {
                 elevator.setElevatorPositionMotionMagicVoltage(ScoreConstants.kElevatorL1ScorePosition + manualOffset);
-                if(elevator.isAtPosition(ScoreConstants.kElevatorL1ScorePosition)){
-                    arm.setArmPositionMotionMagicVoltage(ScoreConstants.kArmL1ScorePosition, ArmConstants.kSlotUp);
-                }
-
+                arm.setArmPositionMotionMagicVoltage(ScoreConstants.kArmL1ScorePosition, ArmConstants.kSlotUp);
                 claw.stopClaw();
 
                 if (Arrays.asList(
@@ -503,10 +502,7 @@ public class Superstructure extends SubsystemBase {
                 if (timer.hasElapsed(ScoreConstants.kL1ScoreTimeout) && !claw.eitherCoralSensorTriggered()){
                     timer.reset();
                     claw.stopClaw();
-                    arm.setArmPositionVoltage(0.17);
-                    if (arm.isAtPosition(0.17)){
-                        requestState(HP_INTAKE);
-                    }
+                    requestState(HP_INTAKE);
                 } else {
                     claw.intakeAlgae();
                     claw.outtakeCoralL1();

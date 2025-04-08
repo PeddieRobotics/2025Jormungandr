@@ -55,7 +55,7 @@ public class OperatorOI {
         xButton.onTrue(new ConditionalCommand(new InstantCommand(() -> superstructure.setL1Flag()), 
             new InstantCommand(() -> superstructure.requestState(SuperstructureState.L1_PREP)), 
             this::isAutoPrep));
-        xButton.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.EJECT_ALGAE)));
+        // xButton.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.EJECT_ALGAE)));
 
         Trigger circleButton = new JoystickButton(controller, PS4Controller.Button.kCircle.value);
         circleButton.onTrue(new ConditionalCommand(new InstantCommand(() -> superstructure.setL2Flag()), 

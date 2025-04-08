@@ -61,7 +61,7 @@ public class AlignToReefBasisVector extends Command {
     private String commandName;
     
     private double teleopBackOffset, autoBackOffset;
-    private double tagBackMagnitude, tagLateralMagnitude;
+    private double tagBackMagnitude, tagLateralMagnitude, tagL1LateralMagnitude;
 
     private double xError, yError, rotationError, depthError, lateralError;
 
@@ -86,6 +86,7 @@ public class AlignToReefBasisVector extends Command {
                 };
                 commandName = "left align";
                 tagLateralMagnitude = AlignmentConstants.ReefAlign.kLeftOffset;
+                tagL1LateralMagnitude = AlignmentConstants.ReefAlign.kL1LeftOffset;
             }
             case MIDDLE -> {
                 cameras = new Limelight[] {
@@ -94,6 +95,7 @@ public class AlignToReefBasisVector extends Command {
                 };
                 commandName = "middle align";
                 tagLateralMagnitude = AlignmentConstants.ReefAlign.kMiddleOffset;
+                tagL1LateralMagnitude = AlignmentConstants.ReefAlign.kMiddleOffset;
             }
             case RIGHT -> {
                 cameras = new Limelight[] {
@@ -102,6 +104,7 @@ public class AlignToReefBasisVector extends Command {
                 };
                 commandName = "right align";
                 tagLateralMagnitude = AlignmentConstants.ReefAlign.kRightOffset;
+                tagL1LateralMagnitude = AlignmentConstants.ReefAlign.kL1RightOffset;
             }
         }
 
@@ -245,7 +248,7 @@ public class AlignToReefBasisVector extends Command {
         Pose2d tagPose = Limelight.getAprilTagPose(desiredTarget);
         tagAngle = tagPose.getRotation().getRadians();
 
-        tagLateralMagnitude = SmartDashboard.getNumber(commandName + " lateral offset", tagLateralMagnitude);
+        // tagLateralMagnitude = SmartDashboard.getNumber(commandName + " lateral offset", tagLateralMagnitude);
 
         if (DriverStation.isAutonomous()) {
             tagBackMagnitude = autoBackOffset; // ReefAlign.kAutoTagBackMagnitude;
@@ -253,7 +256,11 @@ public class AlignToReefBasisVector extends Command {
             lateralP = ReefAlign.kAutoLateralP;
         }
         else {
-            tagBackMagnitude = teleopBackOffset; // SmartDashboard.getNumber(commandName + " back offset", tagBackMagnitude);
+            if (Superstructure.getInstance().getScoringFlag() == ScoringFlag.L1FLAG)
+                tagBackMagnitude = AlignmentConstants.ReefAlign.kL1TagBackMagnitude;
+            else
+                tagBackMagnitude = teleopBackOffset;
+
             depthP = ReefAlign.kDepthP;
             lateralP = ReefAlign.kLateralP;
         }

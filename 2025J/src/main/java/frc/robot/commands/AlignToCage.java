@@ -107,7 +107,7 @@ public class AlignToCage extends Command {
 
         double yInput = 0;
         
-        double ty = ll.getTyAverage();
+        double ty = ll.getTy();
         if (Math.abs(ty) > yThreshold && ll.hasTarget())
             yInput = yController.calculate(ty) + Math.signum(ty) * yFF;
   

@@ -1,6 +1,7 @@
 package frc.robot.utils;
 
 import edu.wpi.first.wpilibj.PS4Controller;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
@@ -314,18 +315,19 @@ public class DriverOI {
     }
 
     public Translation2d getCardinalDirection() {
+        double cardinal = SmartDashboard.getNumber("Drive: cardinal scale", DriveConstants.kCardinalDirectionSpeedScale);
         switch (getDriverDPadInput()) {
             case FORWARDS:
-                return new Translation2d(DriveConstants.kCardinalDirectionSpeedScale * DriveConstants.kMaxFloorSpeed,
+                return new Translation2d(cardinal * DriveConstants.kMaxFloorSpeed,
                         0.0);
             case RIGHT:
                 return new Translation2d(0.0,
-                        -DriveConstants.kCardinalDirectionSpeedScale * DriveConstants.kMaxFloorSpeed);
+                        -cardinal * DriveConstants.kMaxFloorSpeed);
             case LEFT:
                 return new Translation2d(0.0,
-                        DriveConstants.kCardinalDirectionSpeedScale * DriveConstants.kMaxFloorSpeed);
+                        cardinal * DriveConstants.kMaxFloorSpeed);
             case BACKWARDS:
-                return new Translation2d(-DriveConstants.kCardinalDirectionSpeedScale * DriveConstants.kMaxFloorSpeed,
+                return new Translation2d(-cardinal * DriveConstants.kMaxFloorSpeed,
                         0.0);
             default:
                 return new Translation2d(0.0, 0.0);

@@ -22,6 +22,9 @@ import frc.robot.subsystems.Superstructure;
 import frc.robot.utils.CalculateReefTarget;
 import frc.robot.utils.DriverOI;
 import frc.robot.utils.OperatorOI;
+import frc.robot.utils.Constants.ClawConstants;
+import frc.robot.utils.Constants.DriveConstants;
+import frc.robot.utils.Constants.ScoreConstants;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -100,6 +103,7 @@ public class RobotContainer {
         // SmartDashboard.putNumber("Tuning: L1Speed", ClawConstants.kCoralL1OuttakeSpeed);
 
         SmartDashboard.putNumber("Elevator: Global Offset", 0);
+        SmartDashboard.putNumber("Drive: cardinal scale", DriveConstants.kCardinalDirectionSpeedScale);
 
         SmartDashboard.putNumber("Scoring Pose Offset", 0);
     }
