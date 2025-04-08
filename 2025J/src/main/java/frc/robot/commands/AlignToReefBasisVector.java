@@ -476,10 +476,12 @@ public class AlignToReefBasisVector extends Command {
         Translation2d translation = depthVector.times(depthMagnitude).plus(lateralVector.times(lateralMagnitude));
         translation = MagnitudeCap.capMagnitude(translation, maxSpeed);
 
-        if (DriverStation.isAutonomous())
-            drivetrain.driveBlueForceAdjust(translation, rotation, true, null);
-        else
-            drivetrain.driveBlue(translation, rotation, true, null);
+        if (L1startMoveTime == 0) {
+            if (DriverStation.isAutonomous())
+                drivetrain.driveBlueForceAdjust(translation, rotation, true, null);
+            else
+                drivetrain.driveBlue(translation, rotation, true, null);
+        }
 
         double elapsedTime = Timer.getFPGATimestamp() - initialTime;
 
@@ -551,7 +553,8 @@ public class AlignToReefBasisVector extends Command {
                 );
             }
             
-            L1startMoveTime = Timer.getFPGATimestamp();
+            if (L1startMoveTime == 0)
+                L1startMoveTime = Timer.getFPGATimestamp();
         }
         
         if (Superstructure.getInstance().getScoringFlag() == ScoringFlag.L1FLAG && 
