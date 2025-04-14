@@ -624,6 +624,7 @@ public final class Constants {
             }
         };
 
-        public static final double kCageDesiredAngle = 0;
+        public static final double kBargeDesiredAngleOwn = 0;
+        public static final double kBargeDesiredAngleOpponent = 180;
     }
 }

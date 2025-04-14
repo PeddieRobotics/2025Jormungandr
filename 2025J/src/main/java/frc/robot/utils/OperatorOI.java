@@ -66,29 +66,35 @@ public class OperatorOI {
         // xButton.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.EJECT_ALGAE)));
 
         Trigger circleButton = new JoystickButton(controller, PS4Controller.Button.kCircle.value);
-        circleButton.onTrue(new ConditionalCommand(new InstantCommand(() -> superstructure.setL2Flag()), 
+        circleButton.onTrue(new ConditionalCommand(
+            new InstantCommand(() -> superstructure.setL2Flag()), 
             new InstantCommand(() -> superstructure.requestState(SuperstructureState.L2_PREP)), 
-            this::isAutoPrep));
+            this::isAutoPrep
+        ));
 
         Trigger squareButton = new JoystickButton(controller, PS4Controller.Button.kSquare.value);
-        squareButton.onTrue(new ConditionalCommand(new InstantCommand(() -> superstructure.setL3Flag()), 
+        squareButton.onTrue(new ConditionalCommand(
+            new InstantCommand(() -> superstructure.setL3Flag()), 
             new InstantCommand(() -> {
                 if (Arrays.asList(PRESTAGE, L1_PREP, L2_PREP, L3_PREP, L4_PREP).contains(superstructure.getCurrentState()))
                     superstructure.requestState(SuperstructureState.L3_PREP);
                 else
                     superstructure.requestState(SuperstructureState.PRESTAGE);
             }), 
-            this::isAutoPrep));
+            this::isAutoPrep
+        ));
 
         Trigger triangleButton = new JoystickButton(controller, PS4Controller.Button.kTriangle.value);
-        triangleButton.onTrue(new ConditionalCommand(new InstantCommand(() -> superstructure.setL4Flag()), 
+        triangleButton.onTrue(new ConditionalCommand(
+            new InstantCommand(() -> superstructure.setL4Flag()), 
             new InstantCommand(() -> {
                 if (Arrays.asList(PRESTAGE, L1_PREP, L2_PREP, L3_PREP, L4_PREP).contains(superstructure.getCurrentState()))
                     superstructure.requestState(SuperstructureState.L4_PREP);
                 else
                     superstructure.requestState(SuperstructureState.PRESTAGE);
             }), 
-            this::isAutoPrep));
+            this::isAutoPrep
+        ));
 
         Trigger touchpadButton = new JoystickButton(controller, PS4Controller.Button.kTouchpad.value);
         touchpadButton.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.STOW)));

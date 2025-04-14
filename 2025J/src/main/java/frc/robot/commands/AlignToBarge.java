@@ -9,8 +9,11 @@ import frc.robot.utils.Constants.FieldConstants;
 import frc.robot.utils.DriverOI;
 import frc.robot.utils.DriverOI.DPadDirection;
 
+import com.ctre.phoenix6.mechanisms.swerve.LegacySwerveRequest.FieldCentric;
+
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -19,7 +22,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 public class AlignToBarge extends Command {
     private Drivetrain drivetrain;
 
-    private PIDController rotationPidController;
+    private PIDController rotationPIDController;
     private double rotationUseLowerPThreshold, rotationThresholdP;
     private double desiredAngle, rotationThreshold;
     private double rotationP, rotationI, rotationD, rotationFF;
@@ -41,7 +44,8 @@ public class AlignToBarge extends Command {
         rotationD = 0.0;
         rotationFF = 0.0;
         rotationThresholdP = 0.03;
-        rotationPidController = new PIDController(rotationP, rotationI, rotationD);
+        rotationPIDController = new PIDController(rotationP, rotationI, rotationD);
+        rotationPIDController.enableContinuousInput(-180.0, 180.0);
 
         rotationThreshold = 1;
         rotationUseLowerPThreshold = 1.5;
@@ -49,31 +53,38 @@ public class AlignToBarge extends Command {
         addRequirements(drivetrain);
     }
 
+    public boolean isInOwnSide() {
+        boolean isInBlue = drivetrain.getPose().getX() < 17.55 / 2;
+
+        boolean isPlayingBlue =
+            DriverStation.getAlliance().isEmpty() || DriverStation.getAlliance().get() == DriverStation.Alliance.Blue;
+
+        return isInBlue == isPlayingBlue;
+    }
+
     // Called when the command is initially scheduled.
     @Override
     public void initialize() {
-        desiredAngle = FieldConstants.kCageDesiredAngle;
+        desiredAngle = isInOwnSide() ? FieldConstants.kBargeDesiredAngleOwn : FieldConstants.kBargeDesiredAngleOpponent;
         startTime = Timer.getFPGATimestamp();
     }
-
 
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-        rotationError = desiredAngle + drivetrain.getHeading();
+        rotationError = drivetrain.getHeading() - desiredAngle;
     
         // set rotation PID controller
         if(Math.abs(rotationError) < rotationUseLowerPThreshold)
-            rotationPidController.setP(rotationThresholdP);
+            rotationPIDController.setP(rotationThresholdP);
         else
-            rotationPidController.setP(rotationP);
-        rotationPidController.setI(rotationI);
-        rotationPidController.setD(rotationD);
+            rotationPIDController.setP(rotationP);
+        rotationPIDController.setI(rotationI);
+        rotationPIDController.setD(rotationD);
         
         double rotation = 0;
         if (Math.abs(rotationError) > rotationThreshold)
-            rotation = rotationPidController.calculate(rotationError) + Math.signum(rotationError) * rotationFF;
-
+            rotation = rotationPIDController.calculate(rotationError) + Math.signum(rotationError) * rotationFF;
         
         Translation2d translation = DriverOI.getInstance().getSwerveTranslation();
 
