@@ -74,7 +74,7 @@ public class AlignToReefBasisVector extends Command {
 
     private boolean isNotFirstPoleAuto, isDaisy;
     
-    private double L1startMoveTime;
+    private double L1startPressTime, L1startStrafeTime;
     private double strafeTime;
 
     private AlignmentDestination destination;
@@ -178,13 +178,19 @@ public class AlignToReefBasisVector extends Command {
         SmartDashboard.putNumber(commandName + " back offset", tagBackMagnitude);
 
         SmartDashboard.putNumber(commandName + " L1 lateral offset", tagL1LateralMagnitude);
+
+        SmartDashboard.putNumber(commandName + " L1 press speed", AlignmentConstants.kL1PressSpeed);
         SmartDashboard.putNumber(commandName + " L1 strafe speed", AlignmentConstants.kL1StrafeSpeed);
-        SmartDashboard.putNumber(commandName + " L1 strafe time", 0.1);
+        SmartDashboard.putNumber(commandName + " L1 strafing press speed", AlignmentConstants.kL1StrafingPressSpeed);
+
+        SmartDashboard.putNumber(commandName + " L1 press time", AlignmentConstants.kL1PressTime);
+        SmartDashboard.putNumber(commandName + " L1 strafe time", AlignmentConstants.kL1StrafeBeforeScoreTime);
         
         SmartDashboard.putNumber("algae stealing depth threshold", 0.9);
         SmartDashboard.putNumber("algae stealing lateral threshold", 0.5);
         
-        L1startMoveTime = 0;
+        L1startStrafeTime = 0;
+        L1startPressTime = 0;
 
         addRequirements(drivetrain);
         
@@ -275,10 +281,12 @@ public class AlignToReefBasisVector extends Command {
             lateralP = ReefAlign.kAutoLateralP;
         }
         else {
-            if (Superstructure.getInstance().getScoringFlag() == ScoringFlag.L1FLAG)
-                tagBackMagnitude = AlignmentConstants.ReefAlign.kL1TagBackMagnitude;
-            else
-                tagBackMagnitude = teleopBackOffset;
+            // if (Superstructure.getInstance().getScoringFlag() == ScoringFlag.L1FLAG)
+            //     tagBackMagnitude = AlignmentConstants.ReefAlign.kL1TagBackMagnitude;
+            // else
+            //     tagBackMagnitude = teleopBackOffset;
+
+            tagBackMagnitude = teleopBackOffset;
 
             depthP = ReefAlign.kDepthP;
             lateralP = ReefAlign.kLateralP;
@@ -310,7 +318,8 @@ public class AlignToReefBasisVector extends Command {
         depthError = 10000;
         lateralError = 10000;
         
-        L1startMoveTime = 0;
+        L1startPressTime = 0;
+        L1startStrafeTime = 0;
 
         double offset = PoleLookup.lookupPole(desiredTarget, destination);
 
@@ -486,7 +495,7 @@ public class AlignToReefBasisVector extends Command {
         Translation2d translation = depthVector.times(depthMagnitude).plus(lateralVector.times(lateralMagnitude));
         translation = MagnitudeCap.capMagnitude(translation, maxSpeed);
 
-        if (L1startMoveTime == 0) {
+        if (L1startStrafeTime == 0 && L1startPressTime == 0) {
             if (DriverStation.isAutonomous())
                 drivetrain.driveBlueForceAdjust(translation, rotation, true, null);
             else
@@ -555,32 +564,50 @@ public class AlignToReefBasisVector extends Command {
         if (Math.abs(rotationError) < rotationThreshold && depthAndLateralGood() && autoScore &&
                 Math.abs(drivetrain.getDrivetrainCurrentVelocity()) < 0.5 &&
                 Superstructure.getInstance().getScoringFlag() == ScoringFlag.L1FLAG &&
-                L1startMoveTime == 0) {
+                L1startPressTime == 0) {
+            
+            double pressSpeed = SmartDashboard.getNumber(commandName + " L1 press speed", AlignmentConstants.kL1PressSpeed);
+            drivetrain.drive( 
+                depthVector.times(pressSpeed),
+                0, true, null
+            );
+
+            if (L1startPressTime == 0)
+                L1startPressTime = Timer.getFPGATimestamp();
+        }
+
+        double pressTime = SmartDashboard.getNumber(commandName + " L1 press time", 0.2);
+        if (Superstructure.getInstance().getScoringFlag() == ScoringFlag.L1FLAG && 
+                L1startPressTime != 0 && Timer.getFPGATimestamp() - L1startPressTime >= pressTime &&
+                L1startStrafeTime == 0) {
 
             double strafeSpeed = SmartDashboard.getNumber(commandName + " L1 strafe speed", AlignmentConstants.kL1StrafeSpeed);
+            double strafingPressSpeed = SmartDashboard.getNumber(commandName + " L1 strafing press speed", AlignmentConstants.kL1StrafingPressSpeed);
+
             if (destination == AlignmentDestination.RIGHT) {
                 // drivetrain.drive(
                 //     new Translation2d(0, strafeSpeed),
                 //     0, false, null
                 // );
                 drivetrain.drive(
-                    lateralVector.times(strafeSpeed),
+                    lateralVector.times(strafeSpeed).plus(depthVector.times(strafingPressSpeed)),
                     0, true, null
                 );
             }
             else if (destination == AlignmentDestination.LEFT) {
                 drivetrain.drive(
-                    lateralVector.times(-strafeSpeed),
+                    lateralVector.times(-strafeSpeed).plus(depthVector.times(strafingPressSpeed)),
                     0, true, null
                 );
             }
-            if (L1startMoveTime == 0)
-                L1startMoveTime = Timer.getFPGATimestamp();
+
+            if (L1startStrafeTime == 0)
+                L1startStrafeTime = Timer.getFPGATimestamp();
         }
         
         double strafeTime = SmartDashboard.getNumber(commandName + " L1 strafe time", 0.1);
         if (Superstructure.getInstance().getScoringFlag() == ScoringFlag.L1FLAG && 
-                L1startMoveTime != 0 && Timer.getFPGATimestamp() - L1startMoveTime >= strafeTime) {
+                L1startStrafeTime != 0 && Timer.getFPGATimestamp() - L1startStrafeTime >= strafeTime) {
 
             Logger.getInstance().logEvent("Align to reef L1 send to score", true);
             Superstructure.getInstance().sendToScore();

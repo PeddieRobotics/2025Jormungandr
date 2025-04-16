@@ -477,7 +477,12 @@ public final class Constants {
         public static final double kInsideBadAngleTolerance = 40.0;
         public static final double kOutsideBadAngleTolerance = 55.0;
         
+        public static final double kL1PressSpeed = 0.1;
+        public static final double kL1StrafingPressSpeed = 0.05;
         public static final double kL1StrafeSpeed = 0.8;
+
+        public static final double kL1PressTime = 0.2;
+        public static final double kL1StrafeBeforeScoreTime = 0.1;
     }
 
     public static final class ClawConstants {
