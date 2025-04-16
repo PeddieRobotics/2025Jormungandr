@@ -9,8 +9,12 @@ import frc.robot.utils.Constants.FieldConstants;
 import frc.robot.utils.DriverOI;
 import frc.robot.utils.DriverOI.DPadDirection;
 
+import com.ctre.phoenix6.mechanisms.swerve.LegacySwerveModule.DriveRequestType;
+import com.ctre.phoenix6.mechanisms.swerve.LegacySwerveRequest.FieldCentric;
+
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -49,10 +53,16 @@ public class AlignToBarge extends Command {
         addRequirements(drivetrain);
     }
 
+    public boolean isInOwnSide() {
+        boolean isInBlue = drivetrain.getPose().getX() < 17.55 / 2;
+        boolean isPlayingBlue = DriverStation.getAlliance().isEmpty() || DriverStation.getAlliance().get() == DriverStation.Alliance.Blue;
+        return isInBlue == isPlayingBlue;
+    }
+
     // Called when the command is initially scheduled.
     @Override
     public void initialize() {
-        desiredAngle = FieldConstants.kCageDesiredAngle;
+        desiredAngle = isInOwnSide() ? FieldConstants.kBargeDesiredAngle : FieldConstants.kBargeDesiredAngleOpponent;
         startTime = Timer.getFPGATimestamp();
     }
 
@@ -60,7 +70,7 @@ public class AlignToBarge extends Command {
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-        rotationError = desiredAngle + drivetrain.getHeading();
+        rotationError = drivetrain.getHeading() - desiredAngle;
     
         // set rotation PID controller
         if(Math.abs(rotationError) < rotationUseLowerPThreshold)

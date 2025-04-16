@@ -150,6 +150,10 @@ public class CalculateReefTarget {
         return Math.abs(angle) >= Math.PI;
     }
 
+    private static boolean isInBlueSide() {
+        return drivetrain.getPose().getX() < 17.55 / 2;
+    }
+
     public static int calculateTargetID() {
         // calculate current odometry pose
         Translation2d odometryPose = drivetrain.getPose().getTranslation();
@@ -170,14 +174,16 @@ public class CalculateReefTarget {
         //     }
         // }
         
-        // consider all tags for stealing algae from opponent's reef
-        for (int i = 17; i <= 22; i++) {
-            Translation2d tagPose = Limelight.getAprilTagPose(i).getTranslation();
-            robotToTag.add(new IDVectorPair(i, tagPose.minus(odometryPose)));
-        }
-        for (int i = 6; i <= 11; i++) {
-            Translation2d tagPose = Limelight.getAprilTagPose(i).getTranslation();
-            robotToTag.add(new IDVectorPair(i, tagPose.minus(odometryPose)));
+        if (isInBlueSide()) {
+            for (int i = 17; i <= 22; i++) {
+                Translation2d tagPose = Limelight.getAprilTagPose(i).getTranslation();
+                robotToTag.add(new IDVectorPair(i, tagPose.minus(odometryPose)));
+            }
+        } else {
+            for (int i = 6; i <= 11; i++) {
+                Translation2d tagPose = Limelight.getAprilTagPose(i).getTranslation();
+                robotToTag.add(new IDVectorPair(i, tagPose.minus(odometryPose)));
+            }
         }
 
         // sort list in ascending order of vector magnitude / robot distance to tag
