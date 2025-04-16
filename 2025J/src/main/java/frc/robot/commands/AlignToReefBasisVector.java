@@ -79,6 +79,7 @@ public class AlignToReefBasisVector extends Command {
     
     public AlignToReefBasisVector(AlignmentDestination destination, double maxSpeed, double autoBackOffset, double teleopBackOffset, 
             int blueTargetTag, int redTargetTag, boolean isNotFirstPoleAuto, boolean isDaisy) {
+
         drivetrain = Drivetrain.getInstance();
         
         // center
@@ -173,6 +174,9 @@ public class AlignToReefBasisVector extends Command {
 
         SmartDashboard.putNumber(commandName + " L1 lateral offset", tagL1LateralMagnitude);
         SmartDashboard.putNumber(commandName + " L1 strafe speed", AlignmentConstants.kL1StrafeSpeed);
+        
+        SmartDashboard.putNumber("algae stealing depth threshold", 0.9);
+        SmartDashboard.putNumber("algae stealing lateral threshold", 0.5);
         
         L1startMoveTime = 0;
 
@@ -374,7 +378,9 @@ public class AlignToReefBasisVector extends Command {
     }
     
     private boolean isReefIntakeAlgaeSafe() {
-        return false;
+        double depth = SmartDashboard.getNumber("algae stealing depth threshold", 0.9);
+        double lateral = SmartDashboard.getNumber("algae stealing lateral threshold", 0.5);
+        return Math.abs(depthError) < depth && Math.abs(lateralError) < lateral;
     }
 
     private boolean l4AutoPrepSafe(){
@@ -553,6 +559,7 @@ public class AlignToReefBasisVector extends Command {
             }
             
             L1startMoveTime = Timer.getFPGATimestamp();
+
         } else {
             Translation2d translation = depthVector.times(depthMagnitude).plus(lateralVector.times(lateralMagnitude));
             translation = MagnitudeCap.capMagnitude(translation, maxSpeed);
@@ -584,7 +591,7 @@ public class AlignToReefBasisVector extends Command {
         SmartDashboard.putNumber("Align: Elapsed Time", Timer.getFPGATimestamp() - initialTime);
 
         Superstructure.getInstance().sendToScore();
-        if (desiredPose.isPresent())
+        if (desiredPose.isPresent() || Superstructure.getInstance().getCurrentState() == SuperstructureState.L1_SCORE)
             drivetrain.drive(new Translation2d(0,0), 0, false, null);
   
         Logger.getInstance().logEvent(
