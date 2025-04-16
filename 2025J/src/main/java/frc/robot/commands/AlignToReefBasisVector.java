@@ -515,7 +515,6 @@ public class AlignToReefBasisVector extends Command {
                 Superstructure.getInstance().requestState(SuperstructureState.L4_PREP);
             }
 
-            // TODO: ask gkoch philip and eric
             if(elapsedTime > 0.05 && isReefIntakeAlgaeSafe() && destination == AlignmentDestination.MIDDLE) {
                 Logger.getInstance().logEvent("Align to reef to reef intaking", true);
                 boolean high = Superstructure.getInstance().isHighAlgae();

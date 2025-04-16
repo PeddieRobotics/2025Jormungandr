@@ -46,6 +46,7 @@ public class AlignToBarge extends Command {
         rotationFF = 0.0;
         rotationThresholdP = 0.03;
         rotationPidController = new PIDController(rotationP, rotationI, rotationD);
+        rotationPidController.enableContinuousInput(-180.0, 180.0);
 
         rotationThreshold = 1;
         rotationUseLowerPThreshold = 1.5;
