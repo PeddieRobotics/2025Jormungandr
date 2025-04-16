@@ -7,6 +7,8 @@ package frc.robot.commands;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.Superstructure;
+import frc.robot.subsystems.Superstructure.SuperstructureState;
 import frc.robot.utils.DriverOI;
 import frc.robot.utils.DriverOI.DPadDirection;
 
@@ -30,12 +32,18 @@ public class SwerveDriveCommand extends Command {
     public void execute() {
         Translation2d translation = oi.getSwerveTranslation();
         double rotation = oi.getRotation();
+        
+        boolean isFieldOriented = true;
 
         if (oi.getDriverDPadInput() != DPadDirection.NONE) {
             translation = oi.getCardinalDirection();
+            if (Superstructure.getInstance().isClimbState()) {
+                translation = translation.times(-1);
+                isFieldOriented = false;
+            }
         }
 
-        drivetrain.drive(translation, rotation, true, new Translation2d(0, 0));
+        drivetrain.drive(translation, rotation, isFieldOriented, new Translation2d(0, 0));
     }
 
     @Override
