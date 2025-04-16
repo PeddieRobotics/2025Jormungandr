@@ -40,7 +40,7 @@ public class PoleLookup {
         put(PoleLookup.getPoleNumber(19, AlignmentDestination.RIGHT), PoleCategory.HIGH);
 
         put(PoleLookup.getPoleNumber(20, AlignmentDestination.LEFT),  PoleCategory.SLIGHTLY_HIGH);
-        put(PoleLookup.getPoleNumber(20, AlignmentDestination.RIGHT), PoleCategory.SLIGHTLY_HIGH);
+        put(PoleLookup.getPoleNumber(20, AlignmentDestination.RIGHT), PoleCategory.HIGH);
 
         put(PoleLookup.getPoleNumber(21, AlignmentDestination.LEFT),  PoleCategory.SLIGHTLY_HIGH);
         put(PoleLookup.getPoleNumber(21, AlignmentDestination.RIGHT), PoleCategory.HIGH);
@@ -81,7 +81,7 @@ public class PoleLookup {
         put(PoleLookup.getPoleNumber(19, AlignmentDestination.RIGHT), PoleCategory.HIGH);
 
         put(PoleLookup.getPoleNumber(20, AlignmentDestination.LEFT),  PoleCategory.SLIGHTLY_HIGH);
-        put(PoleLookup.getPoleNumber(20, AlignmentDestination.RIGHT), PoleCategory.SLIGHTLY_HIGH);
+        put(PoleLookup.getPoleNumber(20, AlignmentDestination.RIGHT), PoleCategory.HIGH);
 
         put(PoleLookup.getPoleNumber(21, AlignmentDestination.LEFT),  PoleCategory.SLIGHTLY_HIGH);
         put(PoleLookup.getPoleNumber(21, AlignmentDestination.RIGHT), PoleCategory.HIGH);
