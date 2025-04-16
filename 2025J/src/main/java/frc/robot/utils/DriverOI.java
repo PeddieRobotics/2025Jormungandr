@@ -72,23 +72,34 @@ public class DriverOI {
         xButton.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.STOW)));
 
         Trigger squareButton = new JoystickButton(controller, PS4Controller.Button.kSquare.value);
-        squareButton.onTrue(new ConditionalCommand(
-            new TwitchClimb(false),
+        // squareButton.onTrue(new ConditionalCommand(
+        //     new TwitchClimb(false),
+        //     new InstantCommand(() -> {
+        //         if (Arrays.asList(SuperstructureState.ALGAE_LOLLIPOP_INTAKE).contains(superstructure.getCurrentState()))
+        //             superstructure.requestState(SuperstructureState.ALGAE_GROUND_INTAKE);
+        //         else
+        //             superstructure.requestState(SuperstructureState.ALGAE_LOLLIPOP_INTAKE);
+        //     }),
+        //     Superstructure.getInstance()::isClimbState
+        // ));
+        squareButton.onTrue(
             new InstantCommand(() -> {
                 if (Arrays.asList(SuperstructureState.ALGAE_LOLLIPOP_INTAKE).contains(superstructure.getCurrentState()))
                     superstructure.requestState(SuperstructureState.ALGAE_GROUND_INTAKE);
                 else
                     superstructure.requestState(SuperstructureState.ALGAE_LOLLIPOP_INTAKE);
-            }),
-            Superstructure.getInstance()::isClimbState
-        ));
+            })
+        );
 
         Trigger circleButton = new JoystickButton(controller, PS4Controller.Button.kCircle.value);
-        circleButton.onTrue(new ConditionalCommand(
-            new TwitchClimb(true),
-            new InstantCommand(() -> superstructure.requestState(SuperstructureState.HP_INTAKE)),
-            Superstructure.getInstance()::isClimbState
-        ));
+        // circleButton.onTrue(new ConditionalCommand(
+        //     new TwitchClimb(true),
+        //     new InstantCommand(() -> superstructure.requestState(SuperstructureState.HP_INTAKE)),
+        //     Superstructure.getInstance()::isClimbState
+        // ));
+        circleButton.onTrue(
+            new InstantCommand(() -> superstructure.requestState(SuperstructureState.HP_INTAKE))
+        );
 
         Trigger triangleButton = new JoystickButton(controller, PS4Controller.Button.kTriangle.value);
         triangleButton.onTrue(new InstantCommand(() -> superstructure.sendToScore()));
