@@ -170,6 +170,9 @@ public class AlignToReefBasisVector extends Command {
         
         SmartDashboard.putNumber(commandName + " lateral offset", tagLateralMagnitude);
         SmartDashboard.putNumber(commandName + " back offset", tagBackMagnitude);
+
+        SmartDashboard.putNumber(commandName + " L1 lateral offset", tagL1LateralMagnitude);
+        SmartDashboard.putNumber(commandName + " L1 strafe speed", AlignmentConstants.kL1StrafeSpeed);
         
         L1startMoveTime = 0;
 
@@ -254,8 +257,8 @@ public class AlignToReefBasisVector extends Command {
         Pose2d tagPose = Limelight.getAprilTagPose(desiredTarget);
         tagAngle = tagPose.getRotation().getRadians();
 
-        // tagLateralMagnitude = SmartDashboard.getNumber(commandName + " lateral offset", tagLateralMagnitude);
-
+        tagL1LateralMagnitude = SmartDashboard.getNumber(commandName + " L1 lateral offset", tagL1LateralMagnitude);
+        
         if (DriverStation.isAutonomous()) {
             tagBackMagnitude = autoBackOffset; // ReefAlign.kAutoTagBackMagnitude;
             depthP = ReefAlign.kAutoDepthP;
@@ -274,26 +277,19 @@ public class AlignToReefBasisVector extends Command {
         depthPIDController.setP(depthP);
         lateralPIDController.setP(lateralP);
 
-        if (Superstructure.getInstance().getCurrentState() == SuperstructureState.L1_PREP){
-            // if (commandName.equals("left align")) {
-            //     tagLateralMagnitude = SmartDashboard.getNumber("L1AlignLeft: lateral offset", 0.1);
-            //     tagBackMagnitude = SmartDashboard.getNumber("L1AlignLeft: back offset", 0.55);
-            //     desiredAngle += SmartDashboard.getNumber("L1AlignLeft: angle offset", 20.0);
-            // }
-            // else if (commandName.equals("right align")) {
-            //     tagLateralMagnitude = SmartDashboard.getNumber("L1AlignRight: lateral offset", -0.1);
-            //     tagBackMagnitude = SmartDashboard.getNumber("L1AlignRight: back offset", 0.55);
-            //     desiredAngle += SmartDashboard.getNumber("L1AlignRight: angle offset", -20.0);
-            // }
-
-            tagLateralMagnitude = 0.0;
+        if (!DriverStation.isAutonomous() && Superstructure.getInstance().getScoringFlag() == ScoringFlag.L1FLAG) {
+            desiredPose = Optional.of(new Pose2d(
+                tagPose.getX() + tagBackMagnitude * Math.cos(tagAngle) + tagL1LateralMagnitude * Math.sin(tagAngle),
+                tagPose.getY() + tagBackMagnitude * Math.sin(tagAngle) - tagL1LateralMagnitude * Math.cos(tagAngle),
+                new Rotation2d(0)
+            ));
+        } else {
+            desiredPose = Optional.of(new Pose2d(
+                tagPose.getX() + tagBackMagnitude * Math.cos(tagAngle) + tagLateralMagnitude * Math.sin(tagAngle),
+                tagPose.getY() + tagBackMagnitude * Math.sin(tagAngle) - tagLateralMagnitude * Math.cos(tagAngle),
+                new Rotation2d(0)
+            ));
         }
-
-        desiredPose = Optional.of(new Pose2d(
-            tagPose.getX() + tagBackMagnitude * Math.cos(tagAngle) + tagLateralMagnitude * Math.sin(tagAngle),
-            tagPose.getY() + tagBackMagnitude * Math.sin(tagAngle) - tagLateralMagnitude * Math.cos(tagAngle),
-            new Rotation2d(0)
-        ));
         
         depthVector = new Translation2d(Math.cos(tagAngle), Math.sin(tagAngle));
         lateralVector = new Translation2d(Math.sin(tagAngle), -Math.cos(tagAngle));
@@ -473,14 +469,6 @@ public class AlignToReefBasisVector extends Command {
         SmartDashboard.putNumber("Align: depthError", depthError);
         SmartDashboard.putNumber("Align: lateralError", lateralError);
 
-        Translation2d translation = depthVector.times(depthMagnitude).plus(lateralVector.times(lateralMagnitude));
-        translation = MagnitudeCap.capMagnitude(translation, maxSpeed);
-
-        if (DriverStation.isAutonomous())
-            drivetrain.driveBlueForceAdjust(translation, rotation, true, null);
-        else
-            drivetrain.driveBlue(translation, rotation, true, null);
-
         double elapsedTime = Timer.getFPGATimestamp() - initialTime;
 
         // Auto Prep State Logic
@@ -536,22 +524,32 @@ public class AlignToReefBasisVector extends Command {
         
         if (Math.abs(rotationError) < rotationThreshold && depthAndLateralGood() && autoScore &&
                 Math.abs(drivetrain.getDrivetrainCurrentVelocity()) < 0.5 &&
-                Superstructure.getInstance().getScoringFlag() == ScoringFlag.L1FLAG) {
+                Superstructure.getInstance().getScoringFlag() == ScoringFlag.L1FLAG &&
+                L1startMoveTime == 0) {
 
+            double strafeSpeed = SmartDashboard.getNumber(commandName + " L1 strafe speed", AlignmentConstants.kL1StrafeSpeed);
             if (destination == AlignmentDestination.RIGHT) {
                 drivetrain.drive(
-                    new Translation2d(0, 0.2 * DriveConstants.kMaxFloorSpeed),
+                    new Translation2d(0, strafeSpeed),
                     0, false, null
                 );
             }
             else if (destination == AlignmentDestination.LEFT) {
                 drivetrain.drive(
-                    new Translation2d(0, -0.2 * DriveConstants.kMaxFloorSpeed),
+                    new Translation2d(0, -strafeSpeed),
                     0, false, null
                 );
             }
             
             L1startMoveTime = Timer.getFPGATimestamp();
+        } else {
+            Translation2d translation = depthVector.times(depthMagnitude).plus(lateralVector.times(lateralMagnitude));
+            translation = MagnitudeCap.capMagnitude(translation, maxSpeed);
+
+            if (DriverStation.isAutonomous())
+                drivetrain.driveBlueForceAdjust(translation, rotation, true, null);
+            else
+                drivetrain.driveBlue(translation, rotation, true, null);
         }
         
         if (Superstructure.getInstance().getScoringFlag() == ScoringFlag.L1FLAG && 

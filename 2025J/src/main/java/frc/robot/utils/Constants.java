@@ -473,6 +473,8 @@ public final class Constants {
         public static final double kBadHexagonSize = 0.9;
         public static final double kInsideBadAngleTolerance = 40.0;
         public static final double kOutsideBadAngleTolerance = 55.0;
+        
+        public static final double kL1StrafeSpeed = 0.8;
     }
 
     public static final class ClawConstants {
