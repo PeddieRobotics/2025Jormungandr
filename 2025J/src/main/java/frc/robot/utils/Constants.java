@@ -389,6 +389,9 @@ public final class Constants {
             public static final double kLateralL4PrestageThreshold = 0.4;
             public static final double kLateralL4AutoPrestageThreshold = 0.5;
 
+            public static final double kDepthReefAlgaeThreshold = 0.9;
+            public static final double kLateralReefAlgaeThreshold = 0.5;
+
             public static final double kRotationP = 0.08;
             public static final double kRotationI = 0;
             public static final double kRotationD = 0;
@@ -413,7 +416,7 @@ public final class Constants {
             public static final double kMiddleOffset = 0.01;   
             public static final double kRightOffset = -0.135;
 
-            public static final double kL1TagBackMagnitude = 0.44;
+            public static final double kL1TagBackMagnitude = 0.43;
             public static final double kL1LeftOffset = 0.199 + 0.1194;
             public static final double kL1RightOffset = -0.135 - 0.1194;
             

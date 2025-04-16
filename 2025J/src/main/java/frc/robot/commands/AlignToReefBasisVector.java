@@ -46,6 +46,7 @@ public class AlignToReefBasisVector extends Command {
 
     private double lateralThreshold, lateralCloseThreshold, lateralCloseAtL4Threshold, lateralL3PrestageThreshold, lateralL4PrestageThreshold;
     private double depthL4AutoPrestageThreshold, depthL4DaisyAutoPrestageThreshold, lateralL4AutoPrestageThreshold;
+    private double depthReefAlgaeThreshold, lateralReefAlgaeThreshold;
 
     private double rotationP, rotationI, rotationD, rotationFF;
     private double rotationLowerP, rotationUseLowerPThreshold;
@@ -74,6 +75,7 @@ public class AlignToReefBasisVector extends Command {
     private boolean isNotFirstPoleAuto, isDaisy;
     
     private double L1startMoveTime;
+    private double strafeTime;
 
     private AlignmentDestination destination;
     
@@ -141,6 +143,9 @@ public class AlignToReefBasisVector extends Command {
         depthL4DaisyAutoPrestageThreshold = ReefAlign.kDepthL4DaisyAutoPrestageThreshold;    
         lateralL4AutoPrestageThreshold = ReefAlign.kLateralL4AutoPrestageThreshold;
 
+        depthReefAlgaeThreshold = ReefAlign.kDepthReefAlgaeThreshold;
+        lateralReefAlgaeThreshold = ReefAlign.kLateralReefAlgaeThreshold;
+
         rotationP = ReefAlign.kRotationP;
         rotationI = ReefAlign.kRotationI;
         rotationD = ReefAlign.kRotationD;
@@ -174,6 +179,7 @@ public class AlignToReefBasisVector extends Command {
 
         SmartDashboard.putNumber(commandName + " L1 lateral offset", tagL1LateralMagnitude);
         SmartDashboard.putNumber(commandName + " L1 strafe speed", AlignmentConstants.kL1StrafeSpeed);
+        SmartDashboard.putNumber(commandName + " L1 strafe time", 0.1);
         
         SmartDashboard.putNumber("algae stealing depth threshold", 0.9);
         SmartDashboard.putNumber("algae stealing lateral threshold", 0.5);
@@ -378,9 +384,7 @@ public class AlignToReefBasisVector extends Command {
     }
     
     private boolean isReefIntakeAlgaeSafe() {
-        double depth = SmartDashboard.getNumber("algae stealing depth threshold", 0.9);
-        double lateral = SmartDashboard.getNumber("algae stealing lateral threshold", 0.5);
-        return Math.abs(depthError) < depth && Math.abs(lateralError) < lateral;
+        return Math.abs(depthError) < depthReefAlgaeThreshold && Math.abs(lateralError) < lateralReefAlgaeThreshold;
     }
 
     private boolean l4AutoPrepSafe(){
@@ -555,23 +559,28 @@ public class AlignToReefBasisVector extends Command {
 
             double strafeSpeed = SmartDashboard.getNumber(commandName + " L1 strafe speed", AlignmentConstants.kL1StrafeSpeed);
             if (destination == AlignmentDestination.RIGHT) {
+                // drivetrain.drive(
+                //     new Translation2d(0, strafeSpeed),
+                //     0, false, null
+                // );
                 drivetrain.drive(
-                    new Translation2d(0, strafeSpeed),
-                    0, false, null
+                    lateralVector.times(strafeSpeed),
+                    0, true, null
                 );
             }
             else if (destination == AlignmentDestination.LEFT) {
                 drivetrain.drive(
-                    new Translation2d(0, -strafeSpeed),
-                    0, false, null
+                    lateralVector.times(-strafeSpeed),
+                    0, true, null
                 );
             }
             if (L1startMoveTime == 0)
                 L1startMoveTime = Timer.getFPGATimestamp();
         }
         
+        double strafeTime = SmartDashboard.getNumber(commandName + " L1 strafe time", 0.1);
         if (Superstructure.getInstance().getScoringFlag() == ScoringFlag.L1FLAG && 
-                L1startMoveTime != 0 && Timer.getFPGATimestamp() - L1startMoveTime >= 0.3) {
+                L1startMoveTime != 0 && Timer.getFPGATimestamp() - L1startMoveTime >= strafeTime) {
 
             Logger.getInstance().logEvent("Align to reef L1 send to score", true);
             Superstructure.getInstance().sendToScore();
