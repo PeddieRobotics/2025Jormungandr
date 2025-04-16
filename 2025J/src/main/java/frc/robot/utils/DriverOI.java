@@ -83,12 +83,7 @@ public class DriverOI {
         //     Superstructure.getInstance()::isClimbState
         // ));
         squareButton.onTrue(
-            new InstantCommand(() -> {
-                if (Arrays.asList(SuperstructureState.ALGAE_LOLLIPOP_INTAKE).contains(superstructure.getCurrentState()))
-                    superstructure.requestState(SuperstructureState.ALGAE_GROUND_INTAKE);
-                else
-                    superstructure.requestState(SuperstructureState.ALGAE_LOLLIPOP_INTAKE);
-            })
+            new InstantCommand(() -> superstructure.requestState(SuperstructureState.ALGAE_GROUND_INTAKE))
         );
 
         Trigger circleButton = new JoystickButton(controller, PS4Controller.Button.kCircle.value);
@@ -112,7 +107,11 @@ public class DriverOI {
         }));
 
         Trigger touchpadButton = new JoystickButton(controller, PS4Controller.Button.kTouchpad.value);
-        touchpadButton.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.PRESTAGE)));
+        touchpadButton.onTrue(new ConditionalCommand( 
+            new InstantCommand(() -> superstructure.requestState(SuperstructureState.PRESTAGE)),
+            new InstantCommand(() -> superstructure.requestState(SuperstructureState.ALGAE_LOLLIPOP_INTAKE)),
+            Claw.getInstance()::eitherCoralSensorTriggered
+        ));
 
         // TODO: Set binding to enter climb mode
         Trigger L1Bumper = new JoystickButton(controller, PS4Controller.Button.kL1.value);
