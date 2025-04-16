@@ -17,6 +17,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.subsystems.Claw;
 import frc.robot.subsystems.HPIntake;
 import frc.robot.commands.DeployClimber;
 import frc.robot.commands.HomeElevator;
@@ -52,9 +53,16 @@ public class OperatorOI {
         controller = new PS4Controller(1);
 
         Trigger xButton = new JoystickButton(controller, PS4Controller.Button.kCross.value);
-        xButton.onTrue(new ConditionalCommand(new InstantCommand(() -> superstructure.setL1Flag()), 
-            new InstantCommand(() -> superstructure.requestState(SuperstructureState.L1_PREP)), 
-            this::isAutoPrep));
+        xButton.onTrue(new ConditionalCommand( 
+            new InstantCommand(() -> superstructure.requestState(SuperstructureState.EJECT_ALGAE)),
+            new ConditionalCommand(
+                new InstantCommand(() -> superstructure.setL1Flag()), 
+                new InstantCommand(() -> superstructure.requestState(SuperstructureState.L1_PREP)), 
+                this::isAutoPrep
+            ),
+            Claw.getInstance()::getAlgaeSensor
+        ));
+        
         // xButton.onTrue(new InstantCommand(() -> superstructure.requestState(SuperstructureState.EJECT_ALGAE)));
 
         Trigger circleButton = new JoystickButton(controller, PS4Controller.Button.kCircle.value);

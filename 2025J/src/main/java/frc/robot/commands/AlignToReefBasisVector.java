@@ -479,6 +479,16 @@ public class AlignToReefBasisVector extends Command {
         SmartDashboard.putNumber("Align: depthError", depthError);
         SmartDashboard.putNumber("Align: lateralError", lateralError);
 
+        Translation2d translation = depthVector.times(depthMagnitude).plus(lateralVector.times(lateralMagnitude));
+        translation = MagnitudeCap.capMagnitude(translation, maxSpeed);
+
+        if (L1startMoveTime == 0) {
+            if (DriverStation.isAutonomous())
+                drivetrain.driveBlueForceAdjust(translation, rotation, true, null);
+            else
+                drivetrain.driveBlue(translation, rotation, true, null);
+        }
+
         double elapsedTime = Timer.getFPGATimestamp() - initialTime;
 
         // Auto Prep State Logic
@@ -557,17 +567,8 @@ public class AlignToReefBasisVector extends Command {
                     0, false, null
                 );
             }
-            
-            L1startMoveTime = Timer.getFPGATimestamp();
-
-        } else {
-            Translation2d translation = depthVector.times(depthMagnitude).plus(lateralVector.times(lateralMagnitude));
-            translation = MagnitudeCap.capMagnitude(translation, maxSpeed);
-
-            if (DriverStation.isAutonomous())
-                drivetrain.driveBlueForceAdjust(translation, rotation, true, null);
-            else
-                drivetrain.driveBlue(translation, rotation, true, null);
+            if (L1startMoveTime == 0)
+                L1startMoveTime = Timer.getFPGATimestamp();
         }
         
         if (Superstructure.getInstance().getScoringFlag() == ScoringFlag.L1FLAG && 
