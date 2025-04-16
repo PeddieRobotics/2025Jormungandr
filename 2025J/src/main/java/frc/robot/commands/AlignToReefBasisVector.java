@@ -372,6 +372,10 @@ public class AlignToReefBasisVector extends Command {
     private boolean l4PrepSafe(){
         return Math.abs(depthError) < depthL4PrestageThreshold && Math.abs(lateralError) < lateralL4PrestageThreshold;
     }
+    
+    private boolean isReefIntakeAlgaeSafe() {
+        return false;
+    }
 
     private boolean l4AutoPrepSafe(){
         if (isDaisy)
@@ -493,6 +497,13 @@ public class AlignToReefBasisVector extends Command {
             if(elapsedTime > 0.05 && l4PrepSafe() && (Superstructure.getInstance().getCurrentState() == SuperstructureState.PRESTAGE || Superstructure.getInstance().isReefPrepState()) && Superstructure.getInstance().getScoringFlag() == ScoringFlag.L4FLAG){
                 Logger.getInstance().logEvent("Align to reef to L4 Prep", true);
                 Superstructure.getInstance().requestState(SuperstructureState.L4_PREP);
+            }
+
+            // TODO: ask gkoch philip and eric
+            if(elapsedTime > 0.05 && isReefIntakeAlgaeSafe() && Superstructure.getInstance().getCurrentState() == SuperstructureState.STOW && destination == AlignmentDestination.MIDDLE) {
+                Logger.getInstance().logEvent("Align to reef to reef intaking", true);
+                boolean high = Superstructure.getInstance().isHighAlgae();
+                Superstructure.getInstance().requestState(high ? SuperstructureState.REEF2_ALGAE_INTAKE : SuperstructureState.REEF1_ALGAE_INTAKE);
             }
         }
         if (DriverStation.isAutonomousEnabled()) {
