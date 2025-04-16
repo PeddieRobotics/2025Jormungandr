@@ -502,7 +502,7 @@ public class Superstructure extends SubsystemBase {
                 if (timer.hasElapsed(ScoreConstants.kL1ScoreTimeout) && !claw.eitherCoralSensorTriggered()){
                     timer.reset();
                     claw.stopClaw();
-                    requestState(HP_INTAKE);
+                    // requestState(HP_INTAKE);
                 } else {
                     claw.intakeAlgae();
                     claw.outtakeCoralL1();
