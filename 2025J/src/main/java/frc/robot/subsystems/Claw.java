@@ -155,7 +155,8 @@ public class Claw extends SubsystemBase {
     }
 
     public void outtakeCoralL1(){
-        setCoralMotor(ClawConstants.kCoralL1OuttakeSpeed);
+        double speed = SmartDashboard.getNumber("L1 eject speed", ClawConstants.kCoralL1OuttakeSpeed);
+        setCoralMotor(speed);
     }
 
     // speed argument used for fast and slow coral intake speeds

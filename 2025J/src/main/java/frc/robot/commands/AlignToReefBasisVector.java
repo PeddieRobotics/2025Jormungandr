@@ -27,7 +27,9 @@ import frc.robot.utils.CalculateReefTarget;
 import frc.robot.utils.Constants.AlignmentConstants;
 import frc.robot.utils.Constants.AlignmentConstants.AlignmentDestination;
 import frc.robot.utils.Constants.AlignmentConstants.ReefAlign;
+import frc.robot.utils.Constants.ClawConstants;
 import frc.robot.utils.Constants.DriveConstants;
+import frc.robot.utils.Constants.ScoreConstants;
 import frc.robot.utils.Logger;
 import frc.robot.utils.MagnitudeCap;
 import frc.robot.utils.PoleLookup;
@@ -178,13 +180,12 @@ public class AlignToReefBasisVector extends Command {
         SmartDashboard.putNumber(commandName + " back offset", tagBackMagnitude);
 
         SmartDashboard.putNumber(commandName + " L1 lateral offset", tagL1LateralMagnitude);
-
-        SmartDashboard.putNumber(commandName + " L1 press speed", AlignmentConstants.kL1PressSpeed);
-        SmartDashboard.putNumber(commandName + " L1 strafe speed", AlignmentConstants.kL1StrafeSpeed);
-        SmartDashboard.putNumber(commandName + " L1 strafing press speed", AlignmentConstants.kL1StrafingPressSpeed);
-
-        SmartDashboard.putNumber(commandName + " L1 press time", AlignmentConstants.kL1PressTime);
-        SmartDashboard.putNumber(commandName + " L1 strafe time", AlignmentConstants.kL1StrafeBeforeScoreTime);
+        SmartDashboard.putNumber("L1 press speed", AlignmentConstants.kL1PressSpeed);
+        SmartDashboard.putNumber("L1 strafe speed", AlignmentConstants.kL1StrafeSpeed);
+        SmartDashboard.putNumber("L1 strafing press speed", AlignmentConstants.kL1StrafingPressSpeed);
+        SmartDashboard.putNumber("L1 press time", AlignmentConstants.kL1PressTime);
+        SmartDashboard.putNumber("L1 strafe time", AlignmentConstants.kL1StrafeBeforeScoreTime);
+        SmartDashboard.putNumber("L1 eject speed", ClawConstants.kCoralL1OuttakeSpeed);
         
         SmartDashboard.putBoolean("L1: pressing", false);
         SmartDashboard.putBoolean("L1: strafing", false);
@@ -576,7 +577,7 @@ public class AlignToReefBasisVector extends Command {
                 Superstructure.getInstance().getScoringFlag() == ScoringFlag.L1FLAG &&
                 L1startPressTime == 0) {
             
-            double pressSpeed = SmartDashboard.getNumber(commandName + " L1 press speed", AlignmentConstants.kL1PressSpeed);
+            double pressSpeed = SmartDashboard.getNumber("L1 press speed", AlignmentConstants.kL1PressSpeed);
             SmartDashboard.putBoolean("L1: pressing", true);
 
             drivetrain.drive( 
@@ -588,15 +589,15 @@ public class AlignToReefBasisVector extends Command {
                 L1startPressTime = Timer.getFPGATimestamp();
         }
 
-        double pressTime = SmartDashboard.getNumber(commandName + " L1 press time", AlignmentConstants.kL1PressTime);
+        double pressTime = SmartDashboard.getNumber("L1 press time", AlignmentConstants.kL1PressTime);
         if (Superstructure.getInstance().getScoringFlag() == ScoringFlag.L1FLAG && 
                 L1startPressTime != 0 && Timer.getFPGATimestamp() - L1startPressTime >= pressTime &&
                 L1startStrafeTime == 0) {
                     
             SmartDashboard.putBoolean("L1: strafing", true);
 
-            double strafeSpeed = SmartDashboard.getNumber(commandName + " L1 strafe speed", AlignmentConstants.kL1StrafeSpeed);
-            double strafingPressSpeed = SmartDashboard.getNumber(commandName + " L1 strafing press speed", AlignmentConstants.kL1StrafingPressSpeed);
+            double strafeSpeed = SmartDashboard.getNumber("L1 strafe speed", AlignmentConstants.kL1StrafeSpeed);
+            double strafingPressSpeed = SmartDashboard.getNumber("L1 strafing press speed", AlignmentConstants.kL1StrafingPressSpeed);
 
             if (destination == AlignmentDestination.RIGHT) {
                 // drivetrain.drive(
@@ -623,7 +624,7 @@ public class AlignToReefBasisVector extends Command {
                 L1startStrafeTime = Timer.getFPGATimestamp();
         }
         
-        double strafeTime = SmartDashboard.getNumber(commandName + " L1 strafe time", AlignmentConstants.kL1StrafeBeforeScoreTime);
+        double strafeTime = SmartDashboard.getNumber("L1 strafe time", AlignmentConstants.kL1StrafeBeforeScoreTime);
         if (Superstructure.getInstance().getScoringFlag() == ScoringFlag.L1FLAG && 
                 L1startStrafeTime != 0 && Timer.getFPGATimestamp() - L1startStrafeTime >= strafeTime) {
 
