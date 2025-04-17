@@ -477,9 +477,9 @@ public final class Constants {
         public static final double kInsideBadAngleTolerance = 40.0;
         public static final double kOutsideBadAngleTolerance = 55.0;
         
-        public static final double kL1PressSpeed = 0.3;
-        public static final double kL1StrafingPressSpeed = 0.2;
-        public static final double kL1StrafeSpeed = -0.9;
+        public static final double kL1PressSpeed = -0.3;
+        public static final double kL1StrafingPressSpeed = -0.2;
+        public static final double kL1StrafeSpeed = 0.9;
 
         public static final double kL1PressTime = 0.7;
         public static final double kL1StrafeBeforeScoreTime = 0.00;
