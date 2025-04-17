@@ -580,7 +580,7 @@ public class AlignToReefBasisVector extends Command {
             double pressSpeed = SmartDashboard.getNumber("L1 press speed", AlignmentConstants.kL1PressSpeed);
             SmartDashboard.putBoolean("L1: pressing", true);
 
-            drivetrain.drive( 
+            drivetrain.driveBlue(
                 depthVector.times(pressSpeed),
                 0, true, null
             );
@@ -604,7 +604,7 @@ public class AlignToReefBasisVector extends Command {
                 //     new Translation2d(strafingPressSpeed, strafeSpeed),
                 //     0, false, null
                 // );
-                drivetrain.drive(
+                drivetrain.driveBlue(
                     lateralVector.times(strafeSpeed).plus(depthVector.times(strafingPressSpeed)),
                     0, true, null
                 );
@@ -614,7 +614,7 @@ public class AlignToReefBasisVector extends Command {
                 //     new Translation2d(strafingPressSpeed, -strafeSpeed),
                 //     0, false, null
                 // );
-                drivetrain.drive(
+                drivetrain.driveBlue(
                     lateralVector.times(-strafeSpeed).plus(depthVector.times(strafingPressSpeed)),
                     0, true, null
                 );
