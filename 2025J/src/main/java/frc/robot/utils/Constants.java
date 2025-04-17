@@ -208,7 +208,7 @@ public final class Constants {
         public static final double kElevatorHPIntakePosition = 0.0;
         public static final double kElevatorGroundIntakePosition = 0.77;
         public static final double kElevatorLollipopIntakePosition = 0;
-        public static final double kElevatorL1ScorePosition = 3.65 - 1.5;
+        public static final double kElevatorL1ScorePosition = 3.65 - 1.5 + 0.05;
         // public static final double kElevatorL1ScorePosition = 1.75;;
         public static final double kElevatorL2ScorePosition = 3.65; //3.8;
         public static final double kElevatorL3ScorePosition = 7.0;
