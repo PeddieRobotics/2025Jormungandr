@@ -371,15 +371,7 @@ public class Superstructure extends SubsystemBase {
                         EJECT_ALGAE,
                         EJECT_CORAL)
                         .contains(requestedSystemState)) {
-
-                    if(requestedSystemState == L1_SCORE){
-                        systemState = requestedSystemState;
-                    } else{
-                        arm.setArmPositionMotionMagicVoltage(0.17, ArmConstants.kSlotUp);
-                        if(arm.isAtPosition(0.17)){
-                            systemState = requestedSystemState;
-                        }
-                    }
+                    systemState = requestedSystemState;
                 }
             }
 
