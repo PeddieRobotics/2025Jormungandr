@@ -417,7 +417,7 @@ public final class Constants {
             public static final double kRightOffset = -0.135;
 
             public static final double kL1TagBackMagnitude = 0.43;
-            public static final double kL1LeftOffset = 0.199 + 0.1194;
+            public static final double kL1LeftOffset = 0.3084;
             public static final double kL1RightOffset = -0.135 - 0.1194;
             
             public static final double kMaxSpeed = 2.5;
@@ -477,12 +477,12 @@ public final class Constants {
         public static final double kInsideBadAngleTolerance = 40.0;
         public static final double kOutsideBadAngleTolerance = 55.0;
         
-        public static final double kL1PressSpeed = 0.1;
-        public static final double kL1StrafingPressSpeed = 0.05;
-        public static final double kL1StrafeSpeed = 0.8;
+        public static final double kL1PressSpeed = 0.3;
+        public static final double kL1StrafingPressSpeed = 0.2;
+        public static final double kL1StrafeSpeed = -0.9;
 
-        public static final double kL1PressTime = 0.2;
-        public static final double kL1StrafeBeforeScoreTime = 0.1;
+        public static final double kL1PressTime = 0.7;
+        public static final double kL1StrafeBeforeScoreTime = 0.00;
     }
 
     public static final class ClawConstants {
