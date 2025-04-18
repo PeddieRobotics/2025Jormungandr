@@ -39,7 +39,7 @@ public class Climber extends SubsystemBase {
     }
 
     public void retractClimber(){
-        double speed = -1.0;
+        double speed = -0.75;
         if(climbRetracted()){
            setSpeed(0.0); 
         }else{
