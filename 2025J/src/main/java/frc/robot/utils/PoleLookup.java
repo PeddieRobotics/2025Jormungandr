@@ -11,7 +11,7 @@ public class PoleLookup {
     private static Map<Integer, PoleCategory> kPoleOffsetTableAuto = new HashMap<>() {{
         // RED POLES
         put(PoleLookup.getPoleNumber(6, AlignmentDestination.LEFT),   PoleCategory.SLIGHTLY_HIGH);
-        put(PoleLookup.getPoleNumber(6, AlignmentDestination.RIGHT),  PoleCategory.HIGH);
+        put(PoleLookup.getPoleNumber(6, AlignmentDestination.RIGHT),  PoleCategory.EXTREMELY_HIGH);
 
         put(PoleLookup.getPoleNumber(7, AlignmentDestination.LEFT),   PoleCategory.SLIGHTLY_HIGH);
         put(PoleLookup.getPoleNumber(7, AlignmentDestination.RIGHT),  PoleCategory.EXTREMELY_HIGH);
@@ -26,7 +26,7 @@ public class PoleLookup {
         put(PoleLookup.getPoleNumber(10, AlignmentDestination.RIGHT), PoleCategory.HIGH);
 
         put(PoleLookup.getPoleNumber(11, AlignmentDestination.LEFT),  PoleCategory.SLIGHTLY_HIGH);
-        put(PoleLookup.getPoleNumber(11, AlignmentDestination.RIGHT), PoleCategory.HIGH);
+        put(PoleLookup.getPoleNumber(11, AlignmentDestination.RIGHT), PoleCategory.EXTREMELY_HIGH);
         
 
         // BLUE POLES
@@ -52,7 +52,7 @@ public class PoleLookup {
     private static Map<Integer, PoleCategory> kPoleOffsetTableTeleop = new HashMap<>() {{
         // RED POLES
         put(PoleLookup.getPoleNumber(6, AlignmentDestination.LEFT),   PoleCategory.SLIGHTLY_HIGH);
-        put(PoleLookup.getPoleNumber(6, AlignmentDestination.RIGHT),  PoleCategory.HIGH);
+        put(PoleLookup.getPoleNumber(6, AlignmentDestination.RIGHT),  PoleCategory.EXTREMELY_HIGH);
 
         put(PoleLookup.getPoleNumber(7, AlignmentDestination.LEFT),   PoleCategory.SLIGHTLY_HIGH);
         put(PoleLookup.getPoleNumber(7, AlignmentDestination.RIGHT),  PoleCategory.EXTREMELY_HIGH);
@@ -67,7 +67,7 @@ public class PoleLookup {
         put(PoleLookup.getPoleNumber(10, AlignmentDestination.RIGHT), PoleCategory.HIGH);
 
         put(PoleLookup.getPoleNumber(11, AlignmentDestination.LEFT),  PoleCategory.SLIGHTLY_HIGH);
-        put(PoleLookup.getPoleNumber(11, AlignmentDestination.RIGHT), PoleCategory.HIGH);
+        put(PoleLookup.getPoleNumber(11, AlignmentDestination.RIGHT), PoleCategory.EXTREMELY_HIGH);
         
 
         // BLUE POLES

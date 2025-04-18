@@ -403,7 +403,8 @@ public class Superstructure extends SubsystemBase {
             }
 
             case L3_PREP -> {
-                elevator.setElevatorPositionMotionMagicVoltage(ScoreConstants.kElevatorL3ScorePosition + manualOffset);
+                double L3offset = SmartDashboard.getNumber("L3: elevator offset", -0.0);
+                elevator.setElevatorPositionMotionMagicVoltage(ScoreConstants.kElevatorL3ScorePosition + manualOffset + L3offset);
                 arm.setArmPositionMotionMagicVoltage(ScoreConstants.kArmL3ScorePosition, ArmConstants.kSlotUp);
                 claw.stopClaw();
 
@@ -889,6 +890,7 @@ public class Superstructure extends SubsystemBase {
 
     public void sendToScore() {
         double manualOffset = SmartDashboard.getNumber("Scoring Pose Offset", 0);
+        double L3offset = SmartDashboard.getNumber("L3: elevator offset", -0.0);
         
         Logger logger = Logger.getInstance();
         switch (systemState) {
@@ -914,7 +916,7 @@ public class Superstructure extends SubsystemBase {
 
             case L3_PREP -> {
                 if (arm.isAtPosition(ScoreConstants.kArmL3ScorePosition)
-                        && elevator.isAtPosition(ScoreConstants.kElevatorL3ScorePosition + manualOffset)) {
+                        && elevator.isAtPosition(ScoreConstants.kElevatorL3ScorePosition + manualOffset + L3offset)) {
                     logger.logScoreEvent(3, elevator.getElevatorCANcoderPosition(), arm.getArmMotorEncoderPosition());  
                     requestState(L3_SCORE);
                     timer.reset();

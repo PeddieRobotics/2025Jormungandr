@@ -562,7 +562,7 @@ public class AlignToReefBasisVector extends Command {
                 Logger.getInstance().logEvent("Align to reef L2/3/4 send to score", true);
                 Superstructure.getInstance().sendToScore();
                 SmartDashboard.putBoolean("Align: fire gamepiece", true);
-                if(Superstructure.getInstance().isReefScoringState()){
+                if (Superstructure.getInstance().isReefScoringState()){
                     LimelightBack.getInstance().flashLED();
                     SmartDashboard.putNumber("Align: Elapsed Time", elapsedTime);
                 }

@@ -39,7 +39,7 @@ public class Climber extends SubsystemBase {
     }
 
     public void retractClimber(){
-        double speed = SmartDashboard.getNumber("Climber: Retract Speed", -0.75);
+        double speed = -1.0;
         if(climbRetracted()){
            setSpeed(0.0); 
         }else{
