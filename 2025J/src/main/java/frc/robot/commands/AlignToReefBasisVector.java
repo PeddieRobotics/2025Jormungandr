@@ -267,6 +267,28 @@ public class AlignToReefBasisVector extends Command {
 
         SmartDashboard.putNumber("Align: Desired Target", desiredTarget);
 
+        switch (destination) {
+            case LEFT -> {
+                tagLateralMagnitude = AlignmentConstants.ReefAlign.kLeftOffset;
+            }
+            case MIDDLE -> {
+                tagLateralMagnitude = AlignmentConstants.ReefAlign.kMiddleOffset;
+            }
+            case RIGHT -> {
+                tagLateralMagnitude = AlignmentConstants.ReefAlign.kRightOffset;
+            }
+        }
+
+        // Q88 keeps missing this pole
+        if (destination == AlignmentDestination.RIGHT && desiredTarget == 17)
+            tagLateralMagnitude -= 0.02;
+    
+        // Q102
+        if (destination == AlignmentDestination.RIGHT && desiredTarget == 11)
+            tagLateralMagnitude -= 0.02;
+        if (destination == AlignmentDestination.RIGHT && desiredTarget == 6)
+            tagLateralMagnitude -= 0.02;
+
         if (!AlignmentConstants.kReefDesiredAngle.containsKey(desiredTarget)) {
             desiredPose = Optional.empty();
             return;
