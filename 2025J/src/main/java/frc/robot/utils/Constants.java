@@ -383,7 +383,7 @@ public final class Constants {
             public static final double kLateralFF = 0;
 
             public static final double kLateralThreshold = 0.03;
-            public static final double kLateralCloseThreshold = 0.35;
+            public static final double kLateralCloseThreshold = 0.15;
             public static final double kLateralCloseAtL4Threshold = 0.05;
             public static final double kLateralL3PrestageThreshold = 0.4;
             public static final double kLateralL4PrestageThreshold = 0.4;

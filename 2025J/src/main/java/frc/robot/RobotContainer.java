@@ -106,8 +106,6 @@ public class RobotContainer {
         SmartDashboard.putNumber("Drive: cardinal scale", DriveConstants.kCardinalDirectionSpeedScale);
 
         SmartDashboard.putNumber("Scoring Pose Offset", 0);
-        
-        SmartDashboard.putNumber("L3: elevator offset", -0.0);
     }
 
     public Command getAutonomousCommand() {

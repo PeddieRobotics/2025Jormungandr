@@ -281,7 +281,7 @@ public class AlignToReefBasisVector extends Command {
 
         // Q88 keeps missing this pole
         if (destination == AlignmentDestination.RIGHT && desiredTarget == 17)
-            tagLateralMagnitude -= 0.02;
+            tagLateralMagnitude -= 0.06;
     
         // Q102
         if (destination == AlignmentDestination.RIGHT && desiredTarget == 11)
