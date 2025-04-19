@@ -279,13 +279,19 @@ public class AlignToReefBasisVector extends Command {
             }
         }
 
-        // Q88 keeps missing this pole
+        // Q88 keeps missing this pole: 17R
         if (destination == AlignmentDestination.RIGHT && desiredTarget == 17)
             tagLateralMagnitude -= 0.06;
+        
+        // Q115: 19R
+        if (destination == AlignmentDestination.RIGHT && desiredTarget == 19)
+            tagLateralMagnitude -= 0.01;
     
-        // Q102
+        // Q102: 11R
         if (destination == AlignmentDestination.RIGHT && desiredTarget == 11)
             tagLateralMagnitude -= 0.02;
+        
+        // 6R
         // if (destination == AlignmentDestination.RIGHT && desiredTarget == 6)
         //     tagLateralMagnitude -= 0.02;
 
