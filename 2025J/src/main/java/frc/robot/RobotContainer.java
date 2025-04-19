@@ -106,6 +106,8 @@ public class RobotContainer {
         SmartDashboard.putNumber("Drive: cardinal scale", DriveConstants.kCardinalDirectionSpeedScale);
 
         SmartDashboard.putNumber("Scoring Pose Offset", 0);
+
+        SmartDashboard.putBoolean("Use Milstein Poles?", false);
     }
 
     public Command getAutonomousCommand() {

@@ -267,33 +267,34 @@ public class AlignToReefBasisVector extends Command {
 
         SmartDashboard.putNumber("Align: Desired Target", desiredTarget);
 
+        boolean useMilstein = SmartDashboard.getBoolean("Use Milstein Poles?", false);
         switch (destination) {
             case LEFT -> {
-                tagLateralMagnitude = AlignmentConstants.ReefAlign.kLeftOffset;
+                tagLateralMagnitude = useMilstein ? 0.199 : AlignmentConstants.ReefAlign.kLeftOffset;
             }
             case MIDDLE -> {
                 tagLateralMagnitude = AlignmentConstants.ReefAlign.kMiddleOffset;
             }
             case RIGHT -> {
-                tagLateralMagnitude = AlignmentConstants.ReefAlign.kRightOffset;
+                tagLateralMagnitude = useMilstein ? -0.135 : AlignmentConstants.ReefAlign.kRightOffset;
             }
         }
 
-        // Q88 keeps missing this pole: 17R
-        if (destination == AlignmentDestination.RIGHT && desiredTarget == 17)
-            tagLateralMagnitude -= 0.06;
+        // // Q88 keeps missing this pole: 17R
+        // if (destination == AlignmentDestination.RIGHT && desiredTarget == 17)
+        //     tagLateralMagnitude -= 0.06;
         
-        // Q115: 19R
-        if (destination == AlignmentDestination.RIGHT && desiredTarget == 19)
-            tagLateralMagnitude -= 0.01;
+        // // Q115: 19R
+        // if (destination == AlignmentDestination.RIGHT && desiredTarget == 19)
+        //     tagLateralMagnitude -= 0.01;
     
-        // Q102: 11R
-        if (destination == AlignmentDestination.RIGHT && desiredTarget == 11)
-            tagLateralMagnitude -= 0.02;
+        // // Q102: 11R
+        // if (destination == AlignmentDestination.RIGHT && desiredTarget == 11)
+        //     tagLateralMagnitude -= 0.02;
         
-        // 6R
-        if (destination == AlignmentDestination.RIGHT && desiredTarget == 6)
-            tagLateralMagnitude -= 0.01;
+        // // 6R
+        // if (destination == AlignmentDestination.RIGHT && desiredTarget == 6)
+        //     tagLateralMagnitude -= 0.01;
 
         if (!AlignmentConstants.kReefDesiredAngle.containsKey(desiredTarget)) {
             desiredPose = Optional.empty();
