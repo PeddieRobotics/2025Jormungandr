@@ -292,8 +292,8 @@ public class AlignToReefBasisVector extends Command {
             tagLateralMagnitude -= 0.02;
         
         // 6R
-        // if (destination == AlignmentDestination.RIGHT && desiredTarget == 6)
-        //     tagLateralMagnitude -= 0.02;
+        if (destination == AlignmentDestination.RIGHT && desiredTarget == 6)
+            tagLateralMagnitude -= 0.01;
 
         if (!AlignmentConstants.kReefDesiredAngle.containsKey(desiredTarget)) {
             desiredPose = Optional.empty();
