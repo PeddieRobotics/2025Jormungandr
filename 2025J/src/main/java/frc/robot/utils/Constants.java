@@ -412,9 +412,9 @@ public final class Constants {
             // public static final double kRightOffset = -0.135; // -0.1651;
 
             // MONTGOMERY
-            public static final double kLeftOffset = 0.199;
+            public static final double kLeftOffset = 0.216;
             public static final double kMiddleOffset = 0.01;   
-            public static final double kRightOffset = -0.135;
+            public static final double kRightOffset = -0.150;
 
             public static final double kL1TagBackMagnitude = 0.43;
             public static final double kL1LeftOffset = 0.3084;
