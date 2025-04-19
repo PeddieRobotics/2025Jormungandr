@@ -108,7 +108,7 @@ public class PoleLookup {
             case EXTREMELY_HIGH:
                 return 0.15;
             case INSANELY_HIGH:
-                return 0.20;
+                return 0.25;
         }
         return 0;
     }
