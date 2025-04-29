@@ -14,7 +14,6 @@ import edu.wpi.first.util.datalog.StringLogEntry;
 import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.DriverStation;
 import frc.robot.subsystems.Arm;
-import frc.robot.subsystems.Autonomous;
 import frc.robot.subsystems.Claw;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Drivetrain;
@@ -33,7 +32,6 @@ public class Logger {
     private static Logger instance;
     private Drivetrain drivetrain;
     private Arm arm;
-    private Autonomous autonomous;
     private Claw claw;
     private Elevator elevator;
     private HPIntake hpIntake;
@@ -96,7 +94,6 @@ public class Logger {
     public Logger() {
         drivetrain = Drivetrain.getInstance();
         arm = Arm.getInstance();
-        autonomous = Autonomous.getInstance();
         claw = Claw.getInstance();
         elevator = Elevator.getInstance();
         superstructure = Superstructure.getInstance();
@@ -357,8 +354,8 @@ public class Logger {
     }
 
     public void updateDrivetrainLogs() {
-        gyroAngleEntry.append(DriverStation.isAutonomous() ? drivetrain.getHeadingForceAdjust() : drivetrain.getHeading());
-        gyroAngleEntryBlue.append(DriverStation.isAutonomous() ? drivetrain.getHeadingBlueForceAdjust() : drivetrain.getHeadingBlue());
+        gyroAngleEntry.append(drivetrain.getHeading());
+        gyroAngleEntryBlue.append(drivetrain.getHeadingBlue());
 
         driveTrainXAccEntry.append(drivetrain.getGyroAccX());
         driveTrainYAccEntry.append(drivetrain.getGyroAccY());

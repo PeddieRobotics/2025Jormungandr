@@ -488,10 +488,7 @@ public class AlignToReefBasisVector extends Command {
         if (desiredPose.isEmpty())
             return;
 
-        if (DriverStation.isAutonomous())
-            rotationError = drivetrain.getHeadingBlueForceAdjust() - desiredAngle;
-        else
-            rotationError = drivetrain.getHeadingBlue() - desiredAngle;
+        rotationError = drivetrain.getHeadingBlue() - desiredAngle;
 
         depthPIDController.setPID(depthP, depthI, depthD);
         lateralPIDController.setPID(lateralP, lateralI, lateralD);
@@ -532,12 +529,8 @@ public class AlignToReefBasisVector extends Command {
         Translation2d translation = depthVector.times(depthMagnitude).plus(lateralVector.times(lateralMagnitude));
         translation = MagnitudeCap.capMagnitude(translation, maxSpeed);
 
-        if (L1startStrafeTime == 0 && L1startPressTime == 0) {
-            if (DriverStation.isAutonomous())
-                drivetrain.driveBlueForceAdjust(translation, rotation, true, null);
-            else
-                drivetrain.driveBlue(translation, rotation, true, null);
-        }
+        if (L1startStrafeTime == 0 && L1startPressTime == 0)
+            drivetrain.driveBlue(translation, rotation, true, null);
 
         double elapsedTime = Timer.getFPGATimestamp() - initialTime;
 
@@ -682,6 +675,12 @@ public class AlignToReefBasisVector extends Command {
             "Reef " + commandName + " ended with errors: lateral " + lateralError + ", depth " + depthError + ", rotation " + rotationError,
             false
         );
+        
+        if (DriverStation.isAutonomous() && desiredPose.isPresent()) {
+            double desiredX = desiredPose.get().getX();
+            double desiredY = desiredPose.get().getY();
+            drivetrain.resetTranslation(new Translation2d(desiredX, desiredY));
+        }
 
         Superstructure.getInstance().setL4offset(0);
     }

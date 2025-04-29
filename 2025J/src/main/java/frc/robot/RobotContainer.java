@@ -4,11 +4,12 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.commands.SwerveDriveCommand;
 import frc.robot.subsystems.Arm;
-import frc.robot.subsystems.Autonomous;
 import frc.robot.subsystems.Claw;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Drivetrain;
@@ -38,7 +39,6 @@ import frc.robot.utils.Constants.ScoreConstants;
 @SuppressWarnings("unused")
 public class RobotContainer {
     private Arm arm;
-    private Autonomous autonomous;
     private Claw claw;
     private Climber climber;
     private Drivetrain drivetrain;
@@ -51,13 +51,13 @@ public class RobotContainer {
     private LimelightFrontLeft llFrontLeft;
     private LimelightFrontRight llFrontRight;
     private LimelightClimber llClimber;
+    private Autonomous autonomous;
     // private Lights lights;
 
     public RobotContainer() {
         arm = Arm.getInstance();
         claw = Claw.getInstance();
         climber = Climber.getInstance();
-        autonomous = Autonomous.getInstance();
         drivetrain = Drivetrain.getInstance();
         elevator = Elevator.getInstance();
         hpIntake = HPIntake.getInstance();
@@ -68,12 +68,16 @@ public class RobotContainer {
         llFrontLeft = LimelightFrontLeft.getInstance();
         llFrontRight = LimelightFrontRight.getInstance();
         llClimber = LimelightClimber.getInstance();
+        autonomous = Autonomous.getInstance();
         // lights = Lights.getInstance();
+
+
+
+
 
         CalculateReefTarget.initBlue();
         CalculateReefTarget.initRed();
 
-        SmartDashboard.putData("Auto Routines", autonomous.getAutoChooser());
         drivetrain.setDefaultCommand(new SwerveDriveCommand());
 
         SmartDashboard.putBoolean("Align: Smart Target Finding", true);
@@ -108,9 +112,5 @@ public class RobotContainer {
         SmartDashboard.putNumber("Scoring Pose Offset", 0);
 
         SmartDashboard.putBoolean("Use Milstein Poles?", false);
-    }
-
-    public Command getAutonomousCommand() {
-        return Autonomous.getAutonomousCommand();
     }
 }

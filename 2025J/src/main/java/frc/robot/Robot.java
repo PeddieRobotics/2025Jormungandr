@@ -7,13 +7,16 @@ package frc.robot;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Superstructure;
 import frc.robot.utils.CalculateReefTarget;
+import frc.robot.utils.Constants.AutoConstants;
 import frc.robot.utils.Logger;
 
 import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.utils.TunableConstant;
 
 /**
@@ -22,11 +25,12 @@ import frc.robot.utils.TunableConstant;
  * this project, you must also update the Main.java file in the project.
  */
 public class Robot extends TimedRobot {
-    private Command m_autonomousCommand;
+    private Command autonomousCommand;
 
-    private final RobotContainer m_robotContainer;
+    private final RobotContainer robotContainer;
 
     private Logger logger;
+
 
     /**
      * This function is run when the robot is first started up and should be used for any
@@ -35,7 +39,7 @@ public class Robot extends TimedRobot {
     public Robot() {
         // Instantiate our RobotContainer.    This will perform all our button bindings, and put our
         // autonomous chooser on the dashboard.
-        m_robotContainer = new RobotContainer();
+        robotContainer = new RobotContainer();
         DataLogManager.logNetworkTables(false);
         DataLogManager.start("/media/sda1");
         logger = Logger.getInstance();
@@ -71,12 +75,9 @@ public class Robot extends TimedRobot {
     /** This autonomous runs the autonomous command selected by your {@link RobotContainer} class. */
     @Override
     public void autonomousInit() {
-        m_autonomousCommand = m_robotContainer.getAutonomousCommand();
-
-        // schedule the autonomous command (example)
-        if (m_autonomousCommand != null) {
-            m_autonomousCommand.schedule();
-        }
+        autonomousCommand = Autonomous.getInstance().getAutonomousCommand();
+        if (autonomousCommand != null)
+            autonomousCommand.schedule();
 
         CalculateReefTarget.initBlue();
         CalculateReefTarget.initRed();
@@ -87,23 +88,18 @@ public class Robot extends TimedRobot {
     /** This function is called periodically during autonomous. */
     @Override
     public void autonomousPeriodic() {
+        CommandScheduler.getInstance().run();
         logger.updateLogs();
     }
 
     @Override
     public void teleopInit() {
-        // This makes sure that the autonomous stops running when
-        // teleop starts running. If you want the autonomous to
-        // continue until interrupted by another command, remove
-        // this line or comment it out.
-        if (m_autonomousCommand != null) {
-            m_autonomousCommand.cancel();
-        }
+        if (autonomousCommand != null)
+            autonomousCommand.cancel();
 
         CalculateReefTarget.initBlue();
         CalculateReefTarget.initRed();
 
-        Drivetrain.getInstance().setAutoAdjustHeading(Drivetrain.getInstance().getAutoAdjustHeading());
         Superstructure.getInstance().setL4offset(0);
     }
 

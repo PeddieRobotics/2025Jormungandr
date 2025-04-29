@@ -278,11 +278,7 @@ public class AlignToHPBasisVector extends Command {
         
         maxSpeed = SmartDashboard.getNumber("HPAlign: maxSpeed", maxSpeed);
         
-        if (DriverStation.isAutonomous()){
-            rotationError = drivetrain.getHeadingBlueForceAdjust() - desiredAngle;
-        } else {
-            rotationError = drivetrain.getHeadingBlue() - desiredAngle;
-        }
+        rotationError = drivetrain.getHeadingBlue() - desiredAngle;
 
         depthPIDController.setPID(depthP, depthI, depthD);
         lateralPIDController.setPID(lateralP, lateralI, lateralD);
@@ -338,10 +334,7 @@ public class AlignToHPBasisVector extends Command {
         SmartDashboard.putNumber("HPAlign: translation output X", translation.getX());
         SmartDashboard.putNumber("HPAlign: translation output Y", translation.getY());
 
-        if (DriverStation.isAutonomous())
-            drivetrain.driveBlueForceAdjust(translation, rotation, true, null);
-        else
-            drivetrain.driveBlue(translation, rotation, true, null);
+        drivetrain.driveBlue(translation, rotation, true, null);
 
         Logger.getInstance().logAlignToHP(lateralError, depthError, rotationError, lateralMagnitude, depthMagnitude, rotation);
     }

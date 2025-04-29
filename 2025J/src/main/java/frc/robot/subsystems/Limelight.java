@@ -110,12 +110,7 @@ public abstract class Limelight extends SubsystemBase {
         }
 
         // limelight wants robot orientation in blue side degrees
-        double gyro;
-        if (DriverStation.isAutonomous())
-            gyro = Drivetrain.getInstance().getHeadingBlueForceAdjust();
-        else 
-            gyro = Drivetrain.getInstance().getHeadingBlue();
-            
+        double gyro = Drivetrain.getInstance().getHeadingBlue();
         LimelightHelpers.SetRobotOrientation(
             limelightName, gyro,
             0, 0, 0, 0, 0
