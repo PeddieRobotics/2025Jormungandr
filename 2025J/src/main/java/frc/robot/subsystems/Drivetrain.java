@@ -425,11 +425,17 @@ public class Drivetrain extends SubsystemBase {
         // want degrees
         gyro.setYaw(start);
 
+        double x = pose.getX(), y = pose.getY();
+        if (DriverStation.getAlliance().isEmpty() || DriverStation.getAlliance().get() == DriverStation.Alliance.Red) {
+            x = 17.55 - x;
+            y = 8.05 - y;
+        }
+
         // want radians
         odometry.resetPosition(
             new Rotation2d(Math.toRadians(start)),
             swerveModulePositions,
-            new Pose2d(pose, new Rotation2d(Math.toRadians(start)))
+            new Pose2d(x, y, new Rotation2d(Math.toRadians(start)))
         );
     }
 

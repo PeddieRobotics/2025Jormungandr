@@ -9,11 +9,14 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
+import frc.robot.commands.AlignToHPBasisVector;
 import frc.robot.commands.AlignToReefBasisVector;
+import frc.robot.commands.DriveToPoint;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Superstructure;
 import frc.robot.subsystems.Superstructure.SuperstructureState;
 import frc.robot.utils.Constants.AlignmentConstants.AlignmentDestination;
+import frc.robot.utils.Constants.AlignmentConstants.HPAlign;
 import frc.robot.utils.Constants.AlignmentConstants.ReefAlign;
 import frc.robot.utils.Logger;
 
@@ -21,9 +24,51 @@ public class Autonomous {
     private Drivetrain drivetrain;
     private Superstructure superstructure;
     private Logger logger;
+
+    private Command createRightAlignToHP() {
+        return new SequentialCommandGroup(
+            new ParallelRaceGroup(
+                new AlignToHPBasisVector(HPAlign.kMaxSpeed, 8 * 2.54 / 100, HPAlign.kAutoBackOffset, 12, 2),
+                // new AlignToHPBasisVector(HPAlign.kMaxSpeed, 8 * 2.54 / 100 - 0.05, HPAlign.kAutoBackOffset, 12, 2),
+                // new WaitForCoral(),
+                new WaitCommand(3.0)
+            ),
+            new InstantCommand(() -> {
+                if (DriverStation.getAlliance().isEmpty() || DriverStation.getAlliance().get() == DriverStation.Alliance.Blue)
+                    drivetrain.resetTranslation(new Translation2d(1.299, 0.922));
+                else
+                    drivetrain.resetTranslation(new Translation2d(16.251, 7.128));
+            })
+        );
+    }
+    private Command createLeftAlignToHP() {
+        return new SequentialCommandGroup(
+            new ParallelRaceGroup(
+                new AlignToHPBasisVector(HPAlign.kMaxSpeed, -8 * 2.54 / 100, HPAlign.kAutoBackOffset, 13, 1),
+                // new AlignToHPBasisVector(HPAlign.kMaxSpeed, -8 * 2.54 / 100 - 0.05, HPAlign.kAutoBackOffset, 13, 1),
+                // new WaitForCoral(),
+                new WaitCommand(3.0)
+            ),
+            new InstantCommand(() -> {
+                if (DriverStation.getAlliance().isEmpty() || DriverStation.getAlliance().get() == DriverStation.Alliance.Blue)
+                    drivetrain.resetTranslation(new Translation2d(1.299, 7.128));
+                else
+                    drivetrain.resetTranslation(new Translation2d(16.251, 0.922));
+            })
+        );
+    }
+
+    // provide x and y in BLUE, will auto mirror for red
+    private Command createDriveToPoint(double x, double y, double percentMovement) {
+        if (DriverStation.getAlliance().isEmpty() || DriverStation.getAlliance().get() == DriverStation.Alliance.Red) {
+            x = 17.55 - x;
+            y = 8.05 - y;
+        }
+        return new DriveToPoint(x, y, percentMovement);
+    }
     
     private Command createAlignToReef(AlignmentDestination destination, double backOffset, double postScoreDelay,
-            int blueTag, int redTag, boolean isNotFirstPole, boolean isDaisy) {
+            int blueTag, int redTag, boolean isFirstPole, boolean isDaisy) {
 
         return new ParallelRaceGroup(
             new SequentialCommandGroup(
@@ -33,18 +78,18 @@ public class Autonomous {
                     backOffset,
                     ReefAlign.kTagBackMagnitude,
                     blueTag, redTag,
-                    isNotFirstPole, isDaisy
+                    !isFirstPole, isDaisy
                 ),
                 new WaitCommand(postScoreDelay),
                 new InstantCommand(() -> logger.logEvent("Auto Align to Reef converged", true))
             ),
             new SequentialCommandGroup(
-                new WaitCommand(2.0),
+                new WaitCommand(4.0),
                 new InstantCommand(() -> superstructure.sendToScore()),
                 new WaitCommand(postScoreDelay),
                 new InstantCommand(() -> logger.logEvent("Auto Align to Reef timeout", true))
             )
-        )
+        );
     }
     
     public final Command right4pieceAuto = new SequentialCommandGroup(
@@ -56,10 +101,52 @@ public class Autonomous {
             AlignmentDestination.RIGHT,
             ReefAlign.kAutoCloseTagBackMagnitude,
             0.3, 22, 9,
+            true, false
+        ),
+        createDriveToPoint(3.305, 1.5, 0.5),
+        createRightAlignToHP(),
+        createAlignToReef(
+            AlignmentDestination.LEFT,
+            ReefAlign.kAutoCloseTagBackMagnitude,
+            0.2, 17, 8,
+            false, false
+        ),
+        createRightAlignToHP(),
+        createAlignToReef(
+            AlignmentDestination.RIGHT,
+            ReefAlign.kAutoCloseTagBackMagnitude,
+            0.2, 17, 8,
+            false, false
+        ),
+        createRightAlignToHP(),
+        createAlignToReef(
+            AlignmentDestination.RIGHT,
+            ReefAlign.kAutoCloseTagBackMagnitude,
+            0.2, 18, 7,
             false, false
         )
     );
-    
+
+    private final Command right1pieceAuto = new SequentialCommandGroup(
+        new InstantCommand(() -> {
+            drivetrain.setStartingPose(new Translation2d(7.050, 2.686));
+            superstructure.requestState(SuperstructureState.PRESTAGE);
+        }),         
+        createAlignToReef(
+            AlignmentDestination.LEFT,
+            ReefAlign.kAutoCloseTagBackMagnitude, 
+            0.3,  22, 9, 
+            true, false
+        )
+    );
+
+    private final Command driveAuto = new SequentialCommandGroup(
+        new InstantCommand(() -> {
+            drivetrain.setStartingPose(new Translation2d(5.0, 3.0));
+        }),
+        createDriveToPoint(4.0, 3.0, 0.9)
+    );
+
     public final Command waitAuto = new WaitCommand(1);
     
     private static Autonomous autonomous;
@@ -75,7 +162,10 @@ public class Autonomous {
     public Autonomous() {
         autoChooser = new SendableChooser<>();
         autoChooser.setDefaultOption("Right 4 Piece", right4pieceAuto);
+        autoChooser.setDefaultOption("Right 1 Piece", right1pieceAuto);
+        autoChooser.setDefaultOption("1 meter", driveAuto);
         autoChooser.addOption("Wait", waitAuto);
+        
         SmartDashboard.putData("Auto Chooser", autoChooser);
         
         autoStartPosition = new SendableChooser<>();
