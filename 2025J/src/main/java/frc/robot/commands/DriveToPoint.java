@@ -1,46 +1,64 @@
 package frc.robot.commands;
 
-import com.ctre.phoenix6.jni.ErrorReportingJNI;
-
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Drivetrain;
 
 public class DriveToPoint extends Command {
-    private Translation2d target;
-    private double percentMovement;
     private Drivetrain drivetrain;
 
-    private double errorMagnitude;
-    private double translationThreshold;
-    private ProfiledPIDController translationPIDController;
+    private Translation2d target;
+    private double rotationTarget, percentMovement;
+    private double errorMagnitude, translationThreshold;
+    private ProfiledPIDController translationPIDController, rotationPIDController;
 
-    public DriveToPoint(double x, double y, double percentMovement) {
+    public DriveToPoint(double x, double y, double rotationTarget, double percentMovement) {
         target = new Translation2d(x, y);
-        percentMovement = this.percentMovement;
+        this.rotationTarget = rotationTarget;
+        this.percentMovement = percentMovement;
         drivetrain = Drivetrain.getInstance();
 
         translationPIDController = new ProfiledPIDController(
-            0, 0, 0,
+            4, 0, 0,
             new TrapezoidProfile.Constraints(3, 4)
         );
         translationPIDController.setGoal(0);
+
+        rotationPIDController = new ProfiledPIDController(
+            0.08, 0, 0,
+            new TrapezoidProfile.Constraints(540, 270)
+        );
+        rotationPIDController.enableContinuousInput(-180, 180);
+        rotationPIDController.setGoal(rotationTarget);
+
+        // SmartDashboard.putNumber("DriveToPoint Translation P", 5);
+        // SmartDashboard.putNumber("DriveToPoint Rotation P", 0.08);
+
+        addRequirements(drivetrain);
     }
 
     @Override
     public void initialize() {
+        if (DriverStation.getAlliance().isEmpty() || DriverStation.getAlliance().get() == DriverStation.Alliance.Red)
+            target = new Translation2d(17.55, 8.05).minus(target);
+
         errorMagnitude = 10000;
 
         Translation2d current = drivetrain.getPose().getTranslation();
         double movement = target.minus(current).getNorm();
-        translationThreshold = (1 - percentMovement) * movement + 0.02;
+        translationThreshold = (1.0 - percentMovement) * movement + 0.02;
     }
 
     @Override
     public void execute() {
-        Translation2d necessaryMovement = target.minus(drivetrain.getPose().getTranslation());
+        // translationPIDController.setP(SmartDashboard.getNumber("DriveToPoint Translation P", 0));
+        // rotationPIDController.setP(SmartDashboard.getNumber("DriveToPoint Rotation P", 0));
+        
+        Translation2d necessaryMovement = drivetrain.getPose().getTranslation().minus(target);
         errorMagnitude = necessaryMovement.getNorm();
 
         if (Math.abs(errorMagnitude) < translationThreshold)
@@ -48,14 +66,20 @@ public class DriveToPoint extends Command {
 
         Translation2d unit = necessaryMovement.div(errorMagnitude);
         Translation2d translation = unit.times(translationPIDController.calculate(errorMagnitude));
+        
+        double rotationError = drivetrain.getHeading() - rotationTarget;
+        double rotation = 0;
+        if (Math.abs(rotationError) >= 0.5)
+            rotation = rotationPIDController.calculate(rotationError);
 
-        drivetrain.drive(translation, 0, true, null);
+        drivetrain.driveBlue(translation, rotation, true, null);
     }
     
 
     // Called once the command ends or is interrupted.
     @Override
     public void end(boolean interrupted) {
+
     }
 
     // Returns true when the command should end.

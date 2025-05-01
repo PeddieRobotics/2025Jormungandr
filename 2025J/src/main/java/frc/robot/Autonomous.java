@@ -58,15 +58,6 @@ public class Autonomous {
         );
     }
 
-    // provide x and y in BLUE, will auto mirror for red
-    private Command createDriveToPoint(double x, double y, double percentMovement) {
-        if (DriverStation.getAlliance().isEmpty() || DriverStation.getAlliance().get() == DriverStation.Alliance.Red) {
-            x = 17.55 - x;
-            y = 8.05 - y;
-        }
-        return new DriveToPoint(x, y, percentMovement);
-    }
-    
     private Command createAlignToReef(AlignmentDestination destination, double backOffset, double postScoreDelay,
             int blueTag, int redTag, boolean isFirstPole, boolean isDaisy) {
 
@@ -103,7 +94,7 @@ public class Autonomous {
             0.3, 22, 9,
             true, false
         ),
-        createDriveToPoint(3.305, 1.5, 0.5),
+        new DriveToPoint(3.305, 1.5, 120.0, 0.5),
         createRightAlignToHP(),
         createAlignToReef(
             AlignmentDestination.LEFT,
@@ -144,7 +135,7 @@ public class Autonomous {
         new InstantCommand(() -> {
             drivetrain.setStartingPose(new Translation2d(5.0, 3.0));
         }),
-        createDriveToPoint(4.0, 3.0, 0.9)
+        new DriveToPoint(4.0, 3.0, 120.0, 1.0)
     );
 
     public final Command waitAuto = new WaitCommand(1);
