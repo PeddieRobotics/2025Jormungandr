@@ -23,6 +23,7 @@ import frc.robot.commands.AlignToCage;
 import frc.robot.commands.AlignToHPBasisVector;
 import frc.robot.commands.AlignToProcessor;
 import frc.robot.commands.AlignToReefBasisVector;
+import frc.robot.commands.DriveToPoint;
 import frc.robot.commands.RetractClimber;
 import frc.robot.commands.TwitchClimb;
 import frc.robot.subsystems.Claw;
@@ -97,7 +98,8 @@ public class DriverOI {
         );
 
         Trigger triangleButton = new JoystickButton(controller, PS4Controller.Button.kTriangle.value);
-        triangleButton.onTrue(new InstantCommand(() -> superstructure.sendToScore()));
+        triangleButton.whileTrue(new DriveToPoint(3.305, 1.5, 120.0, 1));
+        // triangleButton.onTrue(new InstantCommand(() -> superstructure.sendToScore()));
 
         Trigger muteButton = new JoystickButton(controller, 15);
         muteButton.onTrue(new InstantCommand(() -> {

@@ -5,6 +5,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Superstructure;
@@ -30,6 +31,9 @@ public class SwerveDriveCommand extends Command {
 
     @Override
     public void execute() {
+        if (DriverStation.isAutonomous())
+            return;
+            
         Translation2d translation = oi.getSwerveTranslation();
         double rotation = oi.getRotation();
         

@@ -91,31 +91,31 @@ public class Autonomous {
         createAlignToReef(
             AlignmentDestination.RIGHT,
             ReefAlign.kAutoCloseTagBackMagnitude,
-            0.3, 22, 9,
+            0.6, 22, 9,
             true, false
         ),
         new DriveToPoint(3.305, 1.5, 120.0, 0.5),
-        createRightAlignToHP(),
-        createAlignToReef(
-            AlignmentDestination.LEFT,
-            ReefAlign.kAutoCloseTagBackMagnitude,
-            0.2, 17, 8,
-            false, false
-        ),
-        createRightAlignToHP(),
-        createAlignToReef(
-            AlignmentDestination.RIGHT,
-            ReefAlign.kAutoCloseTagBackMagnitude,
-            0.2, 17, 8,
-            false, false
-        ),
-        createRightAlignToHP(),
-        createAlignToReef(
-            AlignmentDestination.RIGHT,
-            ReefAlign.kAutoCloseTagBackMagnitude,
-            0.2, 18, 7,
-            false, false
-        )
+        createRightAlignToHP()
+        // createAlignToReef(
+        //     AlignmentDestination.LEFT,
+        //     ReefAlign.kAutoCloseTagBackMagnitude,
+        //     0.2, 17, 8,
+        //     false, false
+        // ),
+        // createRightAlignToHP(),
+        // createAlignToReef(
+        //     AlignmentDestination.RIGHT,
+        //     ReefAlign.kAutoCloseTagBackMagnitude,
+        //     0.2, 17, 8,
+        //     false, false
+        // ),
+        // createRightAlignToHP(),
+        // createAlignToReef(
+        //     AlignmentDestination.RIGHT,
+        //     ReefAlign.kAutoCloseTagBackMagnitude,
+        //     0.2, 18, 7,
+        //     false, false
+        // )
     );
 
     private final Command right1pieceAuto = new SequentialCommandGroup(
@@ -135,12 +135,13 @@ public class Autonomous {
         new InstantCommand(() -> {
             drivetrain.setStartingPose(new Translation2d(5.0, 3.0));
         }),
-        new DriveToPoint(4.0, 3.0, 120.0, 1.0)
+        new DriveToPoint(4.0, 3.0, 0, 1.0)
     );
 
     public final Command waitAuto = new WaitCommand(1);
     
     private static Autonomous autonomous;
+
     public static Autonomous getInstance() {
         if (autonomous == null)
             autonomous = new Autonomous();

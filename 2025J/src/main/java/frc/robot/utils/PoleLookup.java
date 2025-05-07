@@ -91,7 +91,7 @@ public class PoleLookup {
         put(PoleLookup.getPoleNumber(22, AlignmentDestination.RIGHT), PoleCategory.HIGH);
     }};
 
-    private static Map<Integer, PoleCategory> kPoleOffsetTableEnergy = new HashMap<>() {{
+    private static Map<Integer, PoleCategory> kPoleOffsetTable = new HashMap<>() {{
         // RED POLES
         put(PoleLookup.getPoleNumber(6, AlignmentDestination.LEFT),   PoleCategory.EXTREMELY_HIGH);
         put(PoleLookup.getPoleNumber(6, AlignmentDestination.RIGHT),  PoleCategory.EXTREMELY_HIGH);
@@ -103,7 +103,7 @@ public class PoleLookup {
         put(PoleLookup.getPoleNumber(8, AlignmentDestination.RIGHT),  PoleCategory.HIGH);
 
         put(PoleLookup.getPoleNumber(9, AlignmentDestination.LEFT),   PoleCategory.EXTREMELY_HIGH);
-        put(PoleLookup.getPoleNumber(9, AlignmentDestination.RIGHT),  PoleCategory.HIGH);
+        put(PoleLookup.getPoleNumber(9, AlignmentDestination.RIGHT),  PoleCategory.EXTREMELY_HIGH);
 
         put(PoleLookup.getPoleNumber(10, AlignmentDestination.LEFT),  PoleCategory.EXTREMELY_HIGH);
         put(PoleLookup.getPoleNumber(10, AlignmentDestination.RIGHT), PoleCategory.HIGH);
@@ -129,7 +129,7 @@ public class PoleLookup {
         put(PoleLookup.getPoleNumber(21, AlignmentDestination.RIGHT), PoleCategory.SLIGHTLY_HIGH);
 
         put(PoleLookup.getPoleNumber(22, AlignmentDestination.LEFT),  PoleCategory.EXTREMELY_HIGH);
-        put(PoleLookup.getPoleNumber(22, AlignmentDestination.RIGHT), PoleCategory.HIGH);
+        put(PoleLookup.getPoleNumber(22, AlignmentDestination.RIGHT), PoleCategory.EXTREMELY_HIGH);
     }};
 
     private static double getCategoryHeightOffset(PoleCategory category) {
@@ -174,7 +174,7 @@ public class PoleLookup {
     
     public static double lookupPole(int tag, AlignmentDestination side) {
         // PoleCategory category = kPoleOffsetTableMass.get(getPoleNumber(tag, side));
-        PoleCategory category = kPoleOffsetTableEnergy.get(getPoleNumber(tag, side));
+        PoleCategory category = kPoleOffsetTable.get(getPoleNumber(tag, side));
         return getCategoryHeightOffset(category);
     }
 }

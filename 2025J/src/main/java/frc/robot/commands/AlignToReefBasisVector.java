@@ -376,8 +376,8 @@ public class AlignToReefBasisVector extends Command {
             }
         }
 
-        if (isNotFirstPoleAuto && DriverStation.isAutonomous())
-            return Optional.empty();
+        // if (isNotFirstPoleAuto && DriverStation.isAutonomous())
+        //     return Optional.empty();
 
         return Optional.of(drivetrain.getPose());
     }
