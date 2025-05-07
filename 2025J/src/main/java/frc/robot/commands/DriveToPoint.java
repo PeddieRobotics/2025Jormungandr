@@ -23,8 +23,8 @@ public class DriveToPoint extends Command {
         drivetrain = Drivetrain.getInstance();
 
         translationPIDController = new ProfiledPIDController(
-            1, 0, 0,
-            new TrapezoidProfile.Constraints(1, 1)
+            4, 0, 0,
+            new TrapezoidProfile.Constraints(3, 4)
         );
         translationPIDController.setGoal(0);
 

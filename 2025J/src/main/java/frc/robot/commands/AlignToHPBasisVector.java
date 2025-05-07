@@ -208,8 +208,8 @@ public class AlignToHPBasisVector extends Command {
                 return Optional.of(measurement.get());
         }
 
-        if (DriverStation.isAutonomous())
-            return Optional.empty();
+        // if (DriverStation.isAutonomous())
+        //     return Optional.empty();
         return Optional.of(drivetrain.getPose());
     }
     

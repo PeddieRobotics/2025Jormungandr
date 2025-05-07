@@ -1,10 +1,12 @@
 package frc.robot.utils;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.PS4Controller;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -98,7 +100,23 @@ public class DriverOI {
         );
 
         Trigger triangleButton = new JoystickButton(controller, PS4Controller.Button.kTriangle.value);
-        triangleButton.whileTrue(new DriveToPoint(3.305, 1.5, 120.0, 1));
+        triangleButton.whileTrue(new SequentialCommandGroup(
+            new DriveToPoint(3.305, 1.5, 120.0, 0.5),
+            new SequentialCommandGroup(
+                new ParallelRaceGroup(
+                    new AlignToHPBasisVector(HPAlign.kMaxSpeed, 8 * 2.54 / 100, HPAlign.kAutoBackOffset, 12, 2),
+                    // new AlignToHPBasisVector(HPAlign.kMaxSpeed, 8 * 2.54 / 100 - 0.05, HPAlign.kAutoBackOffset, 12, 2),
+                    // new WaitForCoral(),
+                    new WaitCommand(3.0)
+                ),
+                new InstantCommand(() -> {
+                    if (DriverStation.getAlliance().isEmpty() || DriverStation.getAlliance().get() == DriverStation.Alliance.Blue)
+                        Drivetrain.getInstance().resetTranslation(new Translation2d(1.299, 0.922));
+                    else
+                        Drivetrain.getInstance().resetTranslation(new Translation2d(16.251, 7.128));
+                })
+            )
+        ));
         // triangleButton.onTrue(new InstantCommand(() -> superstructure.sendToScore()));
 
         Trigger muteButton = new JoystickButton(controller, 15);

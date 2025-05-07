@@ -420,7 +420,7 @@ public final class Constants {
             public static final double kL1LeftOffset = 0.3084;
             public static final double kL1RightOffset = -0.135 - 0.1194;
             
-            public static final double kMaxSpeed = 2.5;
+            public static final double kMaxSpeed = 3.0;
 
             public static final double kMaxScoringSpeed = 1.0;
         }

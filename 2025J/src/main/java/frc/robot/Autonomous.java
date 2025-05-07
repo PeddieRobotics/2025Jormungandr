@@ -38,7 +38,8 @@ public class Autonomous {
                     drivetrain.resetTranslation(new Translation2d(1.299, 0.922));
                 else
                     drivetrain.resetTranslation(new Translation2d(16.251, 7.128));
-            })
+            }),
+            new InstantCommand(() -> superstructure.requestState(SuperstructureState.PRESTAGE))
         );
     }
     private Command createLeftAlignToHP() {
@@ -54,7 +55,8 @@ public class Autonomous {
                     drivetrain.resetTranslation(new Translation2d(1.299, 7.128));
                 else
                     drivetrain.resetTranslation(new Translation2d(16.251, 0.922));
-            })
+            }),
+            new InstantCommand(() -> superstructure.requestState(SuperstructureState.PRESTAGE))
         );
     }
 
@@ -91,31 +93,31 @@ public class Autonomous {
         createAlignToReef(
             AlignmentDestination.RIGHT,
             ReefAlign.kAutoCloseTagBackMagnitude,
-            0.6, 22, 9,
+            0.5, 22, 9,
             true, false
         ),
         new DriveToPoint(3.305, 1.5, 120.0, 0.5),
-        createRightAlignToHP()
-        // createAlignToReef(
-        //     AlignmentDestination.LEFT,
-        //     ReefAlign.kAutoCloseTagBackMagnitude,
-        //     0.2, 17, 8,
-        //     false, false
-        // ),
-        // createRightAlignToHP(),
-        // createAlignToReef(
-        //     AlignmentDestination.RIGHT,
-        //     ReefAlign.kAutoCloseTagBackMagnitude,
-        //     0.2, 17, 8,
-        //     false, false
-        // ),
-        // createRightAlignToHP(),
-        // createAlignToReef(
-        //     AlignmentDestination.RIGHT,
-        //     ReefAlign.kAutoCloseTagBackMagnitude,
-        //     0.2, 18, 7,
-        //     false, false
-        // )
+        createRightAlignToHP(),
+        createAlignToReef(
+            AlignmentDestination.LEFT,
+            ReefAlign.kAutoCloseTagBackMagnitude,
+            0.2, 17, 8,
+            false, false
+        ),
+        createRightAlignToHP(),
+        createAlignToReef(
+            AlignmentDestination.RIGHT,
+            ReefAlign.kAutoCloseTagBackMagnitude,
+            0.2, 17, 8,
+            false, false
+        ),
+        createRightAlignToHP(),
+        createAlignToReef(
+            AlignmentDestination.RIGHT,
+            ReefAlign.kAutoCloseTagBackMagnitude,
+            0.2, 18, 7,
+            false, false
+        )
     );
 
     private final Command right1pieceAuto = new SequentialCommandGroup(
