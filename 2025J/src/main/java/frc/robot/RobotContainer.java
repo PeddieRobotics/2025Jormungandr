@@ -72,9 +72,6 @@ public class RobotContainer {
         // lights = Lights.getInstance();
 
 
-
-
-
         CalculateReefTarget.initBlue();
         CalculateReefTarget.initRed();
 

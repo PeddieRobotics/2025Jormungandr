@@ -13,7 +13,9 @@ import frc.robot.utils.Logger;
 import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
@@ -31,18 +33,19 @@ public class Robot extends TimedRobot {
 
     private Logger logger;
 
+    private double lastTime;
+
 
     /**
      * This function is run when the robot is first started up and should be used for any
      * initialization code.
      */
     public Robot() {
-        // Instantiate our RobotContainer.    This will perform all our button bindings, and put our
-        // autonomous chooser on the dashboard.
         robotContainer = new RobotContainer();
         DataLogManager.logNetworkTables(false);
         DataLogManager.start("/media/sda1");
         logger = Logger.getInstance();
+        lastTime = Timer.getFPGATimestamp();
         DriverStation.startDataLog(DataLogManager.getLog());
     }
 
@@ -61,6 +64,9 @@ public class Robot extends TimedRobot {
         // block in order for anything in the Command-based framework to work.
         CommandScheduler.getInstance().run();
         TunableConstant.updateTunableConstants();
+
+        SmartDashboard.putNumber("loopTime", Timer.getTimestamp() - lastTime);
+        lastTime = Timer.getFPGATimestamp();
     }
 
     /** This function is called once each time the robot enters Disabled mode. */

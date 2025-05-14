@@ -508,7 +508,7 @@ public class Drivetrain extends SubsystemBase {
 
     @Override
     public void periodic() {
-        SmartDashboard.putNumber("Drivetrain Current Velocity", getDrivetrainCurrentVelocity());
+        // SmartDashboard.putNumber("Drivetrain Current Velocity", getDrivetrainCurrentVelocity());
 
         // SmartDashboard.putBoolean("skid", isSkidding());
         updateModulePositions();
@@ -517,12 +517,12 @@ public class Drivetrain extends SubsystemBase {
         fusedOdometryAdvScope.set(odometry.getEstimatedPosition());
         pureOdometryAdvScope.set(pureOdometry.getEstimatedPosition());
 
-        for(int i = 0; i < 4; i++){
-            SmartDashboard.putNumber("module " + i + "desired speed", swerveModuleStates[i].speedMetersPerSecond);
-            SmartDashboard.putNumber("module " + i + "desired angle", swerveModuleStates[i].angle.getRadians());
-            SmartDashboard.putNumber("module " + i + "actual speed", swerveModules[i].getVelocity());
-            SmartDashboard.putNumber("module " + i + "actual angle", swerveModules[i].getAngle());
-        }
+        // for(int i = 0; i < 4; i++){
+        //     SmartDashboard.putNumber("module " + i + "desired speed", swerveModuleStates[i].speedMetersPerSecond);
+        //     SmartDashboard.putNumber("module " + i + "desired angle", swerveModuleStates[i].angle.getRadians());
+        //     SmartDashboard.putNumber("module " + i + "actual speed", swerveModules[i].getVelocity());
+        //     SmartDashboard.putNumber("module " + i + "actual angle", swerveModules[i].getAngle());
+        // }
 
         odometryX.setNumber(getPose().getX());   
         odometryY.setNumber(getPose().getY()); 
