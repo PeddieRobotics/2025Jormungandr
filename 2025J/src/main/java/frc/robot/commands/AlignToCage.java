@@ -8,7 +8,7 @@ import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.LimelightClimber;
 import frc.robot.utils.DriverOI;
 import frc.robot.utils.DriverOI.DPadDirection;
-import frc.robot.utils.Logger;
+import frc.robot.utils.PeddieLogger;
 
 public class AlignToCage extends Command {
     private Drivetrain drivetrain;
@@ -69,7 +69,7 @@ public class AlignToCage extends Command {
     public void initialize() {
         ll.setPipeline(0); 
         // drivetrain.setUseMegaTag(false);
-        Logger.getInstance().logEvent("Align to Cage", true);
+        PeddieLogger.getInstance().logEvent("Align to Cage", true);
     }
 
     @Override
@@ -129,7 +129,7 @@ public class AlignToCage extends Command {
     @Override
     public void end(boolean interrupted) {
         // drivetrain.setUseMegaTag(true);
-        Logger.getInstance().logEvent("Align to Cage", false);
+        PeddieLogger.getInstance().logEvent("Align to Cage", false);
     }
 
     @Override

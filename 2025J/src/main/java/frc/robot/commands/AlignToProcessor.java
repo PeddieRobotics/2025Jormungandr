@@ -19,7 +19,7 @@ import frc.robot.subsystems.LimelightBack;
 import frc.robot.utils.DriverOI;
 import frc.robot.utils.Constants.AlignmentConstants.HPAlign;
 import frc.robot.utils.Constants.DriveConstants;
-import frc.robot.utils.Logger;
+import frc.robot.utils.PeddieLogger;
 import frc.robot.utils.MagnitudeCap;
 
 public class AlignToProcessor extends Command {
@@ -125,7 +125,7 @@ public class AlignToProcessor extends Command {
         SmartDashboard.putNumber("ProcessorAlign: desired pose X", desiredX);
         SmartDashboard.putNumber("ProcessorAlign: desired angle", desiredAngle);
         
-        Logger.getInstance().logEvent("Align to Processor ID " + desiredTarget, true);
+        PeddieLogger.getInstance().logEvent("Align to Processor ID " + desiredTarget, true);
 
         xError = 10000;
         rotationError = 10000;
@@ -203,7 +203,7 @@ public class AlignToProcessor extends Command {
         translation = MagnitudeCap.capMagnitude(translation, maxSpeed);
         
         if (superstructure.getCurrentState() == SuperstructureState.PROCESSOR_PREP) {
-            Logger.getInstance().logEvent("Align to Processor score", true);
+            PeddieLogger.getInstance().logEvent("Align to Processor score", true);
             if (isInBlueSide()) {
             // if (DriverStation.getAlliance().isEmpty() || DriverStation.getAlliance().get() == DriverStation.Alliance.Blue) {
                 if (estimatedPose.getY() <= sendToScoreLocation)
@@ -216,12 +216,12 @@ public class AlignToProcessor extends Command {
         }
 
         drivetrain.driveBlue(translation, rotation, true, null);
-        Logger.getInstance().logAlignToProcessor(xError, rotationError, strafe, xInput, rotation);
+        PeddieLogger.getInstance().logAlignToProcessor(xError, rotationError, strafe, xInput, rotation);
     }
 
     @Override
     public void end(boolean interrupted) {
-        Logger.getInstance().logEvent("Align to Processor", false);
+        PeddieLogger.getInstance().logEvent("Align to Processor", false);
     }
 
     @Override

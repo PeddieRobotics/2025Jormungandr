@@ -3,7 +3,7 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Climber;
-import frc.robot.utils.Logger;
+import frc.robot.utils.PeddieLogger;
 
 public class RetractClimber extends Command {
 
@@ -15,7 +15,7 @@ public class RetractClimber extends Command {
 
     @Override
     public void initialize() {
-        Logger.getInstance().logEvent("Retract Climber", true);
+        PeddieLogger.getInstance().logEvent("Retract Climber", true);
     }
 
     @Override
@@ -25,7 +25,7 @@ public class RetractClimber extends Command {
 
     @Override
     public void end(boolean interrupted) {
-        Logger.getInstance().logEvent("Retract Climber", false);
+        PeddieLogger.getInstance().logEvent("Retract Climber", false);
     }
 
     @Override

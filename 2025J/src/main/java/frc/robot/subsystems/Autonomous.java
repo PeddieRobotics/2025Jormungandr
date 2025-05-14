@@ -29,7 +29,7 @@ import frc.robot.utils.Constants.AlignmentConstants;
 import frc.robot.utils.Constants.AlignmentConstants.HPAlign;
 import frc.robot.utils.Constants.AlignmentConstants.ReefAlign;
 import frc.robot.utils.Constants.AutoConstants;
-import frc.robot.utils.Logger;
+import frc.robot.utils.PeddieLogger;
 
 public class Autonomous extends SubsystemBase {
 
@@ -168,13 +168,13 @@ public class Autonomous extends SubsystemBase {
                                 blue, red, isNotFirstPole, isDaisy
                             ),
                             new WaitCommand(postScoreDelay),
-                            new InstantCommand(() -> Logger.getInstance().logEvent("Auto Align to Reef converged", true))
+                            new InstantCommand(() -> PeddieLogger.getInstance().logEvent("Auto Align to Reef converged", true))
                         ),
                         new SequentialCommandGroup(
                             new WaitCommand(2.0),
                             new InstantCommand(() -> superstructure.sendToScore()),
                             new WaitCommand(postScoreDelay),
-                            new InstantCommand(() -> Logger.getInstance().logEvent("Auto Align to Reef timeout", true))
+                            new InstantCommand(() -> PeddieLogger.getInstance().logEvent("Auto Align to Reef timeout", true))
                         )
                     ),
                     new InstantCommand(() -> {
@@ -196,13 +196,13 @@ public class Autonomous extends SubsystemBase {
                                 blue, red, isNotFirstPole, isDaisy
                             ),
                             new WaitCommand(postScoreDelay),
-                            new InstantCommand(() -> Logger.getInstance().logEvent("Auto Align to Reef converged", true))
+                            new InstantCommand(() -> PeddieLogger.getInstance().logEvent("Auto Align to Reef converged", true))
                         ),
                         new SequentialCommandGroup(
                             new WaitCommand(2.0),
                             new InstantCommand(() -> superstructure.sendToScore()),
                             new WaitCommand(postScoreDelay),
-                            new InstantCommand(() -> Logger.getInstance().logEvent("Auto Align to Reef timeout", true))
+                            new InstantCommand(() -> PeddieLogger.getInstance().logEvent("Auto Align to Reef timeout", true))
                         )
                     ),
                     new InstantCommand(() -> {

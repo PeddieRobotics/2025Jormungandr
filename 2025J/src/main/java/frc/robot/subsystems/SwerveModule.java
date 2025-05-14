@@ -17,7 +17,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.utils.Constants.ModuleConstants;
 import frc.robot.utils.Kraken;
-import frc.robot.utils.Logger;
+import frc.robot.utils.PeddieLogger;
 
 public class SwerveModule extends SubsystemBase {
     
@@ -163,9 +163,9 @@ public class SwerveModule extends SubsystemBase {
         SmartDashboard.putNumber(CANCoderId + " CANCoder Reading", getCANCoderReading());
         SmartDashboard.putNumber(CANCoderId + "Swerve Drive Motor Current", driveMotor.getSupplyCurrent()); 
         SmartDashboard.putNumber(CANCoderId + "Swerve Steer Motor Current", steerMotor.getSupplyCurrent());
-        Logger.getInstance().logModuleSupplyCurrents(CANCoderId, driveMotor.getSupplyCurrent(), steerMotor.getSupplyCurrent());
-        Logger.getInstance().logModuleStatorCurrents(CANCoderId, driveMotor.getStatorCurrent(), steerMotor.getStatorCurrent());
-        Logger.getInstance().logModuleCANCoderPosition(CANCoderId, getCANCoderReading());
+        PeddieLogger.getInstance().logModuleSupplyCurrents(CANCoderId, driveMotor.getSupplyCurrent(), steerMotor.getSupplyCurrent());
+        PeddieLogger.getInstance().logModuleStatorCurrents(CANCoderId, driveMotor.getStatorCurrent(), steerMotor.getStatorCurrent());
+        PeddieLogger.getInstance().logModuleCANCoderPosition(CANCoderId, getCANCoderReading());
     }
 
     @Override

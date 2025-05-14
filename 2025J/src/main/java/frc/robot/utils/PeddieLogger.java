@@ -29,8 +29,8 @@ import frc.robot.subsystems.Superstructure;
 import frc.robot.subsystems.SwerveModule;
 
 // @SuppressWarnings("unused")
-public class Logger {
-    private static Logger instance;
+public class PeddieLogger {
+    private static PeddieLogger instance;
     private Drivetrain drivetrain;
     private Arm arm;
     private Autonomous autonomous;
@@ -86,14 +86,14 @@ public class Logger {
 
     // private List<StructPublisher<Pose2d>> limelightMT2Entry;
 
-    public static Logger getInstance() {
+    public static PeddieLogger getInstance() {
         if (instance == null) {
-            instance = new Logger();
+            instance = new PeddieLogger();
         }
         return instance;
     }
 
-    public Logger() {
+    public PeddieLogger() {
         drivetrain = Drivetrain.getInstance();
         arm = Arm.getInstance();
         autonomous = Autonomous.getInstance();

@@ -8,7 +8,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.utils.Constants.FieldConstants;
 import frc.robot.utils.DriverOI;
-import frc.robot.utils.Logger;
+import frc.robot.utils.PeddieLogger;
 
 @SuppressWarnings("unused")
 public class OrbitReef extends Command {
@@ -55,7 +55,7 @@ public class OrbitReef extends Command {
             reefCenterY = FieldConstants.kReefCenterYBlue;
         }
 
-        Logger.getInstance().logEvent("Orbit Reef", true);
+        PeddieLogger.getInstance().logEvent("Orbit Reef", true);
     }
 
     @Override
@@ -81,7 +81,7 @@ public class OrbitReef extends Command {
 
     @Override
     public void end(boolean interrupted) {
-        Logger.getInstance().logEvent("Orbit Reef", false);
+        PeddieLogger.getInstance().logEvent("Orbit Reef", false);
     }
 
     @Override

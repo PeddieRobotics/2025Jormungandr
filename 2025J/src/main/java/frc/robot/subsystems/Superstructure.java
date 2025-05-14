@@ -15,7 +15,7 @@ import frc.robot.utils.Constants.ArmConstants;
 import frc.robot.utils.Constants.ClawConstants;
 import frc.robot.utils.Constants.ScoreConstants;
 import frc.robot.utils.LiveData;
-import frc.robot.utils.Logger;
+import frc.robot.utils.PeddieLogger;
 
 import static frc.robot.subsystems.Superstructure.SuperstructureState.*;
 
@@ -106,7 +106,7 @@ public class Superstructure extends SubsystemBase {
     }
 
     public void setL4offset(double offset) {
-        Logger.getInstance().logEvent("Set L4 Offset " + offset, true);
+        PeddieLogger.getInstance().logEvent("Set L4 Offset " + offset, true);
         L4offset = offset;
     }
     public double getL4offset() {
@@ -174,7 +174,7 @@ public class Superstructure extends SubsystemBase {
 
     @Override
     public void periodic() {
-        Logger.getInstance().logL4offset(L4offset);
+        PeddieLogger.getInstance().logL4offset(L4offset);
 
         double manualOffset = SmartDashboard.getNumber("Scoring Pose Offset", 0);
 
@@ -890,7 +890,7 @@ public class Superstructure extends SubsystemBase {
     public void sendToScore() {
         double manualOffset = SmartDashboard.getNumber("Scoring Pose Offset", 0);
         
-        Logger logger = Logger.getInstance();
+        PeddieLogger logger = PeddieLogger.getInstance();
         switch (systemState) {
             case L1_PREP -> {
                 if (arm.isAtPosition(ScoreConstants.kArmL1ScorePosition)

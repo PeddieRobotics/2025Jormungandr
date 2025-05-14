@@ -7,7 +7,9 @@ package frc.robot;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Superstructure;
 import frc.robot.utils.CalculateReefTarget;
-import frc.robot.utils.Logger;
+import frc.robot.utils.PeddieLogger;
+
+import org.littletonrobotics.junction.LoggedRobot;
 
 import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -21,24 +23,25 @@ import frc.robot.utils.TunableConstant;
  * the TimedRobot documentation. If you change the name of this class or the package after creating
  * this project, you must also update the Main.java file in the project.
  */
-public class Robot extends TimedRobot {
+public class Robot extends LoggedRobot {
     private Command m_autonomousCommand;
 
     private final RobotContainer m_robotContainer;
 
-    private Logger logger;
+    private PeddieLogger logger;
 
     /**
      * This function is run when the robot is first started up and should be used for any
      * initialization code.
      */
     public Robot() {
+        
         // Instantiate our RobotContainer.    This will perform all our button bindings, and put our
         // autonomous chooser on the dashboard.
         m_robotContainer = new RobotContainer();
         DataLogManager.logNetworkTables(false);
         DataLogManager.start("/media/sda1");
-        logger = Logger.getInstance();
+        logger = PeddieLogger.getInstance();
         DriverStation.startDataLog(DataLogManager.getLog());
     }
 

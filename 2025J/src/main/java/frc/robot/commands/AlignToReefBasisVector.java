@@ -30,7 +30,7 @@ import frc.robot.utils.Constants.AlignmentConstants.ReefAlign;
 import frc.robot.utils.Constants.ClawConstants;
 import frc.robot.utils.Constants.DriveConstants;
 import frc.robot.utils.Constants.ScoreConstants;
-import frc.robot.utils.Logger;
+import frc.robot.utils.PeddieLogger;
 import frc.robot.utils.MagnitudeCap;
 import frc.robot.utils.PoleLookup;
 
@@ -355,7 +355,7 @@ public class AlignToReefBasisVector extends Command {
 
         double offset = PoleLookup.lookupPole(desiredTarget, destination);
 
-        Logger.getInstance().logEvent("Reef " + commandName + ", ID " + desiredTarget + ", L4 Offset " + offset, true);
+        PeddieLogger.getInstance().logEvent("Reef " + commandName + ", ID " + desiredTarget + ", L4 Offset " + offset, true);
 
         Superstructure.getInstance().setL4offset(offset);
 
@@ -510,7 +510,7 @@ public class AlignToReefBasisVector extends Command {
         Optional<Pose2d> estimatedPoseOptional = getBestEstimatedPose();
         if (!estimatedPoseOptional.isPresent()) {
             drivetrain.drive(new Translation2d(0, 0), rotation, true, null);
-            Logger.getInstance().logAlignToReef(lateralError, depthError, rotationError, 0, 0, rotation);
+            PeddieLogger.getInstance().logAlignToReef(lateralError, depthError, rotationError, 0, 0, rotation);
             return;
         }
         Pose2d estimatedPose = estimatedPoseOptional.get();
@@ -546,34 +546,34 @@ public class AlignToReefBasisVector extends Command {
 
         if(!DriverStation.isAutonomousEnabled() && autoPrep){
             if(elapsedTime > 0.05 && (Superstructure.getInstance().getCurrentState() == SuperstructureState.PRESTAGE || Superstructure.getInstance().isReefPrepState()) && Superstructure.getInstance().getScoringFlag() == ScoringFlag.L1FLAG){
-                Logger.getInstance().logEvent("Align to reef to L1 Prep", true);
+                PeddieLogger.getInstance().logEvent("Align to reef to L1 Prep", true);
                 Superstructure.getInstance().requestState(SuperstructureState.L1_PREP);
             }
 
             if(elapsedTime > 0.05 && (Superstructure.getInstance().getCurrentState() == SuperstructureState.PRESTAGE || Superstructure.getInstance().isReefPrepState()) && Superstructure.getInstance().getScoringFlag() == ScoringFlag.L2FLAG){
-                Logger.getInstance().logEvent("Align to reef to L2 Prep", true);
+                PeddieLogger.getInstance().logEvent("Align to reef to L2 Prep", true);
                 Superstructure.getInstance().requestState(SuperstructureState.L2_PREP);
             }
 
             if(elapsedTime > 0.05 && l3PrepSafe() && (Superstructure.getInstance().getCurrentState() == SuperstructureState.PRESTAGE || Superstructure.getInstance().isReefPrepState()) && Superstructure.getInstance().getScoringFlag() == ScoringFlag.L3FLAG){
-                Logger.getInstance().logEvent("Align to reef to L3 Prep", true);
+                PeddieLogger.getInstance().logEvent("Align to reef to L3 Prep", true);
                 Superstructure.getInstance().requestState(SuperstructureState.L3_PREP);
             }
 
             if(elapsedTime > 0.05 && l4PrepSafe() && (Superstructure.getInstance().getCurrentState() == SuperstructureState.PRESTAGE || Superstructure.getInstance().isReefPrepState()) && Superstructure.getInstance().getScoringFlag() == ScoringFlag.L4FLAG){
-                Logger.getInstance().logEvent("Align to reef to L4 Prep", true);
+                PeddieLogger.getInstance().logEvent("Align to reef to L4 Prep", true);
                 Superstructure.getInstance().requestState(SuperstructureState.L4_PREP);
             }
 
             if(elapsedTime > 0.05 && isReefIntakeAlgaeSafe() && destination == AlignmentDestination.MIDDLE) {
-                Logger.getInstance().logEvent("Align to reef to reef intaking", true);
+                PeddieLogger.getInstance().logEvent("Align to reef to reef intaking", true);
                 boolean high = Superstructure.getInstance().isHighAlgae();
                 Superstructure.getInstance().requestState(high ? SuperstructureState.REEF2_ALGAE_INTAKE : SuperstructureState.REEF1_ALGAE_INTAKE);
             }
         }
         if (DriverStation.isAutonomousEnabled()) {
             if(elapsedTime > 0.05 && l4AutoPrepSafe() && (Superstructure.getInstance().getCurrentState() == SuperstructureState.PRESTAGE || Superstructure.getInstance().isReefPrepState()) && Superstructure.getInstance().getScoringFlag() == ScoringFlag.L4FLAG){
-                Logger.getInstance().logEvent("Align to reef to L4 Prep", true);
+                PeddieLogger.getInstance().logEvent("Align to reef to L4 Prep", true);
                 Superstructure.getInstance().requestState(SuperstructureState.L4_PREP);
             }
         }
@@ -588,7 +588,7 @@ public class AlignToReefBasisVector extends Command {
             if (Arrays.asList(ScoringFlag.L2FLAG, ScoringFlag.L3FLAG, ScoringFlag.L4FLAG).contains(
                     Superstructure.getInstance().getScoringFlag())) {
 
-                Logger.getInstance().logEvent("Align to reef L2/3/4 send to score", true);
+                PeddieLogger.getInstance().logEvent("Align to reef L2/3/4 send to score", true);
                 Superstructure.getInstance().sendToScore();
                 SmartDashboard.putBoolean("Align: fire gamepiece", true);
                 if (Superstructure.getInstance().isReefScoringState()){
@@ -657,7 +657,7 @@ public class AlignToReefBasisVector extends Command {
         if (Superstructure.getInstance().getScoringFlag() == ScoringFlag.L1FLAG && 
                 L1startStrafeTime != 0 && Timer.getFPGATimestamp() - L1startStrafeTime >= strafeTime) {
 
-            Logger.getInstance().logEvent("Align to reef L1 send to score", true);
+            PeddieLogger.getInstance().logEvent("Align to reef L1 send to score", true);
             Superstructure.getInstance().sendToScore();
 
             SmartDashboard.putBoolean("Align: fire gamepiece", true);
@@ -667,7 +667,7 @@ public class AlignToReefBasisVector extends Command {
             }
         }
 
-        Logger.getInstance().logAlignToReef(lateralError, depthError, rotationError, lateralMagnitude, depthMagnitude, rotation);
+        PeddieLogger.getInstance().logAlignToReef(lateralError, depthError, rotationError, lateralMagnitude, depthMagnitude, rotation);
     }
 
     @Override
@@ -678,7 +678,7 @@ public class AlignToReefBasisVector extends Command {
         if (desiredPose.isPresent() || Superstructure.getInstance().getCurrentState() == SuperstructureState.L1_SCORE)
             drivetrain.drive(new Translation2d(0,0), 0, false, null);
   
-        Logger.getInstance().logEvent(
+        PeddieLogger.getInstance().logEvent(
             "Reef " + commandName + " ended with errors: lateral " + lateralError + ", depth " + depthError + ", rotation " + rotationError,
             false
         );
@@ -689,7 +689,7 @@ public class AlignToReefBasisVector extends Command {
     @Override
     public boolean isFinished() {
         if (desiredPose.isEmpty()) {
-            Logger.getInstance().logEvent("Align to reef end reason: no desired pose", false);
+            PeddieLogger.getInstance().logEvent("Align to reef end reason: no desired pose", false);
             return true;
         }
 

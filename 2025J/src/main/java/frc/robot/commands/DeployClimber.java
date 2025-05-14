@@ -3,7 +3,7 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.HPIntake;
-import frc.robot.utils.Logger;
+import frc.robot.utils.PeddieLogger;
 
 public class DeployClimber extends Command {
 
@@ -19,7 +19,7 @@ public class DeployClimber extends Command {
 
     @Override
     public void initialize() {
-        Logger.getInstance().logEvent("Deploy Climber", true);
+        PeddieLogger.getInstance().logEvent("Deploy Climber", true);
     }
 
     @Override
@@ -30,7 +30,7 @@ public class DeployClimber extends Command {
 
     @Override
     public void end(boolean interrupted) {
-        Logger.getInstance().logEvent("Deploy Climber", false);
+        PeddieLogger.getInstance().logEvent("Deploy Climber", false);
     }
 
     @Override

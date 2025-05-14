@@ -20,7 +20,7 @@ import frc.robot.subsystems.Limelight;
 import frc.robot.subsystems.LimelightBack;
 import frc.robot.utils.CalculateHPTarget;
 import frc.robot.utils.Constants.AlignmentConstants.HPAlign;
-import frc.robot.utils.Logger;
+import frc.robot.utils.PeddieLogger;
 import frc.robot.utils.MagnitudeCap;
 
 public class AlignToHPBasisVector extends Command {
@@ -193,7 +193,7 @@ public class AlignToHPBasisVector extends Command {
         depthVector = new Translation2d(Math.cos(tagAngle), Math.sin(tagAngle));
         lateralVector = new Translation2d(Math.sin(tagAngle), -Math.cos(tagAngle));
         
-        Logger.getInstance().logEvent("Align to HP, ID " + desiredTarget, true);
+        PeddieLogger.getInstance().logEvent("Align to HP, ID " + desiredTarget, true);
 
         SmartDashboard.putNumber("HPAlign: target x", desiredPose.get().getX());
         SmartDashboard.putNumber("HPAlign: target y", desiredPose.get().getY());
@@ -343,7 +343,7 @@ public class AlignToHPBasisVector extends Command {
         else
             drivetrain.driveBlue(translation, rotation, true, null);
 
-        Logger.getInstance().logAlignToHP(lateralError, depthError, rotationError, lateralMagnitude, depthMagnitude, rotation);
+        PeddieLogger.getInstance().logAlignToHP(lateralError, depthError, rotationError, lateralMagnitude, depthMagnitude, rotation);
     }
 
     @Override
@@ -351,7 +351,7 @@ public class AlignToHPBasisVector extends Command {
         double elapsedTime = Timer.getFPGATimestamp()-initialTime;
         SmartDashboard.putNumber("HPAlign: Elapsed Time", elapsedTime);
 
-        Logger.getInstance().logEvent(
+        PeddieLogger.getInstance().logEvent(
             "Align to HP ended with errors: lateral " + lateralError + ", depth " + depthError + ", rotation " + rotationError,
             false
         );
