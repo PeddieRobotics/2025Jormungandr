@@ -12,13 +12,12 @@ public class DriveToPoint extends Command {
     private Drivetrain drivetrain;
 
     private Translation2d targetRelativeToOwnSide, targetBlue;
-    private double rotationTarget, percentMovement;
+    private double percentMovement;
     private double errorMagnitude, translationThreshold;
     private ProfiledPIDController translationPIDController, rotationPIDController;
 
     public DriveToPoint(double x, double y, double rotationTarget, double percentMovement) {
         targetRelativeToOwnSide = new Translation2d(x, y);
-        // this.rotationTarget = -rotationTarget; // idk why
         this.percentMovement = percentMovement;
         drivetrain = Drivetrain.getInstance();
 
@@ -28,12 +27,12 @@ public class DriveToPoint extends Command {
         );
         translationPIDController.setGoal(0);
 
-        // rotationPIDController = new ProfiledPIDController(
-        //     0.08, 0, 0,
-        //     new TrapezoidProfile.Constraints(540, 270)
-        // );
-        // rotationPIDController.enableContinuousInput(-180, 180);
-        // rotationPIDController.setGoal(rotationTarget);
+        rotationPIDController = new ProfiledPIDController(
+            0.08, 0, 0,
+            new TrapezoidProfile.Constraints(540, 720)
+        );
+        rotationPIDController.enableContinuousInput(-180, 180);
+        rotationPIDController.setGoal(rotationTarget);
 
         // SmartDashboard.putNumber("DriveToPoint Translation P", 5);
         // SmartDashboard.putNumber("DriveToPoint Rotation P", 0.08);
@@ -76,10 +75,10 @@ public class DriveToPoint extends Command {
         Translation2d unit = necessaryMovement.div(errorMagnitude);
         Translation2d translation = unit.times(translationPIDController.calculate(errorMagnitude));
         
-        // double rotationError = drivetrain.getHeading() - rotationTarget;
+        double rotationError = drivetrain.getHeading();
         double rotation = 0;
-        // if (Math.abs(rotationError) >= 0.5)
-        //     rotation = rotationPIDController.calculate(rotationError);
+        if (Math.abs(rotationError) >= 0.5)
+            rotation = rotationPIDController.calculate(rotationError);
 
         drivetrain.driveBlue(translation, rotation, true, null);
     }

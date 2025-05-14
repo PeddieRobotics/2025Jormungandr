@@ -374,7 +374,7 @@ public final class Constants {
             public static final double kDepthL3PrestageThreshold = 0.6;
             public static final double kDepthL4PrestageThreshold = 0.9;
             public static final double kDepthL4AutoPrestageThreshold = 1.2; // 0.9 definitely works however
-            public static final double kDepthL4DaisyAutoPrestageThreshold = 1.65;
+            public static final double kDepthL4DaisyAutoPrestageThreshold = 1.55;
 
             public static final double kAutoLateralP = 2.7;
             public static final double kLateralP = 2.85;
@@ -388,6 +388,7 @@ public final class Constants {
             public static final double kLateralL3PrestageThreshold = 0.4;
             public static final double kLateralL4PrestageThreshold = 0.4;
             public static final double kLateralL4AutoPrestageThreshold = 0.5;
+            public static final double kLateralL4DaisyAutoPrestageThreshold = 0.8;
 
             public static final double kDepthReefAlgaeThreshold = 0.9;
             public static final double kLateralReefAlgaeThreshold = 0.5;

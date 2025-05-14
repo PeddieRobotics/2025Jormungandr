@@ -47,7 +47,7 @@ public class AlignToReefBasisVector extends Command {
     private double lateralP, lateralI, lateralD, lateralFF;
 
     private double lateralThreshold, lateralCloseThreshold, lateralCloseAtL4Threshold, lateralL3PrestageThreshold, lateralL4PrestageThreshold;
-    private double depthL4AutoPrestageThreshold, depthL4DaisyAutoPrestageThreshold, lateralL4AutoPrestageThreshold;
+    private double depthL4AutoPrestageThreshold, depthL4DaisyAutoPrestageThreshold, lateralL4AutoPrestageThreshold, lateralL4DaisyAutoPrestageThreshold;
     private double depthReefAlgaeThreshold, lateralReefAlgaeThreshold;
 
     private double rotationP, rotationI, rotationD, rotationFF;
@@ -144,6 +144,7 @@ public class AlignToReefBasisVector extends Command {
         depthL4AutoPrestageThreshold = ReefAlign.kDepthL4AutoPrestageThreshold;
         depthL4DaisyAutoPrestageThreshold = ReefAlign.kDepthL4DaisyAutoPrestageThreshold;    
         lateralL4AutoPrestageThreshold = ReefAlign.kLateralL4AutoPrestageThreshold;
+        lateralL4DaisyAutoPrestageThreshold = ReefAlign.kLateralL4DaisyAutoPrestageThreshold;
 
         depthReefAlgaeThreshold = ReefAlign.kDepthReefAlgaeThreshold;
         lateralReefAlgaeThreshold = ReefAlign.kLateralReefAlgaeThreshold;
@@ -435,7 +436,7 @@ public class AlignToReefBasisVector extends Command {
 
     private boolean l4AutoPrepSafe(){
         if (isDaisy)
-            return Math.abs(depthError) < depthL4DaisyAutoPrestageThreshold && Math.abs(lateralError) < lateralL4AutoPrestageThreshold;
+            return Math.abs(depthError) < depthL4DaisyAutoPrestageThreshold && Math.abs(lateralError) < lateralL4DaisyAutoPrestageThreshold;
         return Math.abs(depthError) < depthL4AutoPrestageThreshold && Math.abs(lateralError) < lateralL4AutoPrestageThreshold;
     }
 
@@ -569,13 +570,21 @@ public class AlignToReefBasisVector extends Command {
                 Logger.getInstance().logEvent("Align to reef to L4 Prep", true);
                 Superstructure.getInstance().requestState(SuperstructureState.L4_PREP);
             }
+            if(elapsedTime > 0.05 && l3PrepSafe() && (Superstructure.getInstance().getCurrentState() == SuperstructureState.PRESTAGE || Superstructure.getInstance().isReefPrepState()) && Superstructure.getInstance().getScoringFlag() == ScoringFlag.L3FLAG){
+                Logger.getInstance().logEvent("Align to reef to L3 Prep", true);
+                Superstructure.getInstance().requestState(SuperstructureState.L3_PREP);
+            }
+            if(elapsedTime > 0.05 && (Superstructure.getInstance().getCurrentState() == SuperstructureState.PRESTAGE || Superstructure.getInstance().isReefPrepState()) && Superstructure.getInstance().getScoringFlag() == ScoringFlag.L2FLAG){
+                Logger.getInstance().logEvent("Align to reef to L2 Prep", true);
+                Superstructure.getInstance().requestState(SuperstructureState.L2_PREP);
+            }
         }
 
         // Auto Score Logic
         boolean autoScore = SmartDashboard.getBoolean("Align: Auto Score", true);
 
         if (((DriverStation.isAutonomous() && !isNotFirstPoleAuto) || Math.abs(rotationError) < rotationThreshold) &&
-                depthAndLateralClose() && autoScore && (elapsedTime > 0.3 || depthAndLateralGood()) &&
+                depthAndLateralClose() && autoScore && (elapsedTime > 0.15 || depthAndLateralGood()) &&
                 Math.abs(drivetrain.getDrivetrainCurrentVelocity()) < 0.5) {
 
             if (Arrays.asList(ScoringFlag.L2FLAG, ScoringFlag.L3FLAG, ScoringFlag.L4FLAG).contains(

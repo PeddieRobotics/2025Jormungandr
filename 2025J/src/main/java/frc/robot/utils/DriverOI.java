@@ -101,20 +101,10 @@ public class DriverOI {
 
         Trigger triangleButton = new JoystickButton(controller, PS4Controller.Button.kTriangle.value);
         triangleButton.whileTrue(new SequentialCommandGroup(
-            new DriveToPoint(3.305, 1.5, 120.0, 0.5),
-            new SequentialCommandGroup(
-                new ParallelRaceGroup(
-                    new AlignToHPBasisVector(HPAlign.kMaxSpeed, 8 * 2.54 / 100, HPAlign.kAutoBackOffset, 12, 2),
-                    // new AlignToHPBasisVector(HPAlign.kMaxSpeed, 8 * 2.54 / 100 - 0.05, HPAlign.kAutoBackOffset, 12, 2),
-                    // new WaitForCoral(),
-                    new WaitCommand(3.0)
-                ),
-                new InstantCommand(() -> {
-                    if (DriverStation.getAlliance().isEmpty() || DriverStation.getAlliance().get() == DriverStation.Alliance.Blue)
-                        Drivetrain.getInstance().resetTranslation(new Translation2d(1.299, 0.922));
-                    else
-                        Drivetrain.getInstance().resetTranslation(new Translation2d(16.251, 7.128));
-                })
+            new DriveToPoint(6.953, 2.856, 120.0, 0.5),
+            new AlignToReefBasisVector(
+                AlignmentConstants.AlignmentDestination.LEFT, ReefAlign.kMaxSpeed,
+                0, ReefAlign.kTagBackMagnitude, 22, 9, true, false
             )
         ));
         // triangleButton.onTrue(new InstantCommand(() -> superstructure.sendToScore()));
