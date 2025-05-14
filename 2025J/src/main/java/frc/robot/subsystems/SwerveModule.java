@@ -160,12 +160,12 @@ public class SwerveModule extends SubsystemBase {
     @Override
     public void periodic() {
         // This method will be called once per scheduler run
-        SmartDashboard.putNumber(CANCoderId + " CANCoder Reading", getCANCoderReading());
-        SmartDashboard.putNumber(CANCoderId + "Swerve Drive Motor Current", driveMotor.getSupplyCurrent()); 
-        SmartDashboard.putNumber(CANCoderId + "Swerve Steer Motor Current", steerMotor.getSupplyCurrent());
-        Logger.getInstance().logModuleSupplyCurrents(CANCoderId, driveMotor.getSupplyCurrent(), steerMotor.getSupplyCurrent());
-        Logger.getInstance().logModuleStatorCurrents(CANCoderId, driveMotor.getStatorCurrent(), steerMotor.getStatorCurrent());
-        Logger.getInstance().logModuleCANCoderPosition(CANCoderId, getCANCoderReading());
+        // SmartDashboard.putNumber(CANCoderId + " CANCoder Reading", getCANCoderReading());
+        // SmartDashboard.putNumber(CANCoderId + "Swerve Drive Motor Current", driveMotor.getSupplyCurrent()); 
+        // SmartDashboard.putNumber(CANCoderId + "Swerve Steer Motor Current", steerMotor.getSupplyCurrent());
+        // Logger.getInstance().logModuleSupplyCurrents(CANCoderId, driveMotor.getSupplyCurrent(), steerMotor.getSupplyCurrent());
+        // Logger.getInstance().logModuleStatorCurrents(CANCoderId, driveMotor.getStatorCurrent(), steerMotor.getStatorCurrent());
+        // Logger.getInstance().logModuleCANCoderPosition(CANCoderId, getCANCoderReading());
     }
 
     @Override
