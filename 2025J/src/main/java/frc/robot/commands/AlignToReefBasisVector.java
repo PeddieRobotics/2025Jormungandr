@@ -266,11 +266,6 @@ public class AlignToReefBasisVector extends Command {
         else
             desiredTarget = LimelightFrontLeft.getInstance().getTargetID();
 
-        if (desiredTarget == 11 && Superstructure.getInstance().getScoringFlag() == ScoringFlag.L4FLAG) {
-            desiredPose = Optional.empty();
-            return;
-        }
-
         SmartDashboard.putNumber("Align: Desired Target", desiredTarget);
 
         boolean useMilstein = SmartDashboard.getBoolean("Use Milstein Poles?", false);
