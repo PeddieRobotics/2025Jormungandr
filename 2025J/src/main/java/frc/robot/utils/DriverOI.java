@@ -100,14 +100,14 @@ public class DriverOI {
         );
 
         Trigger triangleButton = new JoystickButton(controller, PS4Controller.Button.kTriangle.value);
-        triangleButton.whileTrue(new SequentialCommandGroup(
-            new DriveToPoint(6.953, 2.856, 120.0, 0.5),
-            new AlignToReefBasisVector(
-                AlignmentConstants.AlignmentDestination.LEFT, ReefAlign.kMaxSpeed,
-                0, ReefAlign.kTagBackMagnitude, 22, 9, true, false
-            )
-        ));
-        // triangleButton.onTrue(new InstantCommand(() -> superstructure.sendToScore()));
+        // triangleButton.whileTrue(new SequentialCommandGroup(
+        //     new DriveToPoint(6.953, 2.856, 120.0, 0.5),
+        //     new AlignToReefBasisVector(
+        //         AlignmentConstants.AlignmentDestination.LEFT, ReefAlign.kMaxSpeed,
+        //         0, ReefAlign.kTagBackMagnitude, 22, 9, true, false
+        //     )
+        // ));
+        triangleButton.onTrue(new InstantCommand(() -> superstructure.sendToScore()));
 
         Trigger muteButton = new JoystickButton(controller, 15);
         muteButton.onTrue(new InstantCommand(() -> {
