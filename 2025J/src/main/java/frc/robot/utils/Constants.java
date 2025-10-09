@@ -116,7 +116,7 @@ public final class Constants {
         // public static final double kBackLeftMagnetOffset = 0.496094;
         // public static final double kBackRightMagnetOffset = 0.130127;
 
-        public static final double kFrontLeftMagnetOffset = 0.236084;
+        public static final double kFrontLeftMagnetOffset = 0.232666;
         public static final double kFrontRightMagnetOffset = 0.154541;
         public static final double kBackLeftMagnetOffset = 0.496338;
         public static final double kBackRightMagnetOffset = 0.129883;
