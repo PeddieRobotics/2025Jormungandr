@@ -164,7 +164,7 @@ public class DriverOI {
                 new AlignToReefBasisVector(
                     AlignmentConstants.AlignmentDestination.MIDDLE, ReefAlign.kMaxSpeed,
                     0, ReefAlign.kTagBackMagnitude, 0, 0, true, false
-                ), 
+                ),
                 Claw.getInstance()::eitherCoralSensorTriggered
             ),
             Claw.getInstance()::getAlgaeSensor
