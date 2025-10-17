@@ -267,8 +267,8 @@ public class Superstructure extends SubsystemBase {
                         EJECT_ALGAE,
                         EJECT_CORAL,
                         REEF1_ALGAE_INTAKE,
-                        REEF2_ALGAE_INTAKE)
-                        .contains(requestedSystemState)) {
+                        REEF2_ALGAE_INTAKE,
+                        CLIMB).contains(requestedSystemState)) {
                     systemState = requestedSystemState;
                 }
 
