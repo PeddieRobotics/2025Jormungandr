@@ -84,50 +84,107 @@ public class Autonomous {
             )
         );
     }
-    public final Command right5pieceAuto = new SequentialCommandGroup(
+    // public final Command right5pieceAuto = new SequentialCommandGroup(
+    //     new InstantCommand(() -> {
+    //         drivetrain.setStartingPose(new Translation2d(7.050, 2.686));
+    //         superstructure.requestState(SuperstructureState.PRESTAGE);
+    //     }),
+    //     createAlignToReef(
+    //         AlignmentDestination.RIGHT,
+    //         ReefAlign.kAutoCloseTagBackMagnitude,
+    //         0.3, 22, 9,
+    //         true, true
+    //     ),
+    //     new InstantCommand(() -> superstructure.setL2Flag()),
+    //     new DriveToPoint(3.305, 1.5, 120.0, 0.5),
+    //     createRightAlignToHP(),
+    //     createAlignToReef(
+    //         AlignmentDestination.LEFT,
+    //         ReefAlign.kAutoCloseTagBackMagnitude,
+    //         0.2, 17, 8,
+    //         false, true
+    //     ),
+    //     createRightAlignToHP(),
+    //     createAlignToReef(
+    //         AlignmentDestination.RIGHT,
+    //         ReefAlign.kAutoCloseTagBackMagnitude,
+    //         0.2, 17, 8,
+    //         false, true
+    //     ),
+    //     new InstantCommand(() -> superstructure.setL3Flag()),
+    //     createRightAlignToHP(),
+    //     createAlignToReef(
+    //         AlignmentDestination.LEFT,
+    //         ReefAlign.kAutoCloseTagBackMagnitude,
+    //         0.2, 17, 8,
+    //         false, true
+    //     ),
+    //     createRightAlignToHP(),
+    //     createAlignToReef(
+    //         AlignmentDestination.RIGHT,
+    //         ReefAlign.kAutoCloseTagBackMagnitude,
+    //         0.2, 17, 8,
+    //         false, true
+    //     )
+    // );
+
+    // private final Command right1pieceAuto = new SequentialCommandGroup(
+    //     new InstantCommand(() -> {
+    //         drivetrain.setStartingPose(new Translation2d(7.050, 2.686));
+    //         superstructure.requestState(SuperstructureState.PRESTAGE);
+    //     }),         
+    //     createAlignToReef(
+    //         AlignmentDestination.LEFT,
+    //         ReefAlign.kAutoCloseTagBackMagnitude, 
+    //         0.3,  22, 9, 
+    //         true, false
+    //     )
+    // );
+
+    // private final Command driveAuto = new SequentialCommandGroup(
+    //     new InstantCommand(() -> {
+    //         drivetrain.setStartingPose(new Translation2d(5.0, 3.0));
+    //     }),
+    //     new DriveToPoint(4.0, 3.0, 0, 1.0)
+    // );
+
+    
+    public final Command left4pieceAuto = new SequentialCommandGroup(
         new InstantCommand(() -> {
-            drivetrain.setStartingPose(new Translation2d(7.050, 2.686));
+            drivetrain.setStartingPose(new Translation2d(7.050, 5.364));
             superstructure.requestState(SuperstructureState.PRESTAGE);
         }),
         createAlignToReef(
+            AlignmentDestination.LEFT,
+            ReefAlign.kAutoCloseTagBackMagnitude,
+            0.3, 20, 11,
+            true, false
+        ),
+        new DriveToPoint(3.305, 6.55, -120.0, 0.5),
+        createLeftAlignToHP(),
+        createAlignToReef(
             AlignmentDestination.RIGHT,
             ReefAlign.kAutoCloseTagBackMagnitude,
-            0.3, 22, 9,
-            true, true
+            0.2, 19, 6,
+            false, false
         ),
-        new InstantCommand(() -> superstructure.setL2Flag()),
-        new DriveToPoint(3.305, 1.5, 120.0, 0.5),
-        createRightAlignToHP(),
+        createLeftAlignToHP(),
         createAlignToReef(
             AlignmentDestination.LEFT,
             ReefAlign.kAutoCloseTagBackMagnitude,
-            0.2, 17, 8,
-            false, true
+            0.2, 19, 6,
+            false, false
         ),
-        createRightAlignToHP(),
-        createAlignToReef(
-            AlignmentDestination.RIGHT,
-            ReefAlign.kAutoCloseTagBackMagnitude,
-            0.2, 17, 8,
-            false, true
-        ),
-        new InstantCommand(() -> superstructure.setL3Flag()),
-        createRightAlignToHP(),
+        createLeftAlignToHP(),
         createAlignToReef(
             AlignmentDestination.LEFT,
             ReefAlign.kAutoCloseTagBackMagnitude,
-            0.2, 17, 8,
-            false, true
+            0.2, 18, 7,
+            false, false
         ),
-        createRightAlignToHP(),
-        createAlignToReef(
-            AlignmentDestination.RIGHT,
-            ReefAlign.kAutoCloseTagBackMagnitude,
-            0.2, 17, 8,
-            false, true
-        )
+        createLeftAlignToHP()
     );
-    
+
     public final Command right4pieceAuto = new SequentialCommandGroup(
         new InstantCommand(() -> {
             drivetrain.setStartingPose(new Translation2d(7.050, 2.686));
@@ -164,6 +221,42 @@ public class Autonomous {
         createRightAlignToHP()
     );
 
+    public final Command leftDaisyAuto = new SequentialCommandGroup(
+        new InstantCommand(() -> {
+            drivetrain.setStartingPose(new Translation2d(7.050, 5.364));
+            superstructure.requestState(SuperstructureState.PRESTAGE);
+        }),
+        createAlignToReef(
+            AlignmentDestination.LEFT,
+            ReefAlign.kAutoCloseTagBackMagnitude,
+            0.3, 20, 11,
+            true, true
+        ),
+        new DriveToPoint(3.305, 6.55, -120.0, 0.5),
+        createLeftAlignToHP(),
+        createAlignToReef(
+            AlignmentDestination.RIGHT,
+            ReefAlign.kAutoCloseTagBackMagnitude,
+            0.2, 19, 6,
+            false, true
+        ),
+        createLeftAlignToHP(),
+        createAlignToReef(
+            AlignmentDestination.LEFT,
+            ReefAlign.kAutoCloseTagBackMagnitude,
+            0.2, 19, 6,
+            false, true
+        ),
+        createLeftAlignToHP(),
+        new DriveToPoint(6.629, 5.589, -120.0, 0.5),
+        createAlignToReef(
+            AlignmentDestination.RIGHT,
+            ReefAlign.kAutoTagBackMagnitude,
+            0.2, 20, 11,
+            false, true
+        )
+    );
+
     public final Command rightDaisyAuto = new SequentialCommandGroup(
         new InstantCommand(() -> {
             drivetrain.setStartingPose(new Translation2d(7.050, 2.686));
@@ -177,7 +270,6 @@ public class Autonomous {
         ),
         new DriveToPoint(3.305, 1.5, 120.0, 0.5),
         createRightAlignToHP(),
-
         createAlignToReef(
             AlignmentDestination.LEFT,
             ReefAlign.kAutoCloseTagBackMagnitude,
@@ -192,9 +284,6 @@ public class Autonomous {
             false, true
         ),
         createRightAlignToHP(),
-
-        // rest of auto goes here
-
         new DriveToPoint(6.629, 2.461, 120.0, 0.5),
         createAlignToReef(
             AlignmentDestination.LEFT,
@@ -202,26 +291,6 @@ public class Autonomous {
             0.2, 22, 9,
             false, true
         )
-    );
-
-    private final Command right1pieceAuto = new SequentialCommandGroup(
-        new InstantCommand(() -> {
-            drivetrain.setStartingPose(new Translation2d(7.050, 2.686));
-            superstructure.requestState(SuperstructureState.PRESTAGE);
-        }),         
-        createAlignToReef(
-            AlignmentDestination.LEFT,
-            ReefAlign.kAutoCloseTagBackMagnitude, 
-            0.3,  22, 9, 
-            true, false
-        )
-    );
-
-    private final Command driveAuto = new SequentialCommandGroup(
-        new InstantCommand(() -> {
-            drivetrain.setStartingPose(new Translation2d(5.0, 3.0));
-        }),
-        new DriveToPoint(4.0, 3.0, 0, 1.0)
     );
 
     public final Command waitAuto = new WaitCommand(1);
@@ -239,12 +308,16 @@ public class Autonomous {
 
     public Autonomous() {
         autoChooser = new SendableChooser<>();
+
+        // autoChooser.setDefaultOption("Right 5 Piece", right5pieceAuto);
+        // autoChooser.setDefaultOption("Right 1 Piece", right1pieceAuto);
+        // autoChooser.setDefaultOption("1 meter", driveAuto);
+        // autoChooser.addOption("Wait", waitAuto);
+
         autoChooser.setDefaultOption("Right 4 Piece", right4pieceAuto);
-        autoChooser.setDefaultOption("Right 5 Piece", right5pieceAuto);
         autoChooser.setDefaultOption("Right Daisy", rightDaisyAuto);
-        autoChooser.setDefaultOption("Right 1 Piece", right1pieceAuto);
-        autoChooser.setDefaultOption("1 meter", driveAuto);
-        autoChooser.addOption("Wait", waitAuto);
+        autoChooser.setDefaultOption("Left 4 Piece", left4pieceAuto);
+        autoChooser.setDefaultOption("Left Daisy", leftDaisyAuto);
         
         SmartDashboard.putData("Auto Chooser", autoChooser);
         
