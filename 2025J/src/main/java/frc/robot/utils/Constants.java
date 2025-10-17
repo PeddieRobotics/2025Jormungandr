@@ -253,7 +253,7 @@ public final class Constants {
         public static final double kArmRotorToSensorRatio = kArmReduction / 0.96;
         public static final double kArmSensortoMechanismRatio = 0.96;
 
-        public static final double kArmMagnetOffset = -0.854004 + 0.25 * kArmSensortoMechanismRatio;
+        public static final double kArmMagnetOffset = -0.857422  + 0.25 * kArmSensortoMechanismRatio;
         // public static final double kArmMagnetOffset = 0.0;
 
         // public static final double kS = 0.3;

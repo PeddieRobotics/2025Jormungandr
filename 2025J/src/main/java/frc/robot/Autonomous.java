@@ -155,7 +155,7 @@ public class Autonomous {
             superstructure.requestState(SuperstructureState.PRESTAGE);
         }),
         createAlignToReef(
-            AlignmentDestination.LEFT,
+            AlignmentDestination.RIGHT,
             ReefAlign.kAutoCloseTagBackMagnitude,
             0.3, 20, 11,
             true, false
@@ -191,7 +191,7 @@ public class Autonomous {
             superstructure.requestState(SuperstructureState.PRESTAGE);
         }),
         createAlignToReef(
-            AlignmentDestination.RIGHT,
+            AlignmentDestination.LEFT,
             ReefAlign.kAutoCloseTagBackMagnitude,
             0.3, 22, 9,
             true, false
@@ -319,7 +319,7 @@ public class Autonomous {
         autoChooser.setDefaultOption("Left 4 Piece", left4pieceAuto);
         autoChooser.setDefaultOption("Left Daisy", leftDaisyAuto);
         
-        SmartDashboard.putData("Auto Chooser", autoChooser);
+        SmartDashboard.putData("Auto Routines", autoChooser);
         
         autoStartPosition = new SendableChooser<>();
         autoStartPosition.setDefaultOption("NONE/TELEOP", 0.0);
