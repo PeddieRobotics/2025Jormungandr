@@ -176,13 +176,14 @@ public class Autonomous {
             false, false
         ),
         createLeftAlignToHP(),
+        new DriveToPoint(2.457, 2.640, 0.0, 0.5),
         createAlignToReef(
             AlignmentDestination.LEFT,
             ReefAlign.kAutoCloseTagBackMagnitude,
             0.2, 18, 7,
             false, false
-        ),
-        createLeftAlignToHP()
+        )
+        // createLeftAlignToHP()
     );
 
     public final Command right4pieceAuto = new SequentialCommandGroup(
@@ -212,13 +213,14 @@ public class Autonomous {
             false, false
         ),
         createRightAlignToHP(),
+        new DriveToPoint(2.457, 5.410, 0.0, 0.5),
         createAlignToReef(
             AlignmentDestination.RIGHT,
             ReefAlign.kAutoCloseTagBackMagnitude,
             0.2, 18, 7,
             false, false
-        ),
-        createRightAlignToHP()
+        )
+        // createRightAlignToHP()
     );
 
     public final Command leftDaisyAuto = new SequentialCommandGroup(

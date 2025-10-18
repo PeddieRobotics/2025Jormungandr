@@ -114,7 +114,7 @@ public class PoleLookup {
 
         // BLUE POLES
         put(PoleLookup.getPoleNumber(17, AlignmentDestination.LEFT),  PoleCategory.EXTREMELY_HIGH);
-        put(PoleLookup.getPoleNumber(17, AlignmentDestination.RIGHT), PoleCategory.INSANELY_HIGH);
+        put(PoleLookup.getPoleNumber(17, AlignmentDestination.RIGHT), PoleCategory.VERY_INSANELY_HIGH);
 
         put(PoleLookup.getPoleNumber(18, AlignmentDestination.LEFT),  PoleCategory.EXTREMELY_HIGH);
         put(PoleLookup.getPoleNumber(18, AlignmentDestination.RIGHT), PoleCategory.EXTREMELY_HIGH);
@@ -151,6 +151,8 @@ public class PoleLookup {
                 return 0.15;
             case INSANELY_HIGH:
                 return 0.25;
+            case VERY_INSANELY_HIGH:
+                return 0.40;
         }
         return 0;
     }
@@ -163,7 +165,8 @@ public class PoleLookup {
         SLIGHTLY_HIGH,
         HIGH,
         EXTREMELY_HIGH,
-        INSANELY_HIGH
+        INSANELY_HIGH,
+        VERY_INSANELY_HIGH
     };
 
 
