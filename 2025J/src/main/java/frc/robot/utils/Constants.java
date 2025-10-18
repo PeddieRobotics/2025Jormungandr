@@ -460,7 +460,7 @@ public final class Constants {
             // TODO
             public static final double kBackOffset = 0.44;
             public static final double kAutoBackOffset = 0.44;
-            public static final double kLateralOffset = -0.03;
+            public static final double kLateralOffset = -8 * 2.54 / 100; 
 
             public static final double kAutoRightLateralOffset = 0.0;
             public static final double kAutoLeftLateralOffset = 0.0;
