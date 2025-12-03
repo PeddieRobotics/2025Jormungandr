@@ -24,6 +24,7 @@ public class Elevator extends SubsystemBase {
     private CANcoder elevatorCANcoder;
     // private TunableConstant L1Setpoint, L2Setpoint, L3Setpoint, L4Setpoint, HPIntakeSetpoint, stowSetpoint, bargeSetpoint,
     //         algaeL1Setpoint, algaeL2Setpoint, processorSetpoint;
+    //hi
 
     private double globalOffset = 0;
 
